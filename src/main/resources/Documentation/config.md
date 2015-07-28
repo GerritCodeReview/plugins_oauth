@@ -1,0 +1,117 @@
+Configuration
+=============
+
+The configuration of the @PLUGIN@ plugin is done in the `gerrit.config`
+file. `auth.type` can be set to `OAUTH` or `OPENID`:
+
+```
+[auth]
+  type = OAUTH|OPENID
+```
+
+## OAUTH
+
+When GitHub and Google providers are configured, user is presented with
+provider selection form. When only one provider is configured SSO mode
+is activated and provider selection form is skipped.
+
+## OPENID
+
+When `OPENID` `auth.type` is used, then so-called Hybrid `OpenID+OAuth`
+authentication method is activated. Because two OpenID providers are hard
+coded on login form, with this method selection form is always offered.
+
+## Provider configuration
+
+Google and GitHub specific providers are configured under @PLUGIN@ section,
+appended with provider suffix: `-google` and `-github`:
+
+```
+  [plugin "@PLUGIN@-google"]
+    client-id = "<client-id>"
+    client-secret = "<client-secret>"
+    link-to-existing-openid-accounts = true
+
+  [plugin "@PLUGIN@-github"]
+    client-id = "<client-id>"
+    client-secret = "<client-secret>"
+```
+
+When one from the sections above is omitted, and `auth.type` `OAUTH` is used,
+SSO mode is activated and the login provider selection isn’t shown. When both
+sections are omitted, Gerrit will not start.
+
+Google OAuth provider seamlessly supports linking of OAuth identity to existing
+`OpenID` accounts. This feature is deactivated by default. To activate it, add
+
+```
+plugin.oauth-google.link-to-existing-openid-accounts = true
+```
+
+to Google OAuth configuration section.
+
+It is also supported to restrict sign-in to accounts of one (hosted) domain for
+Google OAuth. The `domain` option can be added:
+
+```
+plugin.oauth-google.domain = "mycollege.edu"
+```
+
+(See the spec)[https://developers.google.com/identity/protocols/OpenIDConnect#hd-param]
+for more information. To protect against client-side request modification, the returned
+ID token is checked to contain a matching `hd` claim (which is proof the account does
+belong to the hosted domain). If the `hd` claim wasn't included in ID token or didn't
+match the provided `domain` configuration option the authentication is rejected.
+
+Note: Because of current limitation of the `OAuth` extension point in gerrit the user
+would only see "Unauthorized" message.
+
+## Obtaining provider authorizations
+
+### Google
+
+To obtain client-id and client-secret for Google OAuth, go to
+[Google Developers Console](https://console.developers.google.com):
+
+- Create a project
+
+  ![Create a porject](images/google-1.png)
+
+- Go inside the created project
+
+- In "APIs & auth"/"Credentials" select "Create new Client ID" and
+create Client ID for a Web application
+
+  ![Create Client ID for a Web application](images/google-2.png)
+
+- Enter additional information about the project, which will be
+  presented to user during the authentication process
+
+  ![Enter additional information](images/google-3.png)
+
+- Specify authorized redirect URL: `<canonical-web-uri-of-gerrit>/oauth`
+
+  ![Specify authorized redirect URI](images/google-4.png)
+
+After the final step, the page will show generated client id and
+secret.
+
+![Generated id and secret](images/google-5.png)
+
+### GitHub
+
+To obtain client-id and client-secret for GitHub OAuth, go to
+[Applications settings in your GitHub account](https://github.com/settings/applications):
+
+- Select "Register new application" and enter information about the
+  application.
+
+  Note that it is important that authorization callback URL points to
+  `<canonical-web-uri-of-gerrit>/oauth`.
+
+  ![Register new application on GitHub](images/github-1.png)
+
+After application is registered, the page will show generated client id and
+secret.
+
+![Generated client id and secret](images/github-2.png)
