@@ -34,6 +34,24 @@
       "revId": "fd62c292282c8fd74e28b261e4f9fa80b6c901e7",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "70e76057_00672661",
+        "filename": "lib/gerrit/BUCK",
+        "patchSetId": 3
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2016-11-23T10:15:46Z",
+      "side": 1,
+      "message": "I believe that David intended to stay on 2.11.x with regards to API compatibility. This would allow to build the plugin for Gerrit 2.11 and have it working from 2.11 up to the current 2.14-SNAPSHOT.",
+      "parentUuid": "50ec1c3c_1fd143e7",
+      "revId": "fd62c292282c8fd74e28b261e4f9fa80b6c901e7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
