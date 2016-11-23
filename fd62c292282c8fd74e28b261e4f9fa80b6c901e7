@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "70e76057_20d18ae7",
+        "filename": "lib/gerrit/BUCK",
+        "patchSetId": 3
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2016-11-23T07:44:22Z",
+      "side": 1,
+      "message": "How the API introduced in 2.12.6 are influencing the behaviour of this plugin? What\u0027s different in 2.12.6 that is needed by OAuth to work?",
+      "revId": "fd62c292282c8fd74e28b261e4f9fa80b6c901e7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
