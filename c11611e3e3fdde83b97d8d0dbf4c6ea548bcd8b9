@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7620e9cd_ee803b5e",
+        "filename": "version.bzl",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1029953
+      },
+      "writtenOn": "Feb 6, 2017 1:24:54 PM",
+      "side": 1,
+      "message": "What about 2.13.5?",
+      "range": {
+        "startLine": 1,
+        "startChar": 18,
+        "endLine": 1,
+        "endChar": 24
+      },
+      "revId": "c11611e3e3fdde83b97d8d0dbf4c6ea548bcd8b9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
