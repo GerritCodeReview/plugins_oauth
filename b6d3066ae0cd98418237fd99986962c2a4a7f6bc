@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7fb5fb26_4e48f938",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/HttpModule.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "Feb 7, 2017 4:51:21 AM",
+      "side": 1,
+      "message": "InitOAuth.CLIENT_ID",
+      "range": {
+        "startLine": 73,
+        "startChar": 22,
+        "endLine": 73,
+        "endChar": 33
+      },
+      "revId": "b6d3066ae0cd98418237fd99986962c2a4a7f6bc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c1ec51b1_5b675d3b",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/InitOAuth.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "Feb 7, 2017 4:51:21 AM",
+      "side": 1,
+      "message": "Wrong indentation. 4 chars on line continuation.",
+      "range": {
+        "startLine": 99,
+        "startChar": 0,
+        "endLine": 99,
+        "endChar": 13
+      },
+      "revId": "b6d3066ae0cd98418237fd99986962c2a4a7f6bc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
