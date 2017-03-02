@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "47b9352d_ed444835",
+        "filename": ".gitignore",
+        "patchSetId": 3
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2017-03-02T22:00:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "75b8a2b4_a7ef5047",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 26
+      },
+      "revId": "83e83ca6b4fcaa485f0302ddb127f37489d07fc0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "472c0a2f_db25c851",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/GitLabApi.java",
         "patchSetId": 3
@@ -48,6 +72,30 @@
     },
     {
       "key": {
+        "uuid": "54d1eafd_b8a9a993",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/GitLabApi.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2017-03-02T22:00:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "472c0a2f_db25c851",
+      "range": {
+        "startLine": 100,
+        "startChar": 6,
+        "endLine": 101,
+        "endChar": 74
+      },
+      "revId": "83e83ca6b4fcaa485f0302ddb127f37489d07fc0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "41c7196b_992341a7",
         "filename": "src/main/resources/Documentation/config.md",
         "patchSetId": 3
@@ -59,6 +107,30 @@
       "writtenOn": "2017-03-02T15:27:35Z",
       "side": 1,
       "message": "May be replace it with GitLab?",
+      "range": {
+        "startLine": 158,
+        "startChar": 42,
+        "endLine": 158,
+        "endChar": 48
+      },
+      "revId": "83e83ca6b4fcaa485f0302ddb127f37489d07fc0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "43ed64a6_9666a4b3",
+        "filename": "src/main/resources/Documentation/config.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2017-03-02T22:00:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "41c7196b_992341a7",
       "range": {
         "startLine": 158,
         "startChar": 42,
