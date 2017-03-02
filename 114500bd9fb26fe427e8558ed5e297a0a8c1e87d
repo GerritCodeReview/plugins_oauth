@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "c25149c9_4bcaf5bf",
+        "filename": "README.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2017-03-02T15:13:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d439b517_c995e178",
+      "revId": "114500bd9fb26fe427e8558ed5e297a0a8c1e87d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "c2211e17_cb815ed1",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/GitLabOAuthService.java",
         "patchSetId": 2
@@ -30,6 +48,24 @@
       "writtenOn": "2017-03-02T13:52:01Z",
       "side": 1,
       "message": "wrap long line",
+      "revId": "114500bd9fb26fe427e8558ed5e297a0a8c1e87d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "4adc431a_e6f190a9",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/GitLabOAuthService.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2017-03-02T15:13:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c2211e17_cb815ed1",
       "revId": "114500bd9fb26fe427e8558ed5e297a0a8c1e87d",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "953e9fef_5f960981",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/GitLabOAuthService.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2017-03-02T15:13:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "30af61f5_b14c5f52",
+      "revId": "114500bd9fb26fe427e8558ed5e297a0a8c1e87d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1846242a_fc005aa7",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/HttpModule.java",
         "patchSetId": 2
@@ -64,6 +118,24 @@
       "writtenOn": "2017-03-02T13:52:01Z",
       "side": 1,
       "message": "nit: whitespace change",
+      "revId": "114500bd9fb26fe427e8558ed5e297a0a8c1e87d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "74d7773a_41696e7d",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/HttpModule.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2017-03-02T15:13:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1846242a_fc005aa7",
       "revId": "114500bd9fb26fe427e8558ed5e297a0a8c1e87d",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
@@ -87,6 +159,24 @@
     },
     {
       "key": {
+        "uuid": "56e6358e_295647dd",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/HttpModule.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2017-03-02T15:13:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dfe41830_077e46fc",
+      "revId": "114500bd9fb26fe427e8558ed5e297a0a8c1e87d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "81ae8655_f2ebd14a",
         "filename": "src/main/resources/Documentation/config.md",
         "patchSetId": 2
@@ -98,6 +188,30 @@
       "writtenOn": "2017-03-02T13:52:01Z",
       "side": 1,
       "message": "nit: empty space at EOL (here and below)",
+      "range": {
+        "startLine": 33,
+        "startChar": 39,
+        "endLine": 33,
+        "endChar": 41
+      },
+      "revId": "114500bd9fb26fe427e8558ed5e297a0a8c1e87d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "f2ccbfac_e40b62c0",
+        "filename": "src/main/resources/Documentation/config.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2017-03-02T15:13:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "81ae8655_f2ebd14a",
       "range": {
         "startLine": 33,
         "startChar": 39,
