@@ -1,0 +1,112 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d439b517_c995e178",
+        "filename": "README.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2017-03-02T13:52:01Z",
+      "side": 1,
+      "message": "nit: empty line",
+      "revId": "114500bd9fb26fe427e8558ed5e297a0a8c1e87d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c2211e17_cb815ed1",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/GitLabOAuthService.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2017-03-02T13:52:01Z",
+      "side": 1,
+      "message": "wrap long line",
+      "revId": "114500bd9fb26fe427e8558ed5e297a0a8c1e87d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "30af61f5_b14c5f52",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/GitLabOAuthService.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2017-03-02T13:52:01Z",
+      "side": 1,
+      "message": "wrap long line",
+      "revId": "114500bd9fb26fe427e8558ed5e297a0a8c1e87d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1846242a_fc005aa7",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/HttpModule.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2017-03-02T13:52:01Z",
+      "side": 1,
+      "message": "nit: whitespace change",
+      "revId": "114500bd9fb26fe427e8558ed5e297a0a8c1e87d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "dfe41830_077e46fc",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/HttpModule.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2017-03-02T13:52:01Z",
+      "side": 1,
+      "message": "nit: whitespace change",
+      "revId": "114500bd9fb26fe427e8558ed5e297a0a8c1e87d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "81ae8655_f2ebd14a",
+        "filename": "src/main/resources/Documentation/config.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2017-03-02T13:52:01Z",
+      "side": 1,
+      "message": "nit: empty space at EOL (here and below)",
+      "range": {
+        "startLine": 33,
+        "startChar": 39,
+        "endLine": 33,
+        "endChar": 41
+      },
+      "revId": "114500bd9fb26fe427e8558ed5e297a0a8c1e87d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
