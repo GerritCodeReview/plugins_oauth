@@ -25,6 +25,29 @@
     },
     {
       "key": {
+        "uuid": "472c0a2f_db25c851",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/GitLabApi.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2017-03-02T15:31:26Z",
+      "side": 1,
+      "message": "Always use parenthesis even for one single statement.",
+      "range": {
+        "startLine": 100,
+        "startChar": 6,
+        "endLine": 101,
+        "endChar": 74
+      },
+      "revId": "83e83ca6b4fcaa485f0302ddb127f37489d07fc0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "41c7196b_992341a7",
         "filename": "src/main/resources/Documentation/config.md",
         "patchSetId": 3
