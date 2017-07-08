@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "78c22b1d_b1fc85e4",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/GoogleOAuthService.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 1042993
+      },
+      "writtenOn": "2017-07-08T23:10:08Z",
+      "side": 1,
+      "message": "\u003e This could be: List\u003cString\u003e.\n\nDone.",
+      "revId": "921ef2078142d1fa56b2d17425b37c996e82add5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fe667da9_b36a6c37",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/GoogleOAuthService.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 1042993
+      },
+      "writtenOn": "2017-07-08T23:10:08Z",
+      "side": 1,
+      "message": "\u003e log.debug(\"OAuth2: domains\u003d{}\", domains);\n\nDone.",
+      "revId": "921ef2078142d1fa56b2d17425b37c996e82add5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0228b2f9_5f9f14ee",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/GoogleOAuthService.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 225,
+      "author": {
+        "id": 1042993
+      },
+      "writtenOn": "2017-07-08T23:10:08Z",
+      "side": 1,
+      "message": "\u003e What is the spec saying on multiple hosted domain? Shouldn\u0027t the param be coma separated list of domains?\n\nIt doesn\u0027t mention the comma-separated list:\n\n\u003e The hd (hosted domain) parameter streamlines the login process for G Suite hosted accounts. By including the domain of the G Suite user (for example, mycollege.edu), you can indicate that the account selection UI should be optimized for accounts at that domain. To optimize for G Suite accounts generally instead of just one domain, use an asterisk: hd\u003d*.\n\n\u003e Don\u0027t rely on this UI optimization to control who can access your app, as client-side requests can be modified. Be sure to validate that the returned ID token has an hd claim value that matches what you expect (e.g. mycolledge.edu). Unlike the request parameter, the ID token claim is contained within a security token from Google, so the value can be trusted.",
+      "revId": "921ef2078142d1fa56b2d17425b37c996e82add5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "12cda72b_72a5a127",
+        "filename": "src/main/resources/Documentation/config.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1042993
+      },
+      "writtenOn": "2017-07-08T23:10:08Z",
+      "side": 1,
+      "message": "\u003e Multiple domain options can be added:\n\nDone.",
+      "revId": "921ef2078142d1fa56b2d17425b37c996e82add5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
