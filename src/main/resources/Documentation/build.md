@@ -35,6 +35,12 @@ This project can be imported into the Eclipse IDE:
   ./tools/eclipse/project.py
 ```
 
+To execute the tests run:
+
+```
+  bazel test ...
+```
+
 ### Build in Gerrit tree
 
 Clone or link this plugin to the plugins directory of Gerrit's
@@ -75,3 +81,16 @@ Gerrit core in `tools/bzl/plugins.bzl`, and execute:
 ```
   ./tools/eclipse/project.py
 ```
+
+To execute the tests run:
+
+```
+  bazel test --test_tag_filters=@PLUGIN@
+```
+
+How to build the Gerrit Plugin API is described in the [Gerrit
+documentation](../../../Documentation/dev-bazel.html#_extension_and_plugin_api_jar_files).
+
+[Back to @PLUGIN@ documentation index][index]
+
+[index]: index.html
