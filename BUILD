@@ -17,3 +17,24 @@ gerrit_plugin(
         "@scribe//jar",
     ],
 )
+
+java_binary(
+    name = "gjf-binary",
+    main_class = "com.google.googlejavaformat.java.Main",
+    visibility = ["//visibility:public"],
+    runtime_deps = ["@google_java_format//jar"],
+)
+
+genrule(
+    name = "gjf-check-invocation",
+    srcs = glob(["src/main/java/**/*.java"]),
+    outs = ["check-java-format.log"],
+    cmd = "find . -name \"*.java\" | xargs $(location :gjf-binary) --dry-run > $@",
+    tools = [":gjf-binary"],
+)
+
+sh_test(
+    name = "gjf-check",
+    srcs = [":gjf-check-invocation"],
+    tags = ["oauth"],
+)
