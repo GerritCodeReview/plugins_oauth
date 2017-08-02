@@ -103,24 +103,24 @@ class CasOAuthService implements OAuthServiceProvider {
     }
 
     JsonElement attrListJson = jsonObject.get("attributes");
-    if (attrListJson == null || !attrListJson.isJsonArray()) {
-      throw new IOException(String.format("Invalid JSON '%s': not a JSON Array", attrListJson));
-    }
 
     String email = null, name = null, login = null;
-    JsonArray attrJson = attrListJson.getAsJsonArray();
-    for (JsonElement elem : attrJson) {
-      if (elem == null || !elem.isJsonObject()) {
-        throw new IOException(String.format("Invalid JSON '%s': not a JSON Object", elem));
-      }
-      JsonObject obj = elem.getAsJsonObject();
+    if (attrListJson != null && attrListJson.isJsonArray()) {
 
-      String property = getStringElement(obj, "email");
-      if (property != null) email = property;
-      property = getStringElement(obj, "name");
-      if (property != null) name = property;
-      property = getStringElement(obj, "login");
-      if (property != null) login = property;
+      JsonArray attrJson = attrListJson.getAsJsonArray();
+      for (JsonElement elem : attrJson) {
+        if (elem == null || !elem.isJsonObject()) {
+          throw new IOException(String.format("Invalid JSON '%s': not a JSON Object", elem));
+        }
+        JsonObject obj = elem.getAsJsonObject();
+
+        String property = getStringElement(obj, "email");
+        if (property != null) email = property;
+        property = getStringElement(obj, "name");
+        if (property != null) name = property;
+        property = getStringElement(obj, "login");
+        if (property != null) login = property;
+      }
     }
 
     return new OAuthUserInfo(
