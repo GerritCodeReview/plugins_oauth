@@ -1,4 +1,20 @@
-load("//tools/bzl:plugin.bzl", "gerrit_plugin")
+load("//tools/bzl:plugin.bzl", "gerrit_plugin", "PLUGIN_DEPS_NEVERLINK")
+
+config_setting(
+    name = "2.14.1",
+    values = {
+        "define": "api=2.14.1",
+    },
+)
+
+config_setting(
+    name = "2.14.2",
+    values = {
+        "define": "api=2.14.2",
+    },
+)
+
+plugin_deps_neverlink_tmpl = "//external:gerrit-plugin-api-neverlink_%s"
 
 gerrit_plugin(
     name = "oauth",
@@ -11,9 +27,16 @@ gerrit_plugin(
         "Implementation-Title: Gerrit OAuth authentication provider",
         "Implementation-URL: https://github.com/davido/gerrit-oauth-provider",
     ],
+    plugin_deps_neverlink = select({
+        ":2.14.1": [plugin_deps_neverlink_tmpl % "2.14.1"],
+        ":2.14.2": [plugin_deps_neverlink_tmpl % "2.14.2"],
+        "//conditions:default": PLUGIN_DEPS_NEVERLINK,
+    }),
+    provided_deps = [
+        "@commons_codec//jar:neverlink",
+    ],
     resources = glob(["src/main/resources/**/*"]),
     deps = [
-        "@commons_codec//jar:neverlink",
         "@scribe//jar",
     ],
 )
