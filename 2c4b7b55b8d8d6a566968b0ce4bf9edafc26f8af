@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5d47d57a_b25f28d6",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/CasOAuthService.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2017-08-16T09:02:53Z",
+      "side": 0,
+      "message": "Can you explain why we don\u0027t fail anymore in case of invalid JSON attributes?",
+      "range": {
+        "startLine": 106,
+        "startChar": 4,
+        "endLine": 108,
+        "endChar": 5
+      },
+      "revId": "2c4b7b55b8d8d6a566968b0ce4bf9edafc26f8af",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}

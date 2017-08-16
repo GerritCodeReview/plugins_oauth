@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "cc201d76_75210f4e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2017-08-16T09:02:53Z",
+      "side": 1,
+      "message": "NIT: blank at end of line.",
+      "range": {
+        "startLine": 13,
+        "startChar": 40,
+        "endLine": 13,
+        "endChar": 41
+      },
+      "revId": "4abb7ed77d2e341f2b939c3af0ca7c323f2a1918",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "929686d7_7354b483",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/CasApi.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2017-08-16T09:02:53Z",
+      "side": 1,
+      "message": "Any reason why this is in the same CasApi.java?",
+      "range": {
+        "startLine": 59,
+        "startChar": 29,
+        "endLine": 59,
+        "endChar": 44
+      },
+      "revId": "4abb7ed77d2e341f2b939c3af0ca7c323f2a1918",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2a70c398_194a3bd0",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/CasApi.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2017-08-16T09:02:53Z",
+      "side": 1,
+      "message": "remove empty line.",
+      "revId": "4abb7ed77d2e341f2b939c3af0ca7c323f2a1918",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
