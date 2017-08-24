@@ -22,6 +22,30 @@
       "revId": "2c4b7b55b8d8d6a566968b0ce4bf9edafc26f8af",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1af320f0_3ab5d248",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/CasOAuthService.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 1016502
+      },
+      "writtenOn": "2017-08-24T10:43:38Z",
+      "side": 0,
+      "message": "It is possible for CAS to be configured to not return any attributes (email, name, login), in which case, CAS returns an empty JSON object \"attributes\":{}, rather than \"null\" or an empty JSON array \"attributes\": [] as you might expect.\n\nI restored the test, but removed the isJsonArray part, and added a comment further down about what CAS actually returns.",
+      "parentUuid": "5d47d57a_b25f28d6",
+      "range": {
+        "startLine": 106,
+        "startChar": 4,
+        "endLine": 108,
+        "endChar": 5
+      },
+      "revId": "2c4b7b55b8d8d6a566968b0ce4bf9edafc26f8af",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
