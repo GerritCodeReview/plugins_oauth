@@ -22,6 +22,30 @@
       "revId": "2926f603cff282ec23dab48cf680cc3e782284ea",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "d4af7880_4c875c32",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2017-08-31T08:41:44Z",
+      "side": 1,
+      "message": "Good point. Not sure, if it is possible to deny issue creation in GH and link monorail in project description.",
+      "parentUuid": "4e3fcb7d_d0f2ad1c",
+      "range": {
+        "startLine": 16,
+        "startChar": 0,
+        "endLine": 16,
+        "endChar": 62
+      },
+      "revId": "2926f603cff282ec23dab48cf680cc3e782284ea",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
