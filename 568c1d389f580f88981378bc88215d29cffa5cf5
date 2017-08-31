@@ -22,6 +22,30 @@
       "revId": "568c1d389f580f88981378bc88215d29cffa5cf5",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ab459ca9_4d8877b5",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/CasOAuthService.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2017-08-31T06:04:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b9e3f4e9_af7add13",
+      "range": {
+        "startLine": 107,
+        "startChar": 6,
+        "endLine": 107,
+        "endChar": 102
+      },
+      "revId": "568c1d389f580f88981378bc88215d29cffa5cf5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
