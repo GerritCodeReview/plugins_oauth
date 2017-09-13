@@ -31,6 +31,13 @@ appended with provider suffix: e.g. `-google-oauth` or `-github-oauth`:
       root-url = "<gitlab url>"
       client-id = "<client-id>"
       client-secret = "<client-secret>"
+
+  [plugin "@PLUGIN@-dex-oauth"]
+      domain = "domain for username manipulation (optional)"
+      service-name = "<custom service name (optional)>"
+      root-url = "<dex url>"
+      client-id = "<client-id>"
+      client-secret = "<client-secret>"
 ```
 
 When one from the sections above is omitted, OAuth SSO is used.
@@ -172,5 +179,14 @@ Applications settings in your GitLab profile:
 
 After application is saved, the page will show generated client id and
 secret.
+
+### CoreOS Dex
+
+The client-id and client-secret for Dex OAuth are part of the Dex
+setup and need to be set manually.
+
+See
+[Using Dex](https://github.com/coreos/dex/blob/master/Documentation/using-dex.md)
+for an example.
 
 ![Generated client id and secret](images/gitlab-2.png)
