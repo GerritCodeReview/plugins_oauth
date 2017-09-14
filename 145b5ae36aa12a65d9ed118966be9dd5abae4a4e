@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "01c53e92_5325687f",
+        "filename": "README.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1021862
+      },
+      "writtenOn": "2017-09-14T15:51:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "63e4a16e_e3f9c66a",
+      "revId": "145b5ae36aa12a65d9ed118966be9dd5abae4a4e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "d6f14577_8d84f98a",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/DexApi.java",
         "patchSetId": 3
@@ -30,6 +48,24 @@
       "writtenOn": "2017-09-14T10:26:32Z",
       "side": 1,
       "message": "We don\u0027t use wildcard imports.",
+      "revId": "145b5ae36aa12a65d9ed118966be9dd5abae4a4e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5f0a9b9d_0921f39b",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/DexApi.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1021862
+      },
+      "writtenOn": "2017-09-14T15:51:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d6f14577_8d84f98a",
       "revId": "145b5ae36aa12a65d9ed118966be9dd5abae4a4e",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
@@ -59,6 +95,30 @@
     },
     {
       "key": {
+        "uuid": "2c853ada_f3b759da",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/DexApi.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1021862
+      },
+      "writtenOn": "2017-09-14T15:51:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "48a138d8_111af693",
+      "range": {
+        "startLine": 40,
+        "startChar": 45,
+        "endLine": 40,
+        "endChar": 48
+      },
+      "revId": "145b5ae36aa12a65d9ed118966be9dd5abae4a4e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "18598108_1d9ab784",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/DexApi.java",
         "patchSetId": 3
@@ -70,6 +130,24 @@
       "writtenOn": "2017-09-14T10:26:32Z",
       "side": 1,
       "message": "What update exactly do you mean here and why?",
+      "revId": "145b5ae36aa12a65d9ed118966be9dd5abae4a4e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c8d50a95_f0b3e2df",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/DexApi.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1021862
+      },
+      "writtenOn": "2017-09-14T15:51:05Z",
+      "side": 1,
+      "message": "In the current scribe lib (v1.3.7), OAuth20ServiceImpl lacks the grant_type in the request so it can\u0027t be used directly.  I think this is why the the GitLab module have this  structure as well (having a separate private OAuthService implementation.)\n\nIn the latest version (v4.2.0), scribe is split into scribejava-core where there is a default implementation OAuth20Service where grant_type is included.  A quick look at git-blame, looks like this is available since v2.6.0. https://github.com/scribejava/scribejava/commit/53fbad022a901425fb5de8d1bd65d3d7a7afa785\n\nThe newer version of scribe also have a much bigger list of supported service out of the box.  Probably useful to upgrade. https://github.com/scribejava/scribejava",
+      "parentUuid": "18598108_1d9ab784",
       "revId": "145b5ae36aa12a65d9ed118966be9dd5abae4a4e",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
@@ -99,6 +177,30 @@
     },
     {
       "key": {
+        "uuid": "2de69152_2419a55a",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/DexOAuthService.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1021862
+      },
+      "writtenOn": "2017-09-14T15:51:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e6f89c07_8888d93e",
+      "range": {
+        "startLine": 39,
+        "startChar": 0,
+        "endLine": 42,
+        "endChar": 48
+      },
+      "revId": "145b5ae36aa12a65d9ed118966be9dd5abae4a4e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "061c588d_a6c68618",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/HttpModule.java",
         "patchSetId": 3
@@ -110,6 +212,30 @@
       "writtenOn": "2017-09-14T10:26:32Z",
       "side": 1,
       "message": "Nit: wrong indentation: 4 spaces instead of 8, but gjf would fix this.",
+      "range": {
+        "startLine": 84,
+        "startChar": 0,
+        "endLine": 84,
+        "endChar": 14
+      },
+      "revId": "145b5ae36aa12a65d9ed118966be9dd5abae4a4e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "aa948be9_3d5d31b2",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/HttpModule.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 1021862
+      },
+      "writtenOn": "2017-09-14T15:51:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "061c588d_a6c68618",
       "range": {
         "startLine": 84,
         "startChar": 0,
