@@ -1,0 +1,124 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "63e4a16e_e3f9c66a",
+        "filename": "README.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2017-09-14T10:26:32Z",
+      "side": 1,
+      "message": "Keep this list alphabetically sorted.",
+      "revId": "145b5ae36aa12a65d9ed118966be9dd5abae4a4e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "d6f14577_8d84f98a",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/DexApi.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2017-09-14T10:26:32Z",
+      "side": 1,
+      "message": "We don\u0027t use wildcard imports.",
+      "revId": "145b5ae36aa12a65d9ed118966be9dd5abae4a4e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "48a138d8_111af693",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/DexApi.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2017-09-14T10:26:32Z",
+      "side": 1,
+      "message": "Nit: missing space after coma. We use google-java-format for this project. Can you rn this commit through gjf?",
+      "range": {
+        "startLine": 40,
+        "startChar": 45,
+        "endLine": 40,
+        "endChar": 48
+      },
+      "revId": "145b5ae36aa12a65d9ed118966be9dd5abae4a4e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "18598108_1d9ab784",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/DexApi.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2017-09-14T10:26:32Z",
+      "side": 1,
+      "message": "What update exactly do you mean here and why?",
+      "revId": "145b5ae36aa12a65d9ed118966be9dd5abae4a4e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "e6f89c07_8888d93e",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/DexOAuthService.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2017-09-14T10:26:32Z",
+      "side": 1,
+      "message": "Same here: The order of import is wrong. Please, run it through gjf.",
+      "range": {
+        "startLine": 39,
+        "startChar": 0,
+        "endLine": 42,
+        "endChar": 48
+      },
+      "revId": "145b5ae36aa12a65d9ed118966be9dd5abae4a4e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "061c588d_a6c68618",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/HttpModule.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2017-09-14T10:26:32Z",
+      "side": 1,
+      "message": "Nit: wrong indentation: 4 spaces instead of 8, but gjf would fix this.",
+      "range": {
+        "startLine": 84,
+        "startChar": 0,
+        "endLine": 84,
+        "endChar": 14
+      },
+      "revId": "145b5ae36aa12a65d9ed118966be9dd5abae4a4e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
