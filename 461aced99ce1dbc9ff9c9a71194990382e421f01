@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "0b171886_f4ce7d8c",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/DexOAuthService.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1021862
+      },
+      "writtenOn": "2017-09-14T15:56:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cf7f389c_8dbf9bc5",
+      "revId": "461aced99ce1dbc9ff9c9a71194990382e421f01",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "86dea47c_a5d2d018",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/InitOAuth.java",
         "patchSetId": 5
@@ -30,6 +48,24 @@
       "writtenOn": "2017-09-14T15:41:05Z",
       "side": 1,
       "message": "Nit: unrelated new line change.",
+      "revId": "461aced99ce1dbc9ff9c9a71194990382e421f01",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "756feb2b_0b17f17c",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/InitOAuth.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1021862
+      },
+      "writtenOn": "2017-09-14T15:56:15Z",
+      "side": 1,
+      "message": "introduced by gjf :).  Done.",
+      "parentUuid": "86dea47c_a5d2d018",
       "revId": "461aced99ce1dbc9ff9c9a71194990382e421f01",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
