@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5d7c177a_ca38b268",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/GitLabApi.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2017-12-11T07:14:17Z",
+      "side": 1,
+      "message": "Unrelated white space change. Note, that we re using google-java-format 1.4 for formatting. I will reformat this change and upload a fix in a moment.",
+      "revId": "30e70b0eeafe6b50386d1067b2f0f7484b7bf064",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fec63c2f_c84192f7",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/OAuth20ServiceImpl.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2017-12-11T07:14:17Z",
+      "side": 1,
+      "message": "License header is missing.",
+      "revId": "30e70b0eeafe6b50386d1067b2f0f7484b7bf064",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
