@@ -22,6 +22,30 @@
       "revId": "f0a6f158d7282b14d3d40dced8e15cd849cb2c64",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "d5d37ef0_b8c8fca8",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/KeycloakApi.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1057637
+      },
+      "writtenOn": "2017-12-11T15:51:12Z",
+      "side": 1,
+      "message": "Good point, it is not needed at this moment. But could be when scope changes.",
+      "parentUuid": "a6d75d9a_09d1dc58",
+      "range": {
+        "startLine": 46,
+        "startChar": 8,
+        "endLine": 46,
+        "endChar": 46
+      },
+      "revId": "f0a6f158d7282b14d3d40dced8e15cd849cb2c64",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
