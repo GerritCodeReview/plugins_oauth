@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "cc6ad48c_7b8078e8",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/OAuth20ServiceImpl.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2017-12-11T07:19:17Z",
+      "side": 1,
+      "message": "This should be n the form: \"TODO(\u003cuser\u003e):\"",
+      "range": {
+        "startLine": 26,
+        "startChar": 4,
+        "endLine": 26,
+        "endChar": 8
+      },
+      "revId": "cfece37e5874046f58330a12b5fa034efcd8afff",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
