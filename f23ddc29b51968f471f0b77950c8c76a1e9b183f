@@ -34,6 +34,24 @@
       "revId": "f23ddc29b51968f471f0b77950c8c76a1e9b183f",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5f242834_99cb23c2",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2017-12-13T05:54:15Z",
+      "side": 1,
+      "message": "Yes, it worked: [1].\n\n* [1] https://travis-ci.org/davido/date_format_java9_produces_different_result_as_java8/jobs/315724541",
+      "parentUuid": "7b74010f_23260228",
+      "revId": "f23ddc29b51968f471f0b77950c8c76a1e9b183f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
