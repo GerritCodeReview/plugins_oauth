@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "4dbcc4dd_8e85363a",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/Office365Api.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1060215
+      },
+      "writtenOn": "2018-01-24T06:47:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e5816304_d4bc5061",
+      "revId": "d4d5620f9c23c83aae196a1be77d0597611d3b0d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "07bec2aa_31b93d92",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/Office365OAuthService.java",
         "patchSetId": 2
@@ -30,6 +48,30 @@
       "writtenOn": "2018-01-24T05:39:33Z",
       "side": 1,
       "message": "Nit: no tabs, please. Have you run this CL through google-java-format?",
+      "range": {
+        "startLine": 118,
+        "startChar": 0,
+        "endLine": 118,
+        "endChar": 3
+      },
+      "revId": "d4d5620f9c23c83aae196a1be77d0597611d3b0d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "d8f8b3cf_bf761eaa",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/Office365OAuthService.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 1060215
+      },
+      "writtenOn": "2018-01-24T06:47:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "07bec2aa_31b93d92",
       "range": {
         "startLine": 118,
         "startChar": 0,
