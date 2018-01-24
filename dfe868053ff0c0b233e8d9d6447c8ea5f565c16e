@@ -48,6 +48,54 @@
     },
     {
       "key": {
+        "uuid": "ecc3b1d9_0df807dc",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1060215
+      },
+      "writtenOn": "2018-01-24T05:22:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c15b81a8_29bab35c",
+      "range": {
+        "startLine": 7,
+        "startChar": 12,
+        "endLine": 7,
+        "endChar": 14
+      },
+      "revId": "dfe868053ff0c0b233e8d9d6447c8ea5f565c16e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "f33cfd22_057fb921",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1060215
+      },
+      "writtenOn": "2018-01-24T05:22:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ed8916d0_82d9c25b",
+      "range": {
+        "startLine": 7,
+        "startChar": 25,
+        "endLine": 7,
+        "endChar": 33
+      },
+      "revId": "dfe868053ff0c0b233e8d9d6447c8ea5f565c16e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "51787965_459eb943",
         "filename": "/COMMIT_MSG",
         "patchSetId": 1
@@ -94,6 +142,54 @@
     },
     {
       "key": {
+        "uuid": "fe61334a_e35f9cc4",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1060215
+      },
+      "writtenOn": "2018-01-24T05:22:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ef7c8e14_f67cbde4",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 8
+      },
+      "revId": "dfe868053ff0c0b233e8d9d6447c8ea5f565c16e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "16dcfbfe_75ed2f0f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1060215
+      },
+      "writtenOn": "2018-01-24T05:22:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "51787965_459eb943",
+      "range": {
+        "startLine": 9,
+        "startChar": 13,
+        "endLine": 9,
+        "endChar": 14
+      },
+      "revId": "dfe868053ff0c0b233e8d9d6447c8ea5f565c16e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "79a5bafe_ddd862ab",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/InitOAuth.java",
         "patchSetId": 1
@@ -105,6 +201,30 @@
       "writtenOn": "2018-01-23T13:28:03Z",
       "side": 1,
       "message": "We don\u0027t need this fix legacy ID feature, because the suport for it is added after the fix. SO that all nwe user id would contain the right prefix.",
+      "range": {
+        "startLine": 133,
+        "startChar": 6,
+        "endLine": 133,
+        "endChar": 101
+      },
+      "revId": "dfe868053ff0c0b233e8d9d6447c8ea5f565c16e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5bc0aaab_75d99430",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/InitOAuth.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 1060215
+      },
+      "writtenOn": "2018-01-24T05:22:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "79a5bafe_ddd862ab",
       "range": {
         "startLine": 133,
         "startChar": 6,
@@ -140,6 +260,30 @@
     },
     {
       "key": {
+        "uuid": "e7fc3298_b15e3fb7",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/Office365OAuthService.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1060215
+      },
+      "writtenOn": "2018-01-24T05:22:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "68292239_0005d027",
+      "range": {
+        "startLine": 53,
+        "startChar": 30,
+        "endLine": 53,
+        "endChar": 52
+      },
+      "revId": "dfe868053ff0c0b233e8d9d6447c8ea5f565c16e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "f98015fd_aa3465c5",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/Office365OAuthService.java",
         "patchSetId": 1
@@ -151,6 +295,30 @@
       "writtenOn": "2018-01-23T13:28:03Z",
       "side": 1,
       "message": "I\u0027m confused. What is that for? Google discontinued OpenID in April 2015 and provided 2 years linking feature to their user ids. I don\u0027t think it is needed here and can be removed.",
+      "range": {
+        "startLine": 68,
+        "startChar": 4,
+        "endLine": 72,
+        "endChar": 5
+      },
+      "revId": "dfe868053ff0c0b233e8d9d6447c8ea5f565c16e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "4901837e_7520ca2f",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/Office365OAuthService.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1060215
+      },
+      "writtenOn": "2018-01-24T05:22:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f98015fd_aa3465c5",
       "range": {
         "startLine": 68,
         "startChar": 4,
@@ -186,6 +354,30 @@
     },
     {
       "key": {
+        "uuid": "98ae6cdf_9c106d3c",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/Office365OAuthService.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 1060215
+      },
+      "writtenOn": "2018-01-24T05:22:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5216dc33_fc60b6bb",
+      "range": {
+        "startLine": 121,
+        "startChar": 10,
+        "endLine": 121,
+        "endChar": 32
+      },
+      "revId": "dfe868053ff0c0b233e8d9d6447c8ea5f565c16e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "7113dd53_436e5d2d",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/Office365OAuthService.java",
         "patchSetId": 1
@@ -197,6 +389,30 @@
       "writtenOn": "2018-01-23T13:28:03Z",
       "side": 1,
       "message": "As commented in another place, I think this should always be null as external id already conatins the right prefix on line 121:\n\n  OFFICE365_PROVIDER_PREFIX + id.getAsString() /*externalId*/,",
+      "range": {
+        "startLine": 125,
+        "startChar": 10,
+        "endLine": 125,
+        "endChar": 71
+      },
+      "revId": "dfe868053ff0c0b233e8d9d6447c8ea5f565c16e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5c9c4897_df24a40d",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/Office365OAuthService.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 1060215
+      },
+      "writtenOn": "2018-01-24T05:22:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7113dd53_436e5d2d",
       "range": {
         "startLine": 125,
         "startChar": 10,
