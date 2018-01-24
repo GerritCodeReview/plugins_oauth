@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "e5816304_d4bc5061",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/Office365Api.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2018-01-24T05:39:33Z",
+      "side": 1,
+      "message": "Some import not used here and in other file. Have you run google-java-format -i on your files? We require gjf formatting. I can do it for you, if you don\u0027t have this tool installed yet, see Contribution guides in gerrit core how to install it.\n\nI have this alias:\n\n  alias gjf\u003d\u0027git show --diff-filter\u003dAM --pretty\u003d\"\" --name-only HEAD | grep java$ | xargs -r google-java-format -i\u0027\n\nand I just run gjf from any commit. For this change I got this diff after running formatting: [1].\n\n* [1] http://paste.openstack.org/show/651430",
+      "revId": "d4d5620f9c23c83aae196a1be77d0597611d3b0d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "07bec2aa_31b93d92",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/Office365OAuthService.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2018-01-24T05:39:33Z",
+      "side": 1,
+      "message": "Nit: no tabs, please. Have you run this CL through google-java-format?",
+      "range": {
+        "startLine": 118,
+        "startChar": 0,
+        "endLine": 118,
+        "endChar": 3
+      },
+      "revId": "d4d5620f9c23c83aae196a1be77d0597611d3b0d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
