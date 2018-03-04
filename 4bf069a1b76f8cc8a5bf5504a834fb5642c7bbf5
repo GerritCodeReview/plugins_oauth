@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8b43524c_0887f34e",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/oauth/OAuth2AccessTokenJsonExtractorTest.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2018-03-04T11:32:24Z",
+      "side": 1,
+      "message": "Scribe\u0027s OAuthConstants already defines that:\n\n  public static final String ACCESS_TOKEN \u003d \"access_token\";",
+      "range": {
+        "startLine": 28,
+        "startChar": 2,
+        "endLine": 28,
+        "endChar": 60
+      },
+      "revId": "4bf069a1b76f8cc8a5bf5504a834fb5642c7bbf5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
