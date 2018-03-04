@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "48f79689_49eb1311",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/OAuth2AccessTokenJsonExtractor.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2018-03-04T11:56:08Z",
+      "side": 1,
+      "message": "Could use Scribe\u0027s OAuthConstants constant:\n\n  org.scribe.model.OAuthConstants.ACCESS_TOKEN;",
+      "range": {
+        "startLine": 26,
+        "startChar": 25,
+        "endLine": 26,
+        "endChar": 37
+      },
+      "revId": "c83abed75ebed3d0844cd8745dc7be8fe8077c08",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
