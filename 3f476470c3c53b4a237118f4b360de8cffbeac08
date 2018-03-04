@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "dba6e319_1053c3d6",
+        "filename": ".travis.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2018-03-04T11:25:46Z",
+      "side": 1,
+      "message": "Trailing blanks.",
+      "range": {
+        "startLine": 45,
+        "startChar": 39,
+        "endLine": 45,
+        "endChar": 42
+      },
+      "revId": "3f476470c3c53b4a237118f4b360de8cffbeac08",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
