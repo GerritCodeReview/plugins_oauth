@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c9aaaf3d_c5c40ba3",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/oauth/OAuth2AccessTokenJsonExtractorTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2018-03-04T11:28:43Z",
+      "side": 1,
+      "message": "Inconsistent white spaces.",
+      "range": {
+        "startLine": 30,
+        "startChar": 43,
+        "endLine": 30,
+        "endChar": 44
+      },
+      "revId": "33f7e782b382227a8f13f236a9dde96eec862e86",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
