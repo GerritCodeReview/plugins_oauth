@@ -16,6 +16,24 @@
       "revId": "b5362070eca79a76547d906da2e0508956c6c57c",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e842cc31_fb0ff56a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2018-07-18T23:39:46Z",
+      "side": 1,
+      "message": "There is no stable-2.14 branch.  If we\u0027re going to use a later version on master, I think we should first submit this and then create stable-2.14.",
+      "parentUuid": "00143c92_d2b9d6dc",
+      "revId": "b5362070eca79a76547d906da2e0508956c6c57c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
