@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8fda1d1b_f74835dc",
+        "filename": ".gitignore",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1024846
+      },
+      "writtenOn": "2018-09-04T22:41:13Z",
+      "side": 1,
+      "message": "BTW, it seems that output is still generated as bazel-gerrit-oauth-provider, not sure why.",
+      "revId": "2ba1ba4b571ac1e1a8cea75b9ee6ec93b94c82f7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
