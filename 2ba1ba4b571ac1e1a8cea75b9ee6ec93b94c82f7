@@ -16,6 +16,144 @@
       "revId": "2ba1ba4b571ac1e1a8cea75b9ee6ec93b94c82f7",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2206df7e_a440c674",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2018-09-05T06:11:38Z",
+      "side": 1,
+      "message": "Nit: Unneeded blank before dot.",
+      "range": {
+        "startLine": 9,
+        "startChar": 68,
+        "endLine": 9,
+        "endChar": 69
+      },
+      "revId": "2ba1ba4b571ac1e1a8cea75b9ee6ec93b94c82f7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "87f21b9e_c1991ca7",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/AirVantageOAuthService.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2018-09-05T06:11:38Z",
+      "side": 1,
+      "message": "airvantage-oauth?",
+      "range": {
+        "startLine": 50,
+        "startChar": 40,
+        "endLine": 50,
+        "endChar": 48
+      },
+      "revId": "2ba1ba4b571ac1e1a8cea75b9ee6ec93b94c82f7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "70d1a5b1_57660bd0",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/AirVantageOAuthService.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2018-09-05T06:11:38Z",
+      "side": 1,
+      "message": "Same here.",
+      "range": {
+        "startLine": 51,
+        "startChar": 52,
+        "endLine": 51,
+        "endChar": 60
+      },
+      "revId": "2ba1ba4b571ac1e1a8cea75b9ee6ec93b94c82f7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cc94f519_76de8e38",
+        "filename": "src/main/resources/Documentation/config.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2018-09-05T06:11:38Z",
+      "side": 1,
+      "message": "Isn\u0027t this too cryptic? May be call it: airvantage-oauth?",
+      "range": {
+        "startLine": 42,
+        "startChar": 20,
+        "endLine": 42,
+        "endChar": 22
+      },
+      "revId": "2ba1ba4b571ac1e1a8cea75b9ee6ec93b94c82f7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9d4d36bc_c225f727",
+        "filename": "src/main/resources/Documentation/config.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 210,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2018-09-05T06:11:38Z",
+      "side": 1,
+      "message": "obtained",
+      "range": {
+        "startLine": 210,
+        "startChar": 60,
+        "endLine": 210,
+        "endChar": 68
+      },
+      "revId": "2ba1ba4b571ac1e1a8cea75b9ee6ec93b94c82f7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fac46ea4_f0f167d9",
+        "filename": "src/main/resources/Documentation/config.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 212,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2018-09-05T06:11:38Z",
+      "side": 1,
+      "message": "Cf. or just See?",
+      "range": {
+        "startLine": 212,
+        "startChar": 0,
+        "endLine": 212,
+        "endChar": 2
+      },
+      "revId": "2ba1ba4b571ac1e1a8cea75b9ee6ec93b94c82f7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
