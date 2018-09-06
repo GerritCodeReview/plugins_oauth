@@ -2,6 +2,69 @@
   "comments": [
     {
       "key": {
+        "uuid": "7c4da695_68128596",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/AirVantageOAuthService.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2018-09-06T05:35:29Z",
+      "side": 1,
+      "message": "Unused.",
+      "range": {
+        "startLine": 22,
+        "startChar": 0,
+        "endLine": 22,
+        "endChar": 44
+      },
+      "revId": "d6588155ed329a52296a156ab635caccc1526eff",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "462e3a26_46e8925e",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/AirVantageOAuthService.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2018-09-06T05:35:29Z",
+      "side": 1,
+      "message": "Unused.",
+      "range": {
+        "startLine": 37,
+        "startChar": 0,
+        "endLine": 37,
+        "endChar": 46
+      },
+      "revId": "d6588155ed329a52296a156ab635caccc1526eff",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d024c176_50271ab5",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/AirVantageOAuthService.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2018-09-06T05:35:29Z",
+      "side": 1,
+      "message": "This wasn\u0027t run through google-java-format 1.6.",
+      "revId": "d6588155ed329a52296a156ab635caccc1526eff",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "fa74664d_6f8eb7ed",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/AirVantageOAuthService.java",
         "patchSetId": 3
