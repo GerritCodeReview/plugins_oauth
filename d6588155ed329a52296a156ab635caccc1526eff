@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "024659b8_8937919e",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/AirVantageOAuthService.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2018-09-06T05:37:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7c4da695_68128596",
+      "range": {
+        "startLine": 22,
+        "startChar": 0,
+        "endLine": 22,
+        "endChar": 44
+      },
+      "revId": "d6588155ed329a52296a156ab635caccc1526eff",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "462e3a26_46e8925e",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/AirVantageOAuthService.java",
         "patchSetId": 3
@@ -48,6 +72,30 @@
     },
     {
       "key": {
+        "uuid": "e9dcfb96_8a0e5458",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/AirVantageOAuthService.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2018-09-06T05:37:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "462e3a26_46e8925e",
+      "range": {
+        "startLine": 37,
+        "startChar": 0,
+        "endLine": 37,
+        "endChar": 46
+      },
+      "revId": "d6588155ed329a52296a156ab635caccc1526eff",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "d024c176_50271ab5",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/AirVantageOAuthService.java",
         "patchSetId": 3
@@ -62,6 +110,24 @@
       "revId": "d6588155ed329a52296a156ab635caccc1526eff",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "39ad952e_0c347ff1",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/AirVantageOAuthService.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2018-09-06T05:37:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d024c176_50271ab5",
+      "revId": "d6588155ed329a52296a156ab635caccc1526eff",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     },
     {
       "key": {
@@ -132,6 +198,30 @@
       "revId": "d6588155ed329a52296a156ab635caccc1526eff",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "78ffb206_27168e43",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/OAuth20ServiceImpl.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2018-09-06T05:37:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c3b389c0_8ab284c2",
+      "range": {
+        "startLine": 64,
+        "startChar": 10,
+        "endLine": 64,
+        "endChar": 15
+      },
+      "revId": "d6588155ed329a52296a156ab635caccc1526eff",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
