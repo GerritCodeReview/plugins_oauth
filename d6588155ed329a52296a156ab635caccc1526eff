@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fa74664d_6f8eb7ed",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/AirVantageOAuthService.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2018-09-06T05:25:21Z",
+      "side": 1,
+      "message": "uid, per L90?",
+      "range": {
+        "startLine": 92,
+        "startChar": 70,
+        "endLine": 92,
+        "endChar": 72
+      },
+      "revId": "d6588155ed329a52296a156ab635caccc1526eff",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c3b389c0_8ab284c2",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/OAuth20ServiceImpl.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2018-09-06T05:25:21Z",
+      "side": 1,
+      "message": "debug?\n\nalso below.",
+      "range": {
+        "startLine": 64,
+        "startChar": 10,
+        "endLine": 64,
+        "endChar": 15
+      },
+      "revId": "d6588155ed329a52296a156ab635caccc1526eff",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
