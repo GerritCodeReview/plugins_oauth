@@ -226,6 +226,30 @@
     },
     {
       "key": {
+        "uuid": "459a3a40_d36680fc",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/AirVantageOAuthService.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2018-09-06T06:06:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a26811d6_f17c9d73",
+      "range": {
+        "startLine": 92,
+        "startChar": 70,
+        "endLine": 92,
+        "endChar": 72
+      },
+      "revId": "d6588155ed329a52296a156ab635caccc1526eff",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "c3b389c0_8ab284c2",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/OAuth20ServiceImpl.java",
         "patchSetId": 3
