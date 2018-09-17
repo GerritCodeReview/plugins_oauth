@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "eb82b4be_c352cc25",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2018-09-17T13:08:09Z",
+      "side": 1,
+      "message": "Another OAuth service provider is affected with the new check:\n\n* BitbucketOAuthService.java\n* https://gerrit.googlesource.com/plugins/oauth/+/a423a407dce473cff962b7e2644cc9d212dd9ec9/src/main/java/com/googlesource/gerrit/plugins/oauth/BitbucketOAuthService.java#113\n\nWould you like to fix it as part of this commit? In that case, commit message should be adpated and say something like:\n\n  Fix GitLab and Bitbucket services",
+      "revId": "a423a407dce473cff962b7e2644cc9d212dd9ec9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
