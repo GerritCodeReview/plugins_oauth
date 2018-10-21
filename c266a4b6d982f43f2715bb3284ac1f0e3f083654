@@ -22,6 +22,30 @@
       "revId": "c266a4b6d982f43f2715bb3284ac1f0e3f083654",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1f2bee02_1c40ac95",
+        "filename": "README.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2018-10-21T23:51:26Z",
+      "side": 1,
+      "message": "Done in https://gerrit-review.googlesource.com/c/plugins/oauth/+/201262",
+      "parentUuid": "d20ea2cd_d61aef05",
+      "range": {
+        "startLine": 42,
+        "startChar": 25,
+        "endLine": 42,
+        "endChar": 50
+      },
+      "revId": "c266a4b6d982f43f2715bb3284ac1f0e3f083654",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
