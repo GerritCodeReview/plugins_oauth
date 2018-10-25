@@ -16,6 +16,24 @@
       "revId": "5250c703d64706d031abe012d172846fff2e4eaf",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8086a3a5_fc58a315",
+        "filename": "WORKSPACE",
+        "patchSetId": 1
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2018-10-25T05:10:20Z",
+      "side": 1,
+      "message": "If we do that, we won\u0027t have a version of oauth that\u0027s buildable in standalone mode for gerrit 2.15.",
+      "parentUuid": "4358754a_bd016930",
+      "revId": "5250c703d64706d031abe012d172846fff2e4eaf",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
