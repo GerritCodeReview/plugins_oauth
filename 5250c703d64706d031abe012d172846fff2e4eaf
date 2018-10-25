@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4358754a_bd016930",
+        "filename": "WORKSPACE",
+        "patchSetId": 1
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2018-10-25T04:40:27Z",
+      "side": 1,
+      "message": "This is master branch. This plugin doesn\u0027t need any stable branches. Should we update to the latest released gerrit version, like 2.16rc0?",
+      "revId": "5250c703d64706d031abe012d172846fff2e4eaf",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
