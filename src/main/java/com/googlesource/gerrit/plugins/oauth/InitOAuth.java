@@ -30,7 +30,9 @@ class InitOAuth implements InitStep {
   static final String ROOT_URL = "root-url";
   static final String REALM = "realm";
   static final String SERVICE_NAME = "service-name";
+  static final String USE_EXISTING_ACCOUNT_WITH_PREFIX = "use-existing-account-with-prefix";
   static String FIX_LEGACY_USER_ID_QUESTION = "Fix legacy user id, without oauth provider prefix?";
+  static String WHAT_PREFIX_QUESTION = "What prefix would you like to use?";
 
   private final ConsoleUI ui;
   private final Section googleOAuthProviderSection;
@@ -133,6 +135,7 @@ class InitOAuth implements InitStep {
         ui.yesno(true, "Use Office365 OAuth provider for Gerrit login ?");
     if (configureOffice365OAuthProvider) {
       configureOAuth(office365OAuthProviderSection);
+      useExistingAccountWithPrefix(office365OAuthProviderSection);
     }
 
     boolean configureAirVantageOAuthProvider =
@@ -145,6 +148,14 @@ class InitOAuth implements InitStep {
   private void configureOAuth(Section s) {
     s.string("Application client id", CLIENT_ID, null);
     s.passwordForKey("Application client secret", CLIENT_SECRET);
+  }
+
+  private void useExistingAccountWithPrefix(Section s) {
+    boolean useExistingAccountWithPrefix =
+            ui.yesno(false, "Do you prefer to use an existing account with a specific prefix ");
+    if (useExistingAccountWithPrefix) {
+      s.string(WHAT_PREFIX_QUESTION, USE_EXISTING_ACCOUNT_WITH_PREFIX, "external:saml/");
+    }
   }
 
   @Override
