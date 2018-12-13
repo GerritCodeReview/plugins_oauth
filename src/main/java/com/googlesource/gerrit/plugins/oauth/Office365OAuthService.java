@@ -52,6 +52,7 @@ class Office365OAuthService implements OAuthServiceProvider {
   private final OAuthService service;
   private final String canonicalWebUrl;
   private final boolean useEmailAsUsername;
+  private final String externalIdPrefix;
 
   @Inject
   Office365OAuthService(
@@ -59,6 +60,7 @@ class Office365OAuthService implements OAuthServiceProvider {
       @PluginName String pluginName,
       @CanonicalWebUrl Provider<String> urlProvider) {
     PluginConfig cfg = cfgFactory.getFromGerritConfig(pluginName + CONFIG_SUFFIX);
+    externalIdPrefix = cfg.getString(InitOAuth.USE_EXISTING_ACCOUNT_WITH_PREFIX);
     this.canonicalWebUrl = CharMatcher.is('/').trimTrailingFrom(urlProvider.get()) + "/";
     this.useEmailAsUsername = cfg.getBoolean(InitOAuth.USE_EMAIL_AS_USERNAME, false);
     this.service =
@@ -107,7 +109,8 @@ class Office365OAuthService implements OAuthServiceProvider {
         login = email.getAsString().split("@")[0];
       }
       return new OAuthUserInfo(
-          OFFICE365_PROVIDER_PREFIX + id.getAsString() /*externalId*/,
+          externalIdPrefix == null || externalIdPrefix.isEmpty()
+                  ? OFFICE365_PROVIDER_PREFIX + id.getAsString() : externalIdPrefix + email.getAsString()/*externalId*/,
           login /*username*/,
           email == null || email.isJsonNull() ? null : email.getAsString() /*email*/,
           name == null || name.isJsonNull() ? null : name.getAsString() /*displayName*/,
