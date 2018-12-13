@@ -30,7 +30,9 @@ class InitOAuth implements InitStep {
   static final String ROOT_URL = "root-url";
   static final String REALM = "realm";
   static final String SERVICE_NAME = "service-name";
+  static final String USE_SAML_EXTERNAL_ID = "use-existing-saml-external-id";
   static String FIX_LEGACY_USER_ID_QUESTION = "Fix legacy user id, without oauth provider prefix?";
+  static String USE_SAML_EXTERNAL_ID_QUESTION = "Use existing SAML external id?";
 
   private final ConsoleUI ui;
   private final Section googleOAuthProviderSection;
@@ -133,6 +135,7 @@ class InitOAuth implements InitStep {
         ui.yesno(true, "Use Office365 OAuth provider for Gerrit login ?");
     if (configureOffice365OAuthProvider) {
       configureOAuth(office365OAuthProviderSection);
+      office365OAuthProviderSection.string(USE_SAML_EXTERNAL_ID_QUESTION, USE_SAML_EXTERNAL_ID, "false");
     }
 
     boolean configureAirVantageOAuthProvider =
