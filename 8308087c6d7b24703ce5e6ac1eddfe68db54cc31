@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d4bb19bf_369dbcaa",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2019-01-09T07:22:45Z",
+      "side": 1,
+      "message": "Just to make sure, I understand the problem, your are trying to solve here (in hard coded way, that I don\u0027t like).\n\n* You used HTTP auth scheme with SAML identity provider using gerrit-saml-plugin\n* All users ids are prefixed with \"external:saml/\"\n* You want to migrate from HTTP to OAUTH, using this plugin\n* On the fly you want to link your users from \"external:saml/foo\" to: \"office365-oauth:foo\"\n\nI think you have two options:\n\n* 1. Migrate your data outside of the gerrit, change in the database / NoteDb the prefix: \"external:saml/foo\" -\u003e \"office365-oauth:foo\". IN this case we wouldn\u0027t need this change.\n* 2. Accept that your patch is not accepted upstream\n* 2. Try to make this change more generic\n\nI would prefer to not hard code your specific history in this plugin code base\n\n* 1. I used saml-plugin first\n* 2. It created prefix a)\n* 3. I moved to another auth scheme and another plugin and need to migrate the user database to prefix b)\n\nWhat I think could be accepted here (and in another OAuth-providers in this plugin) is a generic way.\n\nInstead of asking:\n\n  Use existing SAML external id?\n\nIt should just ask:\n\n  Do you prefer to try to use existing account with specific prefix? (y/N): y\n  What prefix would you like to be linked:external:saml/\n\nThat way, it someone else would user plugin put-here-yet-another-fancy-gerrit-auth-scheme-plugin, that uses put-here-yet-another-fancy-gerrit-auth-scheme-prefix that someone would like to link the users from to one or another OAuth-provider in this plugin, then at least for Office365 it would just work without touching the code.",
+      "revId": "8308087c6d7b24703ce5e6ac1eddfe68db54cc31",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
