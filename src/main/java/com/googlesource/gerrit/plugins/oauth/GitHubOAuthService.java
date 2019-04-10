@@ -17,6 +17,7 @@ package com.googlesource.gerrit.plugins.oauth;
 import static com.google.gerrit.json.OutputFormat.JSON;
 
 import com.google.common.base.CharMatcher;
+import com.google.common.base.Strings;
 import com.google.gerrit.extensions.annotations.PluginName;
 import com.google.gerrit.extensions.auth.oauth.OAuthServiceProvider;
 import com.google.gerrit.extensions.auth.oauth.OAuthToken;
@@ -47,7 +48,9 @@ class GitHubOAuthService implements OAuthServiceProvider {
   private static final Logger log = LoggerFactory.getLogger(GitHubOAuthService.class);
   static final String CONFIG_SUFFIX = "-github-oauth";
   private static final String GITHUB_PROVIDER_PREFIX = "github-oauth:";
-  private static final String PROTECTED_RESOURCE_URL = "https://api.github.com/user";
+  private static final String PROTECTED_RESOURCE_URL = "%sapi/v3/user";
+  static final String GITHUB_ROOT_URL = "https://github.com/";
+  private final String rootUrl;
 
   private static final String SCOPE = "user:email";
   private final boolean fixLegacyUserId;
@@ -61,9 +64,19 @@ class GitHubOAuthService implements OAuthServiceProvider {
     PluginConfig cfg = cfgFactory.getFromGerritConfig(pluginName + CONFIG_SUFFIX);
     String canonicalWebUrl = CharMatcher.is('/').trimTrailingFrom(urlProvider.get()) + "/";
     fixLegacyUserId = cfg.getBoolean(InitOAuth.FIX_LEGACY_USER_ID, false);
+    String _rootUrl = cfg.getString(InitOAuth.ROOT_URL);
+
+    if (Strings.isNullOrEmpty(_rootUrl)) {
+      rootUrl = GITHUB_ROOT_URL;
+    } else if (!_rootUrl.endsWith("/")) {
+      rootUrl = _rootUrl + "/";
+    } else {
+      rootUrl = _rootUrl;
+    }
+
     service =
         new ServiceBuilder()
-            .provider(GitHub2Api.class)
+            .provider(new GitHub2Api(rootUrl))
             .apiKey(cfg.getString(InitOAuth.CLIENT_ID))
             .apiSecret(cfg.getString(InitOAuth.CLIENT_SECRET))
             .callback(canonicalWebUrl + "oauth")
@@ -71,9 +84,15 @@ class GitHubOAuthService implements OAuthServiceProvider {
             .build();
   }
 
+  private String getProtectedResourceUrl() {
+      return GITHUB_ROOT_URL.equals(rootUrl) ?
+          "https://api.github.com/user/" :
+          String.format(PROTECTED_RESOURCE_URL, rootUrl);
+  }
+
   @Override
   public OAuthUserInfo getUserInfo(OAuthToken token) throws IOException {
-    OAuthRequest request = new OAuthRequest(Verb.GET, PROTECTED_RESOURCE_URL);
+    OAuthRequest request = new OAuthRequest(Verb.GET, getProtectedResourceUrl());
     Token t = new Token(token.getToken(), token.getSecret(), token.getRaw());
     service.signRequest(t, request);
     Response response = request.send();
