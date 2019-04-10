@@ -40,5 +40,6 @@ java_library(
     exports = PLUGIN_DEPS + PLUGIN_TEST_DEPS + [
         ":oauth__plugin",
         "@scribe//jar",
+        "@mockito//jar",
     ],
 )
