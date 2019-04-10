@@ -19,6 +19,9 @@ appended with provider suffix: e.g. `-google-oauth` or `-github-oauth`:
     link-to-existing-openid-accounts = true
 
   [plugin "@PLUGIN@-github-oauth"]
+    # root-url = "https://github.com/"  # for Github
+    # root-url = "https://git.yourcompany.com/" # for your Github Enterprise
+    root-url = "<github url>"
     client-id = "<client-id>"
     client-secret = "<client-secret>"
 
