@@ -83,6 +83,7 @@ class InitOAuth implements InitStep {
     boolean configueGitHubOAuthProvider =
         ui.yesno(true, "Use GitHub OAuth provider for Gerrit login ?");
     if (configueGitHubOAuthProvider) {
+      githubOAuthProviderSection.string("GitHub Root URL", ROOT_URL, GitHubOAuthService.GITHUB_ROOT_URL);
       configureOAuth(githubOAuthProviderSection);
       githubOAuthProviderSection.string(FIX_LEGACY_USER_ID_QUESTION, FIX_LEGACY_USER_ID, "false");
     }
