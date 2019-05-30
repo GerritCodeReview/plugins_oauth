@@ -47,7 +47,7 @@ public class BitbucketOAuthService implements OAuthServiceProvider {
   private static final Logger log = getLogger(BitbucketOAuthService.class);
   static final String CONFIG_SUFFIX = "-bitbucket-oauth";
   private static final String BITBUCKET_PROVIDER_PREFIX = "bitbucket-oauth:";
-  private static final String PROTECTED_RESOURCE_URL = "https://bitbucket.org/api/1.0/user/";
+  private static final String PROTECTED_RESOURCE_URL = "https://bitbucket.org/api/2.0/user/";
   private final boolean fixLegacyUserId;
   private final OAuthService service;
 
