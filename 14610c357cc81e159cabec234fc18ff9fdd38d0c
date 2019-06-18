@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "e6614419_37047fec",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/GitHubOAuthService.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2019-06-18T20:50:40Z",
+      "side": 1,
+      "message": "It has to be part of this commit, or can endpoint change be in its own commit?",
+      "range": {
+        "startLine": 49,
+        "startChar": 59,
+        "endLine": 49,
+        "endChar": 70
+      },
+      "revId": "14610c357cc81e159cabec234fc18ff9fdd38d0c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "67d09eb0_92014571",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/InitOAuth.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2019-06-18T20:50:40Z",
+      "side": 1,
+      "message": "Another alternative would be not to let to specify the root URL in init step, but only allow to modify it manually.",
+      "range": {
+        "startLine": 86,
+        "startChar": 6,
+        "endLine": 86,
+        "endChar": 105
+      },
+      "revId": "14610c357cc81e159cabec234fc18ff9fdd38d0c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
