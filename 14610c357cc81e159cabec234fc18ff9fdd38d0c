@@ -2,6 +2,52 @@
   "comments": [
     {
       "key": {
+        "uuid": "3007901b_cab32db3",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-06-18T20:58:43Z",
+      "side": 1,
+      "message": "The change allows the API URL to be configurable, as a consequence GitHub Enterprise will be supported.",
+      "range": {
+        "startLine": 7,
+        "startChar": 16,
+        "endLine": 7,
+        "endChar": 39
+      },
+      "revId": "14610c357cc81e159cabec234fc18ff9fdd38d0c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4a255f8b_cccca7b3",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/GitHub2Api.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-06-18T20:58:43Z",
+      "side": 1,
+      "message": "This is cool, however, we could try to do URL composition to avoid to end up with the double-slash in front of the URL.\n\nE.g. rootUrl \u003d https://github.com/ + \"/login/oauth/access_token\" \u003d\u003e https://github.com//login/oauth/access_token",
+      "range": {
+        "startLine": 33,
+        "startChar": 25,
+        "endLine": 33,
+        "endChar": 29
+      },
+      "revId": "14610c357cc81e159cabec234fc18ff9fdd38d0c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "e6614419_37047fec",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/GitHubOAuthService.java",
         "patchSetId": 1
@@ -41,6 +87,29 @@
         "startChar": 6,
         "endLine": 86,
         "endChar": 105
+      },
+      "revId": "14610c357cc81e159cabec234fc18ff9fdd38d0c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f3d2d76e_097c5a12",
+        "filename": "src/main/resources/Documentation/config.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-06-18T20:58:43Z",
+      "side": 1,
+      "message": "This is a bit unclear IMHO. Could it be better to just have an example on how it looks like for GitHub Enterprise?",
+      "range": {
+        "startLine": 22,
+        "startChar": 27,
+        "endLine": 22,
+        "endChar": 58
       },
       "revId": "14610c357cc81e159cabec234fc18ff9fdd38d0c",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
