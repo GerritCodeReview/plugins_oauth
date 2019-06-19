@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "d46df155_5f0d4130",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1033617
+      },
+      "writtenOn": "2019-06-19T13:31:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3007901b_cab32db3",
+      "range": {
+        "startLine": 7,
+        "startChar": 16,
+        "endLine": 7,
+        "endChar": 39
+      },
+      "revId": "14610c357cc81e159cabec234fc18ff9fdd38d0c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "4a255f8b_cccca7b3",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/GitHub2Api.java",
         "patchSetId": 1
@@ -48,6 +72,30 @@
     },
     {
       "key": {
+        "uuid": "d8426590_738465f6",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/GitHub2Api.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1033617
+      },
+      "writtenOn": "2019-06-19T13:31:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4a255f8b_cccca7b3",
+      "range": {
+        "startLine": 33,
+        "startChar": 25,
+        "endLine": 33,
+        "endChar": 29
+      },
+      "revId": "14610c357cc81e159cabec234fc18ff9fdd38d0c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "e6614419_37047fec",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/GitHubOAuthService.java",
         "patchSetId": 1
@@ -59,6 +107,30 @@
       "writtenOn": "2019-06-18T20:50:40Z",
       "side": 1,
       "message": "It has to be part of this commit, or can endpoint change be in its own commit?",
+      "range": {
+        "startLine": 49,
+        "startChar": 59,
+        "endLine": 49,
+        "endChar": 70
+      },
+      "revId": "14610c357cc81e159cabec234fc18ff9fdd38d0c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "43c7720b_70c53fa6",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/GitHubOAuthService.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1033617
+      },
+      "writtenOn": "2019-06-19T13:31:08Z",
+      "side": 1,
+      "message": "If endpoint is changed, API should be changed completely.\nIn github case, API v4 is using GraphQL instead of REST.\nhttps://developer.github.com/v4/#why-github-is-using-graphql\n\nSo IMHO, this part should be hard coded.",
+      "parentUuid": "e6614419_37047fec",
       "range": {
         "startLine": 49,
         "startChar": 59,
@@ -94,6 +166,30 @@
     },
     {
       "key": {
+        "uuid": "4f7b1172_42d835da",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/InitOAuth.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 1033617
+      },
+      "writtenOn": "2019-06-19T13:31:08Z",
+      "side": 1,
+      "message": "This line is removed.\nAnd when ROOT_URL is not set, I tried to set GITHUB_ROOT_URL as default.\n\nhttps://gerrit-review.googlesource.com/c/plugins/oauth/+/220372/2/src/main/java/com/googlesource/gerrit/plugins/oauth/GitHubOAuthService.java#70",
+      "parentUuid": "67d09eb0_92014571",
+      "range": {
+        "startLine": 86,
+        "startChar": 6,
+        "endLine": 86,
+        "endChar": 105
+      },
+      "revId": "14610c357cc81e159cabec234fc18ff9fdd38d0c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "f3d2d76e_097c5a12",
         "filename": "src/main/resources/Documentation/config.md",
         "patchSetId": 1
@@ -114,6 +210,30 @@
       "revId": "14610c357cc81e159cabec234fc18ff9fdd38d0c",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "301729ef_a11865e8",
+        "filename": "src/main/resources/Documentation/config.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1033617
+      },
+      "writtenOn": "2019-06-19T13:31:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f3d2d76e_097c5a12",
+      "range": {
+        "startLine": 22,
+        "startChar": 27,
+        "endLine": 22,
+        "endChar": 58
+      },
+      "revId": "14610c357cc81e159cabec234fc18ff9fdd38d0c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
