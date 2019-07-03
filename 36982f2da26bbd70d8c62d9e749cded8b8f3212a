@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7acb8a32_64414034",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2019-07-03T18:46:24Z",
+      "side": 1,
+      "message": "[Optional]: Add the link to this feature request: [1].\n\n* [1] https://github.com/davido/gerrit-oauth-provider/issues/48",
+      "revId": "36982f2da26bbd70d8c62d9e749cded8b8f3212a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
