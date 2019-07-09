@@ -57,6 +57,30 @@
       "revId": "36982f2da26bbd70d8c62d9e749cded8b8f3212a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2c4d1002_c94ed181",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/GitHubOAuthService.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 1033617
+      },
+      "writtenOn": "2019-07-09T02:19:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2de8e00e_74f6b1d4",
+      "range": {
+        "startLine": 67,
+        "startChar": 4,
+        "endLine": 67,
+        "endChar": 56
+      },
+      "revId": "36982f2da26bbd70d8c62d9e749cded8b8f3212a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
