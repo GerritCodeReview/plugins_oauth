@@ -130,6 +130,19 @@ class CasOAuthService implements OAuthServiceProvider {
         property = getStringElement(obj, "login");
         if (property != null) login = property;
       }
+    }else if(attrListJson.isJsonObject()){
+
+      JsonObject attrsJson = jsonObject.getAsJsonObject("attributes");
+
+      if(attrsJson.get("email") != null){
+        email = attrsJson.get("email").getAsString();
+      }
+      if(attrsJson.get("name") != null){
+        name = attrsJson.get("name").getAsString();
+      }
+      if(attrsJson.get("login") != null){
+        login = attrsJson.get("login").getAsString();
+      }
     }
 
     return new OAuthUserInfo(
