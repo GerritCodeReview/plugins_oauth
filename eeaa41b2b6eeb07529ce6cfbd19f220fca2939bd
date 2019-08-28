@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "da91af16_a6d043a9",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2019-08-28T12:49:22Z",
+      "side": 1,
+      "message": "Please format the commit message as a single subject line with max length 72 chars, followed by a blank line and then the message body also wrapped at max 72 columns.",
+      "revId": "eeaa41b2b6eeb07529ce6cfbd19f220fca2939bd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c30e793b_b9b2d386",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/CasApi.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2019-08-28T12:49:22Z",
+      "side": 1,
+      "message": "nit: add a blank line before the new method",
+      "revId": "eeaa41b2b6eeb07529ce6cfbd19f220fca2939bd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
