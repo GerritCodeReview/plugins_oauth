@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "a763d229_dd6fac3f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1088129
+      },
+      "writtenOn": "2019-09-16T10:16:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "da91af16_a6d043a9",
+      "revId": "eeaa41b2b6eeb07529ce6cfbd19f220fca2939bd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "c30e793b_b9b2d386",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/CasApi.java",
         "patchSetId": 1
@@ -33,6 +51,24 @@
       "revId": "eeaa41b2b6eeb07529ce6cfbd19f220fca2939bd",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c9960529_c3b4975f",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/CasApi.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1088129
+      },
+      "writtenOn": "2019-09-16T10:16:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c30e793b_b9b2d386",
+      "revId": "eeaa41b2b6eeb07529ce6cfbd19f220fca2939bd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
