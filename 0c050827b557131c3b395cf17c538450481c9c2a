@@ -94,6 +94,30 @@
     },
     {
       "key": {
+        "uuid": "60948b9c_b6004e73",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/GitHubOAuthService.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 1033617
+      },
+      "writtenOn": "2019-09-19T01:51:11Z",
+      "side": 1,
+      "message": "As I commented on https://gerrit-review.googlesource.com/c/plugins/oauth/+/220372/7/src/main/resources/Documentation/config.md#22 , rootUrl is still needed.\n\nSo,how about this?\n\n  private static final String GITHUB_API_ENDPOINT_URL \u003d \"https://api.github.com/\";\n  private static final String GHE_API_ENDPOINT_URL \u003d \"%sapi/v3/\";\n\n   private String getApiUrl() {\n     return GITHUB_ROOT_URL.equals(rootUrl)\n         ? GITHUB_API_ENDPOINT_URL\n         : String.format(GHE_API_ENDPOINT_URL, rootUrl);\n   }\n \n   private String getProtectedResourceUrl() {\n     return getApiUrl() + \"user/\";\n   }",
+      "parentUuid": "78240370_1b0f0353",
+      "range": {
+        "startLine": 86,
+        "startChar": 34,
+        "endLine": 86,
+        "endChar": 39
+      },
+      "revId": "0c050827b557131c3b395cf17c538450481c9c2a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "4555ff0c_b8b2f39a",
         "filename": "src/main/resources/Documentation/config.md",
         "patchSetId": 7
@@ -105,6 +129,30 @@
       "writtenOn": "2019-09-18T17:35:48Z",
       "side": 1,
       "message": "Shouldn\u0027t this be \"https://api.github.com ?",
+      "range": {
+        "startLine": 22,
+        "startChar": 18,
+        "endLine": 22,
+        "endChar": 37
+      },
+      "revId": "0c050827b557131c3b395cf17c538450481c9c2a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d8bf1109_9aba4b32",
+        "filename": "src/main/resources/Documentation/config.md",
+        "patchSetId": 7
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1033617
+      },
+      "writtenOn": "2019-09-19T01:51:11Z",
+      "side": 1,
+      "message": "On https://gerrit-review.googlesource.com/c/plugins/oauth/+/220372/7/src/main/java/com/googlesource/gerrit/plugins/oauth/GitHub2Api.java#23, AUTHORIZE_URL uses github root url, not api root url.",
+      "parentUuid": "4555ff0c_b8b2f39a",
       "range": {
         "startLine": 22,
         "startChar": 18,
