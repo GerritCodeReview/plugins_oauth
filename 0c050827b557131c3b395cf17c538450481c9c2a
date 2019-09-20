@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "e29dba8a_a8245de9",
+        "filename": "BUILD",
+        "patchSetId": 7
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1033617
+      },
+      "writtenOn": "2019-09-20T06:49:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a908056d_5d4f84a5",
+      "range": {
+        "startLine": 43,
+        "startChar": 8,
+        "endLine": 43,
+        "endChar": 24
+      },
+      "revId": "0c050827b557131c3b395cf17c538450481c9c2a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "f40bd4db_e573daf9",
         "filename": "external_plugin_deps.bzl",
         "patchSetId": 7
@@ -48,6 +72,30 @@
     },
     {
       "key": {
+        "uuid": "33eb7d36_bed8d6f7",
+        "filename": "external_plugin_deps.bzl",
+        "patchSetId": 7
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1033617
+      },
+      "writtenOn": "2019-09-20T06:49:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f40bd4db_e573daf9",
+      "range": {
+        "startLine": 9,
+        "startChar": 4,
+        "endLine": 27,
+        "endChar": 5
+      },
+      "revId": "0c050827b557131c3b395cf17c538450481c9c2a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "276f8688_56248aba",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/GitHubOAuthService.java",
         "patchSetId": 7
@@ -68,6 +116,30 @@
       "revId": "0c050827b557131c3b395cf17c538450481c9c2a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "902abf26_aefc029d",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/GitHubOAuthService.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1033617
+      },
+      "writtenOn": "2019-09-20T06:49:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "276f8688_56248aba",
+      "range": {
+        "startLine": 68,
+        "startChar": 4,
+        "endLine": 72,
+        "endChar": 5
+      },
+      "revId": "0c050827b557131c3b395cf17c538450481c9c2a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     },
     {
       "key": {
@@ -142,6 +214,30 @@
     },
     {
       "key": {
+        "uuid": "207344fa_9e9737af",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/GitHubOAuthService.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 1033617
+      },
+      "writtenOn": "2019-09-20T06:49:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "899a1ffa_8f686de9",
+      "range": {
+        "startLine": 86,
+        "startChar": 34,
+        "endLine": 86,
+        "endChar": 39
+      },
+      "revId": "0c050827b557131c3b395cf17c538450481c9c2a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "4555ff0c_b8b2f39a",
         "filename": "src/main/resources/Documentation/config.md",
         "patchSetId": 7
@@ -186,6 +282,30 @@
       "revId": "0c050827b557131c3b395cf17c538450481c9c2a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cb8dcb02_ee70b662",
+        "filename": "src/main/resources/Documentation/config.md",
+        "patchSetId": 7
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1033617
+      },
+      "writtenOn": "2019-09-20T06:49:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d8bf1109_9aba4b32",
+      "range": {
+        "startLine": 22,
+        "startChar": 18,
+        "endLine": 22,
+        "endChar": 37
+      },
+      "revId": "0c050827b557131c3b395cf17c538450481c9c2a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
