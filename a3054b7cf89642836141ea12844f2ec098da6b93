@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ba2ecf5a_efc1972d",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/oauth/GithubApiUrlTest.java",
+        "patchSetId": 8
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-09-20T06:52:04Z",
+      "side": 1,
+      "message": "Test code is the only piece of code that is never tested :-)\nWhy not making it simpler and just include the expected URL as a string in the tests?\n\nMaking KISS would help avoid mistakes.",
+      "range": {
+        "startLine": 56,
+        "startChar": 0,
+        "endLine": 70,
+        "endChar": 3
+      },
+      "revId": "a3054b7cf89642836141ea12844f2ec098da6b93",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
