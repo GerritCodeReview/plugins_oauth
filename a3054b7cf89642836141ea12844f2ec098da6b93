@@ -2,6 +2,29 @@
   "comments": [
     {
       "key": {
+        "uuid": "a8033fe8_33827495",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/GitHubOAuthService.java",
+        "patchSetId": 8
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2019-10-03T16:41:41Z",
+      "side": 1,
+      "message": "Nit: can be inlined.",
+      "range": {
+        "startLine": 67,
+        "startChar": 11,
+        "endLine": 67,
+        "endChar": 19
+      },
+      "revId": "a3054b7cf89642836141ea12844f2ec098da6b93",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "ba2ecf5a_efc1972d",
         "filename": "src/test/java/com/googlesource/gerrit/plugins/oauth/GithubApiUrlTest.java",
         "patchSetId": 8
@@ -13,6 +36,30 @@
       "writtenOn": "2019-09-20T06:52:04Z",
       "side": 1,
       "message": "Test code is the only piece of code that is never tested :-)\nWhy not making it simpler and just include the expected URL as a string in the tests?\n\nMaking KISS would help avoid mistakes.",
+      "range": {
+        "startLine": 56,
+        "startChar": 0,
+        "endLine": 70,
+        "endChar": 3
+      },
+      "revId": "a3054b7cf89642836141ea12844f2ec098da6b93",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a44d763f_9d5b0099",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/oauth/GithubApiUrlTest.java",
+        "patchSetId": 8
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2019-10-03T16:41:41Z",
+      "side": 1,
+      "message": "The method URLEncoder.encode(String) is deprecated. Use the one with Charset.",
+      "parentUuid": "ba2ecf5a_efc1972d",
       "range": {
         "startLine": 56,
         "startChar": 0,
