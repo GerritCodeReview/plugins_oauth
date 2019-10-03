@@ -69,6 +69,30 @@
       "revId": "a3054b7cf89642836141ea12844f2ec098da6b93",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "710ed27d_4a72e2d9",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/oauth/GithubApiUrlTest.java",
+        "patchSetId": 8
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2019-10-03T16:56:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a44d763f_9d5b0099",
+      "range": {
+        "startLine": 56,
+        "startChar": 0,
+        "endLine": 70,
+        "endChar": 3
+      },
+      "revId": "a3054b7cf89642836141ea12844f2ec098da6b93",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
