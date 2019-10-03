@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "e4dc38a9_e8f9c482",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/oauth/GithubApiUrlTest.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2019-10-03T16:55:55Z",
+      "side": 1,
+      "message": "secret",
+      "range": {
+        "startLine": 49,
+        "startChar": 53,
+        "endLine": 49,
+        "endChar": 70
+      },
+      "revId": "8ee5a4b1e5cdf37a5645a266f383d796fe95828e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a3143402_024e8d98",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/oauth/GithubApiUrlTest.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2019-10-03T16:55:55Z",
+      "side": 1,
+      "message": "Can be inlined. Here and below.",
+      "range": {
+        "startLine": 75,
+        "startChar": 22,
+        "endLine": 75,
+        "endChar": 45
+      },
+      "revId": "8ee5a4b1e5cdf37a5645a266f383d796fe95828e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a66716ad_cb2d47f0",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/oauth/GithubApiUrlTest.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2019-10-03T16:55:55Z",
+      "side": 1,
+      "message": "TrailingSlash",
+      "range": {
+        "startLine": 88,
+        "startChar": 27,
+        "endLine": 88,
+        "endChar": 32
+      },
+      "revId": "8ee5a4b1e5cdf37a5645a266f383d796fe95828e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5b5eb209_c4c5d5a8",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/oauth/GithubApiUrlTest.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2019-10-03T16:55:55Z",
+      "side": 1,
+      "message": "TrailingSlash",
+      "range": {
+        "startLine": 104,
+        "startChar": 20,
+        "endLine": 104,
+        "endChar": 29
+      },
+      "revId": "8ee5a4b1e5cdf37a5645a266f383d796fe95828e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
