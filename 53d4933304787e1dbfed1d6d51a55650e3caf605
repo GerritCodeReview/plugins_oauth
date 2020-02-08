@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "85017d4b_301a3249",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/InitOAuth.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 195,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2020-02-08T09:53:39Z",
+      "side": 1,
+      "message": "This is actually unrelated here and could have be done in its own change or at least mentioned in the commit message. Would leave to reviewers to comment.",
+      "range": {
+        "startLine": 195,
+        "startChar": 10,
+        "endLine": 195,
+        "endChar": 16
+      },
+      "revId": "53d4933304787e1dbfed1d6d51a55650e3caf605",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
