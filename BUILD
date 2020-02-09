@@ -1,10 +1,15 @@
-load("@rules_java//java:defs.bzl", "java_library")
+load("@rules_java//java:defs.bzl", "java_import", "java_library")
 load("//tools/bzl:junit.bzl", "junit_tests")
 load(
     "//tools/bzl:plugin.bzl",
     "PLUGIN_DEPS",
     "PLUGIN_TEST_DEPS",
     "gerrit_plugin",
+)
+
+java_import(
+    name = "scribe",
+    jars = ["@scribe//file"],
 )
 
 gerrit_plugin(
@@ -20,8 +25,8 @@ gerrit_plugin(
     ],
     resources = glob(["src/main/resources/**/*"]),
     deps = [
+        ":scribe",
         "@commons-codec//jar:neverlink",
-        "@scribe//jar",
     ],
 )
 
