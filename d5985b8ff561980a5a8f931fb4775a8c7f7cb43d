@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f282df51_6a1901c2",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2020-02-09T09:57:39Z",
+      "side": 1,
+      "message": "A much better approach would be to switch using most recent scribejava version: 6.9.0, that already supports client basic auth scheme and\nsigning request using bearer token out of the box (and even does it per default).",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 35
+      },
+      "revId": "d5985b8ff561980a5a8f931fb4775a8c7f7cb43d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
