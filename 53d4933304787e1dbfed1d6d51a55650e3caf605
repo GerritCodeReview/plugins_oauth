@@ -22,6 +22,30 @@
       "revId": "53d4933304787e1dbfed1d6d51a55650e3caf605",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1d08d9ea_091a5d5e",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/InitOAuth.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 195,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2020-02-09T01:48:44Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "85017d4b_301a3249",
+      "range": {
+        "startLine": 195,
+        "startChar": 10,
+        "endLine": 195,
+        "endChar": 16
+      },
+      "revId": "53d4933304787e1dbfed1d6d51a55650e3caf605",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
