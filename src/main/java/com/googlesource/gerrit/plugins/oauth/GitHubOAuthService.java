@@ -14,6 +14,10 @@
 
 package com.googlesource.gerrit.plugins.oauth;
 
+import static com.google.gerrit.server.OutputFormat.JSON;
+import static org.scribe.model.ClientAuthenticationScheme.BASIC_AUTHENTICATION;
+import static org.scribe.model.SignatureType.BEARER_SIGNATURE_AUTHORIZATION_REQUEST_HEADER_FIELD;
+
 import com.google.common.base.CharMatcher;
 import com.google.gerrit.extensions.annotations.PluginName;
 import com.google.gerrit.extensions.auth.oauth.OAuthServiceProvider;
@@ -67,6 +71,8 @@ class GitHubOAuthService implements OAuthServiceProvider {
             .apiSecret(cfg.getString(InitOAuth.CLIENT_SECRET))
             .callback(canonicalWebUrl + "oauth")
             .scope(SCOPE)
+            .clientAuthenticationScheme(BASIC_AUTHENTICATION)
+            .signatureType(BEARER_SIGNATURE_AUTHORIZATION_REQUEST_HEADER_FIELD)
             .build();
   }
 
