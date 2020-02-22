@@ -16,6 +16,24 @@
       "revId": "5e0febd09d5f29855343a3a71edc9e3b3a338d0b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e6dbf93b_83d3ade5",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/Office365OAuthService.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2020-02-22T14:35:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "51fb87c7_73c0d5e0",
+      "revId": "5e0febd09d5f29855343a3a71edc9e3b3a338d0b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
