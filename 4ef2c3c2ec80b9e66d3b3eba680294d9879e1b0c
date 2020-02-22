@@ -22,6 +22,30 @@
       "revId": "4ef2c3c2ec80b9e66d3b3eba680294d9879e1b0c",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b47468e8_293592c3",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/oauth/GithubApiUrlTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2020-02-22T14:31:14Z",
+      "side": 1,
+      "message": "Done. Also removed Mockito deps during merge to stable-3.0 branch.",
+      "parentUuid": "61422fe4_2f3bfa86",
+      "range": {
+        "startLine": 31,
+        "startChar": 0,
+        "endLine": 31,
+        "endChar": 24
+      },
+      "revId": "4ef2c3c2ec80b9e66d3b3eba680294d9879e1b0c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
