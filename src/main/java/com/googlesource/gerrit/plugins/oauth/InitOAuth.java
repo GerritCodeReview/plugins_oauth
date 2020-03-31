@@ -131,7 +131,9 @@ class InitOAuth implements InitStep {
     }
 
     boolean configureLemonLDAPOAuthProvider =
-        ui.yesno(true, "Use LemonLDAP OAuth provider for Gerrit login ?");
+        ui.yesno(
+            isConfigured(lemonldapOAuthProviderSection),
+            "Use LemonLDAP OAuth provider for Gerrit login ?");
     if (configureLemonLDAPOAuthProvider) {
       checkRootUrl(lemonldapOAuthProviderSection.string("LemonLDAP Root URL", ROOT_URL, null));
       configureOAuth(lemonldapOAuthProviderSection);
@@ -139,7 +141,8 @@ class InitOAuth implements InitStep {
 
     boolean configureDexOAuthProvider =
         ui.yesno(
-            isConfigured(dexOAuthProviderSection), "Use Dex OAuth provider for Gerrit login ?");
+            isConfigured(dexOAuthProviderSection),
+            "Use Dex OAuth provider for Gerrit login ?");
     if (configureDexOAuthProvider && configureOAuth(dexOAuthProviderSection)) {
       checkRootUrl(dexOAuthProviderSection.string("Dex Root URL", ROOT_URL, null));
     }
