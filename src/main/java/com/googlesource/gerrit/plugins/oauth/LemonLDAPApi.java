@@ -45,11 +45,4 @@ public class LemonLDAPApi extends DefaultApi20 {
   public ClientAuthentication getClientAuthentication() {
     return RequestBodyAuthenticationScheme.instance();
   }
-
-  // TODO(davido): Remove this override, if BearerSignatureAuthorization
-  // request header field is supported.
-  @Override
-  public BearerSignature getBearerSignature() {
-    return BearerSignatureURIQueryParameter.instance();
-  }
 }
