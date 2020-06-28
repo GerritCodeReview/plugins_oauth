@@ -1,11 +1,11 @@
 {
   "checks": {
     "zuul-check:plugins_oauth": {
-      "state": "SCHEDULED",
-      "message": "Change has been enqueued in check",
+      "state": "RUNNING",
+      "message": "Jobs have started running",
       "started": "2020-06-28T19:17:25Z",
       "created": "2020-06-28T05:02:55Z",
-      "updated": "2020-06-28T19:17:25Z"
+      "updated": "2020-06-28T19:17:26Z"
     }
   }
 }
