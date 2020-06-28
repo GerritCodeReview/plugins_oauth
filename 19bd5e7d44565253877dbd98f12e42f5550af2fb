@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "23a467eb_25564016",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1106305
+      },
+      "writtenOn": "2020-06-28T21:53:16Z",
+      "side": 1,
+      "message": "Hi everyone!\n\nI\u0027m new to Java but wanted to contribute this change in order for the plugin to support Phabricator, so I based this change on the existing integrations which are already in the plugin. Therefore, if there is anything which could be improved, please tell me!\n\nThe build completes successfully in my computer and the implementation works fine with an up to date Phabricator instance. However, Zuul says one of the tests failed, so I\u0027ll try to investigate why...\n\nTo the future reviewer: I\u0027m not sure of what should go into the unit test file, so I copied the test for the GitLabApi class. If there\u0027s anything else which should go there (I see the GitHub unit test is much more extensive), tell me :)",
+      "revId": "19bd5e7d44565253877dbd98f12e42f5550af2fb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
