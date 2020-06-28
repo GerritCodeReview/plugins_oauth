@@ -16,6 +16,24 @@
       "revId": "19bd5e7d44565253877dbd98f12e42f5550af2fb",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "0cc5c048_d571379e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1106305
+      },
+      "writtenOn": "2020-06-28T22:02:59Z",
+      "side": 1,
+      "message": "I just found out it\u0027s because Zuul isn\u0027t working correctly right now because of the external dependencies: https://gerrit-review.googlesource.com/c/plugins/oauth/+/273552/3//COMMIT_MSG#15",
+      "parentUuid": "23a467eb_25564016",
+      "revId": "19bd5e7d44565253877dbd98f12e42f5550af2fb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
