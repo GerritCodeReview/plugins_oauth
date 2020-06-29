@@ -2,6 +2,29 @@
   "comments": [
     {
       "key": {
+        "uuid": "58c9df53_47b5a6c2",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2020-06-29T06:00:04Z",
+      "side": 1,
+      "message": "OAuth provider",
+      "range": {
+        "startLine": 7,
+        "startChar": 28,
+        "endLine": 7,
+        "endChar": 37
+      },
+      "revId": "19bd5e7d44565253877dbd98f12e42f5550af2fb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "23a467eb_25564016",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 1
@@ -31,6 +54,41 @@
       "side": 1,
       "message": "I just found out it\u0027s because Zuul isn\u0027t working correctly right now because of the external dependencies: https://gerrit-review.googlesource.com/c/plugins/oauth/+/273552/3//COMMIT_MSG#15",
       "parentUuid": "23a467eb_25564016",
+      "revId": "19bd5e7d44565253877dbd98f12e42f5550af2fb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "a182738a_2234636f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2020-06-29T06:00:04Z",
+      "side": 1,
+      "message": "Yeah. Until the fix: [1] is merged, you could also add \"Depends-On:\" footer in this change. That would fix external dependencies resolution in Zuul build. But I would prefer to remove this line again, when it\u0027s merged.\n\n[1] https://gerrit-review.googlesource.com/c/zuul/jobs/+/273513",
+      "parentUuid": "0cc5c048_d571379e",
+      "revId": "19bd5e7d44565253877dbd98f12e42f5550af2fb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9041bdda_9c22264d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2020-06-29T06:00:04Z",
+      "side": 1,
+      "message": "This is not a review, Just a note how to fix the CI failure for now.",
       "revId": "19bd5e7d44565253877dbd98f12e42f5550af2fb",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
