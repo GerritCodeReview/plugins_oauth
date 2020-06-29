@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "0dd91236_ba864b15",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1106305
+      },
+      "writtenOn": "2020-06-29T18:11:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "58c9df53_47b5a6c2",
+      "range": {
+        "startLine": 7,
+        "startChar": 28,
+        "endLine": 7,
+        "endChar": 37
+      },
+      "revId": "19bd5e7d44565253877dbd98f12e42f5550af2fb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "23a467eb_25564016",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 1
@@ -89,6 +113,24 @@
       "writtenOn": "2020-06-29T06:00:04Z",
       "side": 1,
       "message": "This is not a review, Just a note how to fix the CI failure for now.",
+      "revId": "19bd5e7d44565253877dbd98f12e42f5550af2fb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "14e4a1db_a2b231a2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1106305
+      },
+      "writtenOn": "2020-06-29T18:11:40Z",
+      "side": 1,
+      "message": "Great, I\u0027ve added the \"Depends-On:\" footer so Zuul works for now, and I\u0027ll take it out when that change is merged (I\u0027ve already CC\u0027d me so I get notified).",
+      "parentUuid": "a182738a_2234636f",
       "revId": "19bd5e7d44565253877dbd98f12e42f5550af2fb",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
