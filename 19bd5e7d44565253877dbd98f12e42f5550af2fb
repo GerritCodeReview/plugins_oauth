@@ -134,6 +134,24 @@
       "revId": "19bd5e7d44565253877dbd98f12e42f5550af2fb",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bfb01e47_2350fe5f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1106305
+      },
+      "writtenOn": "2020-06-29T18:21:19Z",
+      "side": 1,
+      "message": "Now the build succeeds indeed. I\u0027ll mark this as Code-Review -1 until this footer can be removed.",
+      "parentUuid": "14e4a1db_a2b231a2",
+      "revId": "19bd5e7d44565253877dbd98f12e42f5550af2fb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
