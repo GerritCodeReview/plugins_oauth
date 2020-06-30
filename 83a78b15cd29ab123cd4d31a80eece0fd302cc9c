@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "6628fb1c_4b4b54c8",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/PhabricatorApi.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1106305
+      },
+      "writtenOn": "2020-06-30T10:34:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b633f3a6_39b3225c",
+      "range": {
+        "startLine": 1,
+        "startChar": 17,
+        "endLine": 1,
+        "endChar": 21
+      },
+      "revId": "83a78b15cd29ab123cd4d31a80eece0fd302cc9c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "c2c51438_9f81ff8a",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/PhabricatorOAuthService.java",
         "patchSetId": 2
@@ -45,6 +69,30 @@
       "revId": "83a78b15cd29ab123cd4d31a80eece0fd302cc9c",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "369a4205_c4f59b5e",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/PhabricatorOAuthService.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1106305
+      },
+      "writtenOn": "2020-06-30T10:34:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c2c51438_9f81ff8a",
+      "range": {
+        "startLine": 1,
+        "startChar": 17,
+        "endLine": 1,
+        "endChar": 21
+      },
+      "revId": "83a78b15cd29ab123cd4d31a80eece0fd302cc9c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
