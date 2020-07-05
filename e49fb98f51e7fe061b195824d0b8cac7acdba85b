@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "90b39a27_364f8509",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2020-07-05T15:01:32Z",
+      "side": 1,
+      "message": "Approving based on the fact that the fix is already running in production on TDF gerit site.",
+      "revId": "e49fb98f51e7fe061b195824d0b8cac7acdba85b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
