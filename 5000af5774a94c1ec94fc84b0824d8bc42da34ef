@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9c536665_c7dae638",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2020-07-06T19:46:32Z",
+      "side": 1,
+      "message": "LGTM. Only some minor nits left. Have you verified that it\u0027s working?",
+      "revId": "5000af5774a94c1ec94fc84b0824d8bc42da34ef",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "65c31d94_1d9df8ca",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/PhabricatorApi.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2020-07-06T19:46:32Z",
+      "side": 1,
+      "message": "@Override annotation is missing.",
+      "revId": "5000af5774a94c1ec94fc84b0824d8bc42da34ef",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ea518b62_697ef4e8",
+        "filename": "src/main/resources/Documentation/config.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 224,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2020-07-06T19:46:32Z",
+      "side": 1,
+      "message": "Point instead of semicolon?",
+      "range": {
+        "startLine": 224,
+        "startChar": 116,
+        "endLine": 224,
+        "endChar": 117
+      },
+      "revId": "5000af5774a94c1ec94fc84b0824d8bc42da34ef",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
