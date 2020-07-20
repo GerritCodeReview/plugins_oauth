@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "7284496d_410b8397",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1106305
+      },
+      "writtenOn": "2020-07-20T21:09:45Z",
+      "side": 1,
+      "message": "Yes, it does work with the latest stable version of Phabricator.",
+      "parentUuid": "9c536665_c7dae638",
+      "revId": "5000af5774a94c1ec94fc84b0824d8bc42da34ef",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "65c31d94_1d9df8ca",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/PhabricatorApi.java",
         "patchSetId": 4
@@ -33,6 +51,24 @@
       "revId": "5000af5774a94c1ec94fc84b0824d8bc42da34ef",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8190ebae_fd463f46",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/PhabricatorApi.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1106305
+      },
+      "writtenOn": "2020-07-20T21:09:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "65c31d94_1d9df8ca",
+      "revId": "5000af5774a94c1ec94fc84b0824d8bc42da34ef",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     },
     {
       "key": {
@@ -56,6 +92,30 @@
       "revId": "5000af5774a94c1ec94fc84b0824d8bc42da34ef",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "415e4de1_6361c2e5",
+        "filename": "src/main/resources/Documentation/config.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 224,
+      "author": {
+        "id": 1106305
+      },
+      "writtenOn": "2020-07-20T21:09:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ea518b62_697ef4e8",
+      "range": {
+        "startLine": 224,
+        "startChar": 116,
+        "endLine": 224,
+        "endChar": 117
+      },
+      "revId": "5000af5774a94c1ec94fc84b0824d8bc42da34ef",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
