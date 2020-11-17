@@ -1,0 +1,101 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "15b4e4e4_d08e0bf3",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2020-11-17T06:45:40Z",
+      "side": 1,
+      "message": "Should the documentation be exchanged, somewhere in src/main/resources/Documentation/config.md?",
+      "revId": "01e95b42508677ffa35c3f989479c27d3c303b89",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "87ad2290_3e654df2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2020-11-17T06:45:40Z",
+      "side": 1,
+      "message": "Thanks for the contribution!",
+      "revId": "01e95b42508677ffa35c3f989479c27d3c303b89",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "92c1d7ac_61cc3faf",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/Office365Api.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2020-11-17T06:45:40Z",
+      "side": 1,
+      "message": "Have you considered to switch to using BaseMicrosoftAzureActiveDirectoryApi class from scribejava deistribution? Do the migration as its own change?",
+      "revId": "01e95b42508677ffa35c3f989479c27d3c303b89",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fefc7a90_8e668f54",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/Office365Api.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2020-11-17T06:45:40Z",
+      "side": 1,
+      "message": "To avoid calling the constructor with \"\" string, add the constant here, and add overload default constructor:\n\n  private static final String DEFAULT_TENANT \u003d \"organizations\";\n  public Office365Api() {\n    this(DEFAULT_TENANT);\n  }\n\nBasically, the same approach as in: [1].\n\n[1] https://github.com/scribejava/scribejava/blob/fb240086b4a6c9560c9f30d61633c771b0cd3ed7/scribejava-apis/src/main/java/com/github/scribejava/apis/microsoftazureactivedirectory/BaseMicrosoftAzureActiveDirectoryApi.java#L15",
+      "range": {
+        "startLine": 25,
+        "startChar": 2,
+        "endLine": 27,
+        "endChar": 3
+      },
+      "revId": "01e95b42508677ffa35c3f989479c27d3c303b89",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a885ce77_57682800",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/Office365OAuthService.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2020-11-17T06:45:40Z",
+      "side": 1,
+      "message": "Move the constant to Office365Api class, to reference it there and here.",
+      "range": {
+        "startLine": 53,
+        "startChar": 2,
+        "endLine": 53,
+        "endChar": 63
+      },
+      "revId": "01e95b42508677ffa35c3f989479c27d3c303b89",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
