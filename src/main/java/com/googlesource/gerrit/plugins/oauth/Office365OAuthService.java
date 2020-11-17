@@ -17,6 +17,7 @@ package com.googlesource.gerrit.plugins.oauth;
 import static com.google.gerrit.json.OutputFormat.JSON;
 
 import com.github.scribejava.core.builder.ServiceBuilder;
+import com.github.scribejava.apis.MicrosoftAzureActiveDirectory20Api;
 import com.github.scribejava.core.exceptions.OAuthException;
 import com.github.scribejava.core.model.OAuth2AccessToken;
 import com.github.scribejava.core.model.OAuthRequest;
@@ -41,6 +42,8 @@ import com.google.inject.Singleton;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.ExecutionException;
 import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
@@ -54,6 +57,13 @@ class Office365OAuthService implements OAuthServiceProvider {
   private static final String PROTECTED_RESOURCE_URL = "https://graph.microsoft.com/v1.0/me";
   private static final String SCOPE =
       "openid offline_access https://graph.microsoft.com/user.readbasic.all";
+  private static final String DEFAULT_TENANT = "organizations";
+  private static final Set<String> TENANTS_WITH_NO_VALIDATION = new HashSet<>();
+  static {
+    TENANTS_WITH_NO_VALIDATION.add(DEFAULT_TENANT);
+    TENANTS_WITH_NO_VALIDATION.add("common");
+    TENANTS_WITH_NO_VALIDATION.add("consumers");
+  }
   private final OAuth20Service service;
   private final Gson gson;
   private final String canonicalWebUrl;
@@ -69,14 +79,14 @@ class Office365OAuthService implements OAuthServiceProvider {
     PluginConfig cfg = cfgFactory.getFromGerritConfig(pluginName + CONFIG_SUFFIX);
     this.canonicalWebUrl = CharMatcher.is('/').trimTrailingFrom(urlProvider.get()) + "/";
     this.useEmailAsUsername = cfg.getBoolean(InitOAuth.USE_EMAIL_AS_USERNAME, false);
-    this.tenant = cfg.getString(InitOAuth.TENANT, Office365Api.DEFAULT_TENANT);
+    this.tenant = cfg.getString(InitOAuth.TENANT, DEFAULT_TENANT);
     this.clientId = cfg.getString(InitOAuth.CLIENT_ID);
     this.service =
         new ServiceBuilder(cfg.getString(InitOAuth.CLIENT_ID))
             .apiSecret(cfg.getString(InitOAuth.CLIENT_SECRET))
             .callback(canonicalWebUrl + "oauth")
             .defaultScope(SCOPE)
-            .build(new Office365Api(tenant));
+            .build(MicrosoftAzureActiveDirectory20Api.custom(tenant));
     this.gson = JSON.newGson();
     if (log.isDebugEnabled()) {
       log.debug("OAuth2: canonicalWebUrl={}", canonicalWebUrl);
@@ -87,17 +97,16 @@ class Office365OAuthService implements OAuthServiceProvider {
 
   @Override
   public OAuthUserInfo getUserInfo(OAuthToken token) throws IOException {
-    // ?: Have we set a custom tenant, if so we should validate that the token is issued by the same tenant as
-    // we have set.
-    if (!tenant.equals(Office365Api.DEFAULT_TENANT)) {
-      // -> Yes, we are using a non-default tenant so we should validate that is delegated from the same one that we
+    // ?: Have we set a custom tenant and is this a tenant other than the one set in TENANTS_WITH_NO_VALIDATION
+    if (!TENANTS_WITH_NO_VALIDATION.contains(tenant)) {
+      // -> Yes, we are using a tenant that should be validated, so verify that is issued for the same one that we
       // have set.
       String tid = getTokenJson(token.getToken()).get("tid").getAsString();
 
       // ?: Verify that this token has the same tenant as we are currently using
       if (!tenant.equals(tid)) {
         // -> No, this tenant does not equals the one in the token. So we should stop processing
-        log.warn("The token where issued by the tenant [" + tid + "] while we are set to use [" + tenant + "]");
+        log.warn("The token were issued for the tenant [" + tid + "] while we are set to use [" + tenant + "]");
         // Return null so the user will be shown Unauthorized.
         return null;
       }
