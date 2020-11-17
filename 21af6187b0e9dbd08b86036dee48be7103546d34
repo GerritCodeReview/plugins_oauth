@@ -1,0 +1,211 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "98fdd4bf_af0861a8",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2020-11-17T20:11:58Z",
+      "side": 1,
+      "message": "Office365 OAuth, or other way around:\n\n  Office365 OAuth: Add support for specifying a tenant",
+      "range": {
+        "startLine": 7,
+        "startChar": 52,
+        "endLine": 7,
+        "endChar": 62
+      },
+      "revId": "21af6187b0e9dbd08b86036dee48be7103546d34",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f40b3adc_df94586a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2020-11-17T20:11:58Z",
+      "side": 1,
+      "message": "specifying",
+      "range": {
+        "startLine": 7,
+        "startChar": 18,
+        "endLine": 7,
+        "endChar": 30
+      },
+      "revId": "21af6187b0e9dbd08b86036dee48be7103546d34",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "73f74537_b96f181a",
+        "filename": "src/main/resources/Documentation/config.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 232,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2020-11-17T20:11:58Z",
+      "side": 1,
+      "message": "application,",
+      "range": {
+        "startLine": 232,
+        "startChar": 89,
+        "endLine": 232,
+        "endChar": 92
+      },
+      "revId": "21af6187b0e9dbd08b86036dee48be7103546d34",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "59da94a9_37f434c0",
+        "filename": "src/main/resources/Documentation/config.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 235,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2020-11-17T20:11:58Z",
+      "side": 1,
+      "message": "Why it\u0027s **section**? Should this be #### instead? You can build the plugin, deploy it on gerrit site and check rendered documentation.",
+      "range": {
+        "startLine": 235,
+        "startChar": 0,
+        "endLine": 235,
+        "endChar": 12
+      },
+      "revId": "21af6187b0e9dbd08b86036dee48be7103546d34",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f76e4764_92e5a5ae",
+        "filename": "src/main/resources/Documentation/config.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 236,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2020-11-17T20:11:58Z",
+      "side": 1,
+      "message": "Nit: Remove trailing blank.",
+      "range": {
+        "startLine": 236,
+        "startChar": 109,
+        "endLine": 236,
+        "endChar": 110
+      },
+      "revId": "21af6187b0e9dbd08b86036dee48be7103546d34",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "688c5d2b_60f5dc00",
+        "filename": "src/main/resources/Documentation/config.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 237,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2020-11-17T20:11:58Z",
+      "side": 1,
+      "message": "same here.",
+      "range": {
+        "startLine": 237,
+        "startChar": 111,
+        "endLine": 237,
+        "endChar": 112
+      },
+      "revId": "21af6187b0e9dbd08b86036dee48be7103546d34",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0c7006a3_2ed7b784",
+        "filename": "src/main/resources/Documentation/config.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 244,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2020-11-17T20:11:58Z",
+      "side": 1,
+      "message": "`organizations`?",
+      "range": {
+        "startLine": 244,
+        "startChar": 56,
+        "endLine": 244,
+        "endChar": 73
+      },
+      "revId": "21af6187b0e9dbd08b86036dee48be7103546d34",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "53d527e9_399d8d27",
+        "filename": "src/main/resources/Documentation/config.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 245,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2020-11-17T20:11:58Z",
+      "side": 1,
+      "message": "`tenant`?",
+      "range": {
+        "startLine": 245,
+        "startChar": 20,
+        "endLine": 245,
+        "endChar": 28
+      },
+      "revId": "21af6187b0e9dbd08b86036dee48be7103546d34",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ebb373c6_4ee8f2e6",
+        "filename": "src/main/resources/Documentation/config.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 247,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2020-11-17T20:11:58Z",
+      "side": 1,
+      "message": "and here.",
+      "range": {
+        "startLine": 247,
+        "startChar": 69,
+        "endLine": 247,
+        "endChar": 70
+      },
+      "revId": "21af6187b0e9dbd08b86036dee48be7103546d34",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
