@@ -8,6 +8,11 @@ def external_plugin_deps(omit_commons_codec = True):
         sha1 = "ed761f450d8382f75787e8fee9ae52e7ec768747",
     )
     maven_jar(
+        name = "scribejava-apis",
+        artifact = "com.github.scribejava:scribejava-apis:6.9.0",
+        sha1 = "a374c7a36533e58e53b42b584a8b3751ab1e13c4",
+    )
+    maven_jar(
         name = "jackson-annotations",
         artifact = "com.fasterxml.jackson.core:jackson-annotations:" + JACKSON_VERS,
         sha1 = "3a13b6105946541b8d4181a0506355b5fae63260",
