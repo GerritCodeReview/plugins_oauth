@@ -50,9 +50,11 @@ class Office365OAuthService implements OAuthServiceProvider {
   private static final String PROTECTED_RESOURCE_URL = "https://graph.microsoft.com/v1.0/me";
   private static final String SCOPE =
       "openid offline_access https://graph.microsoft.com/user.readbasic.all";
+  private static final String DEFAULT_TENANT = "organizations";
   private final OAuth20Service service;
   private final String canonicalWebUrl;
   private final boolean useEmailAsUsername;
+  private final String tenant;
 
   @Inject
   Office365OAuthService(
@@ -62,12 +64,13 @@ class Office365OAuthService implements OAuthServiceProvider {
     PluginConfig cfg = cfgFactory.getFromGerritConfig(pluginName + CONFIG_SUFFIX);
     this.canonicalWebUrl = CharMatcher.is('/').trimTrailingFrom(urlProvider.get()) + "/";
     this.useEmailAsUsername = cfg.getBoolean(InitOAuth.USE_EMAIL_AS_USERNAME, false);
+    this.tenant = cfg.getString(InitOAuth.TENANT, DEFAULT_TENANT);
     this.service =
         new ServiceBuilder(cfg.getString(InitOAuth.CLIENT_ID))
             .apiSecret(cfg.getString(InitOAuth.CLIENT_SECRET))
             .callback(canonicalWebUrl + "oauth")
             .defaultScope(SCOPE)
-            .build(new Office365Api());
+            .build(new Office365Api(tenant));
     if (log.isDebugEnabled()) {
       log.debug("OAuth2: canonicalWebUrl={}", canonicalWebUrl);
       log.debug("OAuth2: scope={}", SCOPE);
