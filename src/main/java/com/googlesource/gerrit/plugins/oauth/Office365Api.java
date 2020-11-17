@@ -14,35 +14,24 @@
 
 package com.googlesource.gerrit.plugins.oauth;
 
+import com.github.scribejava.apis.MicrosoftAzureActiveDirectory20Api;
 import com.github.scribejava.core.builder.api.DefaultApi20;
 import com.github.scribejava.core.oauth2.clientauthentication.ClientAuthentication;
 import com.github.scribejava.core.oauth2.clientauthentication.RequestBodyAuthenticationScheme;
 
-public class Office365Api extends DefaultApi20 {
+/**
+ * Due to {@link MicrosoftAzureActiveDirectory20Api} uses the default tenant <b>common</b> we are extending this
+ * so we can set the default tenant to <b>organizations</b>
+ */
+public class Office365Api extends MicrosoftAzureActiveDirectory20Api {
   public static final String DEFAULT_TENANT = "organizations";
-
-  private final String tenant;
 
   public Office365Api() {
     this(DEFAULT_TENANT);
   }
 
   public Office365Api(String tenant) {
-    this.tenant = tenant;
+    super(tenant);
   }
 
-  @Override
-  public String getAccessTokenEndpoint() {
-    return "https://login.microsoftonline.com/" + tenant + "/oauth2/v2.0/token";
-  }
-
-  @Override
-  public String getAuthorizationBaseUrl() {
-    return "https://login.microsoftonline.com/" + tenant + "/oauth2/v2.0/authorize";
-  }
-
-  @Override
-  public ClientAuthentication getClientAuthentication() {
-    return RequestBodyAuthenticationScheme.instance();
-  }
 }

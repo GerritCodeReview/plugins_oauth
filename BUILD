@@ -23,6 +23,7 @@ gerrit_plugin(
         "@commons-codec//jar:neverlink",
         "@jackson-databind//jar",
         "@scribejava-core//jar",
+        "@scribejava-apis//jar",
     ],
 )
 
