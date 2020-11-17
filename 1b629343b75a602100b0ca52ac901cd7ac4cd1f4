@@ -3,6 +3,46 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c938ed46_3ae88bc2",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/Office365Api.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2020-11-17T20:14:25Z",
+      "side": 1,
+      "message": "Why it\u0027s common, if we need \u0027organizations\u0027? See: [1], where it\u0027s stated:\n\n  authority: \u0027https://login.microsoftonline.com/organizations/\u0027,\n  If I try to change the authority to \u0027common\u0027 as in the following:\n  \u0027https://login.microsoftonline.com/common/\u0027\n  The login works, but the scopes are not acquired correctly and any attempt to access\n  a secure API such as \u0027https://management.azure.com/\u0027 yields the following error [...]\n\nSo may be we should report this issue to scribejava, or even upload a fix so that we could select what default tenant should be: \u0027common\u0027 or \u0027organizations\u0027, e.g. define a enum and pass it to ctor?\n\n[1] https://stackoverflow.com/questions/58209756/multi-tenant-azure-active-directory-application-with-msal-for-angular-6",
+      "range": {
+        "startLine": 23,
+        "startChar": 80,
+        "endLine": 23,
+        "endChar": 86
+      },
+      "revId": "1b629343b75a602100b0ca52ac901cd7ac4cd1f4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "06d51531_2033856b",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/Office365Api.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2020-11-17T20:14:25Z",
+      "side": 1,
+      "message": "Point in the end of the statement.",
+      "revId": "1b629343b75a602100b0ca52ac901cd7ac4cd1f4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "17a4e495_9bff7b01",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/Office365Api.java",
         "patchSetId": 2
@@ -14,6 +54,30 @@
       "writtenOn": "2020-11-17T13:32:58Z",
       "side": 1,
       "message": "Should we rename this to AzureOAuth instead of calling it Office365?",
+      "range": {
+        "startLine": 26,
+        "startChar": 13,
+        "endLine": 26,
+        "endChar": 25
+      },
+      "revId": "1b629343b75a602100b0ca52ac901cd7ac4cd1f4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a9d59715_16bc3f0b",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/Office365Api.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2020-11-17T20:14:25Z",
+      "side": 1,
+      "message": "Why not, or may be even \"AzureActiveDirectory\"? The problem is: we would have to provide a migration path for the users? Or even offer both services for a transition period? What we would like to avoid is to have disruptive change, that will break users. Let\u0027s do the rename in its own change.",
+      "parentUuid": "17a4e495_9bff7b01",
       "range": {
         "startLine": 26,
         "startChar": 13,
