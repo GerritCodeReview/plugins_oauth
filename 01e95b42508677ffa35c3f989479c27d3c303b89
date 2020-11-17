@@ -20,6 +20,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "ba7c1aa0_fac8ce10",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1120575
+      },
+      "writtenOn": "2020-11-17T08:54:23Z",
+      "side": 1,
+      "message": "Good point. Updated the config.md",
+      "parentUuid": "15b4e4e4_d08e0bf3",
+      "revId": "01e95b42508677ffa35c3f989479c27d3c303b89",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "87ad2290_3e654df2",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 1
@@ -52,6 +70,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3523b95d_dea38690",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/Office365Api.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1120575
+      },
+      "writtenOn": "2020-11-17T08:54:23Z",
+      "side": 1,
+      "message": "Yes, at first I where thinking of doing that but this requires to add one more dependency for the scribejava-apis so for the initial commit I tried to avoid that. I can do that in it\u0027s own change.",
+      "parentUuid": "92c1d7ac_61cc3faf",
+      "revId": "01e95b42508677ffa35c3f989479c27d3c303b89",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fefc7a90_8e668f54",
@@ -75,6 +111,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "499465bc_96df8e06",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/Office365Api.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1120575
+      },
+      "writtenOn": "2020-11-17T08:54:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fefc7a90_8e668f54",
+      "range": {
+        "startLine": 25,
+        "startChar": 2,
+        "endLine": 27,
+        "endChar": 3
+      },
+      "revId": "01e95b42508677ffa35c3f989479c27d3c303b89",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a885ce77_57682800",
@@ -88,6 +148,30 @@
       "writtenOn": "2020-11-17T06:45:40Z",
       "side": 1,
       "message": "Move the constant to Office365Api class, to reference it there and here.",
+      "range": {
+        "startLine": 53,
+        "startChar": 2,
+        "endLine": 53,
+        "endChar": 63
+      },
+      "revId": "01e95b42508677ffa35c3f989479c27d3c303b89",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ef2f58dc_22bf6c36",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/Office365OAuthService.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1120575
+      },
+      "writtenOn": "2020-11-17T08:54:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a885ce77_57682800",
       "range": {
         "startLine": 53,
         "startChar": 2,
