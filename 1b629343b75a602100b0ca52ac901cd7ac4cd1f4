@@ -48,6 +48,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4632cef4_6d0c3dd9",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/Office365Api.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2020-11-18T20:51:42Z",
+      "side": 1,
+      "message": "Thanks for clarifying and the links.",
+      "parentUuid": "fe5efc8c_ec28aae7",
+      "range": {
+        "startLine": 23,
+        "startChar": 80,
+        "endLine": 23,
+        "endChar": 86
+      },
+      "revId": "1b629343b75a602100b0ca52ac901cd7ac4cd1f4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "06d51531_2033856b",
@@ -144,6 +168,30 @@
       "side": 1,
       "message": "Yes, I was thinking of the same thing. I was thinking that we do the rename throughout, and thus change all relevant names to \"azure\" and \"AzureActiveDirectory\" and such (from office365). In particular also in the Gerrit configuration file, on the line \"[plugin “gerrit-oauth-provider-office365-oauth”]\", which then will refer to \"-azure-oauth\". HOWEVER, we /also/ make the existing \"-office365-oauth\" config work, so that any existing installations won\u0027t be affected by this name change. This will be done by simply listing the AzureOAuthService twice inside InitOAuth, once with the new config suffix, and once with the old (with a comment about backwards support). I will submit a suggested change for this, also doing the change in the documentation (with a reference to the backwards compatibility feature). Thus, in an existing config section, it would refer to \"-office365-oauth\", and the tenant would not be specified - and that would be handled identical as it did before. What do you think of this?",
       "parentUuid": "a9d59715_16bc3f0b",
+      "range": {
+        "startLine": 26,
+        "startChar": 13,
+        "endLine": 26,
+        "endChar": 25
+      },
+      "revId": "1b629343b75a602100b0ca52ac901cd7ac4cd1f4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c2878915_777768ec",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/Office365Api.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2020-11-18T20:51:42Z",
+      "side": 1,
+      "message": "\u003e Thus, in an existing config section, it would refer to \"-office365-oauth\", and the tenant would not be specified - and that would be handled identical as it did before. What do you think of this?\n\nI like this. What if go even further, and don\u0027t touch existing Office365OAuth at all? We could adapt this series, and introduce new AzureOAuthService with optional tenant support and deprecate Office365OAuth and announce that support for this plugin configuration is going to be deprecated in future plugin releases. What do you think?\n\nThere is still one problem: external id user prefix:\n\n    return new OAuthUserInfo(\n        OFFICE365_PROVIDER_PREFIX + id.getAsString() /*externalId*/,\n        [...]\n\nwhere 365_PROVIDER_PREFIX is defined as:\n\n    private static final String OFFICE365_PROVIDER_PREFIX \u003d \"office365-oauth:\"\n\nIf we define AZURE_PROVIDER_PREFIX \u003d \"azure-oauth:\", then external id would change, from \"office365-oauth:foo\" to \"azure-oauth:foo\".\n\nWhat we could do is to abuse identity linking feature, and pass old external id:\n\n   return new OAuthUserInfo(\n            AZURE_PROVIDER_PREFIX + id.getAsString() /*externalId*/,\n            login /*username*/,\n            email \u003d\u003d null || email.isJsonNull() ? null : email.getAsString() /*email*/,\n            name \u003d\u003d null || name.isJsonNull() ? null : name.getAsString() /*displayName*/,\n            linkOffice365Id ? OFFICE365_PROVIDER_PREFIX + id.getAsString() : null);\n\nlinkOffice365Id would be a config option to link old external id.\n\nBut this is really messy. Another option would be to not provide any linking and just ask user to migrate external_id offline.",
+      "parentUuid": "2e6bd59c_80703594",
       "range": {
         "startLine": 26,
         "startChar": 13,
