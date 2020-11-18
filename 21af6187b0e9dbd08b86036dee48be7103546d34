@@ -47,6 +47,54 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "eec2ca1f_19374244",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1120575
+      },
+      "writtenOn": "2020-11-18T06:07:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f40b3adc_df94586a",
+      "range": {
+        "startLine": 7,
+        "startChar": 18,
+        "endLine": 7,
+        "endChar": 30
+      },
+      "revId": "21af6187b0e9dbd08b86036dee48be7103546d34",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bcb44306_7bffa510",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1120575
+      },
+      "writtenOn": "2020-11-18T06:07:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "98fdd4bf_af0861a8",
+      "range": {
+        "startLine": 7,
+        "startChar": 52,
+        "endLine": 7,
+        "endChar": 62
+      },
+      "revId": "21af6187b0e9dbd08b86036dee48be7103546d34",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "73f74537_b96f181a",
@@ -60,6 +108,30 @@
       "writtenOn": "2020-11-17T20:11:58Z",
       "side": 1,
       "message": "application,",
+      "range": {
+        "startLine": 232,
+        "startChar": 89,
+        "endLine": 232,
+        "endChar": 92
+      },
+      "revId": "21af6187b0e9dbd08b86036dee48be7103546d34",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "caa55277_d690ceeb",
+        "filename": "src/main/resources/Documentation/config.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 232,
+      "author": {
+        "id": 1120575
+      },
+      "writtenOn": "2020-11-18T06:07:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "73f74537_b96f181a",
       "range": {
         "startLine": 232,
         "startChar": 89,
@@ -93,6 +165,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2654e64d_67eed011",
+        "filename": "src/main/resources/Documentation/config.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 235,
+      "author": {
+        "id": 1120575
+      },
+      "writtenOn": "2020-11-18T06:07:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "59da94a9_37f434c0",
+      "range": {
+        "startLine": 235,
+        "startChar": 0,
+        "endLine": 235,
+        "endChar": 12
+      },
+      "revId": "21af6187b0e9dbd08b86036dee48be7103546d34",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f76e4764_92e5a5ae",
@@ -106,6 +202,30 @@
       "writtenOn": "2020-11-17T20:11:58Z",
       "side": 1,
       "message": "Nit: Remove trailing blank.",
+      "range": {
+        "startLine": 236,
+        "startChar": 109,
+        "endLine": 236,
+        "endChar": 110
+      },
+      "revId": "21af6187b0e9dbd08b86036dee48be7103546d34",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f3faff98_aabb35a3",
+        "filename": "src/main/resources/Documentation/config.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 236,
+      "author": {
+        "id": 1120575
+      },
+      "writtenOn": "2020-11-18T06:07:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f76e4764_92e5a5ae",
       "range": {
         "startLine": 236,
         "startChar": 109,
@@ -139,6 +259,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fa6c678a_3eca0425",
+        "filename": "src/main/resources/Documentation/config.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 237,
+      "author": {
+        "id": 1120575
+      },
+      "writtenOn": "2020-11-18T06:07:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "688c5d2b_60f5dc00",
+      "range": {
+        "startLine": 237,
+        "startChar": 111,
+        "endLine": 237,
+        "endChar": 112
+      },
+      "revId": "21af6187b0e9dbd08b86036dee48be7103546d34",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0c7006a3_2ed7b784",
@@ -152,6 +296,30 @@
       "writtenOn": "2020-11-17T20:11:58Z",
       "side": 1,
       "message": "`organizations`?",
+      "range": {
+        "startLine": 244,
+        "startChar": 56,
+        "endLine": 244,
+        "endChar": 73
+      },
+      "revId": "21af6187b0e9dbd08b86036dee48be7103546d34",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "38d83700_84bcabc1",
+        "filename": "src/main/resources/Documentation/config.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 244,
+      "author": {
+        "id": 1120575
+      },
+      "writtenOn": "2020-11-18T06:07:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0c7006a3_2ed7b784",
       "range": {
         "startLine": 244,
         "startChar": 56,
@@ -185,6 +353,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4461678d_0ebc27d7",
+        "filename": "src/main/resources/Documentation/config.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 245,
+      "author": {
+        "id": 1120575
+      },
+      "writtenOn": "2020-11-18T06:07:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "53d527e9_399d8d27",
+      "range": {
+        "startLine": 245,
+        "startChar": 20,
+        "endLine": 245,
+        "endChar": 28
+      },
+      "revId": "21af6187b0e9dbd08b86036dee48be7103546d34",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ebb373c6_4ee8f2e6",
@@ -198,6 +390,30 @@
       "writtenOn": "2020-11-17T20:11:58Z",
       "side": 1,
       "message": "and here.",
+      "range": {
+        "startLine": 247,
+        "startChar": 69,
+        "endLine": 247,
+        "endChar": 70
+      },
+      "revId": "21af6187b0e9dbd08b86036dee48be7103546d34",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9f365049_8438f8ca",
+        "filename": "src/main/resources/Documentation/config.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 247,
+      "author": {
+        "id": 1120575
+      },
+      "writtenOn": "2020-11-18T06:07:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ebb373c6_4ee8f2e6",
       "range": {
         "startLine": 247,
         "startChar": 69,
