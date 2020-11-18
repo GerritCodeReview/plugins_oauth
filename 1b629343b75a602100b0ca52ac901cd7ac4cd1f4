@@ -24,6 +24,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fe5efc8c_ec28aae7",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/Office365Api.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1120575
+      },
+      "writtenOn": "2020-11-18T10:38:34Z",
+      "side": 1,
+      "message": "Azure Login defines four types of authentication: \u0027common\u0027 (anything goes), \u0027organizations\u0027 (any org tenant), \u0027consumers\u0027 (only personal MS accts), and \u0027\u003ctenant UUID\u003e\u0027 (specific tenant), see link [0]. The set of changes I have submitted makes it possible to use the tenant-specific solution, instead of the static \u0027organizations\u0027 as it is now. (It will then also do validation of the returned token to check that it is indeed issued for the specified tenant). The present change merely moves the code over to use the more specific MicrosoftAzureActiveDirectory20Api instead of the generic DefaultApi20, but changing their default from \u0027common\u0027 back to the current \u0027organizations\u0027. In a previous change i invoked the constructor with the default \u0027organization\u0027 using the single string arg constructor, but you commented on this [1], so this is an attempt to address that comment . The point with introducing \u0027organizations\u0027 here is obviously to not break existing installation, i.e. provide a migration path - se answer to your last comment in this file.\nAn option is to move the \u0027organziations\u0027 const back to the invoking site, thus using the MicrosoftAzureActiveDirectory20Api directly instead. I feel this would be cleaner. Waiting for a change in scribejava seems out of place here. I will submit a new change set with this suggestion.\nThe comment on Stackoverflow seems like just pointing out that some features are missing when using the \u0027common\u0027 specified, and I do not quite see why that relates to us here. See link [2] (\"Important\" box, and further in the document). I have not used this, but it seems to be pointing out differences when using these \"multiplexer\" endpoints.\nI can introduce a change that handles all three of the \"synthetic\" tenants by doing no validation on token return - and thus only if it is /not/ such a tenant do we validate the tenant in the token? Note that this is the current situation before my changes, statically using \u0027organizations\u0027.\n[0]: https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-protocols-oidc#fetch-the-openid-connect-metadata-document\n[1]: https://gerrit-review.googlesource.com/c/plugins/oauth/+/288442/comment/fefc7a90_8e668f54/\n[2]: https://docs.microsoft.com/en-us/azure/active-directory/develop/howto-convert-app-to-be-multi-tenant#update-your-code-to-send-requests-to-common",
+      "parentUuid": "c938ed46_3ae88bc2",
+      "range": {
+        "startLine": 23,
+        "startChar": 80,
+        "endLine": 23,
+        "endChar": 86
+      },
+      "revId": "1b629343b75a602100b0ca52ac901cd7ac4cd1f4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "06d51531_2033856b",
@@ -37,6 +61,24 @@
       "writtenOn": "2020-11-17T20:14:25Z",
       "side": 1,
       "message": "Point in the end of the statement.",
+      "revId": "1b629343b75a602100b0ca52ac901cd7ac4cd1f4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "033c4667_6c51f335",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/Office365Api.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1120575
+      },
+      "writtenOn": "2020-11-18T10:38:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "06d51531_2033856b",
       "revId": "1b629343b75a602100b0ca52ac901cd7ac4cd1f4",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -78,6 +120,30 @@
       "side": 1,
       "message": "Why not, or may be even \"AzureActiveDirectory\"? The problem is: we would have to provide a migration path for the users? Or even offer both services for a transition period? What we would like to avoid is to have disruptive change, that will break users. Let\u0027s do the rename in its own change.",
       "parentUuid": "17a4e495_9bff7b01",
+      "range": {
+        "startLine": 26,
+        "startChar": 13,
+        "endLine": 26,
+        "endChar": 25
+      },
+      "revId": "1b629343b75a602100b0ca52ac901cd7ac4cd1f4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2e6bd59c_80703594",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/Office365Api.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1120575
+      },
+      "writtenOn": "2020-11-18T10:38:34Z",
+      "side": 1,
+      "message": "Yes, I was thinking of the same thing. I was thinking that we do the rename throughout, and thus change all relevant names to \"azure\" and \"AzureActiveDirectory\" and such (from office365). In particular also in the Gerrit configuration file, on the line \"[plugin “gerrit-oauth-provider-office365-oauth”]\", which then will refer to \"-azure-oauth\". HOWEVER, we /also/ make the existing \"-office365-oauth\" config work, so that any existing installations won\u0027t be affected by this name change. This will be done by simply listing the AzureOAuthService twice inside InitOAuth, once with the new config suffix, and once with the old (with a comment about backwards support). I will submit a suggested change for this, also doing the change in the documentation (with a reference to the backwards compatibility feature). Thus, in an existing config section, it would refer to \"-office365-oauth\", and the tenant would not be specified - and that would be handled identical as it did before. What do you think of this?",
+      "parentUuid": "a9d59715_16bc3f0b",
       "range": {
         "startLine": 26,
         "startChar": 13,
