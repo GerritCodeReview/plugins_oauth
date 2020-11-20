@@ -99,11 +99,18 @@ class HttpModule extends ServletModule {
           .to(KeycloakOAuthService.class);
     }
 
-    cfg = cfgFactory.getFromGerritConfig(pluginName + Office365OAuthService.CONFIG_SUFFIX);
+    cfg = cfgFactory.getFromGerritConfig(pluginName + AzureActiveDirectoryService.CONFIG_SUFFIX);
     if (cfg.getString(InitOAuth.CLIENT_ID) != null) {
       bind(OAuthServiceProvider.class)
-          .annotatedWith(Exports.named(Office365OAuthService.CONFIG_SUFFIX))
-          .to(Office365OAuthService.class);
+          .annotatedWith(Exports.named(AzureActiveDirectoryService.CONFIG_SUFFIX))
+          .to(AzureActiveDirectoryService.class);
+    }
+
+    cfg = cfgFactory.getFromGerritConfig(pluginName + AzureActiveDirectoryService.CONFIG_SUFFIX_LEGACY);
+    if (cfg.getString(InitOAuth.CLIENT_ID) != null) {
+      bind(OAuthServiceProvider.class)
+          .annotatedWith(Exports.named(AzureActiveDirectoryService.CONFIG_SUFFIX))
+          .to(AzureActiveDirectoryService.class);
     }
 
     cfg = cfgFactory.getFromGerritConfig(pluginName + AirVantageOAuthService.CONFIG_SUFFIX);
