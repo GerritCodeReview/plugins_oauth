@@ -224,6 +224,30 @@
       },
       "revId": "1b629343b75a602100b0ca52ac901cd7ac4cd1f4",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0f0cee96_3bcfae67",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/Office365Api.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2020-11-23T12:00:23Z",
+      "side": 1,
+      "message": "\u003e I did a bit digging around on the migrate external_id offline and I must say it is difficult to figure out. I found this https://gerrit-review.googlesource.com/Documentation/config-accounts.html#external-ids and when you check out the All-Users project and the refs/meta/external-ids I can see how the linking works but I find it difficult to use so automatic linking would probably be easier for the admins?\n\nYes, but gerrit admins may prefer to do it once and replace all occurences of old prefix with new one, done. Proposal: Just add one statement in the documentation to point out, that manual adjustment of All-Users repository is also an option.",
+      "parentUuid": "20336ffb_a1466cc2",
+      "range": {
+        "startLine": 26,
+        "startChar": 13,
+        "endLine": 26,
+        "endChar": 25
+      },
+      "revId": "1b629343b75a602100b0ca52ac901cd7ac4cd1f4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
