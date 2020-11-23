@@ -200,6 +200,30 @@
       },
       "revId": "1b629343b75a602100b0ca52ac901cd7ac4cd1f4",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "20336ffb_a1466cc2",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/Office365Api.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1120575
+      },
+      "writtenOn": "2020-11-23T11:55:32Z",
+      "side": 1,
+      "message": "Uploaded a proposal for this. I did not create two services but renamed the old one and added support for using the old Office365 naming. I also made sure that running java gerrit.war init will ask to install the Office365 plugin if the config files has this already.\n\nAlso added a configuration option to add automatic linking as you suggested. \nI did a bit digging around on the migrate external_id offline and I must say it is difficult to figure out. I found this https://gerrit-review.googlesource.com/Documentation/config-accounts.html#external-ids and when you check out the All-Users project and the refs/meta/external-ids I can see how the linking works but I find it difficult to use so automatic linking would probably be easier for the admins?",
+      "parentUuid": "c2878915_777768ec",
+      "range": {
+        "startLine": 26,
+        "startChar": 13,
+        "endLine": 26,
+        "endChar": 25
+      },
+      "revId": "1b629343b75a602100b0ca52ac901cd7ac4cd1f4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
