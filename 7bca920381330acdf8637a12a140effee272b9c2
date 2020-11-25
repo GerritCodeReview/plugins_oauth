@@ -16,6 +16,24 @@
       "message": "You renamed test class in this change but teh real service in the follow-up change. Should renaming be done in the csame change for both test and real service?",
       "revId": "7bca920381330acdf8637a12a140effee272b9c2",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "55e03c47_96704363",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/oauth/MicrosoftAzureActiveDirectory20ApiTest.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1120575
+      },
+      "writtenOn": "2020-11-25T08:23:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2d8af221_834ebdfa",
+      "revId": "7bca920381330acdf8637a12a140effee272b9c2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
