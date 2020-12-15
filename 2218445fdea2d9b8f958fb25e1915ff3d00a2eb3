@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "64a9cb5c_b2790e9e",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/KeycloakOAuthService.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 1002666
+      },
+      "writtenOn": "2020-12-15T23:56:58Z",
+      "side": 1,
+      "message": "Can you use java.nio.charset.StandardCharsets.UTF_8 here?",
+      "range": {
+        "startLine": 81,
+        "startChar": 53,
+        "endLine": 81,
+        "endChar": 60
+      },
+      "revId": "2218445fdea2d9b8f958fb25e1915ff3d00a2eb3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
