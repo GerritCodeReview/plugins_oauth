@@ -3,6 +3,46 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "97565949_64737238",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2020-12-16T07:27:38Z",
+      "side": 1,
+      "message": "Wrap lines at 72 chars.",
+      "revId": "2218445fdea2d9b8f958fb25e1915ff3d00a2eb3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "14d58793_e7e46e09",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/KeycloakOAuthService.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2020-12-16T07:27:38Z",
+      "side": 1,
+      "message": "Missing blank. Please run this change through google-java-format 1.7.",
+      "range": {
+        "startLine": 77,
+        "startChar": 75,
+        "endLine": 77,
+        "endChar": 76
+      },
+      "revId": "2218445fdea2d9b8f958fb25e1915ff3d00a2eb3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "64a9cb5c_b2790e9e",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/KeycloakOAuthService.java",
         "patchSetId": 1
@@ -19,6 +59,29 @@
         "startChar": 53,
         "endLine": 81,
         "endChar": 60
+      },
+      "revId": "2218445fdea2d9b8f958fb25e1915ff3d00a2eb3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3abbf697_540f45bb",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/KeycloakOAuthService.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2020-12-16T07:27:38Z",
+      "side": 1,
+      "message": "Missing blank.",
+      "range": {
+        "startLine": 90,
+        "startChar": 7,
+        "endLine": 90,
+        "endChar": 8
       },
       "revId": "2218445fdea2d9b8f958fb25e1915ff3d00a2eb3",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
