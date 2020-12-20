@@ -1,0 +1,113 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d20f4917_a143bcc6",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2020-12-20T19:40:28Z",
+      "side": 1,
+      "message": "Nit: Imperative form: Rename",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 7
+      },
+      "revId": "bebfefe4ec5c77636428f4110802f1cf8a9821e8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2a1e00c7_06e0f87f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2020-12-20T19:40:28Z",
+      "side": 1,
+      "message": "Nit: wrap at 72 char.",
+      "revId": "bebfefe4ec5c77636428f4110802f1cf8a9821e8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0ab790ed_53103de7",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2020-12-20T19:40:28Z",
+      "side": 1,
+      "message": "plugin init step?",
+      "range": {
+        "startLine": 9,
+        "startChar": 10,
+        "endLine": 9,
+        "endChar": 30
+      },
+      "revId": "bebfefe4ec5c77636428f4110802f1cf8a9821e8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bddbf15c_abd57c07",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/HttpModule.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2020-12-20T19:40:28Z",
+      "side": 1,
+      "message": "We should prevent that gerrit starts with double configuration:\n\n  [plugin \"gerrit-oauth-provider-office365-oauth\"]\n        client-id \u003d client_id\n  [plugin \"gerrit-oauth-provider-azure-oauth\"]\n        client-id \u003d client_id2\n\nSo, may be swap the order and perform the check and throw ProvisionException if double configuration was detected:\n\n    boolean office365LegacyProviderBound \u003d false;\n    cfg \u003d cfgFactory.getFromGerritConfig(pluginName + AzureActiveDirectoryService.CONFIG_SUFFIX_LEGACY);\n    if (cfg.getString(InitOAuth.CLIENT_ID) !\u003d null) {\n      office365LegacyProviderBound \u003d true;\n      bind(OAuthServiceProvider.class)\n          .annotatedWith(Exports.named(AzureActiveDirectoryService.CONFIG_SUFFIX))\n          .to(AzureActiveDirectoryService.class);\n    }\n\n    cfg \u003d cfgFactory.getFromGerritConfig(pluginName + AzureActiveDirectoryService.CONFIG_SUFFIX);\n    if (cfg.getString(InitOAuth.CLIENT_ID) !\u003d null) {\n      if (office365LegacyProviderBound) {\n        throw new ProvisionException(\"Legacy Office365 OAuth provider is already bound!\");\n      }\n      bind(OAuthServiceProvider.class)\n          .annotatedWith(Exports.named(AzureActiveDirectoryService.CONFIG_SUFFIX))\n          .to(AzureActiveDirectoryService.class);\n    }",
+      "range": {
+        "startLine": 102,
+        "startChar": 4,
+        "endLine": 114,
+        "endChar": 5
+      },
+      "revId": "bebfefe4ec5c77636428f4110802f1cf8a9821e8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f7d85013_12ff6072",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/InitOAuth.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 167,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2020-12-20T19:40:28Z",
+      "side": 1,
+      "message": "Nit: run google-java-format.",
+      "range": {
+        "startLine": 167,
+        "startChar": 4,
+        "endLine": 167,
+        "endChar": 7
+      },
+      "revId": "bebfefe4ec5c77636428f4110802f1cf8a9821e8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
