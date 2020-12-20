@@ -1,0 +1,210 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "58e65c04_c9ecd59d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2020-12-20T19:39:46Z",
+      "side": 1,
+      "message": "Nit: warp at 72 char.",
+      "revId": "7c979ef98e597f92d03bfd5bf3030810ebf49f81",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6907d3c9_9a76ffae",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/Office365OAuthService.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2020-12-20T19:39:46Z",
+      "side": 1,
+      "message": "This needs to be re-formatted with google-java-format.",
+      "revId": "7c979ef98e597f92d03bfd5bf3030810ebf49f81",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "884ba236_4a75b0c4",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/Office365OAuthService.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2020-12-20T19:39:46Z",
+      "side": 1,
+      "message": "was?",
+      "range": {
+        "startLine": 100,
+        "startChar": 28,
+        "endLine": 100,
+        "endChar": 33
+      },
+      "revId": "7c979ef98e597f92d03bfd5bf3030810ebf49f81",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ad68766b_92133b79",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/Office365OAuthService.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2020-12-20T19:39:46Z",
+      "side": 1,
+      "message": "Nit: Consider to use String.format()?",
+      "range": {
+        "startLine": 100,
+        "startChar": 17,
+        "endLine": 100,
+        "endChar": 110
+      },
+      "revId": "7c979ef98e597f92d03bfd5bf3030810ebf49f81",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "71979a39_fdb3a821",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/Office365OAuthService.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2020-12-20T19:39:46Z",
+      "side": 1,
+      "message": "Same here.",
+      "revId": "7c979ef98e597f92d03bfd5bf3030810ebf49f81",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3ae3cfcd_8629c911",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/Office365OAuthService.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 206,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2020-12-20T19:39:46Z",
+      "side": 1,
+      "message": "Put a comment on that line, that explaining why we accessing part 1, e.g.:\n\n  // Extract payload part from JWT token: header.payload.signature\n\nor similar.",
+      "range": {
+        "startLine": 206,
+        "startChar": 63,
+        "endLine": 206,
+        "endChar": 66
+      },
+      "revId": "7c979ef98e597f92d03bfd5bf3030810ebf49f81",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ef1e675a_7afe0aed",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/Office365OAuthService.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 207,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2020-12-20T19:39:46Z",
+      "side": 1,
+      "message": "Nit: Could be used in place below.",
+      "range": {
+        "startLine": 207,
+        "startChar": 22,
+        "endLine": 207,
+        "endChar": 70
+      },
+      "revId": "7c979ef98e597f92d03bfd5bf3030810ebf49f81",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9fb7b74b_0bee10b4",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/Office365OAuthService.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2020-12-20T19:39:46Z",
+      "side": 1,
+      "message": "Nit: use in place:\n\n  return gson.fromJson(\n        new String(Base64.getDecoder().decode(tokenParts[1]), StandardCharsets.UTF_8),\n        JsonObject.class);",
+      "range": {
+        "startLine": 208,
+        "startChar": 27,
+        "endLine": 208,
+        "endChar": 69
+      },
+      "revId": "7c979ef98e597f92d03bfd5bf3030810ebf49f81",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ea2a4503_b3747728",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/Office365OAuthService.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 211,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2020-12-20T19:39:46Z",
+      "side": 1,
+      "message": "Nit: Unneeded new line.",
+      "revId": "7c979ef98e597f92d03bfd5bf3030810ebf49f81",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "28fbd18b_a03bf9eb",
+        "filename": "src/main/resources/Documentation/config.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 254,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2020-12-20T19:39:46Z",
+      "side": 1,
+      "message": "Nit: OAuth.",
+      "range": {
+        "startLine": 254,
+        "startChar": 14,
+        "endLine": 254,
+        "endChar": 19
+      },
+      "revId": "7c979ef98e597f92d03bfd5bf3030810ebf49f81",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
