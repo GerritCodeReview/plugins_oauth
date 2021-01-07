@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2bf91712_262f8cd6",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1120575
+      },
+      "writtenOn": "2021-01-07T08:46:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b54062f7_445e1f88",
+      "revId": "646425ed1ea4362d2a0973fc20769d0c381cfba4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "14048cf6_146844af",
@@ -31,6 +49,30 @@
       "writtenOn": "2020-12-20T19:39:34Z",
       "side": 1,
       "message": "Could use String.format:\n\n  String.format(\"https://login.microsoftonline.com/%s/oauth2/v2.0/token\", tenant);",
+      "range": {
+        "startLine": 36,
+        "startChar": 12,
+        "endLine": 36,
+        "endChar": 78
+      },
+      "revId": "646425ed1ea4362d2a0973fc20769d0c381cfba4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5372d8cd_cd3c4751",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/Office365Api.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1120575
+      },
+      "writtenOn": "2021-01-07T08:46:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "14048cf6_146844af",
       "range": {
         "startLine": 36,
         "startChar": 12,
@@ -64,6 +106,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ba5b8bd5_2345a084",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/Office365Api.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1120575
+      },
+      "writtenOn": "2021-01-07T08:46:08Z",
+      "side": 1,
+      "message": "Class is removed later in the series, but changed it as you requested.",
+      "parentUuid": "137c0ebe_53bb4fd9",
+      "range": {
+        "startLine": 41,
+        "startChar": 11,
+        "endLine": 41,
+        "endChar": 83
+      },
+      "revId": "646425ed1ea4362d2a0973fc20769d0c381cfba4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f5d758d8_1eacc4e3",
@@ -77,6 +143,30 @@
       "writtenOn": "2020-12-20T19:39:34Z",
       "side": 1,
       "message": "Have you considered to extend init step and add this configuration option? if I add this line:\n\n     if (configureOffice365OAuthProvider) {\n       configureOAuth(office365OAuthProviderSection);\n+      office365OAuthProviderSection.string(\"Tenant\", TENANT, Office365Api.DEFAULT_TENANT);\n     }\n\nand run init site program:\n\n  Use Office365 OAuth provider for Gerrit login ? [Y/n]? Y\n  Application client id          [client_id]: \n  Change client-secret           [y/N]? \n  Tenant                         [organizations]: \n\nthis is written to the config:\n\n  [plugin \"gerrit-oauth-provider-office365-oauth\"]\n        client-id \u003d client_id\n        tenant \u003d organizations\n\nIf you add it, we should only add this extension to the new provider name.",
+      "range": {
+        "startLine": 66,
+        "startChar": 4,
+        "endLine": 66,
+        "endChar": 79
+      },
+      "revId": "646425ed1ea4362d2a0973fc20769d0c381cfba4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c8fc51a2_8551facd",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/Office365OAuthService.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 1120575
+      },
+      "writtenOn": "2021-01-07T08:46:08Z",
+      "side": 1,
+      "message": "Good point. I will add it in the last of this series and only for the new provider name.",
+      "parentUuid": "f5d758d8_1eacc4e3",
       "range": {
         "startLine": 66,
         "startChar": 4,
