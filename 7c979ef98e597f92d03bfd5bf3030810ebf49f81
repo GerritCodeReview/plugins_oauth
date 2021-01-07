@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3c970b0c_468074a4",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1120575
+      },
+      "writtenOn": "2021-01-07T08:46:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "58e65c04_c9ecd59d",
+      "revId": "7c979ef98e597f92d03bfd5bf3030810ebf49f81",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6907d3c9_9a76ffae",
@@ -31,6 +49,24 @@
       "writtenOn": "2020-12-20T19:39:46Z",
       "side": 1,
       "message": "This needs to be re-formatted with google-java-format.",
+      "revId": "7c979ef98e597f92d03bfd5bf3030810ebf49f81",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0728c6fa_cf1415b5",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/Office365OAuthService.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1120575
+      },
+      "writtenOn": "2021-01-07T08:46:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6907d3c9_9a76ffae",
       "revId": "7c979ef98e597f92d03bfd5bf3030810ebf49f81",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -81,6 +117,54 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7e42604c_ea862d6e",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/Office365OAuthService.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 1120575
+      },
+      "writtenOn": "2021-01-07T08:46:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ad68766b_92133b79",
+      "range": {
+        "startLine": 100,
+        "startChar": 17,
+        "endLine": 100,
+        "endChar": 110
+      },
+      "revId": "7c979ef98e597f92d03bfd5bf3030810ebf49f81",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e82be73d_8fa76eb9",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/Office365OAuthService.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 1120575
+      },
+      "writtenOn": "2021-01-07T08:46:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "884ba236_4a75b0c4",
+      "range": {
+        "startLine": 100,
+        "startChar": 28,
+        "endLine": 100,
+        "endChar": 33
+      },
+      "revId": "7c979ef98e597f92d03bfd5bf3030810ebf49f81",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "30e40fce_ab619c15",
@@ -94,6 +178,30 @@
       "writtenOn": "2020-12-30T08:32:33Z",
       "side": 1,
       "message": "Today, the maintainer of that library commented on that isse: [1]. Can we re-use OpenIdJsonTokenExtractor now?\n\n[1] https://github.com/scribejava/scribejava/issues/968#issuecomment-752362229",
+      "range": {
+        "startLine": 107,
+        "startChar": 7,
+        "endLine": 107,
+        "endChar": 117
+      },
+      "revId": "7c979ef98e597f92d03bfd5bf3030810ebf49f81",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3e5661eb_02bd93e5",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/Office365OAuthService.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 1120575
+      },
+      "writtenOn": "2021-01-07T08:46:02Z",
+      "side": 1,
+      "message": "To use OpenIdJsonTokenExtractor we need to extend MicrosoftAzureActiveDirectory20Api and override getAccessTokenExtractor so the MicrosoftAzureActiveDirectory20Api will use that one instead of the default one. Example on how this is done can be seen in GoogleApi20.java [1].\nThen the Office365OAuthService.getAccessToken() would return a OpenIdOAuth2AccessToken instead of OAuth2AccessToken and we could then offload the id_token and place it in the OAuthToken. In L:109 we could then retreive the id_token by token.getIdToken() and replace that section where we manually retreive it.\nIt seems we need to add support for holding the id_token in OAuthToken.java and this requires a change in gerrit itself.\nI think that is a change that does not fit in this series. I also would like this change to be submitted soon; This small change that I initially thought this would be, has now begun to take a bit too long time to continue increasing the scope of.\n\n[1] https://github.com/scribejava/scribejava/blob/acb09724868ad29da24ab9ce210418c606922428/scribejava-apis/src/main/java/com/github/scribejava/apis/GoogleApi20.java",
+      "parentUuid": "30e40fce_ab619c15",
       "range": {
         "startLine": 107,
         "startChar": 7,
@@ -121,6 +229,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "74af0371_87f16596",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/Office365OAuthService.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 1120575
+      },
+      "writtenOn": "2021-01-07T08:46:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "71979a39_fdb3a821",
+      "revId": "7c979ef98e597f92d03bfd5bf3030810ebf49f81",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3ae3cfcd_8629c911",
@@ -134,6 +260,30 @@
       "writtenOn": "2020-12-20T19:39:46Z",
       "side": 1,
       "message": "Put a comment on that line, that explaining why we accessing part 1, e.g.:\n\n  // Extract payload part from JWT token: header.payload.signature\n\nor similar.",
+      "range": {
+        "startLine": 206,
+        "startChar": 63,
+        "endLine": 206,
+        "endChar": 66
+      },
+      "revId": "7c979ef98e597f92d03bfd5bf3030810ebf49f81",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "48f1aa26_43c81667",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/Office365OAuthService.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 206,
+      "author": {
+        "id": 1120575
+      },
+      "writtenOn": "2021-01-07T08:46:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3ae3cfcd_8629c911",
       "range": {
         "startLine": 206,
         "startChar": 63,
@@ -167,6 +317,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f89e203f_407dc0f9",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/Office365OAuthService.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 207,
+      "author": {
+        "id": 1120575
+      },
+      "writtenOn": "2021-01-07T08:46:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ef1e675a_7afe0aed",
+      "range": {
+        "startLine": 207,
+        "startChar": 22,
+        "endLine": 207,
+        "endChar": 70
+      },
+      "revId": "7c979ef98e597f92d03bfd5bf3030810ebf49f81",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9fb7b74b_0bee10b4",
@@ -180,6 +354,30 @@
       "writtenOn": "2020-12-20T19:39:46Z",
       "side": 1,
       "message": "Nit: use in place:\n\n  return gson.fromJson(\n        new String(Base64.getDecoder().decode(tokenParts[1]), StandardCharsets.UTF_8),\n        JsonObject.class);",
+      "range": {
+        "startLine": 208,
+        "startChar": 27,
+        "endLine": 208,
+        "endChar": 69
+      },
+      "revId": "7c979ef98e597f92d03bfd5bf3030810ebf49f81",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e53cac75_1b17b331",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/Office365OAuthService.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 1120575
+      },
+      "writtenOn": "2021-01-07T08:46:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9fb7b74b_0bee10b4",
       "range": {
         "startLine": 208,
         "startChar": 27,
@@ -207,6 +405,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5f0209c9_6d572358",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/Office365OAuthService.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 211,
+      "author": {
+        "id": 1120575
+      },
+      "writtenOn": "2021-01-07T08:46:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ea2a4503_b3747728",
+      "revId": "7c979ef98e597f92d03bfd5bf3030810ebf49f81",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "28fbd18b_a03bf9eb",
@@ -220,6 +436,30 @@
       "writtenOn": "2020-12-20T19:39:46Z",
       "side": 1,
       "message": "Nit: OAuth.",
+      "range": {
+        "startLine": 254,
+        "startChar": 14,
+        "endLine": 254,
+        "endChar": 19
+      },
+      "revId": "7c979ef98e597f92d03bfd5bf3030810ebf49f81",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cbbdabd4_1bdf9a3b",
+        "filename": "src/main/resources/Documentation/config.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 254,
+      "author": {
+        "id": 1120575
+      },
+      "writtenOn": "2021-01-07T08:46:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "28fbd18b_a03bf9eb",
       "range": {
         "startLine": 254,
         "startChar": 14,
