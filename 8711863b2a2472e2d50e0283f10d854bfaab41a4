@@ -24,6 +24,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "aba3acd6_e3a6c373",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1120575
+      },
+      "writtenOn": "2021-01-07T08:46:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "efdcc9a9_e66ccdff",
+      "range": {
+        "startLine": 12,
+        "startChar": 12,
+        "endLine": 12,
+        "endChar": 17
+      },
+      "revId": "8711863b2a2472e2d50e0283f10d854bfaab41a4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f0ac406d_8a1337b0",
@@ -37,6 +61,24 @@
       "writtenOn": "2020-12-20T19:40:12Z",
       "side": 1,
       "message": "Nit: wrap at 72 char.",
+      "revId": "8711863b2a2472e2d50e0283f10d854bfaab41a4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c213ae10_50d3de98",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1120575
+      },
+      "writtenOn": "2021-01-07T08:46:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f0ac406d_8a1337b0",
       "revId": "8711863b2a2472e2d50e0283f10d854bfaab41a4",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -64,6 +106,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "67aef1a3_3612e81a",
+        "filename": "BUILD",
+        "patchSetId": 8
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1120575
+      },
+      "writtenOn": "2021-01-07T08:46:14Z",
+      "side": 1,
+      "message": "Installed and ran the buildifier on this file.",
+      "parentUuid": "7cc80aaa_27d2ee49",
+      "range": {
+        "startLine": 26,
+        "startChar": 8,
+        "endLine": 26,
+        "endChar": 31
+      },
+      "revId": "8711863b2a2472e2d50e0283f10d854bfaab41a4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "af86043e_be532c6d",
@@ -81,6 +147,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d8e631e3_59f2e5fa",
+        "filename": "BUILD",
+        "patchSetId": 8
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1120575
+      },
+      "writtenOn": "2021-01-07T08:46:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "af86043e_be532c6d",
+      "revId": "8711863b2a2472e2d50e0283f10d854bfaab41a4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "95d6bd72_db48b7fc",
@@ -94,6 +178,30 @@
       "writtenOn": "2020-12-20T19:40:12Z",
       "side": 1,
       "message": "Nit: define a constant for this.",
+      "range": {
+        "startLine": 12,
+        "startChar": 58,
+        "endLine": 12,
+        "endChar": 63
+      },
+      "revId": "8711863b2a2472e2d50e0283f10d854bfaab41a4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3adfe294_8225efc0",
+        "filename": "external_plugin_deps.bzl",
+        "patchSetId": 8
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1120575
+      },
+      "writtenOn": "2021-01-07T08:46:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "95d6bd72_db48b7fc",
       "range": {
         "startLine": 12,
         "startChar": 58,
@@ -127,6 +235,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "628d8bea_a314de03",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/Office365OAuthService.java",
+        "patchSetId": 8
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1120575
+      },
+      "writtenOn": "2021-01-07T08:46:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f340ed59_33ae5dbf",
+      "range": {
+        "startLine": 61,
+        "startChar": 23,
+        "endLine": 61,
+        "endChar": 26
+      },
+      "revId": "8711863b2a2472e2d50e0283f10d854bfaab41a4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f05434e4_d8dc96b8",
@@ -140,6 +272,30 @@
       "writtenOn": "2020-12-20T19:40:12Z",
       "side": 1,
       "message": "Use ImmutableSet.Builder instead of static block:\n\n  private static final ImmutableSet\u003cString\u003e TENANTS_WITHOUT_VALIDATION \u003d\n      ImmutableSet.\u003cString\u003ebuilder()\n          .add(DEFAULT_TENANT)\n          .add(\"common\")\n          .add(\"consumers\")\n          .build();",
+      "range": {
+        "startLine": 62,
+        "startChar": 2,
+        "endLine": 66,
+        "endChar": 3
+      },
+      "revId": "8711863b2a2472e2d50e0283f10d854bfaab41a4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bbcf4ef6_b987cf17",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/Office365OAuthService.java",
+        "patchSetId": 8
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 1120575
+      },
+      "writtenOn": "2021-01-07T08:46:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f05434e4_d8dc96b8",
       "range": {
         "startLine": 62,
         "startChar": 2,
@@ -167,6 +323,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2b02feb0_cd8b819e",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/Office365OAuthService.java",
+        "patchSetId": 8
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 1120575
+      },
+      "writtenOn": "2021-01-07T08:46:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "506a3821_294e642b",
+      "revId": "8711863b2a2472e2d50e0283f10d854bfaab41a4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b95886b8_f87f4390",
@@ -190,6 +364,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0f9c59f8_61df6d97",
+        "filename": "src/main/resources/Documentation/config.md",
+        "patchSetId": 8
+      },
+      "lineNbr": 252,
+      "author": {
+        "id": 1120575
+      },
+      "writtenOn": "2021-01-07T08:46:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b95886b8_f87f4390",
+      "range": {
+        "startLine": 252,
+        "startChar": 83,
+        "endLine": 252,
+        "endChar": 84
+      },
+      "revId": "8711863b2a2472e2d50e0283f10d854bfaab41a4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "51024cb0_8b7baa30",
@@ -203,6 +401,30 @@
       "writtenOn": "2020-12-20T19:40:12Z",
       "side": 1,
       "message": "Same here.",
+      "range": {
+        "startLine": 253,
+        "startChar": 27,
+        "endLine": 253,
+        "endChar": 28
+      },
+      "revId": "8711863b2a2472e2d50e0283f10d854bfaab41a4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8ac64217_e7c95244",
+        "filename": "src/main/resources/Documentation/config.md",
+        "patchSetId": 8
+      },
+      "lineNbr": 253,
+      "author": {
+        "id": 1120575
+      },
+      "writtenOn": "2021-01-07T08:46:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "51024cb0_8b7baa30",
       "range": {
         "startLine": 253,
         "startChar": 27,
