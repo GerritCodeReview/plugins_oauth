@@ -41,6 +41,48 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0af69110_995547cd",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1120575
+      },
+      "writtenOn": "2021-01-07T08:46:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2a1e00c7_06e0f87f",
+      "revId": "bebfefe4ec5c77636428f4110802f1cf8a9821e8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6eea8577_a53023ef",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1120575
+      },
+      "writtenOn": "2021-01-07T08:46:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d20f4917_a143bcc6",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 7
+      },
+      "revId": "bebfefe4ec5c77636428f4110802f1cf8a9821e8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0ab790ed_53103de7",
@@ -54,6 +96,30 @@
       "writtenOn": "2020-12-20T19:40:28Z",
       "side": 1,
       "message": "plugin init step?",
+      "range": {
+        "startLine": 9,
+        "startChar": 10,
+        "endLine": 9,
+        "endChar": 30
+      },
+      "revId": "bebfefe4ec5c77636428f4110802f1cf8a9821e8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ca6c3de4_2c1eaa54",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1120575
+      },
+      "writtenOn": "2021-01-07T08:46:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0ab790ed_53103de7",
       "range": {
         "startLine": 9,
         "startChar": 10,
@@ -87,6 +153,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ae9a383f_e90f2641",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/HttpModule.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 1120575
+      },
+      "writtenOn": "2021-01-07T08:46:20Z",
+      "side": 1,
+      "message": "Good point, I will add this.",
+      "parentUuid": "bddbf15c_abd57c07",
+      "range": {
+        "startLine": 102,
+        "startChar": 4,
+        "endLine": 114,
+        "endChar": 5
+      },
+      "revId": "bebfefe4ec5c77636428f4110802f1cf8a9821e8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f7d85013_12ff6072",
@@ -100,6 +190,54 @@
       "writtenOn": "2020-12-20T19:40:28Z",
       "side": 1,
       "message": "Nit: run google-java-format.",
+      "range": {
+        "startLine": 167,
+        "startChar": 4,
+        "endLine": 167,
+        "endChar": 7
+      },
+      "revId": "bebfefe4ec5c77636428f4110802f1cf8a9821e8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "96e85ea9_50910cdd",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/InitOAuth.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 167,
+      "author": {
+        "id": 1120575
+      },
+      "writtenOn": "2021-01-07T08:46:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f7d85013_12ff6072",
+      "range": {
+        "startLine": 167,
+        "startChar": 4,
+        "endLine": 167,
+        "endChar": 7
+      },
+      "revId": "bebfefe4ec5c77636428f4110802f1cf8a9821e8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "74bbdf0e_f202ae31",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/InitOAuth.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 167,
+      "author": {
+        "id": 1120575
+      },
+      "writtenOn": "2021-01-07T08:46:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f7d85013_12ff6072",
       "range": {
         "startLine": 167,
         "startChar": 4,
