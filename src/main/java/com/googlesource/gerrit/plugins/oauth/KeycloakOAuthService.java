@@ -51,6 +51,7 @@ public class KeycloakOAuthService implements OAuthServiceProvider {
   private static final String KEYCLOAK_PROVIDER_PREFIX = "keycloak-oauth:";
   private final OAuth20Service service;
   private final String serviceName;
+  private final boolean usePreferredUsername;
 
   @Inject
   KeycloakOAuthService(
@@ -66,6 +67,7 @@ public class KeycloakOAuthService implements OAuthServiceProvider {
     }
     String realm = cfg.getString(InitOAuth.REALM);
     serviceName = cfg.getString(InitOAuth.SERVICE_NAME, "Keycloak OAuth2");
+    usePreferredUsername = cfg.getBoolean(InitOAuth.USE_PREFERRED_USERNAME, true);
 
     service =
         new ServiceBuilder(cfg.getString(InitOAuth.CLIENT_ID))
@@ -106,8 +108,10 @@ public class KeycloakOAuthService implements OAuthServiceProvider {
     JsonElement usernameElement = claimObject.get("preferred_username");
     JsonElement emailElement = claimObject.get("email");
     JsonElement nameElement = claimObject.get("name");
-    if (usernameElement == null || usernameElement.isJsonNull()) {
-      throw new IOException("Response doesn't contain preferred_username field");
+
+    String username = null;
+    if (usePreferredUsername && !usernameElement.isJsonNull()) {
+      username = usernameElement.getAsString();
     }
     if (emailElement == null || emailElement.isJsonNull()) {
       throw new IOException("Response doesn't contain email field");
@@ -115,7 +119,6 @@ public class KeycloakOAuthService implements OAuthServiceProvider {
     if (nameElement == null || nameElement.isJsonNull()) {
       throw new IOException("Response doesn't contain name field");
     }
-    String username = usernameElement.getAsString();
     String email = emailElement.getAsString();
     String name = nameElement.getAsString();
 
