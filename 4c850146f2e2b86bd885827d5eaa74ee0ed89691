@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d6e06701_171f0e7b",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/KeycloakOAuthService.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2021-06-26T07:10:54Z",
+      "side": 1,
+      "message": "That\u0027s odd. May be move this part to line 120 and flip the logic:\n\n  String username \u003d null;\n  if (usePreferredUsername) {\n      username \u003d usernameElement.getAsString();\n  }\n\nCan you also elaborate in the commit message, why you need to suppress username provided by Keycloak?",
+      "range": {
+        "startLine": 124,
+        "startChar": 4,
+        "endLine": 126,
+        "endChar": 5
+      },
+      "revId": "4c850146f2e2b86bd885827d5eaa74ee0ed89691",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
