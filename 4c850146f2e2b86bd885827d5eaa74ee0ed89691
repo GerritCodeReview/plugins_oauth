@@ -22,6 +22,30 @@
       },
       "revId": "4c850146f2e2b86bd885827d5eaa74ee0ed89691",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4dd2d537_0fc8393c",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/KeycloakOAuthService.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 1137935
+      },
+      "writtenOn": "2021-06-28T09:30:26Z",
+      "side": 1,
+      "message": "Yeah, you\u0027re right. I was avoiding a second call to \nusernameElement.getAsString(); for the external ID.",
+      "parentUuid": "d6e06701_171f0e7b",
+      "range": {
+        "startLine": 124,
+        "startChar": 4,
+        "endLine": 126,
+        "endChar": 5
+      },
+      "revId": "4c850146f2e2b86bd885827d5eaa74ee0ed89691",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
