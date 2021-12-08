@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cf30bc75_fcef7402",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002666
+      },
+      "writtenOn": "2021-12-08T19:32:52Z",
+      "side": 1,
+      "message": "You probably should also branch stable-3.4 and stable-3.3 from the parent commit?",
+      "revId": "533b86c85d55cafa53ded66973902979aa6653cc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
