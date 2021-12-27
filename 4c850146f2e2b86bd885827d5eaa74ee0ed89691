@@ -46,6 +46,30 @@
       },
       "revId": "4c850146f2e2b86bd885827d5eaa74ee0ed89691",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eeb7c43a_2cd00d48",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/KeycloakOAuthService.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2021-12-27T07:08:39Z",
+      "side": 1,
+      "message": "You are actually right: we should avoid calling usernameElement.getAsString() twice. I missed it, apologize. We can revert to your previous version, or add intermediate variable, e.g.:\n\n    String usernameAsString \u003d usernameElement.getAsString();\n    String username \u003d null;\n    if (usePreferredUsername) {\n      username \u003d usernameAsString;\n    }\n    String externalId \u003d KEYCLOAK_PROVIDER_PREFIX + usernameAsString;",
+      "parentUuid": "4dd2d537_0fc8393c",
+      "range": {
+        "startLine": 124,
+        "startChar": 4,
+        "endLine": 126,
+        "endChar": 5
+      },
+      "revId": "4c850146f2e2b86bd885827d5eaa74ee0ed89691",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
