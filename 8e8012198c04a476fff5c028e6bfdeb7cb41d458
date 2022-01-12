@@ -16,6 +16,23 @@
       "message": "youssef is the authority on this subject.",
       "revId": "8e8012198c04a476fff5c028e6bfdeb7cb41d458",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6c4fd510_d093a760",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1091982
+      },
+      "writtenOn": "2022-01-12T11:34:50Z",
+      "side": 1,
+      "message": "In order to submit the change you need to fulfill all \"submit requirements\".\n\nThere are two requirements inherited from All-Projects: CR and V [1]. CR requires a non-uploader approval\n  * submittableIf \u003d label:Code-Review\u003dMAX,user\u003dnon_uploader ...\n\nTo bypass the self approval restriction, you need to redefine the SR in this project and omit the (user\u003dnon_uploader) part from the submittability expression.\n\n[1] https://gerrit.googlesource.com/All-Projects/+/refs/meta/config/project.config#168",
+      "revId": "8e8012198c04a476fff5c028e6bfdeb7cb41d458",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
