@@ -46,6 +46,30 @@
       },
       "revId": "70963eb21734d70a61d1d777f9b0e1fe651cb362",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fadb4eb5_d3a79ce2",
+        "filename": "project.config",
+        "patchSetId": 4
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1091982
+      },
+      "writtenOn": "2022-01-12T11:48:25Z",
+      "side": 1,
+      "message": "\u003e Isn\u0027t \"Verified\" label missing here?\nYou don\u0027t need to add a SR section for \"Verified\" since it\u0027s already defined and inherited from All-Projects. You would only need to redefine if you\u0027d like to\n1) change its logic (e.g. applicability, submittability or override expressions)\n2) Or, skip the requirement by setting applicableIf \u003d is:false (see https://gerrit-review.googlesource.com/c/gerrit/+/323191)\n\n-- \n\n\u003e Should this rather be ...\n\nIt\u0027s better to define separate SRs for CR and V\n\nCR:\n  submittableIf \u003d label:Code-Review\u003dMAX AND -label:Code-Review\u003dMIN\n\nV:\n  submittableIf \u003d label:Verified\u003dMAX and -label:Verified\u003dMIN",
+      "parentUuid": "63742e87_672753d9",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 34
+      },
+      "revId": "70963eb21734d70a61d1d777f9b0e1fe651cb362",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
