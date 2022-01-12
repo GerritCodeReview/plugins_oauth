@@ -70,6 +70,30 @@
       },
       "revId": "70963eb21734d70a61d1d777f9b0e1fe651cb362",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "69d3fb18_5b2e908b",
+        "filename": "project.config",
+        "patchSetId": 4
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1003935
+      },
+      "writtenOn": "2022-01-12T11:54:37Z",
+      "side": 1,
+      "message": "Verified is enforced by a different submit-requirement [1] that is defined in All-Projects. This submit requirement is still inherited.\n\nIf you override the Code-Review submit requirement here, you should also override the Code-Review label definition:\n\n[label \"Code-Review\"]\n\tfunction \u003d MaxWithBlock\n\tdefaultValue \u003d 0\n        value \u003d -2 Do not submit\n        value \u003d -1 I would prefer that you didn\u0027t submit this\n        value \u003d 0 No score\n        value \u003d +1 Looks good to me, but someone else must approve\n        value \u003d +2 Looks good to me, approved\n        ignoreSelfApproval \u003d false\n        \nOtherwise the inherited Code-Review label definition ignores self approvals while your Code-Review submit requirement doesn\u0027t ignore self approvals. FWIW this is only an intermediate issue. After everything is completely migrated to submit requirements the ignoreSelfApproval option on the label definition should go away.\n\n[1] \n[submit-requirement \"Verified\"]\n\tdescription \u003d CI result status for build and tests is passing\n\tapplicableIf \u003d -branch:refs/meta/config\n\tsubmittableIf \u003d label:Verified\u003dMAX AND -label:Verified\u003dMIN\n\tcanOverrideInChildProjects \u003d true",
+      "parentUuid": "63742e87_672753d9",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 34
+      },
+      "revId": "70963eb21734d70a61d1d777f9b0e1fe651cb362",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
