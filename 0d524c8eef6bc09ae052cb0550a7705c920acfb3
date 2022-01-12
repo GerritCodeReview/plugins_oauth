@@ -34,6 +34,24 @@
       "parentUuid": "4fac94b1_59bf7a95",
       "revId": "0d524c8eef6bc09ae052cb0550a7705c920acfb3",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2e23c181_9b5f3e4e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1003935
+      },
+      "writtenOn": "2022-01-12T11:32:45Z",
+      "side": 1,
+      "message": "Yes, you would need to override the submit requirement, e.g. the same way as it\u0027s done here [1]. When you do this, you should also override the Code-Review label definition, so that the submit requirement and the Code-Review label definition both agree that self approvals are not ignored.\n\n[1] https://gerrit-review.googlesource.com/c/zuul/jobs/+/327148/2/project.config",
+      "parentUuid": "87328a44_1dbc07be",
+      "revId": "0d524c8eef6bc09ae052cb0550a7705c920acfb3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
