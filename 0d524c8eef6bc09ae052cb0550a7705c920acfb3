@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4fac94b1_59bf7a95",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2022-01-12T11:21:13Z",
+      "side": 1,
+      "message": "What should I add here to be able to submit self-approved changes, e.g. change 327840?\n\nThe reason I need it: Since David Pursehouse and Marco Miller left this project I am the only maintainer of this and other plugins (javamelody), hosted on gerrit-review.\n",
+      "revId": "0d524c8eef6bc09ae052cb0550a7705c920acfb3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
