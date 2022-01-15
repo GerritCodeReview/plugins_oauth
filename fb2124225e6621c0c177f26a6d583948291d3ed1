@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "012a14b5_f91feef3",
+        "filename": "WORKSPACE",
+        "patchSetId": 1
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2022-01-15T09:05:40Z",
+      "side": 1,
+      "message": "This should wait, until change 328270 is merged.",
+      "revId": "fb2124225e6621c0c177f26a6d583948291d3ed1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
