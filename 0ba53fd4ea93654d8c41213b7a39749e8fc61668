@@ -3,6 +3,29 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "2ebf8880_614f7272",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2022-01-17T06:45:18Z",
+      "side": 1,
+      "message": "I uploaded change 328280 fix to download-command plugin. Would it help to make email address as username work in gerrit?",
+      "range": {
+        "startLine": 14,
+        "startChar": 21,
+        "endLine": 14,
+        "endChar": 58
+      },
+      "revId": "0ba53fd4ea93654d8c41213b7a39749e8fc61668",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "3a0c8598_42c70edc",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 5
