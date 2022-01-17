@@ -26,6 +26,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "4879b32b_f481cd64",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1137935
+      },
+      "writtenOn": "2022-01-17T10:20:44Z",
+      "side": 1,
+      "message": "I think it would be a useful feature for sure. We moved a bunch of our web services over to using Keycloak with federated identities, so email is the natural choice for a preferred username. We\u0027d probably prefer this scenario where we leave the username unset for users to choose their own though.",
+      "parentUuid": "2ebf8880_614f7272",
+      "range": {
+        "startLine": 14,
+        "startChar": 21,
+        "endLine": 14,
+        "endChar": 58
+      },
+      "revId": "0ba53fd4ea93654d8c41213b7a39749e8fc61668",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "3a0c8598_42c70edc",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 5
