@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c597bce4_51316671",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2022-01-17T08:13:19Z",
+      "side": 1,
+      "message": "The build failure is unrelated to this change, but to Java 11 toolchain on Gerrit@HEAD. All change verification for all plugins are currently broken on Zuul.\n\nSee related Issue 15509 and the fix is pending for review: change 327757.",
+      "parentUuid": "e836cefa_082c47e9",
+      "revId": "fb2124225e6621c0c177f26a6d583948291d3ed1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "012a14b5_f91feef3",
