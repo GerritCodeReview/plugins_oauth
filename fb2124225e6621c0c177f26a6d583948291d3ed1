@@ -51,6 +51,24 @@
       "message": "This should wait, until change 328270 is merged.",
       "revId": "fb2124225e6621c0c177f26a6d583948291d3ed1",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "831d892b_6d2e2edd",
+        "filename": "WORKSPACE",
+        "patchSetId": 1
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2022-01-17T18:21:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "012a14b5_f91feef3",
+      "revId": "fb2124225e6621c0c177f26a6d583948291d3ed1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
