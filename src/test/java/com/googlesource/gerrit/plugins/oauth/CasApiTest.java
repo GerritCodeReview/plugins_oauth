@@ -17,19 +17,20 @@ package com.googlesource.gerrit.plugins.oauth;
 import static com.google.common.truth.Truth.assertThat;
 
 import com.github.scribejava.core.extractors.OAuth2AccessTokenExtractor;
-import org.junit.Before;
+import com.github.scribejava.core.extractors.OAuth2AccessTokenJsonExtractor;
 import org.junit.Test;
 
 public class CasApiTest {
-  private CasApi api;
-
-  @Before
-  public void setUp() {
-    api = new CasApi("");
-  }
 
   @Test
   public void testAccessTokenExtractor() {
+    CasApi api = new CasApi("", false);
     assertThat(api.getAccessTokenExtractor()).isInstanceOf(OAuth2AccessTokenExtractor.class);
+  }
+
+  @Test
+  public void testJsonAccessTokenExtractor() {
+    CasApi api = new CasApi("", true);
+    assertThat(api.getAccessTokenExtractor()).isInstanceOf(OAuth2AccessTokenJsonExtractor.class);
   }
 }

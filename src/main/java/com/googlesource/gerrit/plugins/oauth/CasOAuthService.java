@@ -52,6 +52,7 @@ class CasOAuthService implements OAuthServiceProvider {
   static final String CONFIG_SUFFIX = "-cas-oauth";
   private static final String CAS_PROVIDER_PREFIX = "cas-oauth:";
   private static final String PROTECTED_RESOURCE_URL = "%s/oauth2.0/profile";
+  private static final String USE_JSON_EXTRACTOR = "use-json-extractor";
 
   private final String rootUrl;
   private final boolean fixLegacyUserId;
@@ -69,11 +70,12 @@ class CasOAuthService implements OAuthServiceProvider {
     }
     String canonicalWebUrl = CharMatcher.is('/').trimTrailingFrom(urlProvider.get()) + "/";
     fixLegacyUserId = cfg.getBoolean(InitOAuth.FIX_LEGACY_USER_ID, false);
+    boolean useJsonExtractor = cfg.getBoolean(USE_JSON_EXTRACTOR, false);
     service =
         new ServiceBuilder(cfg.getString(InitOAuth.CLIENT_ID))
             .apiSecret(cfg.getString(InitOAuth.CLIENT_SECRET))
             .callback(canonicalWebUrl + "oauth")
-            .build(new CasApi(rootUrl));
+            .build(new CasApi(rootUrl, useJsonExtractor));
   }
 
   @Override

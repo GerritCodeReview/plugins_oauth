@@ -27,6 +27,7 @@ appended with provider suffix: e.g. `-google-oauth` or `-github-oauth`:
     root-url = "<cas url>"
     client-id = "<client-id>"
     client-secret = "<client-secret>"
+    use-json-extractor = false
 
   [plugin "@PLUGIN@-gitlab-oauth"]
     root-url = "<gitlab url>"
@@ -122,7 +123,8 @@ plugin.gerrit-oauth-provider-cas-oauth.root-url = "https://example.com/cas"
 
 is required, since CAS is a self-hosted application.
 
-Note that the CAS OAuth plugin only supports CAS V5 and higher.
+Note that the CAS OAuth plugin only supports CAS V5 and higher. Both plain text
+and JSON responses are supported (see configuration).
 
 The plugin expects CAS to make several attributes available to it:
 
