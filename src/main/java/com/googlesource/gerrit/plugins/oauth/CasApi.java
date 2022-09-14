@@ -16,6 +16,7 @@ package com.googlesource.gerrit.plugins.oauth;
 
 import com.github.scribejava.core.builder.api.DefaultApi20;
 import com.github.scribejava.core.extractors.OAuth2AccessTokenExtractor;
+import com.github.scribejava.core.extractors.OAuth2AccessTokenJsonExtractor;
 import com.github.scribejava.core.extractors.TokenExtractor;
 import com.github.scribejava.core.model.OAuth2AccessToken;
 import com.github.scribejava.core.oauth2.bearersignature.BearerSignature;
@@ -25,8 +26,10 @@ public class CasApi extends DefaultApi20 {
   private static final String AUTHORIZE_URL = "%s/oauth2.0/authorize";
 
   private final String rootUrl;
+  private final TokenExtractor<OAuth2AccessToken> tokenExtractor;
 
-  public CasApi(String rootUrl) {
+  public CasApi(String rootUrl, boolean useJsonExtractor) {
+    this.tokenExtractor = useJsonExtractor ? OAuth2AccessTokenJsonExtractor.instance() : OAuth2AccessTokenExtractor.instance();
     this.rootUrl = rootUrl;
   }
 
@@ -47,6 +50,6 @@ public class CasApi extends DefaultApi20 {
 
   @Override
   public TokenExtractor<OAuth2AccessToken> getAccessTokenExtractor() {
-    return OAuth2AccessTokenExtractor.instance();
+    return tokenExtractor;
   }
 }
