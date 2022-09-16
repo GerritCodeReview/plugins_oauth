@@ -20,6 +20,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "a8bc50f9_256ececb",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1149025
+      },
+      "writtenOn": "2022-09-16T14:56:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0ac84fb5_a0af2b8a",
+      "revId": "5b5d0c66cc5ef9f66b41ef7116cc1b7179603db5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "276bb0b9_f047d7c7",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 1
@@ -52,6 +70,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8db9a0eb_e6c3b114",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/CasApi.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1149025
+      },
+      "writtenOn": "2022-09-16T14:56:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f7a4c323_65b44091",
+      "revId": "5b5d0c66cc5ef9f66b41ef7116cc1b7179603db5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f4014821_2f8d748a",
@@ -65,6 +101,30 @@
       "writtenOn": "2022-09-16T02:34:31Z",
       "side": 1,
       "message": "This new option should be documented in config.md:\n\n```\n  src/main/resources/Documentation/config.md\n```\n  \nin the corresponding config section:\n\n```\n  [plugin \"@PLUGIN@-cas-oauth\"]\n    root-url \u003d \"\u003ccas url\u003e\"\n    client-id \u003d \"\u003cclient-id\u003e\"\n    client-secret \u003d \"\u003cclient-secret\u003e\"\n```",
+      "range": {
+        "startLine": 55,
+        "startChar": 52,
+        "endLine": 55,
+        "endChar": 70
+      },
+      "revId": "5b5d0c66cc5ef9f66b41ef7116cc1b7179603db5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "59f6ddfb_599efa2f",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/CasOAuthService.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1149025
+      },
+      "writtenOn": "2022-09-16T14:56:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f4014821_2f8d748a",
       "range": {
         "startLine": 55,
         "startChar": 52,
