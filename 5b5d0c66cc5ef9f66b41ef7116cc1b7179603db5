@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "0ac84fb5_a0af2b8a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2022-09-16T02:34:31Z",
+      "side": 1,
+      "message": "Mention for what CAS version is this needed?",
+      "revId": "5b5d0c66cc5ef9f66b41ef7116cc1b7179603db5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "276bb0b9_f047d7c7",
@@ -14,6 +31,46 @@
       "writtenOn": "2022-09-14T16:10:38Z",
       "side": 1,
       "message": "A quick first attempt at allowing the extractor to be configured. Can rework if a more general/extensible solution is desired.",
+      "revId": "5b5d0c66cc5ef9f66b41ef7116cc1b7179603db5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f7a4c323_65b44091",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/CasApi.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2022-09-16T02:34:31Z",
+      "side": 1,
+      "message": "Can you run google-java-format on this?\n\n```\ndiff --git a/src/main/java/com/googlesource/gerrit/plugins/oauth/CasApi.java b/src/main/java/com/googlesource/gerrit/plugins/oauth/CasApi.java\nindex ace9d28..6c06b24 100644\n--- a/src/main/java/com/googlesource/gerrit/plugins/oauth/CasApi.java\n+++ b/src/main/java/com/googlesource/gerrit/plugins/oauth/CasApi.java\n@@ -29,7 +29,10 @@ public class CasApi extends DefaultApi20 {\n   private final TokenExtractor\u003cOAuth2AccessToken\u003e tokenExtractor;\n \n   public CasApi(String rootUrl, boolean useJsonExtractor) {\n-    this.tokenExtractor \u003d useJsonExtractor ? OAuth2AccessTokenJsonExtractor.instance() : OAuth2AccessTokenExtractor.instance();\n+    this.tokenExtractor \u003d\n+        useJsonExtractor\n+            ? OAuth2AccessTokenJsonExtractor.instance()\n+            : OAuth2AccessTokenExtractor.instance();\n     this.rootUrl \u003d rootUrl;\n   }\n```",
+      "revId": "5b5d0c66cc5ef9f66b41ef7116cc1b7179603db5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f4014821_2f8d748a",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/CasOAuthService.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2022-09-16T02:34:31Z",
+      "side": 1,
+      "message": "This new option should be documented in config.md:\n\n```\n  src/main/resources/Documentation/config.md\n```\n  \nin the corresponding config section:\n\n```\n  [plugin \"@PLUGIN@-cas-oauth\"]\n    root-url \u003d \"\u003ccas url\u003e\"\n    client-id \u003d \"\u003cclient-id\u003e\"\n    client-secret \u003d \"\u003cclient-secret\u003e\"\n```",
+      "range": {
+        "startLine": 55,
+        "startChar": 52,
+        "endLine": 55,
+        "endChar": 70
+      },
       "revId": "5b5d0c66cc5ef9f66b41ef7116cc1b7179603db5",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
