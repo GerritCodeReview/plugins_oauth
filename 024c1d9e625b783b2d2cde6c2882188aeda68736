@@ -33,6 +33,24 @@
       "message": "Hi @david.ostrovsky@gmail.com\nAre you happy with this patchset to be merged or would you like further changes to be made?",
       "revId": "024c1d9e625b783b2d2cde6c2882188aeda68736",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "741da443_1353f92c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2022-10-07T10:14:08Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "035f5eaa_e7d31588",
+      "revId": "024c1d9e625b783b2d2cde6c2882188aeda68736",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
