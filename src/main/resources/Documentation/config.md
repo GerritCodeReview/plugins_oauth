@@ -69,6 +69,11 @@ appended with provider suffix: e.g. `-google-oauth` or `-github-oauth`:
     client-secret = "<client-secret>"
     use-preferred-username = true # Optional, if false will not send preferred_username from Keycloak to leave username unset
 
+  [plugin "@PLUGIN@-tuleap-oauth"]
+    service-name = "<custom service name (optional)>"
+    root-url = "<root url>" # for example, https://tuleap.example.com
+    client-id = "<client-id>"
+    client-secret = "<client-secret>"
 ```
 
 When one from the sections above is omitted, OAuth SSO is used.
@@ -244,6 +249,12 @@ See [Getting Started](https://source.sierrawireless.com/airvantage/av/howto/clou
 The client-id and client-secret for Phabricator can be obtained by registering a
 Client application.
 See [Using the Phabricator OAuth Server](https://secure.phabricator.com/book/phabcontrib/article/using_oauthserver/).
+
+### Tuleap
+
+The client-id and client-secret for Tuleap can be obtained by registering a
+Client application.
+See [Registering a new application](https://docs.tuleap.org/user-guide/oauth2.html#client-registration).
 
 ### Azure (previously named Office365)
 Were previously named Office365 but both `plugin.gerrit-oauth-provider-azure-oauth` and
