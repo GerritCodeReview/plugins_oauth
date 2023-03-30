@@ -54,6 +54,7 @@ class InitOAuth implements InitStep {
   private final Section azureActiveDirectoryAuthProviderSection;
   private final Section airVantageOAuthProviderSection;
   private final Section phabricatorOAuthProviderSection;
+  private final Section tuleapOAuthProviderSection;
 
   @Inject
   InitOAuth(ConsoleUI ui, Section.Factory sections, @PluginName String pluginName) {
@@ -84,6 +85,8 @@ class InitOAuth implements InitStep {
         sections.get(PLUGIN_SECTION, pluginName + AirVantageOAuthService.CONFIG_SUFFIX);
     this.phabricatorOAuthProviderSection =
         sections.get(PLUGIN_SECTION, pluginName + PhabricatorOAuthService.CONFIG_SUFFIX);
+    this.tuleapOAuthProviderSection =
+            sections.get(PLUGIN_SECTION, pluginName + TuleapOAuthService.CONFIG_SUFFIX);
   }
 
   @Override
@@ -202,6 +205,14 @@ class InitOAuth implements InitStep {
             "Use Phabricator OAuth provider for Gerrit login ?");
     if (configurePhabricatorOAuthProvider && configureOAuth(phabricatorOAuthProviderSection)) {
       checkRootUrl(phabricatorOAuthProviderSection.string("Phabricator Root URL", ROOT_URL, null));
+    }
+
+    boolean configureTuleapOAuthProvider =
+            ui.yesno(
+                    isConfigured(tuleapOAuthProviderSection),
+                    "Use Tuleap OAuth provider for Gerrit login ?");
+    if (configureTuleapOAuthProvider && configureOAuth(tuleapOAuthProviderSection)) {
+      checkRootUrl(tuleapOAuthProviderSection.string("Tuleap Root URL", ROOT_URL, null));
     }
   }
 
