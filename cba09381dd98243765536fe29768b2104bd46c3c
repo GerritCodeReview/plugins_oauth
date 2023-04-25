@@ -16,6 +16,24 @@
       "message": "Sorry for the delay. I was OOO and will try to review it in the next days.",
       "revId": "cba09381dd98243765536fe29768b2104bd46c3c",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f2070086_bb91e85a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1087299
+      },
+      "writtenOn": "2023-04-25T11:15:57Z",
+      "side": 1,
+      "message": "No problem at all. I will also be off the next few ones :) .\n\nFor information you can see the plugin live with those changes on https://gerrit.tuleap.net. I can also provide you with a set of credentials on a public Tuleap instance if you want to do some functional tests on your dev Gerrit instance.",
+      "parentUuid": "7b628938_daae86f3",
+      "revId": "cba09381dd98243765536fe29768b2104bd46c3c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
