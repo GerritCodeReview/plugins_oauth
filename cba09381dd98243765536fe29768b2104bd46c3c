@@ -34,6 +34,80 @@
       "parentUuid": "7b628938_daae86f3",
       "revId": "cba09381dd98243765536fe29768b2104bd46c3c",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ea4e8e21_1c6369db",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2023-04-29T11:28:45Z",
+      "side": 1,
+      "message": "Can you run google-java-format 1.7 on these files:\n\n   src/main/java/com/googlesource/gerrit/plugins/oauth/HttpModule.java\n   src/main/java/com/googlesource/gerrit/plugins/oauth/InitOAuth.java",
+      "revId": "cba09381dd98243765536fe29768b2104bd46c3c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "244e02b0_fb17f1e4",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/TuleapApi.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2023-04-29T11:28:45Z",
+      "side": 1,
+      "message": "This line is missing:\n\n```\n// Copyright (C) 2023 The Android Open Source Project\n```\n\nyou\u0027ve added the complete license header in test code.",
+      "revId": "cba09381dd98243765536fe29768b2104bd46c3c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4fb7e4ec_be650d4e",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/TuleapOAuthService.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2023-04-29T11:28:45Z",
+      "side": 1,
+      "message": "License header is missing.",
+      "revId": "cba09381dd98243765536fe29768b2104bd46c3c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "edb9a7d2_b6e0b5f1",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/oauth/TuleapApiTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2023-04-29T11:28:45Z",
+      "side": 1,
+      "message": "Nit: 2023",
+      "range": {
+        "startLine": 1,
+        "startChar": 17,
+        "endLine": 1,
+        "endChar": 21
+      },
+      "revId": "cba09381dd98243765536fe29768b2104bd46c3c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
