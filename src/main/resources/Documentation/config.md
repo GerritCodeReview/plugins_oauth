@@ -63,7 +63,9 @@ appended with provider suffix: e.g. `-google-oauth` or `-github-oauth`:
     link-to-existing-office365-accounts = true #Optional, if set will try to link old account with the @PLUGIN@-office365-oauth naming
 
   [plugin "@PLUGIN@-keycloak-oauth"]
-    root-url = "<root url>" # for example, https://signon.example.com
+    # Prior to Keycloak V17 /auth path must be added to the root-url, see this migration instruction:
+    # https://www.keycloak.org/migration/migrating-to-quarkus
+    root-url = "<root url>" # for example, https://signon.example.com, or https://signon.example.com/auth
     realm = "<realm>"
     client-id = "<client-id>"
     client-secret = "<client-secret>"
