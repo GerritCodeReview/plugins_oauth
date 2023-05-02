@@ -34,6 +34,23 @@
       "parentUuid": "dd4b0376_897e02ef",
       "revId": "6219174790c13ac1a3569fcf1b890f7a578f6162",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c1db0d7c_0b5084d7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1127730
+      },
+      "writtenOn": "2023-05-02T09:18:59Z",
+      "side": 1,
+      "message": "LGTM, Björn\u0027s suggestion is also a very good one.",
+      "revId": "6219174790c13ac1a3569fcf1b890f7a578f6162",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
