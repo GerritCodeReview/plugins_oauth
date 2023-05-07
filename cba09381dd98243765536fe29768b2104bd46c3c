@@ -70,6 +70,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3ec9cc13_70d2bae8",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/TuleapApi.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2023-05-07T07:55:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "244e02b0_fb17f1e4",
+      "revId": "cba09381dd98243765536fe29768b2104bd46c3c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4fb7e4ec_be650d4e",
@@ -87,6 +105,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a2f66fb9_162be7ea",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/TuleapOAuthService.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2023-05-07T07:55:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4fb7e4ec_be650d4e",
+      "revId": "cba09381dd98243765536fe29768b2104bd46c3c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "edb9a7d2_b6e0b5f1",
@@ -100,6 +136,30 @@
       "writtenOn": "2023-04-29T11:28:45Z",
       "side": 1,
       "message": "Nit: 2023",
+      "range": {
+        "startLine": 1,
+        "startChar": 17,
+        "endLine": 1,
+        "endChar": 21
+      },
+      "revId": "cba09381dd98243765536fe29768b2104bd46c3c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "686c9e1f_24ebb41e",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/oauth/TuleapApiTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2023-05-07T07:55:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "edb9a7d2_b6e0b5f1",
       "range": {
         "startLine": 1,
         "startChar": 17,
