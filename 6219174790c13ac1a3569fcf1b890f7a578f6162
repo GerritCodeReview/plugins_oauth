@@ -51,6 +51,24 @@
       "message": "LGTM, Björn\u0027s suggestion is also a very good one.",
       "revId": "6219174790c13ac1a3569fcf1b890f7a578f6162",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1bf645f5_927ea979",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2023-05-08T10:22:35Z",
+      "side": 1,
+      "message": "Good point. Will look into it.",
+      "parentUuid": "b04df1f3_333c2f91",
+      "revId": "6219174790c13ac1a3569fcf1b890f7a578f6162",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
