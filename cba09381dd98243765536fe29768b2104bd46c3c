@@ -53,6 +53,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ecda64bf_d71458d7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1087299
+      },
+      "writtenOn": "2023-05-09T07:21:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ea4e8e21_1c6369db",
+      "revId": "cba09381dd98243765536fe29768b2104bd46c3c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "244e02b0_fb17f1e4",
@@ -81,6 +99,24 @@
         "id": 1011323
       },
       "writtenOn": "2023-05-07T07:55:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "244e02b0_fb17f1e4",
+      "revId": "cba09381dd98243765536fe29768b2104bd46c3c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5eeafd8d_26d9aa35",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/TuleapApi.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1087299
+      },
+      "writtenOn": "2023-05-09T07:21:43Z",
       "side": 1,
       "message": "Done",
       "parentUuid": "244e02b0_fb17f1e4",
@@ -123,6 +159,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bf53c290_156f818e",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/TuleapOAuthService.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1087299
+      },
+      "writtenOn": "2023-05-09T07:21:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4fb7e4ec_be650d4e",
+      "revId": "cba09381dd98243765536fe29768b2104bd46c3c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "edb9a7d2_b6e0b5f1",
@@ -157,6 +211,30 @@
         "id": 1011323
       },
       "writtenOn": "2023-05-07T07:55:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "edb9a7d2_b6e0b5f1",
+      "range": {
+        "startLine": 1,
+        "startChar": 17,
+        "endLine": 1,
+        "endChar": 21
+      },
+      "revId": "cba09381dd98243765536fe29768b2104bd46c3c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3c1a24da_d17641e9",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/oauth/TuleapApiTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1087299
+      },
+      "writtenOn": "2023-05-09T07:21:43Z",
       "side": 1,
       "message": "Done",
       "parentUuid": "edb9a7d2_b6e0b5f1",
