@@ -16,6 +16,24 @@
       "message": "Pretty much a copy of Tuleap. To bad there is no generic oidc compatible handler. Then there would be less duplication here.",
       "revId": "2b57e41e951280846145fcac35b740b99353e040",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9f411779_0d10aa28",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2023-06-21T15:47:31Z",
+      "side": 1,
+      "message": "Yeah, this is a known issue, nobody helped with generic oauth provider yet: [1].\n\n[1]: https://github.com/davido/gerrit-oauth-provider/issues/134",
+      "parentUuid": "8874f34e_d22307fe",
+      "revId": "2b57e41e951280846145fcac35b740b99353e040",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
