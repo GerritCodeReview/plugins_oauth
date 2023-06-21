@@ -76,6 +76,11 @@ appended with provider suffix: e.g. `-google-oauth` or `-github-oauth`:
     root-url = "<root url>" # for example, https://tuleap.example.com
     client-id = "<client-id>"
     client-secret = "<client-secret>"
+
+  [plugin "@PLUGIN@-auth0-oauth"]
+    root-url = "<root url>" # for example, https://dev-abc.us.auth0.com
+    client-id = "<client-id>"
+    client-secret = "<client-secret>"
 ```
 
 When one from the sections above is omitted, OAuth SSO is used.
