@@ -20,6 +20,7 @@ Supported OAuth providers:
 * [Azure (previously named Office365)](https://docs.microsoft.com/en-us/azure/active-directory/develop/active-directory-v2-protocols)
 * [Phabricator](https://secure.phabricator.com/book/phabcontrib/article/using_oauthserver/)
 * [Tuleap](https://docs.tuleap.org/user-guide/oauth2.html)
+* [Auth0](https://auth0.com/docs/authenticate/protocols/oauth)
 
 See the [Wiki](https://github.com/davido/gerrit-oauth-provider/wiki) what it can do for you.
 
