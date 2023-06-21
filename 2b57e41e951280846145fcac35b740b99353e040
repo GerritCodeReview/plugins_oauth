@@ -34,6 +34,24 @@
       "parentUuid": "8874f34e_d22307fe",
       "revId": "2b57e41e951280846145fcac35b740b99353e040",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "987c98a6_d73f21a6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1161815
+      },
+      "writtenOn": "2023-06-21T16:29:07Z",
+      "side": 1,
+      "message": "Yea, i saw that. A simple version with just configurable AUTHORIZE_URL, ACCESS_TOKEN_URL, SCOPE instead of just root url, would likely go a long way. But as with all things. Time is limited.",
+      "parentUuid": "9f411779_0d10aa28",
+      "revId": "2b57e41e951280846145fcac35b740b99353e040",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }

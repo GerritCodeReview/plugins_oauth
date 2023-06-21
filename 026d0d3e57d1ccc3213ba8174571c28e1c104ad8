@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "85ba9c31_4a4d05b5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1161815
+      },
+      "writtenOn": "2023-06-21T16:29:07Z",
+      "side": 1,
+      "message": "Yup, works as expected.",
+      "parentUuid": "300b7586_084e5137",
+      "revId": "026d0d3e57d1ccc3213ba8174571c28e1c104ad8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "554e0753_438f03e6",
@@ -31,6 +49,30 @@
       "writtenOn": "2023-06-21T15:47:31Z",
       "side": 1,
       "message": "Should be formatted with google-java-format version 1.7.\n\nSee: tools/setup_gjf.sh in gerrit tree, how to set it up and running.\n\nI have this alias:\n\n```\nalias gjf\u003d\u0027git show --diff-filter\u003dAMR --pretty\u003d\"\" --name-only HEAD | grep java$ | xargs -r /home/davido/projects/gerrit/tools/format/google-java-format-1.7 -i\u0027\n```\nThat produced this diff on patch set 2:\n\n```\ndiff --git a/src/main/java/com/googlesource/gerrit/plugins/oauth/InitOAuth.java b/src/main/java/com/googlesource/gerrit/plugins/oauth/InitOAuth.java\nindex 7ea95b7..101c1f1 100644\n--- a/src/main/java/com/googlesource/gerrit/plugins/oauth/InitOAuth.java\n+++ b/src/main/java/com/googlesource/gerrit/plugins/oauth/InitOAuth.java\n@@ -220,8 +220,7 @@ class InitOAuth implements InitStep {\n \n     boolean configureAuth0OAuthProvider \u003d\n         ui.yesno(\n-            isConfigured(auth0OAuthProviderSection),\n-            \"Use Auth0 OAuth provider for Gerrit login ?\");\n+            isConfigured(auth0OAuthProviderSection), \"Use Auth0 OAuth provider for Gerrit login ?\");\n     if (configureAuth0OAuthProvider \u0026\u0026 configureOAuth(auth0OAuthProviderSection)) {\n       checkRootUrl(auth0OAuthProviderSection.string(\"Auth0 Root URL\", ROOT_URL, null));\n     }\n```",
+      "range": {
+        "startLine": 221,
+        "startChar": 4,
+        "endLine": 224,
+        "endChar": 59
+      },
+      "revId": "026d0d3e57d1ccc3213ba8174571c28e1c104ad8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e4c72574_6556cab6",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/InitOAuth.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 224,
+      "author": {
+        "id": 1161815
+      },
+      "writtenOn": "2023-06-21T16:29:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "554e0753_438f03e6",
       "range": {
         "startLine": 221,
         "startChar": 4,
