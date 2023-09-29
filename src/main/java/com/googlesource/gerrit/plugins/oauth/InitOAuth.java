@@ -37,6 +37,7 @@ class InitOAuth implements InitStep {
   static final String REALM = "realm";
   static final String TENANT = "tenant";
   static final String LINK_TO_EXISTING_OFFICE365_ACCOUNT = "link-to-existing-office365-accounts";
+  static final String LINK_TO_EXISTING_GERRIT_ACCOUNT = "link-to-existing-gerrit-accounts";
   static final String SERVICE_NAME = "service-name";
   static String FIX_LEGACY_USER_ID_QUESTION = "Fix legacy user id, without oauth provider prefix?";
 
@@ -56,6 +57,7 @@ class InitOAuth implements InitStep {
   private final Section phabricatorOAuthProviderSection;
   private final Section tuleapOAuthProviderSection;
   private final Section auth0OAuthProviderSection;
+  private final Section authentikOAuthProviderSection;
 
   @Inject
   InitOAuth(ConsoleUI ui, Section.Factory sections, @PluginName String pluginName) {
@@ -90,6 +92,8 @@ class InitOAuth implements InitStep {
         sections.get(PLUGIN_SECTION, pluginName + TuleapOAuthService.CONFIG_SUFFIX);
     this.auth0OAuthProviderSection =
         sections.get(PLUGIN_SECTION, pluginName + Auth0OAuthService.CONFIG_SUFFIX);
+    this.authentikOAuthProviderSection =
+        sections.get(PLUGIN_SECTION, pluginName + AuthentikOAuthService.CONFIG_SUFFIX);
   }
 
   @Override
@@ -223,6 +227,16 @@ class InitOAuth implements InitStep {
             isConfigured(auth0OAuthProviderSection), "Use Auth0 OAuth provider for Gerrit login ?");
     if (configureAuth0OAuthProvider && configureOAuth(auth0OAuthProviderSection)) {
       checkRootUrl(auth0OAuthProviderSection.string("Auth0 Root URL", ROOT_URL, null));
+    }
+
+    boolean configureAuthentikOAuthProvider =
+        ui.yesno(
+            isConfigured(authentikOAuthProviderSection),
+            "Use Authentik OAuth provider for Gerrit login ?");
+    if (configureAuthentikOAuthProvider && configureOAuth(authentikOAuthProviderSection)) {
+      checkRootUrl(authentikOAuthProviderSection.string("Authentik Root URL", ROOT_URL, null));
+      authentikOAuthProviderSection.string(
+          "Link to existing gerrit accounts?", LINK_TO_EXISTING_GERRIT_ACCOUNT, "false");
     }
   }
 

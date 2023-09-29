@@ -81,6 +81,12 @@ appended with provider suffix: e.g. `-google-oauth` or `-github-oauth`:
     root-url = "<root url>" # for example, https://dev-abc.us.auth0.com
     client-id = "<client-id>"
     client-secret = "<client-secret>"
+
+  [plugin "@PLUGIN@-authentik-oauth"]
+    root-url = "<root url>" # for example, https://authentik.example.com
+    client-id = "<client-id>"
+    client-secret = "<client-secret>"
+    link-to-existing-gerrit-accounts = false
 ```
 
 When one from the sections above is omitted, OAuth SSO is used.
@@ -312,3 +318,19 @@ The root URL will the protocol and hostname of your Keycloak instance (for examp
 
 You can optionally set `use-preferred-username = false` if you would prefer to not have the `preferred_username`
 token be automatically set as the users username, and instead let users choose their own usernames.
+
+### Authentik
+
+When setting up a Application in Authentik for Gerrit use the `OAuth2/OpenID Provider` type.
+
+You can optionally set `link-to-existing-gerrit-accounts = true` if you want the provider to link a account based
+on the username instead of trying to create a new account, see below migration from LDAP.
+
+#### Migrating from LDAP
+
+Set the `link-to-existing-gerrit-accounts = true` option.
+
+If you have used LDAP before and have accounts with an externalIDs like `gerrit:firstname.lastname` and a user in Authentik
+with username `firstname.lastname` logs in it will link the Authentik account to that Gerrit account.
+
+When all users has logged in once in Gerrit with their Authentik account it's recommended that the configuration option is removed.
