@@ -150,6 +150,12 @@ class HttpModule extends ServletModule {
       bind(OAuthServiceProvider.class)
           .annotatedWith(Exports.named(Auth0OAuthService.CONFIG_SUFFIX))
           .to(Auth0OAuthService.class);
+
+    cfg = cfgFactory.getFromGerritConfig(pluginName + AuthentikOAuthService.CONFIG_SUFFIX);
+    if (cfg.getString(InitOAuth.CLIENT_ID) != null) {
+      bind(OAuthServiceProvider.class)
+          .annotatedWith(Exports.named(AuthentikOAuthService.CONFIG_SUFFIX))
+          .to(AuthentikOAuthService.class);
     }
   }
 }
