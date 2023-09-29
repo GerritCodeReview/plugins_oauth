@@ -51,6 +51,24 @@
       "parentUuid": "7e155b9e_35ee01ae",
       "revId": "6af5c226b1321d1079fd0b768e9c9c3a0f3b0f61",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f129558e_0b6ee411",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/InitOAuth.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 238,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2023-09-29T12:46:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7e155b9e_35ee01ae",
+      "revId": "6af5c226b1321d1079fd0b768e9c9c3a0f3b0f61",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
