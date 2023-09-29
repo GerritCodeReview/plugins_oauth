@@ -33,6 +33,24 @@
       "message": "Running google-java-format on it:\n\n```\n-      authentikOAuthProviderSection.string(\"Link to existing gerrit accounts?\", LINK_TO_EXISTING_GERRIT_ACCOUNT, \"false\");\n+      authentikOAuthProviderSection.string(\n+          \"Link to existing gerrit accounts?\", LINK_TO_EXISTING_GERRIT_ACCOUNT, \"false\");\n\n```",
       "revId": "6af5c226b1321d1079fd0b768e9c9c3a0f3b0f61",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bb5fd5d3_fe41bd95",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/InitOAuth.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 238,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2023-09-29T12:46:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7e155b9e_35ee01ae",
+      "revId": "6af5c226b1321d1079fd0b768e9c9c3a0f3b0f61",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
