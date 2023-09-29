@@ -144,5 +144,12 @@ class HttpModule extends ServletModule {
           .annotatedWith(Exports.named(TuleapOAuthService.CONFIG_SUFFIX))
           .to(TuleapOAuthService.class);
     }
+
+    cfg = cfgFactory.getFromGerritConfig(pluginName + AuthentikOAuthService.CONFIG_SUFFIX);
+    if (cfg.getString(InitOAuth.CLIENT_ID) != null) {
+      bind(OAuthServiceProvider.class)
+          .annotatedWith(Exports.named(AuthentikOAuthService.CONFIG_SUFFIX))
+          .to(AuthentikOAuthService.class);
+    }
   }
 }
