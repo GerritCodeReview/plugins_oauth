@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "447e6482_12a42ba8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1167772
+      },
+      "writtenOn": "2024-03-15T22:08:37Z",
+      "side": 1,
+      "message": "git clone https://gerrit.googlesource.com/plugins/oauth",
+      "revId": "0223572326af2c9dd0893f295a40c3acae9b9132",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
