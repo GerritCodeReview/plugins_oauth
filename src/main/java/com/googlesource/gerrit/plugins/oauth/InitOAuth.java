@@ -58,6 +58,7 @@ class InitOAuth implements InitStep {
   private final Section tuleapOAuthProviderSection;
   private final Section auth0OAuthProviderSection;
   private final Section authentikOAuthProviderSection;
+  private final Section cognitoOAuthProviderSection;
 
   @Inject
   InitOAuth(ConsoleUI ui, Section.Factory sections, @PluginName String pluginName) {
@@ -94,6 +95,8 @@ class InitOAuth implements InitStep {
         sections.get(PLUGIN_SECTION, pluginName + Auth0OAuthService.CONFIG_SUFFIX);
     this.authentikOAuthProviderSection =
         sections.get(PLUGIN_SECTION, pluginName + AuthentikOAuthService.CONFIG_SUFFIX);
+    this.cognitoOAuthProviderSection =
+        sections.get(PLUGIN_SECTION, pluginName + CognitoOAuthService.CONFIG_SUFFIX);
   }
 
   @Override
@@ -237,6 +240,14 @@ class InitOAuth implements InitStep {
       checkRootUrl(authentikOAuthProviderSection.string("Authentik Root URL", ROOT_URL, null));
       authentikOAuthProviderSection.string(
           "Link to existing gerrit accounts?", LINK_TO_EXISTING_GERRIT_ACCOUNT, "false");
+    }
+
+    boolean configureCognitoOAuthProvider =
+        ui.yesno(
+            isConfigured(cognitoOAuthProviderSection),
+            "Use Cognito OAuth provider for Gerrit login ?");
+    if (configureCognitoOAuthProvider && configureOAuth(cognitoOAuthProviderSection)) {
+      checkRootUrl(cognitoOAuthProviderSection.string("Cognito Root URL", ROOT_URL, null));
     }
   }
 
