@@ -87,6 +87,11 @@ appended with provider suffix: e.g. `-google-oauth` or `-github-oauth`:
     client-id = "<client-id>"
     client-secret = "<client-secret>"
     link-to-existing-gerrit-accounts = false
+
+  [plugin "@PLUGIN@-cognito-oauth"]
+    root-url = "<root url>" # for example, https://cognito.example.com
+    client-id = "<client-id>"
+    client-secret = "<client-secret>"
 ```
 
 When one from the sections above is omitted, OAuth SSO is used.
@@ -325,6 +330,11 @@ When setting up a Application in Authentik for Gerrit use the `OAuth2/OpenID Pro
 
 You can optionally set `link-to-existing-gerrit-accounts = true` if you want the provider to link a account based
 on the username instead of trying to create a new account, see below migration from LDAP.
+
+### Cognito
+
+The client-id and secret-id can be obtained in the AWS Cognito web interface once you create a new App Integration for Gerrit.
+See [Creating an app integration ](https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-user-pools-configuring-app-integration.html).
 
 #### Migrating from LDAP
 
