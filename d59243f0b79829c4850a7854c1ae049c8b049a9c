@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "452ce932_fce7c388",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3378618
+      },
+      "writtenOn": "2024-04-16T07:55:22Z",
+      "side": 1,
+      "message": "From what I see in the Zuul logs, the failure is not related to this change.",
+      "revId": "d59243f0b79829c4850a7854c1ae049c8b049a9c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
