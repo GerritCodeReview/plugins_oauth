@@ -86,6 +86,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ad3beee7_bed39417",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/CognitoApi.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2024-05-23T03:41:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1d71ed7e_b3a9cf42",
+      "revId": "d59243f0b79829c4850a7854c1ae049c8b049a9c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ced1c603_a8d14801",
@@ -99,6 +117,24 @@
       "writtenOn": "2024-05-22T19:52:34Z",
       "side": 1,
       "message": "Nit: new line between methods.",
+      "revId": "d59243f0b79829c4850a7854c1ae049c8b049a9c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a1c9ac4f_7efa4a53",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/CognitoApi.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2024-05-23T03:41:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ced1c603_a8d14801",
       "revId": "d59243f0b79829c4850a7854c1ae049c8b049a9c",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -120,6 +156,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c2d3882d_2307290d",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/CognitoApi.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2024-05-23T03:41:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "088beeff_72f1d5c4",
+      "revId": "d59243f0b79829c4850a7854c1ae049c8b049a9c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d224057c_57a096b3",
@@ -137,6 +191,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7f13397c_1c538098",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/CognitoOAuthService.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2024-05-23T03:41:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d224057c_57a096b3",
+      "revId": "d59243f0b79829c4850a7854c1ae049c8b049a9c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fca07ef9_3ddfdb3e",
@@ -150,6 +222,30 @@
       "writtenOn": "2024-05-22T19:52:34Z",
       "side": 1,
       "message": "Nit: too long line. Can you run google-java-format version 1.7 on this file?",
+      "range": {
+        "startLine": 81,
+        "startChar": 4,
+        "endLine": 81,
+        "endChar": 102
+      },
+      "revId": "d59243f0b79829c4850a7854c1ae049c8b049a9c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "856e47db_5d8d1ec8",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/CognitoOAuthService.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2024-05-23T03:41:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fca07ef9_3ddfdb3e",
       "range": {
         "startLine": 81,
         "startChar": 4,
@@ -183,6 +279,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1722b72e_e2ba25f5",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/CognitoOAuthService.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2024-05-23T03:41:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "37d90abe_a36db621",
+      "range": {
+        "startLine": 106,
+        "startChar": 6,
+        "endLine": 111,
+        "endChar": 34
+      },
+      "revId": "d59243f0b79829c4850a7854c1ae049c8b049a9c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f9783204_a08ec85b",
@@ -196,6 +316,30 @@
       "writtenOn": "2024-05-22T19:52:34Z",
       "side": 1,
       "message": "Nit: unneeded blank.",
+      "range": {
+        "startLine": 337,
+        "startChar": 32,
+        "endLine": 337,
+        "endChar": 33
+      },
+      "revId": "d59243f0b79829c4850a7854c1ae049c8b049a9c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2dab4bec_64c7da71",
+        "filename": "src/main/resources/Documentation/config.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 337,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2024-05-23T03:41:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f9783204_a08ec85b",
       "range": {
         "startLine": 337,
         "startChar": 32,
