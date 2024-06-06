@@ -1,2 +1,2 @@
-build --workspace_status_command="python ./tools/workspace_status.py"
+build --workspace_status_command="python3 ./tools/workspace_status.py"
 test --build_tests_only
