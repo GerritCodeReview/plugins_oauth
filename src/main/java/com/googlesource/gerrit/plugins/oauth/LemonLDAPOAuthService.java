@@ -37,9 +37,9 @@ import com.google.gson.JsonObject;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.Singleton;
+import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
-import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 
 @Singleton
