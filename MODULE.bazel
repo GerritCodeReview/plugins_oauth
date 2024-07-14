@@ -48,8 +48,8 @@ use_repo(maven, "external_plugin_deps")
 maven.install(
     name = "oauth_plugin_deps",
     artifacts = [
-        "com.fasterxml.jackson.core:jackson-databind:2.10.2",
-        "com.github.scribejava:scribejava-apis:6.9.0",
+        "com.fasterxml.jackson.core:jackson-databind:2.21.1",
+        "com.github.scribejava:scribejava-apis:8.3.3",
         "com.sap.cloud.security:java-security:3.6.0",
     ],
     duplicate_version_warning = "error",
