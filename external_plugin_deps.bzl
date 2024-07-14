@@ -1,28 +1,36 @@
 load("//tools/bzl:maven_jar.bzl", "maven_jar")
 
 def external_plugin_deps():
-    JACKSON_VERS = "2.10.2"
-    SCRIBEJAVA_VERS = "6.9.0"
+    JACKSON_VERS = "2.21.1"
+    SCRIBEJAVA_VERS = "8.3.3"
     SAP_SECURITY_VERS = "3.6.0"
     maven_jar(
         name = "scribejava-core",
         artifact = "com.github.scribejava:scribejava-core:" + SCRIBEJAVA_VERS,
-        sha1 = "ed761f450d8382f75787e8fee9ae52e7ec768747",
+        sha1 = "4a9b4ed9a6367f95945eb30382a1cc647b390bd5",
+        deps = [
+            "@scribejava-java8//jar",
+        ],
     )
     maven_jar(
         name = "scribejava-apis",
         artifact = "com.github.scribejava:scribejava-apis:" + SCRIBEJAVA_VERS,
-        sha1 = "a374c7a36533e58e53b42b584a8b3751ab1e13c4",
+        sha1 = "0298af304ea01e420110b9d6880f2bef9c41bc8b",
+    )
+    maven_jar(
+        name = "scribejava-java8",
+        artifact = "com.github.scribejava:scribejava-java8:" + SCRIBEJAVA_VERS,
+        sha1 = "32e216f872c4ff6b3a20627d1708794db5761bc0",
     )
     maven_jar(
         name = "jackson-annotations",
-        artifact = "com.fasterxml.jackson.core:jackson-annotations:" + JACKSON_VERS,
-        sha1 = "3a13b6105946541b8d4181a0506355b5fae63260",
+        artifact = "com.fasterxml.jackson.core:jackson-annotations:2.21",
+        sha1 = "b1bc1868bf02dc0bd6c7836257a036a331005309",
     )
     maven_jar(
         name = "jackson-databind",
         artifact = "com.fasterxml.jackson.core:jackson-databind:" + JACKSON_VERS,
-        sha1 = "0528de95f198afafbcfb0c09d2e43b6e0ea663ec",
+        sha1 = "5615fb77652bfd386d87b95a1d663e1c0e38b372",
         deps = [
             "@jackson-annotations//jar",
         ],
@@ -30,7 +38,7 @@ def external_plugin_deps():
     maven_jar(
         name = "jackson-core",
         artifact = "com.fasterxml.jackson.core:jackson-core:" + JACKSON_VERS,
-        sha1 = "73d4322a6bda684f676a2b5fe918361c4e5c7cca",
+        sha1 = "47b013fc85dbb819f3ba51e95a5560d0f1c4121c",
     )
     maven_jar(
         name = "sap-java-security",
