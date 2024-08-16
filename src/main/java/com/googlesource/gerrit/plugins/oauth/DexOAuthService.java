@@ -16,11 +16,17 @@ package com.googlesource.gerrit.plugins.oauth;
 
 import static com.google.gerrit.json.OutputFormat.JSON;
 
+import com.auth0.jwk.JwkProvider;
+import com.auth0.jwk.JwkProviderBuilder;
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.auth0.jwt.interfaces.DecodedJWT;
+import com.auth0.jwt.interfaces.RSAKeyProvider;
 import com.github.scribejava.core.builder.ServiceBuilder;
 import com.github.scribejava.core.model.OAuth2AccessToken;
 import com.github.scribejava.core.oauth.OAuth20Service;
 import com.google.common.base.CharMatcher;
-import com.google.common.base.Preconditions;
 import com.google.gerrit.extensions.annotations.PluginName;
 import com.google.gerrit.extensions.auth.oauth.OAuthServiceProvider;
 import com.google.gerrit.extensions.auth.oauth.OAuthToken;
@@ -31,16 +37,18 @@ import com.google.gerrit.server.config.PluginConfig;
 import com.google.gerrit.server.config.PluginConfigFactory;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonSyntaxException;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.ProvisionException;
 import com.google.inject.Singleton;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
 import java.net.URI;
-import java.nio.charset.StandardCharsets;
+import java.security.interfaces.RSAPrivateKey;
+import java.security.interfaces.RSAPublicKey;
 import java.util.concurrent.ExecutionException;
-import org.apache.commons.codec.binary.Base64;
+import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -50,10 +58,16 @@ public class DexOAuthService implements OAuthServiceProvider {
 
   static final String CONFIG_SUFFIX = "-dex-oauth";
   private static final String DEX_PROVIDER_PREFIX = "dex-oauth:";
+  private final String jwksUrl;
+  private final int JwksCacheTimeoutHours;
+  private final int JwksCacheRefillRateMinutes;
+  private final int JwksCacheSize;
   private final OAuth20Service service;
   private final String rootUrl;
   private final String domain;
   private final String serviceName;
+  private final boolean useDexEndpointPrefix;
+  private final boolean linkExistingGerrit;
 
   @Inject
   DexOAuthService(
@@ -67,67 +81,98 @@ public class DexOAuthService implements OAuthServiceProvider {
     if (!URI.create(rootUrl).isAbsolute()) {
       throw new ProvisionException("Root URL must be absolute URL");
     }
+    jwksUrl = cfg.getString(InitOAuth.JWKS_URL, "");
+    if (!jwksUrl.isEmpty()) {
+      if (!URI.create(jwksUrl).isAbsolute()) {
+        throw new ProvisionException("JWKS URL must be absolute URL");
+      }
+    }
     domain = cfg.getString(InitOAuth.DOMAIN, null);
     serviceName = cfg.getString(InitOAuth.SERVICE_NAME, "Dex OAuth2");
+    linkExistingGerrit = cfg.getBoolean(InitOAuth.LINK_TO_EXISTING_GERRIT_ACCOUNT, false);
+    useDexEndpointPrefix = cfg.getBoolean(InitOAuth.USE_DEX_ENDPOINT_PREFIX, true);
+    JwksCacheTimeoutHours = cfg.getInt(InitOAuth.JWKS_CACHE_TIMEOUT_HOURS, 1);
+    JwksCacheSize = cfg.getInt(InitOAuth.JWKS_CACHE_SIZE, 10);
+    JwksCacheRefillRateMinutes = cfg.getInt(InitOAuth.JWKS_CACHE_REFILL_RATE_MINUTES, 1);
 
     service =
         new ServiceBuilder(cfg.getString(InitOAuth.CLIENT_ID))
             .apiSecret(cfg.getString(InitOAuth.CLIENT_SECRET))
             .defaultScope("openid profile email offline_access")
             .callback(canonicalWebUrl + "oauth")
-            .build(new DexApi(rootUrl));
+            .build(new DexApi(rootUrl, useDexEndpointPrefix));
   }
 
-  private String parseJwt(String input) throws UnsupportedEncodingException {
-    String[] parts = input.split("\\.");
-    Preconditions.checkState(parts.length == 3);
-    Preconditions.checkNotNull(parts[1]);
-    return new String(Base64.decodeBase64(parts[1]), StandardCharsets.UTF_8.name());
+  private DecodedJWT parseJwt(String input) throws JWTVerificationException {
+    try {
+      if (jwksUrl.isEmpty()) {
+        return JWT.decode(input);
+      }
+      URI jwksUri = URI.create(jwksUrl);
+      JwkProvider provider =
+          new JwkProviderBuilder(jwksUri.toURL())
+              .cached(JwksCacheSize, JwksCacheTimeoutHours, TimeUnit.HOURS)
+              .rateLimited(JwksCacheSize, JwksCacheRefillRateMinutes, TimeUnit.MINUTES)
+              .build();
+      Algorithm algorithm = getAlgorithm(provider);
+      return JWT.require(algorithm).build().verify(input);
+    } catch (MalformedURLException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  private Algorithm getAlgorithm(JwkProvider provider) {
+    RSAKeyProvider keyProvider =
+        new RSAKeyProvider() {
+          @Override
+          public RSAPublicKey getPublicKeyById(String kid) {
+            try {
+              return (RSAPublicKey) provider.get(kid).getPublicKey();
+            } catch (Exception e) {
+              throw new RuntimeException("Failed to retrieve public key", e);
+            }
+          }
+
+          @Override
+          public RSAPrivateKey getPrivateKey() {
+            return null;
+          }
+
+          @Override
+          public String getPrivateKeyId() {
+            return null;
+          }
+        };
+    Algorithm algorithm = Algorithm.RSA256(keyProvider);
+    return algorithm;
   }
 
   @Override
   public OAuthUserInfo getUserInfo(OAuthToken token) throws IOException {
-    JsonElement tokenJson = JSON.newGson().fromJson(token.getRaw(), JsonElement.class);
-    JsonObject tokenObject = tokenJson.getAsJsonObject();
-    JsonElement id_token = tokenObject.get("id_token");
-
-    String jwt;
     try {
-      jwt = parseJwt(id_token.getAsString());
-    } catch (UnsupportedEncodingException e) {
-      throw new IOException(
-          String.format(
-              "%s support is required to interact with JWTs", StandardCharsets.UTF_8.name()),
-          e);
-    }
+      JsonElement tokenJson = JSON.newGson().fromJson(token.getRaw(), JsonElement.class);
+      JsonObject tokenObject = tokenJson.getAsJsonObject();
+      if (!tokenObject.has("id_token")) {
+        throw new IOException("No entry id_token in json");
+      }
 
-    JsonElement claimJson = JSON.newGson().fromJson(jwt, JsonElement.class);
-
-    // Dex does not support basic profile currently (2017-09), extracting info
-    // from access token claim
-
-    JsonObject claimObject = claimJson.getAsJsonObject();
-    JsonElement emailElement = claimObject.get("email");
-    JsonElement nameElement = claimObject.get("name");
-    if (emailElement == null || emailElement.isJsonNull()) {
-      throw new IOException("Response doesn't contain email field");
+      JsonElement id_token = tokenObject.get("id_token");
+      DecodedJWT jwt = parseJwt(id_token.getAsString());
+      String email = jwt.getClaim("email").asString();
+      String name = jwt.getClaim("name").asString();
+      String username = email;
+      if (domain != null && !domain.isEmpty()) {
+        username = email.replace("@" + domain, "");
+      }
+      return new OAuthUserInfo(
+          DEX_PROVIDER_PREFIX + email,
+          username,
+          email,
+          name,
+          linkExistingGerrit ? "gerrit:" + username : null /*claimedIdentity*/);
+    } catch (JWTVerificationException | JsonSyntaxException | IllegalStateException e) {
+      throw new IOException("Unable to parse JWT or JWT has expired");
     }
-    if (nameElement == null || nameElement.isJsonNull()) {
-      throw new IOException("Response doesn't contain name field");
-    }
-    String email = emailElement.getAsString();
-    String name = nameElement.getAsString();
-    String username = email;
-    if (domain != null && domain.length() > 0) {
-      username = email.replace("@" + domain, "");
-    }
-
-    return new OAuthUserInfo(
-        DEX_PROVIDER_PREFIX + email /*externalId*/,
-        username /*username*/,
-        email /*email*/,
-        name /*displayName*/,
-        null /*claimedIdentity*/);
   }
 
   @Override

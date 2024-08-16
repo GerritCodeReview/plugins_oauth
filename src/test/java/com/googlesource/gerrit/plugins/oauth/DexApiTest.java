@@ -25,7 +25,7 @@ public class DexApiTest {
 
   @Before
   public void setUp() {
-    api = new DexApi("");
+    api = new DexApi("", false);
   }
 
   @Test
