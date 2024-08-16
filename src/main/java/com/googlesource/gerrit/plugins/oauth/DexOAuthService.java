@@ -28,6 +28,7 @@ import com.github.scribejava.core.model.OAuth2AccessToken;
 import com.github.scribejava.core.oauth.OAuth20Service;
 import com.google.common.base.CharMatcher;
 import com.google.gerrit.extensions.annotations.PluginName;
+import com.google.gerrit.extensions.auth.oauth.OAuthLoginProvider;
 import com.google.gerrit.extensions.auth.oauth.OAuthServiceProvider;
 import com.google.gerrit.extensions.auth.oauth.OAuthToken;
 import com.google.gerrit.extensions.auth.oauth.OAuthUserInfo;
@@ -53,7 +54,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @Singleton
-public class DexOAuthService implements OAuthServiceProvider {
+public class DexOAuthService implements OAuthServiceProvider, OAuthLoginProvider {
   private static final Logger log = LoggerFactory.getLogger(DexOAuthService.class);
 
   static final String CONFIG_SUFFIX = "-dex-oauth";
@@ -204,5 +205,11 @@ public class DexOAuthService implements OAuthServiceProvider {
   @Override
   public String getName() {
     return serviceName;
+  }
+
+  @Override
+  public OAuthUserInfo login(String username, String secret) throws IOException {
+    OAuthToken token = new OAuthToken(secret, "Bearer", secret);
+    return this.getUserInfo(token);
   }
 }
