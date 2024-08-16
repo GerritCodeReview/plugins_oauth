@@ -40,6 +40,12 @@ appended with provider suffix: e.g. `-google-oauth` or `-github-oauth`:
     root-url = "<dex url>"
     client-id = "<client-id>"
     client-secret = "<client-secret>"
+    use-dex-endpoint-prefix = true
+    jwks-url = "<jwks-url>"
+    jwks-cache-size = 10
+    jwks-cache-timeout-hours = 1
+    jwks-cache-max-refill-rate-minutes = 1
+    fix-legacy-user-id = true
 
   [plugin "@PLUGIN@-airvantage-oauth"]
     client-id = "<client-id>"
@@ -259,6 +265,12 @@ secret.
 
 The client-id and client-secret for Dex OAuth are part of the Dex
 setup and need to be set manually.
+
+By default, the tokens returned from Dex are not veified and are used as is. A `jwks-url` can be provided to verify the JWT tokens. To configure how often the public keys are fetched from the `jwks-url`, you can use the following options:
+
+- `jwks-cache-size`: Specifies the max number of keys to cache from the jwks-url. (Default: 10)
+- `jwks-cache-timeout-hours`: Specifies the number of hours after which the cache is refreshed. (Default: 1)
+- `jwks-cache-max-refill-rate-minutes`: Specifies the number of minutes to wait after a cache refresh to rate-limit the requests sent to the jwks-url. (Default: 1)
 
 See
 [Using Dex](https://github.com/coreos/dex/blob/master/Documentation/using-dex.md)

@@ -30,6 +30,8 @@ gerrit_plugin(
         "@sap-xsuaa-token-client//jar",
         "@scribejava-apis//jar",
         "@scribejava-core//jar",
+        "@java-jwt//jar",
+        "@jwks-rsa//jar",
     ],
 )
 

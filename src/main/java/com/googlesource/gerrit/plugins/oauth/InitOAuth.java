@@ -55,6 +55,11 @@ public class InitOAuth implements InitStep {
   public static final String ROOT_URL = "root-url";
   public static final String REALM = "realm";
   public static final String TENANT = "tenant";
+  public static final String USE_DEX_ENDPOINT_PREFIX = "use-dex-endpoint-prefix";
+  public static final String JWKS_URL = "jwks-url";
+  public static final String JWKS_CACHE_TIMEOUT_HOURS = "jwks-cache-timeout-hours";
+  public static final String JWKS_CACHE_REFILL_RATE_MINUTES = "jwks-cache-max-refill-rate-minutes";
+  public static final String JWKS_CACHE_SIZE = "jwks-cache-size";
   public static final String LINK_TO_EXISTING_OFFICE365_ACCOUNT =
       "link-to-existing-office365-accounts";
   public static final String LINK_TO_EXISTING_GERRIT_ACCOUNT = "link-to-existing-gerrit-accounts";

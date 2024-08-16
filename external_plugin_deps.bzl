@@ -4,6 +4,8 @@ def external_plugin_deps(omit_commons_codec = True):
     JACKSON_VERS = "2.10.2"
     SCRIBEJAVA_VERS = "6.9.0"
     SAP_SECURITY_VERS = "3.6.0"
+    JAVAJWT_VERS = "4.4.0"
+    JWKRSA_VERS = "0.22.1"
     maven_jar(
         name = "scribejava-core",
         artifact = "com.github.scribejava:scribejava-core:" + SCRIBEJAVA_VERS,
@@ -56,6 +58,17 @@ def external_plugin_deps(omit_commons_codec = True):
         name = "json",
         artifact = "org.json:json:20250517",
         sha1 = "d67181bbd819ccceb929b580a4e2fcb0c8b17cd8",
+    )
+    maven_jar(
+        name = "java-jwt",
+        artifact = "com.auth0:java-jwt:" + JAVAJWT_VERS,
+        sha1 = "0e02407d19971bfa241441212901dd327a37722b"
+
+    )
+    maven_jar(
+        name = "jwks-rsa",
+        artifact = "com.auth0:jwks-rsa:" + JWKRSA_VERS,
+        sha1 = "6da617499e4614b5c22a52cb142dfe376a9a4f00"
     )
     if not omit_commons_codec:
         maven_jar(
