@@ -25,6 +25,8 @@ gerrit_plugin(
         "@jackson-databind//jar",
         "@scribejava-apis//jar",
         "@scribejava-core//jar",
+        "@java-jwt//jar",
+        "@jwks-rsa//jar",
     ],
 )
 

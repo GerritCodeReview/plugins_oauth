@@ -40,6 +40,12 @@ appended with provider suffix: e.g. `-google-oauth` or `-github-oauth`:
     root-url = "<dex url>"
     client-id = "<client-id>"
     client-secret = "<client-secret>"
+    use-dex-endpoint-prefix = true
+    jwks-url = "<jwks-url>"
+    jwks-cache-size = 10
+    jwks-cache-timeout-hours = 1
+    jwks-cache-max-refill-rate-minutes = 1
+    fix-legacy-user-id = true
 
   [plugin "@PLUGIN@-airvantage-oauth"]
     client-id = "<client-id>"
