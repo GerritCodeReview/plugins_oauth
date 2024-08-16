@@ -17,19 +17,32 @@ package com.googlesource.gerrit.plugins.oauth;
 import com.google.gerrit.extensions.annotations.Exports;
 import com.google.gerrit.extensions.annotations.PluginName;
 import com.google.gerrit.extensions.auth.oauth.OAuthLoginProvider;
+import com.google.gerrit.server.config.PluginConfig;
+import com.google.gerrit.server.config.PluginConfigFactory;
 import com.google.inject.AbstractModule;
 import com.google.inject.Inject;
 
 public class Module extends AbstractModule {
   private final String pluginName;
+  private final PluginConfigFactory cfgFactory;
 
   @Inject
-  Module(@PluginName String pluginName) {
+  Module(PluginConfigFactory cfgFactory, @PluginName String pluginName) {
+    this.cfgFactory = cfgFactory;
     this.pluginName = pluginName;
   }
 
   @Override
   protected void configure() {
+
+    PluginConfig cfg = cfgFactory.getFromGerritConfig(pluginName + DexOAuthService.CONFIG_SUFFIX);
+    if (cfg.getString(InitOAuth.CLIENT_ID) != null) {
+      bind(OAuthLoginProvider.class)
+          .annotatedWith(Exports.named(pluginName))
+          .to(DexOAuthService.class);
+      return;
+    }
+
     bind(OAuthLoginProvider.class)
         .annotatedWith(Exports.named(pluginName))
         .to(DisabledOAuthLoginProvider.class);
