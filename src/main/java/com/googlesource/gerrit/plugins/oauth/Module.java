@@ -20,8 +20,11 @@ import com.google.gerrit.extensions.auth.oauth.OAuthLoginProvider;
 import com.google.gerrit.server.account.AccountExternalIdCreator;
 import com.google.gerrit.server.account.externalids.ExternalIdFactory;
 import com.google.gerrit.server.config.GerritServerConfig;
+import com.google.gerrit.server.config.PluginConfig;
+import com.google.gerrit.server.config.PluginConfigFactory;
 import com.google.inject.AbstractModule;
 import com.google.inject.Inject;
+import com.googlesource.gerrit.plugins.oauth.dex.DexOAuthService;
 import com.googlesource.gerrit.plugins.oauth.sap.SAPIasOAuthLoginProvider;
 import java.util.List;
 import org.eclipse.jgit.lib.Config;
@@ -31,12 +34,15 @@ public class Module extends AbstractModule {
   private final ExternalIdFactory externalIdFactory;
   private final String pluginName;
   private final Config cfg;
+  private final PluginConfigFactory cfgFactory;
 
   @Inject
   public Module(
       @GerritServerConfig Config config,
       @PluginName String pluginName,
-      ExternalIdFactory externalIdFactory) {
+      ExternalIdFactory externalIdFactory,
+      PluginConfigFactory cfgFactory) {
+    this.cfgFactory = cfgFactory;
     this.pluginName = pluginName;
     configuredProviders =
         config.getSubsections("plugin").stream()
@@ -59,6 +65,7 @@ public class Module extends AbstractModule {
     }
 
     boolean loginProviderBound = bindOAuthLoginProvider(SAPIasOAuthLoginProvider.class);
+    loginProviderBound = bindOAuthLoginProvider(DexOAuthService.class) || loginProviderBound;
 
     if (!loginProviderBound) {
       bind(OAuthLoginProvider.class)
@@ -67,7 +74,7 @@ public class Module extends AbstractModule {
     }
   }
 
-  private boolean bindOAuthLoginProvider(Class<SAPIasOAuthLoginProvider> loginClass) {
+  private <T extends OAuthLoginProvider> boolean bindOAuthLoginProvider(Class<T> loginClass) {
     String loginProviderName = loginClass.getAnnotation(OAuthServiceProviderConfig.class).name();
     String cfgSuffix = OAuthPluginConfigFactory.getConfigSuffix(loginProviderName);
     String extIdScheme = OAuthServiceProviderExternalIdScheme.create(loginProviderName);
