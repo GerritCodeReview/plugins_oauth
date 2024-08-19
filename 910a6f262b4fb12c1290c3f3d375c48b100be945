@@ -16,6 +16,24 @@
       "message": "I am missing all the new settings you\u0027ve introduced in this change: can you 🙏 document them here?",
       "revId": "910a6f262b4fb12c1290c3f3d375c48b100be945",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bc5d61ec_b8bf9b5e",
+        "filename": "src/main/resources/Documentation/config.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 259,
+      "author": {
+        "id": 3491318
+      },
+      "writtenOn": "2024-08-19T17:20:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "63f9c14c_5b2bd549",
+      "revId": "910a6f262b4fb12c1290c3f3d375c48b100be945",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
