@@ -1,0 +1,29 @@
+- job:
+  name: bazel-oauth
+  description: >-
+    Use bazel to build 'oauth' target. This builds the 'oauth.jar'.
+  parent: bazel-7-0-0
+  vars:
+    bazel_build_target: oauth
+
+- job:
+  name: bazel-test
+  description: >-
+    Use bazel to build 'oauth_tests' target. This runs the tests.
+  parent: bazel-7-0-0
+  vars:
+    bazel_build_target: oauth_tests
+
+- project:
+    description: >-
+      A plugin for supporting dex and google oauth2 authenticatiion for gerrit
+    templates:
+      - arista-project
+    check:
+      jobs:
+        - bazel-oauth
+        - bazel-test
+    gate:
+      jobs:
+        - bazel-oauth
+        - bazel-test
