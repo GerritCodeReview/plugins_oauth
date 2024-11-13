@@ -39,6 +39,8 @@ class InitOAuth implements InitStep {
   static final String LINK_TO_EXISTING_OFFICE365_ACCOUNT = "link-to-existing-office365-accounts";
   static final String LINK_TO_EXISTING_GERRIT_ACCOUNT = "link-to-existing-gerrit-accounts";
   static final String SERVICE_NAME = "service-name";
+  static final String WHITELIST_USERS = "whitelist-users";
+  static final String WHITELIST_USERS_CACHE_DURATION = "whitelist-users-cache-duration";
   static String FIX_LEGACY_USER_ID_QUESTION = "Fix legacy user id, without oauth provider prefix?";
 
   private final ConsoleUI ui;

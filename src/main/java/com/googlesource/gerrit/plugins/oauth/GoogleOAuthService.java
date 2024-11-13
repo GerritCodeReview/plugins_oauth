@@ -38,13 +38,18 @@ import com.google.gson.JsonObject;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.Singleton;
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.codec.binary.Base64;
 import org.slf4j.Logger;
@@ -57,12 +62,16 @@ class GoogleOAuthService implements OAuthServiceProvider {
   private static final String GOOGLE_PROVIDER_PREFIX = "google-oauth:";
   private static final String PROTECTED_RESOURCE_URL =
       "https://www.googleapis.com/oauth2/v2/userinfo";
+  private Set<String> allowedUsers = new HashSet<>();
   private static final String SCOPE = "email profile";
   private final OAuth20Service service;
   private final String canonicalWebUrl;
   private final List<String> domains;
   private final boolean useEmailAsUsername;
   private final boolean fixLegacyUserId;
+  private final String whitelistUsers;
+  private final long cacheDurationMillis;
+  private long lastLoadTime = 0;
 
   @Inject
   GoogleOAuthService(
@@ -74,9 +83,11 @@ class GoogleOAuthService implements OAuthServiceProvider {
     if (cfg.getBoolean(InitOAuth.LINK_TO_EXISTING_OPENID_ACCOUNT, false)) {
       log.warn(
           String.format(
-              "The support for: %s is disconinued", InitOAuth.LINK_TO_EXISTING_OPENID_ACCOUNT));
+              "The support for: %s is discontinued", InitOAuth.LINK_TO_EXISTING_OPENID_ACCOUNT));
     }
     fixLegacyUserId = cfg.getBoolean(InitOAuth.FIX_LEGACY_USER_ID, false);
+    this.whitelistUsers = cfg.getString(InitOAuth.WHITELIST_USERS, "");
+    this.cacheDurationMillis = TimeUnit.SECONDS.toMillis(Long.parseLong(cfg.getString(InitOAuth.WHITELIST_USERS_CACHE_DURATION, "0")));
     this.domains = Arrays.asList(cfg.getStringList(InitOAuth.DOMAIN));
     this.useEmailAsUsername = cfg.getBoolean(InitOAuth.USE_EMAIL_AS_USERNAME, false);
     this.service =
@@ -90,6 +101,25 @@ class GoogleOAuthService implements OAuthServiceProvider {
       log.debug("OAuth2: scope={}", SCOPE);
       log.debug("OAuth2: domains={}", domains);
       log.debug("OAuth2: useEmailAsUsername={}", useEmailAsUsername);
+    }
+  }
+
+  private synchronized void loadWhiteListUsers() {
+    long currentTime = System.currentTimeMillis();
+    if ((currentTime - lastLoadTime) < cacheDurationMillis) {
+      return;
+    }
+
+    try (BufferedReader reader = new BufferedReader(new FileReader(whitelistUsers))) {
+      Set<String> newAllowedUsers = new HashSet<>();
+      String email;
+      while ((email = reader.readLine()) != null) {
+        newAllowedUsers.add(email.trim());
+      }
+      allowedUsers = newAllowedUsers;
+      lastLoadTime = currentTime;
+    } catch (IOException e) {
+      log.error("Failed to load whitelisted users: {}", whitelistUsers, e);
     }
   }
 
@@ -120,6 +150,14 @@ class GoogleOAuthService implements OAuthServiceProvider {
         JsonElement email = jsonObject.get("email");
         JsonElement name = jsonObject.get("name");
         String login = null;
+
+        if (!whitelistUsers.isEmpty()) { 
+          loadWhiteListUsers();
+          if (email == null || email.isJsonNull() || !allowedUsers.contains(email.getAsString())) {
+            log.error("Login attempt rejected for unauthorized email: {}", email);
+            return null;
+          }
+        }
 
         if (domains.size() > 0) {
           boolean domainMatched = false;
