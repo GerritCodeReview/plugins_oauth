@@ -92,6 +92,12 @@ appended with provider suffix: e.g. `-google-oauth` or `-github-oauth`:
     root-url = "<root url>" # for example, https://cognito.example.com
     client-id = "<client-id>"
     client-secret = "<client-secret>"
+
+  [plugin "@PLUGIN@-sapias-oauth"]
+    root-url = "<root url>" # for example, https://sapias.example.com
+    client-id = "<client-id>"
+    client-secret = "<client-secret>"
+    link-to-existing-gerrit-accounts = false
 ```
 
 When one from the sections above is omitted, OAuth SSO is used.
@@ -347,3 +353,14 @@ If you have used LDAP before and have accounts with an externalIDs like `gerrit:
 with username `firstname.lastname` logs in it will link the Authentik/Cognito account to that Gerrit account.
 
 When all users has logged in once in Gerrit with their Authentik/Cognito account it's recommended that the configuration option is removed.
+
+### SAP IAS
+
+When setting up an Application  for Gerrit in SAP Cloud Identity Service follow
+["Configuring OpenID Connect"](https://help.sap.com/docs/cloud-identity-services/cloud-identity-services/openid-connect).
+For end user authentication follow
+["Using Authorization Code Flow"](https://help.sap.com/docs/cloud-identity-services/cloud-identity-services/using-authorization-code-flow).
+Then configure the URL of your IAS tenant and client-id and client-secret in gerrit.config.
+
+You can optionally set `link-to-existing-gerrit-accounts = true` if you want the provider to link a account based
+on the username instead of trying to create a new account, see migration from LDAP.

@@ -38,6 +38,7 @@ import com.googlesource.gerrit.plugins.oauth.google.GoogleOAuthService;
 import com.googlesource.gerrit.plugins.oauth.keycloak.KeycloakOAuthService;
 import com.googlesource.gerrit.plugins.oauth.lemon.LemonLDAPOAuthService;
 import com.googlesource.gerrit.plugins.oauth.phabricator.PhabricatorOAuthService;
+import com.googlesource.gerrit.plugins.oauth.sap.SAPIasOAuthService;
 import com.googlesource.gerrit.plugins.oauth.tuleap.TuleapOAuthService;
 import java.net.URI;
 
@@ -61,6 +62,7 @@ public class InitOAuth implements InitStep {
 
   private final ConsoleUI ui;
   private final String pluginName;
+  private final Section iasOAuthProviderSection;
   private final Section googleOAuthProviderSection;
   private final Section githubOAuthProviderSection;
   private final Section bitbucketOAuthProviderSection;
@@ -133,6 +135,9 @@ public class InitOAuth implements InitStep {
     this.cognitoOAuthProviderSection =
         sections.get(
             PLUGIN_SECTION, getOAuthServiceProviderConfigSection(CognitoOAuthService.class));
+    this.iasOAuthProviderSection =
+        sections.get(
+            PLUGIN_SECTION, getOAuthServiceProviderConfigSection(SAPIasOAuthService.class));
   }
 
   @Override
@@ -186,6 +191,13 @@ public class InitOAuth implements InitStep {
             "Use GitLab OAuth provider for Gerrit login ?");
     if (configureGitLabOAuthProvider && configureOAuth(gitlabOAuthProviderSection)) {
       checkRootUrl(gitlabOAuthProviderSection.string("GitLab Root URL", ROOT_URL, null));
+    }
+
+    boolean configureIASOAuthProvider =
+        ui.yesno(
+            isConfigured(iasOAuthProviderSection), "Use SAP IAS OAuth provider for Gerrit login ?");
+    if (configureIASOAuthProvider && configureOAuth(iasOAuthProviderSection)) {
+      checkRootUrl(iasOAuthProviderSection.string("SAP IAS Root URL", ROOT_URL, null));
     }
 
     boolean configureLemonLDAPOAuthProvider =
