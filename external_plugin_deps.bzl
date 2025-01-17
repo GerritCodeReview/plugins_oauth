@@ -3,6 +3,7 @@ load("//tools/bzl:maven_jar.bzl", "maven_jar")
 def external_plugin_deps(omit_commons_codec = True):
     JACKSON_VERS = "2.10.2"
     SCRIBEJAVA_VERS = "6.9.0"
+    SAP_SECURITY_VERS = "3.6.0"
     maven_jar(
         name = "scribejava-core",
         artifact = "com.github.scribejava:scribejava-core:" + SCRIBEJAVA_VERS,
@@ -30,6 +31,31 @@ def external_plugin_deps(omit_commons_codec = True):
         name = "jackson-core",
         artifact = "com.fasterxml.jackson.core:jackson-core:" + JACKSON_VERS,
         sha1 = "73d4322a6bda684f676a2b5fe918361c4e5c7cca",
+    )
+    maven_jar(
+        name = "sap-java-security",
+        artifact = "com.sap.cloud.security:java-security:" + SAP_SECURITY_VERS,
+        sha1 = "6e6bef72b84110538b1d72d93c6e4b94988e7113",
+    )
+    maven_jar(
+        name = "sap-java-api",
+        artifact = "com.sap.cloud.security:java-api:" + SAP_SECURITY_VERS,
+        sha1 = "a954bcf647f3e8ed7fb980bc55f08788f9b984e9",
+    )
+    maven_jar(
+        name = "sap-env",
+        artifact = "com.sap.cloud.security:env:" + SAP_SECURITY_VERS,
+        sha1 = "b0d84d8a7d0a73fef9329941226e725d0de00322",
+    )
+    maven_jar(
+        name = "sap-xsuaa-token-client",
+        artifact = "com.sap.cloud.security.xsuaa:token-client:" + SAP_SECURITY_VERS,
+        sha1 = "dea8c6f5cb7d02c014dd19006a249df376bcbf38",
+    )
+    maven_jar(
+        name = "json",
+        artifact = "org.json:json:20250517",
+        sha1 = "d67181bbd819ccceb929b580a4e2fcb0c8b17cd8",
     )
     if not omit_commons_codec:
         maven_jar(
