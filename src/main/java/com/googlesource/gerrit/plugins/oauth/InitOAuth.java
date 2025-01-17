@@ -42,6 +42,7 @@ class InitOAuth implements InitStep {
   static String FIX_LEGACY_USER_ID_QUESTION = "Fix legacy user id, without oauth provider prefix?";
 
   private final ConsoleUI ui;
+  private final Section iasOAuthProviderSection;
   private final Section googleOAuthProviderSection;
   private final Section githubOAuthProviderSection;
   private final Section bitbucketOAuthProviderSection;
@@ -97,6 +98,8 @@ class InitOAuth implements InitStep {
         sections.get(PLUGIN_SECTION, pluginName + AuthentikOAuthService.CONFIG_SUFFIX);
     this.cognitoOAuthProviderSection =
         sections.get(PLUGIN_SECTION, pluginName + CognitoOAuthService.CONFIG_SUFFIX);
+    this.iasOAuthProviderSection =
+        sections.get(PLUGIN_SECTION, pluginName + SAPIasOAuthService.CONFIG_SUFFIX);
   }
 
   @Override
@@ -150,6 +153,13 @@ class InitOAuth implements InitStep {
             "Use GitLab OAuth provider for Gerrit login ?");
     if (configureGitLabOAuthProvider && configureOAuth(gitlabOAuthProviderSection)) {
       checkRootUrl(gitlabOAuthProviderSection.string("GitLab Root URL", ROOT_URL, null));
+    }
+
+    boolean configureIASOAuthProvider =
+        ui.yesno(
+            isConfigured(iasOAuthProviderSection), "Use SAP IAS OAuth provider for Gerrit login ?");
+    if (configureIASOAuthProvider && configureOAuth(iasOAuthProviderSection)) {
+      checkRootUrl(iasOAuthProviderSection.string("SAP IAS Root URL", ROOT_URL, null));
     }
 
     boolean configureLemonLDAPOAuthProvider =
