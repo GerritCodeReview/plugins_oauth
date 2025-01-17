@@ -31,6 +31,7 @@ import com.googlesource.gerrit.plugins.oauth.google.GoogleOAuthService;
 import com.googlesource.gerrit.plugins.oauth.keycloak.KeycloakOAuthService;
 import com.googlesource.gerrit.plugins.oauth.lemon.LemonLDAPOAuthService;
 import com.googlesource.gerrit.plugins.oauth.phabricator.PhabricatorOAuthService;
+import com.googlesource.gerrit.plugins.oauth.sap.SAPIasOAuthService;
 import com.googlesource.gerrit.plugins.oauth.tuleap.TuleapOAuthService;
 
 class HttpModule extends ServletModule {
@@ -59,5 +60,6 @@ class HttpModule extends ServletModule {
     install(new OAuthServiceModule(cfgFactory, LemonLDAPOAuthService.class));
     install(new OAuthServiceModule(cfgFactory, PhabricatorOAuthService.class));
     install(new OAuthServiceModule(cfgFactory, TuleapOAuthService.class));
+    install(new OAuthServiceModule(cfgFactory, SAPIasOAuthService.class));
   }
 }
