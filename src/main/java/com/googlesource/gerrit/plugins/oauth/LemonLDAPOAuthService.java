@@ -15,6 +15,8 @@
 package com.googlesource.gerrit.plugins.oauth;
 
 import static com.google.gerrit.json.OutputFormat.JSON;
+import static com.googlesource.gerrit.plugins.oauth.JsonUtil.asString;
+import static com.googlesource.gerrit.plugins.oauth.JsonUtil.isNull;
 import static org.slf4j.LoggerFactory.getLogger;
 
 import com.github.scribejava.core.builder.ServiceBuilder;
@@ -86,7 +88,7 @@ public class LemonLDAPOAuthService implements OAuthServiceProvider {
         log.debug("User info response: {}", response.getBody());
       }
       JsonObject jsonObject = userJson.getAsJsonObject();
-      if (jsonObject == null || jsonObject.isJsonNull()) {
+      if (isNull(jsonObject)) {
         throw new IOException("Response doesn't contain 'user' field" + jsonObject);
       }
       JsonElement id = jsonObject.get("sub");
@@ -95,9 +97,9 @@ public class LemonLDAPOAuthService implements OAuthServiceProvider {
       JsonElement name = jsonObject.get("name");
       return new OAuthUserInfo(
           LEMONLDAP_PROVIDER_PREFIX + id.getAsString(),
-          username == null || username.isJsonNull() ? null : username.getAsString(),
-          email == null || email.isJsonNull() ? null : email.getAsString(),
-          name == null || name.isJsonNull() ? null : name.getAsString(),
+          asString(username),
+          asString(email),
+          asString(name),
           null);
     } catch (ExecutionException | InterruptedException e) {
       throw new RuntimeException("Cannot retrieve user info resource", e);

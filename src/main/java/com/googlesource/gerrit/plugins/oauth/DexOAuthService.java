@@ -15,6 +15,7 @@
 package com.googlesource.gerrit.plugins.oauth;
 
 import static com.google.gerrit.json.OutputFormat.JSON;
+import static com.googlesource.gerrit.plugins.oauth.JsonUtil.isNull;
 
 import com.github.scribejava.core.builder.ServiceBuilder;
 import com.github.scribejava.core.model.OAuth2AccessToken;
@@ -109,7 +110,7 @@ public class DexOAuthService implements OAuthServiceProvider {
     JsonObject claimObject = claimJson.getAsJsonObject();
     JsonElement emailElement = claimObject.get("email");
     JsonElement nameElement = claimObject.get("name");
-    if (emailElement == null || emailElement.isJsonNull()) {
+    if (isNull(emailElement)) {
       throw new IOException("Response doesn't contain email field");
     }
     if (nameElement == null || nameElement.isJsonNull()) {

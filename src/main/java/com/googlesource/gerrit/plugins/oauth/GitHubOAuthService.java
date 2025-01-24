@@ -15,6 +15,8 @@
 package com.googlesource.gerrit.plugins.oauth;
 
 import static com.google.gerrit.json.OutputFormat.JSON;
+import static com.googlesource.gerrit.plugins.oauth.JsonUtil.asString;
+import static com.googlesource.gerrit.plugins.oauth.JsonUtil.isNull;
 
 import com.github.scribejava.core.builder.ServiceBuilder;
 import com.github.scribejava.core.model.OAuth2AccessToken;
@@ -107,7 +109,7 @@ class GitHubOAuthService implements OAuthServiceProvider {
       if (userJson.isJsonObject()) {
         JsonObject jsonObject = userJson.getAsJsonObject();
         JsonElement id = jsonObject.get("id");
-        if (id == null || id.isJsonNull()) {
+        if (isNull(id)) {
           throw new IOException("Response doesn't contain id field");
         }
         JsonElement email = jsonObject.get("email");
@@ -115,9 +117,9 @@ class GitHubOAuthService implements OAuthServiceProvider {
         JsonElement login = jsonObject.get("login");
         return new OAuthUserInfo(
             GITHUB_PROVIDER_PREFIX + id.getAsString(),
-            login == null || login.isJsonNull() ? null : login.getAsString(),
-            email == null || email.isJsonNull() ? null : email.getAsString(),
-            name == null || name.isJsonNull() ? null : name.getAsString(),
+            asString(login),
+            asString(email),
+            asString(name),
             fixLegacyUserId ? id.getAsString() : null);
       }
     } catch (ExecutionException | InterruptedException e) {

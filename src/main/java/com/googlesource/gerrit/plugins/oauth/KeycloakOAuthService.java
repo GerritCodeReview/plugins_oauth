@@ -15,6 +15,7 @@
 package com.googlesource.gerrit.plugins.oauth;
 
 import static com.google.gerrit.json.OutputFormat.JSON;
+import static com.googlesource.gerrit.plugins.oauth.JsonUtil.isNull;
 
 import com.github.scribejava.core.builder.ServiceBuilder;
 import com.github.scribejava.core.model.OAuth2AccessToken;
@@ -108,13 +109,13 @@ public class KeycloakOAuthService implements OAuthServiceProvider {
     JsonElement usernameElement = claimObject.get("preferred_username");
     JsonElement emailElement = claimObject.get("email");
     JsonElement nameElement = claimObject.get("name");
-    if (usernameElement == null || usernameElement.isJsonNull()) {
+    if (isNull(usernameElement)) {
       throw new IOException("Response doesn't contain preferred_username field");
     }
-    if (emailElement == null || emailElement.isJsonNull()) {
+    if (isNull(emailElement)) {
       throw new IOException("Response doesn't contain email field");
     }
-    if (nameElement == null || nameElement.isJsonNull()) {
+    if (isNull(nameElement)) {
       throw new IOException("Response doesn't contain name field");
     }
     String usernameAsString = usernameElement.getAsString();
