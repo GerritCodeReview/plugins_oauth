@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1db9fd69_fc0a6625",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/SapIasOAuthService.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1003873
+      },
+      "writtenOn": "2025-01-24T14:45:13Z",
+      "side": 1,
+      "message": "I think this should be named with all uppercase SAP:\n`SAPIasOAuthService`\n\nthe same for the filename",
+      "range": {
+        "startLine": 48,
+        "startChar": 13,
+        "endLine": 48,
+        "endChar": 31
+      },
+      "revId": "acb35ca93052ed2ee4701c7c6bc29183daae67a9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
