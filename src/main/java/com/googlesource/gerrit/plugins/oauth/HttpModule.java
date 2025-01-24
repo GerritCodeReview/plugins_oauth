@@ -16,6 +16,7 @@ package com.googlesource.gerrit.plugins.oauth;
 
 import com.google.gerrit.extensions.annotations.Exports;
 import com.google.gerrit.extensions.annotations.PluginName;
+import com.google.gerrit.extensions.auth.oauth.OAuthLoginProvider;
 import com.google.gerrit.extensions.auth.oauth.OAuthServiceProvider;
 import com.google.gerrit.server.config.PluginConfig;
 import com.google.gerrit.server.config.PluginConfigFactory;
@@ -171,6 +172,9 @@ class HttpModule extends ServletModule {
       bind(OAuthServiceProvider.class)
           .annotatedWith(Exports.named(SapIasOAuthService.CONFIG_SUFFIX))
           .to(SapIasOAuthService.class);
+      bind(OAuthLoginProvider.class)
+          .annotatedWith(Exports.named(SapIasOAuthService.CONFIG_SUFFIX))
+          .to(SapIasOAuthLoginProvider.class);
     }
   }
 }
