@@ -98,6 +98,7 @@ appended with provider suffix: e.g. `-google-oauth` or `-github-oauth`:
     client-id = "<client-id>"
     client-secret = "<client-secret>"
     link-to-existing-gerrit-accounts = false
+    enable-pkce = false
 ```
 
 When one from the sections above is omitted, OAuth SSO is used.
@@ -361,3 +362,6 @@ Then configure the URL of your IAS tenant and client-id and client-secret in ger
 
 You can optionally set `link-to-existing-gerrit-accounts = true` if you want the provider to link a account based
 on the username instead of trying to create a new account, see migration from LDAP.
+
+You can optionally set `enable-pkce = true` if you want to use PKCE as part of the authorization workflow
+during login.
