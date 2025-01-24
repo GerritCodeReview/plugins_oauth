@@ -22,6 +22,8 @@ import com.github.scribejava.core.model.OAuth2AccessToken;
 import com.github.scribejava.core.model.OAuthRequest;
 import com.github.scribejava.core.model.Response;
 import com.github.scribejava.core.model.Verb;
+import com.github.scribejava.core.oauth.AccessTokenRequestParams;
+import com.github.scribejava.core.oauth.AuthorizationUrlBuilder;
 import com.github.scribejava.core.oauth.OAuth20Service;
 import com.google.common.base.CharMatcher;
 import com.google.gerrit.extensions.annotations.PluginName;
@@ -54,6 +56,8 @@ public class SAPIasOAuthService implements OAuthServiceProvider {
   private final String serviceName;
   private final String rootUrl;
   private final boolean linkExistingGerrit;
+  private final boolean enablePKCE;
+  private final AuthorizationUrlBuilder authorizationUrlBuilder;
 
   @Inject
   SAPIasOAuthService(
@@ -68,12 +72,14 @@ public class SAPIasOAuthService implements OAuthServiceProvider {
     }
     serviceName = cfg.getString(InitOAuth.SERVICE_NAME, "SAP IAS");
     linkExistingGerrit = cfg.getBoolean(InitOAuth.LINK_TO_EXISTING_GERRIT_ACCOUNT, false);
+    enablePKCE = cfg.getBoolean(InitOAuth.ENABLE_PKCE, false);
     service =
         new ServiceBuilder(cfg.getString(InitOAuth.CLIENT_ID))
             .apiSecret(cfg.getString(InitOAuth.CLIENT_SECRET))
             .callback(canonicalWebUrl + "oauth")
             .defaultScope("openid profile email")
             .build(new SAPIasApi(rootUrl));
+    authorizationUrlBuilder = service.createAuthorizationUrlBuilder();
   }
 
   @Override
@@ -116,7 +122,11 @@ public class SAPIasOAuthService implements OAuthServiceProvider {
   @Override
   public OAuthToken getAccessToken(OAuthVerifier rv) {
     try {
-      OAuth2AccessToken accessToken = service.getAccessToken(rv.getValue());
+      AccessTokenRequestParams reqParams = AccessTokenRequestParams.create(rv.getValue());
+      if (enablePKCE) {
+        reqParams.pkceCodeVerifier(authorizationUrlBuilder.getPkce().getCodeVerifier());
+      }
+      OAuth2AccessToken accessToken = service.getAccessToken(reqParams);
       return new OAuthToken(
           accessToken.getAccessToken(), accessToken.getTokenType(), accessToken.getRawResponse());
     } catch (InterruptedException | ExecutionException | IOException e) {
@@ -128,7 +138,10 @@ public class SAPIasOAuthService implements OAuthServiceProvider {
 
   @Override
   public String getAuthorizationUrl() {
-    return service.getAuthorizationUrl();
+    if (enablePKCE) {
+      authorizationUrlBuilder.initPKCE();
+    }
+    return authorizationUrlBuilder.build();
   }
 
   @Override
