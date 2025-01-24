@@ -46,6 +46,7 @@ public class InitOAuth implements InitStep {
   static final String PLUGIN_SECTION = "plugin";
   public static final String CLIENT_ID = "client-id";
   public static final String CLIENT_SECRET = "client-secret";
+  public static final String ENABLE_PKCE = "enable-pkce";
   public static final String LINK_TO_EXISTING_OPENID_ACCOUNT = "link-to-existing-openid-accounts";
   public static final String FIX_LEGACY_USER_ID = "fix-legacy-user-id";
   public static final String DOMAIN = "domain";
@@ -198,6 +199,8 @@ public class InitOAuth implements InitStep {
             isConfigured(iasOAuthProviderSection), "Use SAP IAS OAuth provider for Gerrit login ?");
     if (configureIASOAuthProvider && configureOAuth(iasOAuthProviderSection)) {
       checkRootUrl(iasOAuthProviderSection.string("SAP IAS Root URL", ROOT_URL, null));
+      iasOAuthProviderSection.string(
+          "Enable PKCE for SAP IAS OAuth provider?", ENABLE_PKCE, "false");
     }
 
     boolean configureLemonLDAPOAuthProvider =
