@@ -84,10 +84,14 @@ public class SAPIasOAuthService implements OAuthServiceProvider {
 
   @Override
   public OAuthUserInfo getUserInfo(OAuthToken token) throws IOException {
+    OAuth2AccessToken t = new OAuth2AccessToken(token.getToken(), token.getRaw());
+    return getUserInfo(t);
+  }
+
+  public OAuthUserInfo getUserInfo(OAuth2AccessToken token) throws IOException {
     OAuthRequest request =
         new OAuthRequest(Verb.GET, String.format(PROTECTED_RESOURCE_URL, rootUrl));
-    OAuth2AccessToken t = new OAuth2AccessToken(token.getToken(), token.getRaw());
-    service.signRequest(t, request);
+    service.signRequest(token, request);
 
     try (Response response = service.execute(request)) {
       if (response.getCode() != HttpServletResponse.SC_OK) {
