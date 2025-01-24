@@ -15,6 +15,8 @@
 package com.googlesource.gerrit.plugins.oauth;
 
 import static com.google.gerrit.json.OutputFormat.JSON;
+import static com.googlesource.gerrit.plugins.oauth.Util.asString;
+import static com.googlesource.gerrit.plugins.oauth.Util.isNull;
 
 import com.github.scribejava.core.builder.ServiceBuilder;
 import com.github.scribejava.core.model.OAuth2AccessToken;
@@ -114,7 +116,7 @@ class GoogleOAuthService implements OAuthServiceProvider {
       if (userJson.isJsonObject()) {
         JsonObject jsonObject = userJson.getAsJsonObject();
         JsonElement id = jsonObject.get("id");
-        if (id == null || id.isJsonNull()) {
+        if (isNull(id)) {
           throw new IOException("Response doesn't contain id field");
         }
         JsonElement email = jsonObject.get("email");
@@ -141,10 +143,10 @@ class GoogleOAuthService implements OAuthServiceProvider {
           login = email.getAsString().split("@")[0];
         }
         return new OAuthUserInfo(
-            GOOGLE_PROVIDER_PREFIX + id.getAsString() /*externalId*/,
-            login /*username*/,
-            email == null || email.isJsonNull() ? null : email.getAsString() /*email*/,
-            name == null || name.isJsonNull() ? null : name.getAsString() /*displayName*/,
+            GOOGLE_PROVIDER_PREFIX + id.getAsString(),
+            login,
+            asString(email),
+            asString(name),
             fixLegacyUserId ? id.getAsString() : null /*claimedIdentity*/);
       }
     } catch (ExecutionException | InterruptedException e) {
@@ -182,7 +184,7 @@ class GoogleOAuthService implements OAuthServiceProvider {
 
   private static String retrieveHostedDomain(JsonObject jwtToken) {
     JsonElement hdClaim = jwtToken.get("hd");
-    if (hdClaim != null && !hdClaim.isJsonNull()) {
+    if (!isNull(hdClaim)) {
       String hd = hdClaim.getAsString();
       log.debug("OAuth2: hd={}", hd);
       return hd;

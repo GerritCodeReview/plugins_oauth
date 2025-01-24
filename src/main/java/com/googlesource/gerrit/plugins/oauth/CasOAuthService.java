@@ -16,6 +16,7 @@ package com.googlesource.gerrit.plugins.oauth;
 
 import static com.google.common.base.Strings.nullToEmpty;
 import static com.google.gerrit.json.OutputFormat.JSON;
+import static com.googlesource.gerrit.plugins.oauth.Util.isNull;
 
 import com.github.scribejava.core.builder.ServiceBuilder;
 import com.github.scribejava.core.model.OAuth2AccessToken;
@@ -104,7 +105,7 @@ class CasOAuthService implements OAuthServiceProvider {
       JsonObject jsonObject = userJson.getAsJsonObject();
 
       JsonElement id = jsonObject.get("id");
-      if (id == null || id.isJsonNull()) {
+      if (isNull(id)) {
         throw new IOException(String.format("CAS response missing id: %s", response.getBody()));
       }
 
@@ -158,7 +159,7 @@ class CasOAuthService implements OAuthServiceProvider {
 
   private String getStringElement(JsonObject o, String name) {
     JsonElement elem = o.get(name);
-    if (elem == null || elem.isJsonNull()) {
+    if (isNull(elem)) {
       return null;
     }
 

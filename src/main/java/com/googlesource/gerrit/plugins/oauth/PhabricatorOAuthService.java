@@ -15,6 +15,8 @@
 package com.googlesource.gerrit.plugins.oauth;
 
 import static com.google.gerrit.json.OutputFormat.JSON;
+import static com.googlesource.gerrit.plugins.oauth.Util.asString;
+import static com.googlesource.gerrit.plugins.oauth.Util.isNull;
 
 import com.github.scribejava.core.builder.ServiceBuilder;
 import com.github.scribejava.core.model.OAuth2AccessToken;
@@ -101,7 +103,7 @@ class PhabricatorOAuthService implements OAuthServiceProvider {
         }
         JsonObject resultObject = jsonResult.getAsJsonObject();
         JsonElement id = resultObject.get("phid");
-        if (id == null || id.isJsonNull()) {
+        if (isNull(id)) {
           throw new IOException("Response doesn't contain id field");
         }
         JsonElement email = resultObject.get("primaryEmail");
@@ -113,10 +115,10 @@ class PhabricatorOAuthService implements OAuthServiceProvider {
           login = username.getAsString();
         }
         return new OAuthUserInfo(
-            PHABRICATOR_PROVIDER_PREFIX + id.getAsString() /*externalId*/,
-            login /*username*/,
-            email == null || email.isJsonNull() ? null : email.getAsString() /*email*/,
-            name == null || name.isJsonNull() ? null : name.getAsString() /*displayName*/,
+            PHABRICATOR_PROVIDER_PREFIX + id.getAsString(),
+            login,
+            asString(email),
+            asString(name),
             null);
       }
     } catch (ExecutionException | InterruptedException e) {

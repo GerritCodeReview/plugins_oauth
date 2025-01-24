@@ -15,6 +15,8 @@
 package com.googlesource.gerrit.plugins.oauth;
 
 import static com.google.gerrit.json.OutputFormat.JSON;
+import static com.googlesource.gerrit.plugins.oauth.Util.asString;
+import static com.googlesource.gerrit.plugins.oauth.Util.isNull;
 
 import com.github.scribejava.apis.MicrosoftAzureActiveDirectory20Api;
 import com.github.scribejava.core.builder.ServiceBuilder;
@@ -172,7 +174,7 @@ class AzureActiveDirectoryService implements OAuthServiceProvider {
       if (userJson.isJsonObject()) {
         JsonObject jsonObject = userJson.getAsJsonObject();
         JsonElement id = jsonObject.get("id");
-        if (id == null || id.isJsonNull()) {
+        if (isNull(id)) {
           throw new IOException("Response doesn't contain id field");
         }
         JsonElement email = jsonObject.get("mail");
@@ -184,10 +186,10 @@ class AzureActiveDirectoryService implements OAuthServiceProvider {
         }
 
         return new OAuthUserInfo(
-            providerPrefix + id.getAsString() /*externalId*/,
-            login /*username*/,
-            email == null || email.isJsonNull() ? null : email.getAsString() /*email*/,
-            name == null || name.isJsonNull() ? null : name.getAsString() /*displayName*/,
+            providerPrefix + id.getAsString(),
+            login,
+            asString(email),
+            asString(name),
             linkOffice365Id ? OFFICE365_PROVIDER_PREFIX + id.getAsString() : null);
       }
     } catch (ExecutionException | InterruptedException e) {

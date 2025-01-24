@@ -15,6 +15,8 @@
 package com.googlesource.gerrit.plugins.oauth;
 
 import static com.google.gerrit.json.OutputFormat.JSON;
+import static com.googlesource.gerrit.plugins.oauth.Util.asString;
+import static com.googlesource.gerrit.plugins.oauth.Util.isNull;
 
 import com.github.scribejava.core.builder.ServiceBuilder;
 import com.github.scribejava.core.model.OAuth2AccessToken;
@@ -95,7 +97,7 @@ public class AuthentikOAuthService implements OAuthServiceProvider {
         log.debug("User info response: {}", response.getBody());
       }
       JsonObject jsonObject = userJson.getAsJsonObject();
-      if (jsonObject == null || jsonObject.isJsonNull()) {
+      if (isNull(jsonObject)) {
         throw new IOException("Response doesn't contain 'user' field" + jsonObject);
       }
       JsonElement id = jsonObject.get("sub");
@@ -103,11 +105,11 @@ public class AuthentikOAuthService implements OAuthServiceProvider {
       JsonElement email = jsonObject.get("email");
       JsonElement name = jsonObject.get("name");
       return new OAuthUserInfo(
-          AUTHENTIK_PROVIDER_PREFIX + id.getAsString() /*externalId*/,
-          username == null || username.isJsonNull() ? null : username.getAsString() /*username*/,
-          email == null || email.isJsonNull() ? null : email.getAsString() /*email*/,
-          name == null || name.isJsonNull() ? null : name.getAsString() /*displayName*/,
-          linkExistingGerrit ? "gerrit:" + username.getAsString() : null /*claimedIdentity*/);
+          AUTHENTIK_PROVIDER_PREFIX + id.getAsString(),
+          asString(username),
+          asString(email),
+          asString(name),
+          linkExistingGerrit ? "gerrit:" + username.getAsString() : null);
     } catch (ExecutionException | InterruptedException e) {
       throw new RuntimeException("Cannot retrieve user info resource", e);
     }

@@ -15,6 +15,7 @@
 package com.googlesource.gerrit.plugins.oauth;
 
 import static com.google.gerrit.json.OutputFormat.JSON;
+import static com.googlesource.gerrit.plugins.oauth.Util.isNull;
 import static javax.servlet.http.HttpServletResponse.SC_OK;
 import static org.slf4j.LoggerFactory.getLogger;
 
@@ -89,7 +90,7 @@ public class BitbucketOAuthService implements OAuthServiceProvider {
       if (userJson.isJsonObject()) {
         JsonObject jsonObject = userJson.getAsJsonObject();
         JsonObject userObject = jsonObject.getAsJsonObject("user");
-        if (userObject == null || userObject.isJsonNull()) {
+        if (isNull(userObject)) {
           throw new IOException("Response doesn't contain 'user' field");
         }
         JsonElement usernameElement = userObject.get("username");

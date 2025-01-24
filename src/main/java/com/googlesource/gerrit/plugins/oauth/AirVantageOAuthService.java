@@ -15,6 +15,7 @@
 package com.googlesource.gerrit.plugins.oauth;
 
 import static com.google.gerrit.json.OutputFormat.JSON;
+import static com.googlesource.gerrit.plugins.oauth.Util.isNull;
 import static javax.servlet.http.HttpServletResponse.SC_OK;
 import static org.slf4j.LoggerFactory.getLogger;
 
@@ -87,7 +88,7 @@ public class AirVantageOAuthService implements OAuthServiceProvider {
       if (userJson.isJsonObject()) {
         JsonObject jsonObject = userJson.getAsJsonObject();
         JsonElement id = jsonObject.get("uid");
-        if (id == null || id.isJsonNull()) {
+        if (isNull(jsonObject)) {
           throw new IOException("Response doesn't contain uid field");
         }
         JsonElement email = jsonObject.get("email");
