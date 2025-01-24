@@ -17,21 +17,33 @@ package com.googlesource.gerrit.plugins.oauth;
 import com.google.gerrit.extensions.annotations.Exports;
 import com.google.gerrit.extensions.annotations.PluginName;
 import com.google.gerrit.extensions.auth.oauth.OAuthLoginProvider;
+import com.google.gerrit.server.config.PluginConfig;
+import com.google.gerrit.server.config.PluginConfigFactory;
 import com.google.inject.AbstractModule;
 import com.google.inject.Inject;
 
 public class Module extends AbstractModule {
+  private final PluginConfigFactory cfgFactory;
   private final String pluginName;
 
   @Inject
-  Module(@PluginName String pluginName) {
+  Module(PluginConfigFactory cfgFactory, @PluginName String pluginName) {
+    this.cfgFactory = cfgFactory;
     this.pluginName = pluginName;
   }
 
   @Override
   protected void configure() {
-    bind(OAuthLoginProvider.class)
-        .annotatedWith(Exports.named(pluginName))
-        .to(DisabledOAuthLoginProvider.class);
+    PluginConfig cfg =
+        cfgFactory.getFromGerritConfig(pluginName + SapIasOAuthService.CONFIG_SUFFIX);
+    if (cfg.getString(InitOAuth.CLIENT_ID) != null) {
+      bind(OAuthLoginProvider.class)
+          .annotatedWith(Exports.named(SapIasOAuthService.CONFIG_SUFFIX.substring(1)))
+          .to(SapIasOAuthLoginProvider.class);
+    } else {
+      bind(OAuthLoginProvider.class)
+          .annotatedWith(Exports.named(pluginName))
+          .to(DisabledOAuthLoginProvider.class);
+    }
   }
 }
