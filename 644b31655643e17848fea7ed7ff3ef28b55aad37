@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b8298dec_f23a404f",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/Util.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 3604707
+      },
+      "writtenOn": "2025-01-24T21:57:02Z",
+      "side": 1,
+      "message": "JsonUtil?",
+      "range": {
+        "startLine": 19,
+        "startChar": 13,
+        "endLine": 19,
+        "endChar": 17
+      },
+      "revId": "644b31655643e17848fea7ed7ff3ef28b55aad37",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "321c35fb_212eeda2",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/Util.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 3604707
+      },
+      "writtenOn": "2025-01-24T21:57:02Z",
+      "side": 1,
+      "message": "Feels missleading, I expected an empty string on null. asNullableString()?",
+      "revId": "644b31655643e17848fea7ed7ff3ef28b55aad37",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
