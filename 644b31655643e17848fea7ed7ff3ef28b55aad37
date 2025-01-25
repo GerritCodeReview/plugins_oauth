@@ -39,6 +39,23 @@
       "message": "Feels missleading, I expected an empty string on null. asNullableString()?",
       "revId": "644b31655643e17848fea7ed7ff3ef28b55aad37",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "476a1f12_1ca7d24c",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/Util.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1004034
+      },
+      "writtenOn": "2025-01-25T22:31:45Z",
+      "side": 1,
+      "message": "Instead of changing the name I would annotate it as nullable\n\n```suggestion\n  @Nullable\n  public static String asString(JsonElement e) {\n```",
+      "revId": "644b31655643e17848fea7ed7ff3ef28b55aad37",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
