@@ -14,11 +14,19 @@
 
 package com.googlesource.gerrit.plugins.oauth;
 
+import static com.google.gerrit.server.account.externalids.ExternalId.SCHEME_USERNAME;
+import static com.googlesource.gerrit.plugins.oauth.SAPIasOAuthService.CONFIG_SUFFIX;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 import com.github.scribejava.core.model.OAuth2AccessToken;
+import com.google.gerrit.entities.Account;
+import com.google.gerrit.extensions.annotations.PluginName;
 import com.google.gerrit.extensions.auth.oauth.OAuthLoginProvider;
 import com.google.gerrit.extensions.auth.oauth.OAuthUserInfo;
+import com.google.gerrit.server.account.externalids.ExternalId;
+import com.google.gerrit.server.account.externalids.ExternalIdKeyFactory;
+import com.google.gerrit.server.account.externalids.ExternalIds;
+import com.google.gerrit.server.config.PluginConfigFactory;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -27,24 +35,58 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import java.io.IOException;
 import java.util.Base64;
+import java.util.Optional;
 
 @Singleton
 class SAPIasOAuthLoginProvider implements OAuthLoginProvider {
   private static final String USER_NAME_ATTRIBUTE = "sub";
 
   private final SAPIasOAuthService service;
+  private final boolean enableResourceOwnerPasswordFlow;
+  private final ExternalIds externalIds;
+  private final ExternalIdKeyFactory externalIdKeyFactory;
 
   @Inject
-  SAPIasOAuthLoginProvider(SAPIasOAuthService service) {
+  SAPIasOAuthLoginProvider(
+      SAPIasOAuthService service,
+      @PluginName String pluginName,
+      PluginConfigFactory cfgFactory,
+      ExternalIds externalIds,
+      ExternalIdKeyFactory externalIdKeyFactory) {
     this.service = service;
+    this.enableResourceOwnerPasswordFlow =
+        cfgFactory
+            .getFromGerritConfig(pluginName + CONFIG_SUFFIX)
+            .getBoolean("enableResourceOwnerPasswordFlow", false);
+    this.externalIds = externalIds;
+    this.externalIdKeyFactory = externalIdKeyFactory;
   }
 
   @Override
-  public OAuthUserInfo login(String username, String token) throws IOException {
-    if (username == null || token == null || !isAccessToken(token)) {
+  public OAuthUserInfo login(String username, String secret) throws IOException {
+    if (username == null || secret == null) {
       throw new IOException("Authentication error");
     }
-    OAuth2AccessToken accessToken = new OAuth2AccessToken(token);
+    OAuth2AccessToken accessToken;
+    if (isAccessToken(secret)) {
+      accessToken = new OAuth2AccessToken(secret);
+    } else if (enableResourceOwnerPasswordFlow) {
+      Optional<Account.Id> accountId =
+          externalIds
+              .get(externalIdKeyFactory.create(SCHEME_USERNAME, username))
+              .map(ExternalId::accountId);
+      if (accountId.isEmpty()) {
+        throw new IOException("Authentication error");
+      }
+      ExternalId extId =
+          externalIds.byAccount(accountId.get()).stream()
+              .filter(e -> e.key().isScheme(CONFIG_SUFFIX.substring(1)))
+              .findAny()
+              .orElseThrow(() -> new IOException("Authentication error"));
+      accessToken = service.getAccessToken(extId.email(), secret);
+    } else {
+      throw new IOException("Authentication error");
+    }
     return service.getUserInfo(accessToken);
   }
 
