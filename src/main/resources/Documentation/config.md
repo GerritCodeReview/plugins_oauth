@@ -365,3 +365,9 @@ on the username instead of trying to create a new account, see migration from LD
 
 You can optionally set `enable-pkce = true` if you want to use PKCE as part of the authorization workflow
 during login.
+
+If login via password for git over HTTP or REST API should still be possible, the Resource
+Owner Password Flow can optionally be enabled. This OAuth flow lets the user send the password
+and Gerrit will use that password to authenticate the user against the OAuth server. Note, that
+this flow is not considered to be secure since credentials are not only sent to the oauth server
+but to the application. To enable this flow set `enableResourceOwnerPasswordFlow = true`.
