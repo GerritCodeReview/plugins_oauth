@@ -150,6 +150,16 @@ public class SAPIasOAuthService implements OAuthServiceProvider {
     return authorizationUrlBuilder.build();
   }
 
+  public OAuth2AccessToken getAccessToken(String externalUsername, String password) {
+    try {
+      return service.getAccessTokenPasswordGrant(externalUsername, password);
+    } catch (IOException | InterruptedException | ExecutionException e) {
+      String msg = "Cannot retrieve access token";
+      log.error(msg, e);
+      throw new RuntimeException(msg, e);
+    }
+  }
+
   @Override
   public String getVersion() {
     return service.getVersion();
