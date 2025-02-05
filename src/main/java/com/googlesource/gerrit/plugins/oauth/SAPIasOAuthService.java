@@ -122,7 +122,7 @@ public class SAPIasOAuthService implements OAuthServiceProvider {
       }
       return new OAuthUserInfo(
           PROVIDER_PREFIX + id.getAsString() /*externalId*/,
-          username == null || username.isJsonNull() ? null : username.getAsString() /*username*/,
+          username == null || username.isJsonNull() ? id.getAsString() : username.getAsString() /*username*/,
           email == null || email.isJsonNull() ? null : email.getAsString() /*email*/,
           displayName.isBlank() ? null : displayName /*displayName*/,
           linkExistingGerrit ? "gerrit:" + username.getAsString() : null /*claimedIdentity*/);
