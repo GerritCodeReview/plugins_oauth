@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "80d6d0a1_9534fc9c",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/SAPIasOAuthService.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 1004034
+      },
+      "writtenOn": "2025-02-05T13:22:58Z",
+      "side": 1,
+      "message": "Use `!JsonUtil.isNull(firstName)` instead ? This was introduced recently in https://gerrit-review.googlesource.com/c/plugins/oauth/+/448923/2/src/main/java/com/googlesource/gerrit/plugins/oauth/JsonUtil.java",
+      "revId": "f5d281d17e0eecc1bf05c0fee7d054d36077c73a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
