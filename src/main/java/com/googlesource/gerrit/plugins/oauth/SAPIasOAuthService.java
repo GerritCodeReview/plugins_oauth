@@ -111,12 +111,20 @@ public class SAPIasOAuthService implements OAuthServiceProvider {
       JsonElement id = jsonObject.get("sub");
       JsonElement username = jsonObject.get("preferred_username");
       JsonElement email = jsonObject.get("email");
-      JsonElement name = jsonObject.get("name");
+      JsonElement firstName = jsonObject.get("first_name");
+      JsonElement lastName = jsonObject.get("last_name");
+      String displayName = "";
+      if (firstName != null && !firstName.isJsonNull()) {
+        displayName = firstName.getAsString();
+      }
+      if (lastName != null && !lastName.isJsonNull()) {
+        displayName += " " + lastName.getAsString();
+      }
       return new OAuthUserInfo(
           PROVIDER_PREFIX + id.getAsString() /*externalId*/,
           username == null || username.isJsonNull() ? null : username.getAsString() /*username*/,
           email == null || email.isJsonNull() ? null : email.getAsString() /*email*/,
-          name == null || name.isJsonNull() ? null : name.getAsString() /*displayName*/,
+          displayName.isBlank() ? null : displayName /*displayName*/,
           linkExistingGerrit ? "gerrit:" + username.getAsString() : null /*claimedIdentity*/);
     } catch (ExecutionException | InterruptedException e) {
       throw new RuntimeException("Cannot retrieve user info resource", e);
