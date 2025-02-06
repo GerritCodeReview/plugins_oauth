@@ -134,6 +134,24 @@
       "parentUuid": "0c22f97c_b349ade9",
       "revId": "644b31655643e17848fea7ed7ff3ef28b55aad37",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "56b2ec7b_e0a4f692",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/Util.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1003873
+      },
+      "writtenOn": "2025-02-06T00:07:14Z",
+      "side": 1,
+      "message": "There are code examples like that in Gerrit\u0027s code base. For example in the `LuceneStoredValue.java` we have:\n```\n  @Nullable\n  @Override\n  public String asString() {\n    return Iterables.getFirst(asStrings(), null);\n  }\n```",
+      "parentUuid": "033c36d8_6b83e3da",
+      "revId": "644b31655643e17848fea7ed7ff3ef28b55aad37",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
