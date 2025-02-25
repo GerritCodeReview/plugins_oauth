@@ -55,6 +55,7 @@ public class DexOAuthService implements OAuthServiceProvider {
   private final String rootUrl;
   private final String domain;
   private final String serviceName;
+  private final boolean removeDomainFromUsername;
 
   @Inject
   DexOAuthService(
@@ -70,7 +71,7 @@ public class DexOAuthService implements OAuthServiceProvider {
     }
     domain = cfg.getString(InitOAuth.DOMAIN, null);
     serviceName = cfg.getString(InitOAuth.SERVICE_NAME, "Dex OAuth2");
-
+    removeDomainFromUsername = cfg.getBoolean(InitOAuth.REMOVE_DOMAIN_FROM_USERNAME, false);
     service =
         new ServiceBuilder(cfg.getString(InitOAuth.CLIENT_ID))
             .apiSecret(cfg.getString(InitOAuth.CLIENT_SECRET))
@@ -119,7 +120,9 @@ public class DexOAuthService implements OAuthServiceProvider {
     String email = emailElement.getAsString();
     String name = nameElement.getAsString();
     String username = email;
-    if (domain != null && domain.length() > 0) {
+    if (removeDomainFromUsername) {
+      username = email.split("@")[0];
+    } else if (domain != null && domain.length() > 0) {
       username = email.replace("@" + domain, "");
     }
 
