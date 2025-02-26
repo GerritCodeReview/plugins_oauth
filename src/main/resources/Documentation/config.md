@@ -35,6 +35,7 @@ appended with provider suffix: e.g. `-google-oauth` or `-github-oauth`:
     client-secret = "<client-secret>"
 
   [plugin "@PLUGIN@-dex-oauth"]
+    remove-domain-from-username = true # Optional, if set will remove the domain from the username
     domain = "<domain for username manipulation (optional)>"
     service-name = "<custom service name (optional)>"
     root-url = "<dex url>"
