@@ -18,7 +18,6 @@ import static com.google.gerrit.json.OutputFormat.JSON;
 import static com.googlesource.gerrit.plugins.oauth.JsonUtil.asString;
 import static com.googlesource.gerrit.plugins.oauth.JsonUtil.isNull;
 
-import com.github.scribejava.apis.MicrosoftAzureActiveDirectory20Api;
 import com.github.scribejava.core.builder.ServiceBuilder;
 import com.github.scribejava.core.exceptions.OAuthException;
 import com.github.scribejava.core.model.OAuth2AccessToken;
@@ -57,9 +56,8 @@ class AzureActiveDirectoryService implements OAuthServiceProvider {
   static final String CONFIG_SUFFIX = "-azure-oauth";
   private static final String AZURE_PROVIDER_PREFIX = "azure-oauth:";
   private static final String OFFICE365_PROVIDER_PREFIX = "office365-oauth:";
-  private static final String PROTECTED_RESOURCE_URL = "https://graph.microsoft.com/v1.0/me";
-  private static final String SCOPE =
-      "openid offline_access https://graph.microsoft.com/user.readbasic.all";
+  private static final String ROOT_GRAPH_URL = "https://graph.microsoft.com/";
+  private static final String ROOT_LOGIN_URL = "https://login.microsoftonline.com/";
   public static final String DEFAULT_TENANT = "organizations";
   private static final ImmutableSet<String> TENANTS_WITHOUT_VALIDATION =
       ImmutableSet.<String>builder().add(DEFAULT_TENANT).add("common").add("consumers").build();
@@ -71,6 +69,8 @@ class AzureActiveDirectoryService implements OAuthServiceProvider {
   private final String clientId;
   private String providerPrefix;
   private final boolean linkOffice365Id;
+  private final String protectedResourceUrl;
+  private final String scope;
 
   @Inject
   AzureActiveDirectoryService(
@@ -93,16 +93,31 @@ class AzureActiveDirectoryService implements OAuthServiceProvider {
     this.useEmailAsUsername = cfg.getBoolean(InitOAuth.USE_EMAIL_AS_USERNAME, false);
     this.tenant = cfg.getString(InitOAuth.TENANT, DEFAULT_TENANT);
     this.clientId = cfg.getString(InitOAuth.CLIENT_ID);
+
+    String graphUrl = cfg.getString("root-graph-url", ROOT_GRAPH_URL);
+    if (!graphUrl.endsWith("/")) {
+      graphUrl += "/";
+    }
+
+    String loginUrl = cfg.getString("root-login-url", ROOT_LOGIN_URL);
+    if (!loginUrl.endsWith("/")) {
+      loginUrl += "/";
+    }
+
+    this.scope = String.format("openid offline_access %suser.readbasic.all", graphUrl);
+    this.protectedResourceUrl = graphUrl + "v1.0/me";
+
     this.service =
         new ServiceBuilder(cfg.getString(InitOAuth.CLIENT_ID))
             .apiSecret(cfg.getString(InitOAuth.CLIENT_SECRET))
             .callback(canonicalWebUrl + "oauth")
-            .defaultScope(SCOPE)
-            .build(MicrosoftAzureActiveDirectory20Api.custom(tenant));
+            .defaultScope(scope)
+            .build(new SovereignMicrosoftAzureApi(tenant, loginUrl));
     this.gson = JSON.newGson();
     if (log.isDebugEnabled()) {
       log.debug("OAuth2: canonicalWebUrl={}", canonicalWebUrl);
-      log.debug("OAuth2: scope={}", SCOPE);
+      log.debug("OAuth2: scope={}", scope);
+      log.debug("OAuth2: protectedResourceUrl={}", protectedResourceUrl);
       log.debug("OAuth2: useEmailAsUsername={}", useEmailAsUsername);
     }
   }
@@ -154,7 +169,7 @@ class AzureActiveDirectoryService implements OAuthServiceProvider {
       return null;
     }
 
-    OAuthRequest request = new OAuthRequest(Verb.GET, PROTECTED_RESOURCE_URL);
+    OAuthRequest request = new OAuthRequest(Verb.GET, protectedResourceUrl);
     OAuth2AccessToken t = new OAuth2AccessToken(token.getToken(), token.getRaw());
     service.signRequest(t, request);
     request.addHeader("Accept", "*/*");

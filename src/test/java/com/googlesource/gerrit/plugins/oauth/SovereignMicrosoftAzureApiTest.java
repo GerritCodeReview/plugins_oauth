@@ -16,17 +16,19 @@ package com.googlesource.gerrit.plugins.oauth;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import com.github.scribejava.apis.MicrosoftAzureActiveDirectory20Api;
 import com.github.scribejava.core.extractors.OAuth2AccessTokenJsonExtractor;
 import org.junit.Before;
 import org.junit.Test;
 
-public class MicrosoftAzureActiveDirectory20ApiTest {
-  private MicrosoftAzureActiveDirectory20Api api;
+public class SovereignMicrosoftAzureApiTest {
+  private static final String DEFAULT_LOGIN_URL = "https://login.microsoftonline.com/";
+  private static final String DEFAULT_TENANT = "organizations";
+
+  private SovereignMicrosoftAzureApi api;
 
   @Before
   public void setUp() {
-    api = MicrosoftAzureActiveDirectory20Api.instance();
+    api = new SovereignMicrosoftAzureApi(DEFAULT_TENANT, DEFAULT_LOGIN_URL);
   }
 
   @Test

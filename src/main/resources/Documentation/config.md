@@ -54,11 +54,15 @@ appended with provider suffix: e.g. `-google-oauth` or `-github-oauth`:
   [plugin "@PLUGIN@-office365-oauth"]
     client-id = "<client-id>"
     client-secret = "<client-secret>"
+    root-graph-url = "<root-graph-url>" #Optional, if not set will fallback to "https://graph.microsoft.com/"
+    root-login-url = "<root-login-url>" #Optional, if not set will fallback to "https://login.microsoftonline.com/"
     tenant = "<tenant (optional defaults to organizations if not set)>"
 
   [plugin "@PLUGIN@-azure-oauth"]
     client-id = "<client-id>"
     client-secret = "<client-secret>"
+    root-graph-url = "<root-graph-url>" #Optional, if not set will fallback to "https://graph.microsoft.com/"
+    root-login-url = "<root-login-url>" #Optional, if not set will fallback to "https://login.microsoftonline.com/"
     tenant = "<tenant (optional defaults to organizations if not set)>"
     link-to-existing-office365-accounts = true #Optional, if set will try to link old account with the @PLUGIN@-office365-oauth naming
 
