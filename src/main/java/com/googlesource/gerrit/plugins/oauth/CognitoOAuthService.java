@@ -53,6 +53,7 @@ public class CognitoOAuthService implements OAuthServiceProvider {
   private final String rootUrl;
   private final OAuth20Service service;
   private final String serviceName;
+  private final boolean linkExistingGerrit;
 
   @Inject
   CognitoOAuthService(
@@ -68,6 +69,7 @@ public class CognitoOAuthService implements OAuthServiceProvider {
     }
 
     serviceName = cfg.getString(InitOAuth.SERVICE_NAME, "Cognito");
+    linkExistingGerrit = cfg.getBoolean(InitOAuth.LINK_TO_EXISTING_GERRIT_ACCOUNT, false);
 
     service =
         new ServiceBuilder(cfg.getString(InitOAuth.CLIENT_ID))
@@ -106,11 +108,11 @@ public class CognitoOAuthService implements OAuthServiceProvider {
       JsonElement email = jsonObject.get("email");
       JsonElement name = jsonObject.get("name");
       return new OAuthUserInfo(
-          COGNITO_PROVIDER_PREFIX + id.getAsString(),
-          asString(username),
-          asString(email),
-          asString(name),
-          null);
+          COGNITO_PROVIDER_PREFIX + id.getAsString() /*externalId*/,
+          username == null || username.isJsonNull() ? null : username.getAsString() /*username*/,
+          email == null || email.isJsonNull() ? null : email.getAsString() /*email*/,
+          name == null || name.isJsonNull() ? null : name.getAsString() /*displayName*/,
+          linkExistingGerrit ? "gerrit:" + username.getAsString() : null /*claimedIdentity*/);
     } catch (ExecutionException | InterruptedException e) {
       throw new RuntimeException("Cannot retrieve user info resource", e);
     }
