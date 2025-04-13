@@ -92,6 +92,7 @@ appended with provider suffix: e.g. `-google-oauth` or `-github-oauth`:
     root-url = "<root url>" # for example, https://cognito.example.com
     client-id = "<client-id>"
     client-secret = "<client-secret>"
+    link-to-existing-gerrit-accounts = false
 ```
 
 When one from the sections above is omitted, OAuth SSO is used.
@@ -336,7 +337,10 @@ on the username instead of trying to create a new account, see below migration f
 The client-id and secret-id can be obtained in the AWS Cognito web interface once you create a new App Integration for Gerrit.
 See [Creating an app integration](https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-user-pools-configuring-app-integration.html).
 
-#### Migrating from LDAP
+You can optionally set `link-to-existing-gerrit-accounts = true` if you want the provider to link a account based
+on the username instead of trying to create a new account, see below migration from LDAP.
+
+#### Migrating from LDAP to Authentik
 
 Set the `link-to-existing-gerrit-accounts = true` option.
 
@@ -344,3 +348,12 @@ If you have used LDAP before and have accounts with an externalIDs like `gerrit:
 with username `firstname.lastname` logs in it will link the Authentik account to that Gerrit account.
 
 When all users has logged in once in Gerrit with their Authentik account it's recommended that the configuration option is removed.
+
+#### Migrating from LDAP to Cognito
+
+Set the `link-to-existing-gerrit-accounts = true` option.
+
+If you have used LDAP before and have accounts with an externalIDs like `gerrit:firstname.lastname` and a user in Cognito
+with username `firstname.lastname` logs in it will link the Cognito account to that Gerrit account.
+
+When all users has logged in once in Gerrit with their Cognito account it's recommended that the configuration option is removed.

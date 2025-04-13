@@ -248,6 +248,8 @@ class InitOAuth implements InitStep {
             "Use Cognito OAuth provider for Gerrit login ?");
     if (configureCognitoOAuthProvider && configureOAuth(cognitoOAuthProviderSection)) {
       checkRootUrl(cognitoOAuthProviderSection.string("Cognito Root URL", ROOT_URL, null));
+      cognitoOAuthProviderSection.string(
+          "Link to existing gerrit accounts?", LINK_TO_EXISTING_GERRIT_ACCOUNT, "false");
     }
   }
 
