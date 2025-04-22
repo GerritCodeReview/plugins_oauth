@@ -14,18 +14,12 @@
 
 package com.googlesource.gerrit.plugins.oauth;
 
-import com.google.gerrit.extensions.annotations.Exports;
-import com.google.gerrit.extensions.annotations.PluginName;
-import com.google.gerrit.extensions.auth.oauth.OAuthServiceProvider;
-import com.google.gerrit.server.config.PluginConfig;
-import com.google.gerrit.server.config.PluginConfigFactory;
+import com.google.inject.AbstractModule;
 import com.google.inject.Inject;
-import com.google.inject.ProvisionException;
 import com.google.inject.servlet.ServletModule;
 import com.googlesource.gerrit.plugins.oauth.airvantage.AirVantageOAuthService;
 import com.googlesource.gerrit.plugins.oauth.auth0.Auth0OAuthService;
 import com.googlesource.gerrit.plugins.oauth.authentik.AuthentikOAuthService;
-import com.googlesource.gerrit.plugins.oauth.azure.AzureActiveDirectoryService;
 import com.googlesource.gerrit.plugins.oauth.bitbucket.BitbucketOAuthService;
 import com.googlesource.gerrit.plugins.oauth.cas.CasOAuthService;
 import com.googlesource.gerrit.plugins.oauth.cognito.CognitoOAuthService;
@@ -39,147 +33,31 @@ import com.googlesource.gerrit.plugins.oauth.lemon.LemonLDAPOAuthService;
 import com.googlesource.gerrit.plugins.oauth.phabricator.PhabricatorOAuthService;
 import com.googlesource.gerrit.plugins.oauth.tuleap.TuleapOAuthService;
 
-class HttpModule extends ServletModule {
-
-  private final PluginConfigFactory cfgFactory;
-  private final String pluginName;
+class HttpModule extends AbstractModule {
+  private final OAuthPluginConfigFactory cfgFactory;
 
   @Inject
-  HttpModule(PluginConfigFactory cfgFactory, @PluginName String pluginName) {
+  HttpModule(OAuthPluginConfigFactory cfgFactory) {
     this.cfgFactory = cfgFactory;
-    this.pluginName = pluginName;
   }
 
   @Override
-  protected void configureServlets() {
-    PluginConfig cfg =
-        cfgFactory.getFromGerritConfig(pluginName + GoogleOAuthService.CONFIG_SUFFIX);
-    if (cfg.getString(InitOAuth.CLIENT_ID) != null) {
-      bind(OAuthServiceProvider.class)
-          .annotatedWith(Exports.named(GoogleOAuthService.CONFIG_SUFFIX))
-          .to(GoogleOAuthService.class);
-    }
-
-    cfg = cfgFactory.getFromGerritConfig(pluginName + GitHubOAuthService.CONFIG_SUFFIX);
-    if (cfg.getString(InitOAuth.CLIENT_ID) != null) {
-      bind(OAuthServiceProvider.class)
-          .annotatedWith(Exports.named(GitHubOAuthService.CONFIG_SUFFIX))
-          .to(GitHubOAuthService.class);
-    }
-
-    cfg = cfgFactory.getFromGerritConfig(pluginName + BitbucketOAuthService.CONFIG_SUFFIX);
-    if (cfg.getString(InitOAuth.CLIENT_ID) != null) {
-      bind(OAuthServiceProvider.class)
-          .annotatedWith(Exports.named(BitbucketOAuthService.CONFIG_SUFFIX))
-          .to(BitbucketOAuthService.class);
-    }
-
-    cfg = cfgFactory.getFromGerritConfig(pluginName + CasOAuthService.CONFIG_SUFFIX);
-    if (cfg.getString(InitOAuth.CLIENT_ID) != null) {
-      bind(OAuthServiceProvider.class)
-          .annotatedWith(Exports.named(CasOAuthService.CONFIG_SUFFIX))
-          .to(CasOAuthService.class);
-    }
-
-    cfg = cfgFactory.getFromGerritConfig(pluginName + FacebookOAuthService.CONFIG_SUFFIX);
-    if (cfg.getString(InitOAuth.CLIENT_ID) != null) {
-      bind(OAuthServiceProvider.class)
-          .annotatedWith(Exports.named(FacebookOAuthService.CONFIG_SUFFIX))
-          .to(FacebookOAuthService.class);
-    }
-
-    cfg = cfgFactory.getFromGerritConfig(pluginName + GitLabOAuthService.CONFIG_SUFFIX);
-    if (cfg.getString(InitOAuth.CLIENT_ID) != null) {
-      bind(OAuthServiceProvider.class)
-          .annotatedWith(Exports.named(GitLabOAuthService.CONFIG_SUFFIX))
-          .to(GitLabOAuthService.class);
-    }
-
-    cfg = cfgFactory.getFromGerritConfig(pluginName + LemonLDAPOAuthService.CONFIG_SUFFIX);
-    if (cfg.getString(InitOAuth.CLIENT_ID) != null) {
-      bind(OAuthServiceProvider.class)
-          .annotatedWith(Exports.named(LemonLDAPOAuthService.CONFIG_SUFFIX))
-          .to(LemonLDAPOAuthService.class);
-    }
-
-    cfg = cfgFactory.getFromGerritConfig(pluginName + DexOAuthService.CONFIG_SUFFIX);
-    if (cfg.getString(InitOAuth.CLIENT_ID) != null) {
-      bind(OAuthServiceProvider.class)
-          .annotatedWith(Exports.named(DexOAuthService.CONFIG_SUFFIX))
-          .to(DexOAuthService.class);
-    }
-
-    cfg = cfgFactory.getFromGerritConfig(pluginName + KeycloakOAuthService.CONFIG_SUFFIX);
-    if (cfg.getString(InitOAuth.CLIENT_ID) != null) {
-      bind(OAuthServiceProvider.class)
-          .annotatedWith(Exports.named(KeycloakOAuthService.CONFIG_SUFFIX))
-          .to(KeycloakOAuthService.class);
-    }
-
-    boolean office365LegacyProviderBound = false;
-    cfg =
-        cfgFactory.getFromGerritConfig(
-            pluginName + AzureActiveDirectoryService.CONFIG_SUFFIX_LEGACY);
-    if (cfg.getString(InitOAuth.CLIENT_ID) != null) {
-      office365LegacyProviderBound = true;
-      bind(OAuthServiceProvider.class)
-          .annotatedWith(Exports.named(AzureActiveDirectoryService.CONFIG_SUFFIX))
-          .to(AzureActiveDirectoryService.class);
-    }
-    cfg = cfgFactory.getFromGerritConfig(pluginName + AzureActiveDirectoryService.CONFIG_SUFFIX);
-    if (cfg.getString(InitOAuth.CLIENT_ID) != null) {
-      // ?: Check if the legacy Office365 is already bound, we can only have one of these bound at
-      // one time
-      if (office365LegacyProviderBound) {
-        // -> Yes, the legacy Office365 is already bound and we are trying to bind the
-        // AzureActiveDirectoryService.CONFIG_SUFFIX at the same time.
-        throw new ProvisionException("Legacy Office365 OAuth provider is already bound!");
-      }
-      bind(OAuthServiceProvider.class)
-          .annotatedWith(Exports.named(AzureActiveDirectoryService.CONFIG_SUFFIX))
-          .to(AzureActiveDirectoryService.class);
-    }
-
-    cfg = cfgFactory.getFromGerritConfig(pluginName + AirVantageOAuthService.CONFIG_SUFFIX);
-    if (cfg.getString(InitOAuth.CLIENT_ID) != null) {
-      bind(OAuthServiceProvider.class)
-          .annotatedWith(Exports.named(AirVantageOAuthService.CONFIG_SUFFIX))
-          .to(AirVantageOAuthService.class);
-    }
-
-    cfg = cfgFactory.getFromGerritConfig(pluginName + PhabricatorOAuthService.CONFIG_SUFFIX);
-    if (cfg.getString(InitOAuth.CLIENT_ID) != null) {
-      bind(OAuthServiceProvider.class)
-          .annotatedWith(Exports.named(PhabricatorOAuthService.CONFIG_SUFFIX))
-          .to(PhabricatorOAuthService.class);
-    }
-
-    cfg = cfgFactory.getFromGerritConfig(pluginName + TuleapOAuthService.CONFIG_SUFFIX);
-    if (cfg.getString(InitOAuth.CLIENT_ID) != null) {
-      bind(OAuthServiceProvider.class)
-          .annotatedWith(Exports.named(TuleapOAuthService.CONFIG_SUFFIX))
-          .to(TuleapOAuthService.class);
-    }
-
-    cfg = cfgFactory.getFromGerritConfig(pluginName + Auth0OAuthService.CONFIG_SUFFIX);
-    if (cfg.getString(InitOAuth.CLIENT_ID) != null) {
-      bind(OAuthServiceProvider.class)
-          .annotatedWith(Exports.named(Auth0OAuthService.CONFIG_SUFFIX))
-          .to(Auth0OAuthService.class);
-    }
-
-    cfg = cfgFactory.getFromGerritConfig(pluginName + AuthentikOAuthService.CONFIG_SUFFIX);
-    if (cfg.getString(InitOAuth.CLIENT_ID) != null) {
-      bind(OAuthServiceProvider.class)
-          .annotatedWith(Exports.named(AuthentikOAuthService.CONFIG_SUFFIX))
-          .to(AuthentikOAuthService.class);
-    }
-
-    cfg = cfgFactory.getFromGerritConfig(pluginName + CognitoOAuthService.CONFIG_SUFFIX);
-    if (cfg.getString(InitOAuth.CLIENT_ID) != null) {
-      bind(OAuthServiceProvider.class)
-          .annotatedWith(Exports.named(CognitoOAuthService.CONFIG_SUFFIX))
-          .to(CognitoOAuthService.class);
-    }
+  protected void configure() {
+    install(new OAuthServiceModule(cfgFactory, AirVantageOAuthService.class));
+    install(new OAuthServiceModule(cfgFactory, Auth0OAuthService.class));
+    install(new OAuthServiceModule(cfgFactory, AuthentikOAuthService.class));
+    install(new AzureOAuthServiceModule(cfgFactory));
+    install(new OAuthServiceModule(cfgFactory, BitbucketOAuthService.class));
+    install(new OAuthServiceModule(cfgFactory, CasOAuthService.class));
+    install(new OAuthServiceModule(cfgFactory, CognitoOAuthService.class));
+    install(new OAuthServiceModule(cfgFactory, DexOAuthService.class));
+    install(new OAuthServiceModule(cfgFactory, FacebookOAuthService.class));
+    install(new OAuthServiceModule(cfgFactory, GitHubOAuthService.class));
+    install(new OAuthServiceModule(cfgFactory, GitLabOAuthService.class));
+    install(new OAuthServiceModule(cfgFactory, GoogleOAuthService.class));
+    install(new OAuthServiceModule(cfgFactory, KeycloakOAuthService.class));
+    install(new OAuthServiceModule(cfgFactory, LemonLDAPOAuthService.class));
+    install(new OAuthServiceModule(cfgFactory, PhabricatorOAuthService.class));
+    install(new OAuthServiceModule(cfgFactory, TuleapOAuthService.class));
   }
 }
