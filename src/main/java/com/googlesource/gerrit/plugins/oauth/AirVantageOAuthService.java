@@ -26,14 +26,12 @@ import com.github.scribejava.core.model.Response;
 import com.github.scribejava.core.model.Verb;
 import com.github.scribejava.core.oauth.OAuth20Service;
 import com.google.common.base.CharMatcher;
-import com.google.gerrit.extensions.annotations.PluginName;
 import com.google.gerrit.extensions.auth.oauth.OAuthServiceProvider;
 import com.google.gerrit.extensions.auth.oauth.OAuthToken;
 import com.google.gerrit.extensions.auth.oauth.OAuthUserInfo;
 import com.google.gerrit.extensions.auth.oauth.OAuthVerifier;
 import com.google.gerrit.server.config.CanonicalWebUrl;
 import com.google.gerrit.server.config.PluginConfig;
-import com.google.gerrit.server.config.PluginConfigFactory;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.inject.Inject;
@@ -44,20 +42,19 @@ import java.util.concurrent.ExecutionException;
 import org.slf4j.Logger;
 
 @Singleton
+@OAuthServiceProviderConfig(name = AirVantageOAuthService.PROVIDER_NAME)
 public class AirVantageOAuthService implements OAuthServiceProvider {
   private static final Logger log = getLogger(AirVantageOAuthService.class);
-  static final String CONFIG_SUFFIX = "-airvantage-oauth";
-  private static final String AV_PROVIDER_PREFIX = "airvantage-oauth:";
+  static final String PROVIDER_NAME = "airvantage";
   private static final String PROTECTED_RESOURCE_URL =
       "https://eu.airvantage.net/api/v1/users/current";
   private final OAuth20Service service;
+  private final String extIdScheme;
 
   @Inject
   AirVantageOAuthService(
-      PluginConfigFactory cfgFactory,
-      @PluginName String pluginName,
-      @CanonicalWebUrl Provider<String> urlProvider) {
-    PluginConfig cfg = cfgFactory.getFromGerritConfig(pluginName + CONFIG_SUFFIX);
+      OAuthPluginConfigFactory cfgFactory, @CanonicalWebUrl Provider<String> urlProvider) {
+    PluginConfig cfg = cfgFactory.create(PROVIDER_NAME);
     String canonicalWebUrl = CharMatcher.is('/').trimTrailingFrom(urlProvider.get()) + "/";
 
     service =
@@ -65,6 +62,7 @@ public class AirVantageOAuthService implements OAuthServiceProvider {
             .apiSecret(cfg.getString(InitOAuth.CLIENT_SECRET))
             .callback(canonicalWebUrl + "oauth")
             .build(new AirVantageApi());
+    extIdScheme = OAuthServiceProviderExternalIdScheme.create(PROVIDER_NAME);
   }
 
   @Override
@@ -94,7 +92,7 @@ public class AirVantageOAuthService implements OAuthServiceProvider {
         JsonElement email = jsonObject.get("email");
         JsonElement name = jsonObject.get("name");
         return new OAuthUserInfo(
-            AV_PROVIDER_PREFIX + id.getAsString(),
+            extIdScheme + ":" + id.getAsString(),
             null,
             email.getAsString(),
             name.getAsString(),

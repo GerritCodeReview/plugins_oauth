@@ -26,14 +26,12 @@ import com.github.scribejava.core.oauth.AccessTokenRequestParams;
 import com.github.scribejava.core.oauth.AuthorizationUrlBuilder;
 import com.github.scribejava.core.oauth.OAuth20Service;
 import com.google.common.base.CharMatcher;
-import com.google.gerrit.extensions.annotations.PluginName;
 import com.google.gerrit.extensions.auth.oauth.OAuthServiceProvider;
 import com.google.gerrit.extensions.auth.oauth.OAuthToken;
 import com.google.gerrit.extensions.auth.oauth.OAuthUserInfo;
 import com.google.gerrit.extensions.auth.oauth.OAuthVerifier;
 import com.google.gerrit.server.config.CanonicalWebUrl;
 import com.google.gerrit.server.config.PluginConfig;
-import com.google.gerrit.server.config.PluginConfigFactory;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.inject.Inject;
@@ -47,10 +45,10 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 
 @Singleton
+@OAuthServiceProviderConfig(name = SAPIasOAuthService.PROVIDER_NAME)
 public class SAPIasOAuthService implements OAuthServiceProvider {
   private static final Logger log = getLogger(SAPIasOAuthService.class);
-  private static final String PROVIDER_PREFIX = "sapias-oauth:";
-  static final String CONFIG_SUFFIX = "-sapias-oauth";
+  static final String PROVIDER_NAME = "sapias";
   private static final String PROTECTED_RESOURCE_URL = "%s/oauth2/userinfo";
   private final OAuth20Service service;
   private final String serviceName;
@@ -58,13 +56,12 @@ public class SAPIasOAuthService implements OAuthServiceProvider {
   private final boolean linkExistingGerrit;
   private final boolean enablePKCE;
   private final AuthorizationUrlBuilder authorizationUrlBuilder;
+  private final String extIdScheme;
 
   @Inject
   SAPIasOAuthService(
-      PluginConfigFactory cfgFactory,
-      @PluginName String pluginName,
-      @CanonicalWebUrl Provider<String> urlProvider) {
-    PluginConfig cfg = cfgFactory.getFromGerritConfig(pluginName + CONFIG_SUFFIX);
+      OAuthPluginConfigFactory cfgFactory, @CanonicalWebUrl Provider<String> urlProvider) {
+    PluginConfig cfg = cfgFactory.create(PROVIDER_NAME);
     String canonicalWebUrl = CharMatcher.is('/').trimTrailingFrom(urlProvider.get()) + "/";
     rootUrl = cfg.getString(InitOAuth.ROOT_URL);
     if (!URI.create(rootUrl).isAbsolute()) {
@@ -80,6 +77,7 @@ public class SAPIasOAuthService implements OAuthServiceProvider {
             .defaultScope("openid profile email")
             .build(new SAPIasApi(rootUrl));
     authorizationUrlBuilder = service.createAuthorizationUrlBuilder();
+    extIdScheme = OAuthServiceProviderExternalIdScheme.create(PROVIDER_NAME);
   }
 
   @Override
@@ -113,7 +111,7 @@ public class SAPIasOAuthService implements OAuthServiceProvider {
       JsonElement email = jsonObject.get("email");
       JsonElement name = jsonObject.get("name");
       return new OAuthUserInfo(
-          PROVIDER_PREFIX + id.getAsString() /*externalId*/,
+          this.extIdScheme + ":" + id.getAsString() /*externalId*/,
           username == null || username.isJsonNull()
               ? id.getAsString()
               : username.getAsString() /*username*/,

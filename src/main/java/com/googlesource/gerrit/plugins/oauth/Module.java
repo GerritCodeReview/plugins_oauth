@@ -17,33 +17,43 @@ package com.googlesource.gerrit.plugins.oauth;
 import com.google.gerrit.extensions.annotations.Exports;
 import com.google.gerrit.extensions.annotations.PluginName;
 import com.google.gerrit.extensions.auth.oauth.OAuthLoginProvider;
-import com.google.gerrit.server.config.PluginConfig;
-import com.google.gerrit.server.config.PluginConfigFactory;
+import com.google.gerrit.server.config.GerritServerConfig;
 import com.google.inject.AbstractModule;
 import com.google.inject.Inject;
+import org.eclipse.jgit.lib.Config;
 
 public class Module extends AbstractModule {
-  private final PluginConfigFactory cfgFactory;
   private final String pluginName;
+  private final Config cfg;
+
+  private boolean loginProviderBound;
 
   @Inject
-  Module(PluginConfigFactory cfgFactory, @PluginName String pluginName) {
-    this.cfgFactory = cfgFactory;
+  public Module(@GerritServerConfig Config config, @PluginName String pluginName) {
     this.pluginName = pluginName;
+    this.cfg = config;
   }
 
   @Override
   protected void configure() {
-    PluginConfig cfg =
-        cfgFactory.getFromGerritConfig(pluginName + SAPIasOAuthService.CONFIG_SUFFIX);
-    if (cfg.getString(InitOAuth.CLIENT_ID) != null) {
-      bind(OAuthLoginProvider.class)
-          .annotatedWith(Exports.named(SAPIasOAuthService.CONFIG_SUFFIX.substring(1)))
-          .to(SAPIasOAuthLoginProvider.class);
-    } else {
+    bind(OAuthPluginConfigFactory.class);
+
+    bindOAuthLoginProvider(SAPIasOAuthLoginProvider.class);
+
+    if (!loginProviderBound) {
       bind(OAuthLoginProvider.class)
           .annotatedWith(Exports.named(pluginName))
           .to(DisabledOAuthLoginProvider.class);
+    }
+  }
+
+  private void bindOAuthLoginProvider(Class<SAPIasOAuthLoginProvider> loginClass) {
+    String loginProviderName = loginClass.getAnnotation(OAuthServiceProviderConfig.class).name();
+    String cfgSuffix = OAuthPluginConfigFactory.getConfigSuffix(loginProviderName);
+    String extIdScheme = OAuthServiceProviderExternalIdScheme.create(loginProviderName);
+    if (cfg.getString("plugin", pluginName + cfgSuffix, InitOAuth.CLIENT_ID) != null) {
+      bind(OAuthLoginProvider.class).annotatedWith(Exports.named(extIdScheme)).to(loginClass);
+      loginProviderBound = true;
     }
   }
 }
