@@ -25,14 +25,12 @@ import com.github.scribejava.core.model.Response;
 import com.github.scribejava.core.model.Verb;
 import com.github.scribejava.core.oauth.OAuth20Service;
 import com.google.common.base.CharMatcher;
-import com.google.gerrit.extensions.annotations.PluginName;
 import com.google.gerrit.extensions.auth.oauth.OAuthServiceProvider;
 import com.google.gerrit.extensions.auth.oauth.OAuthToken;
 import com.google.gerrit.extensions.auth.oauth.OAuthUserInfo;
 import com.google.gerrit.extensions.auth.oauth.OAuthVerifier;
 import com.google.gerrit.server.config.CanonicalWebUrl;
 import com.google.gerrit.server.config.PluginConfig;
-import com.google.gerrit.server.config.PluginConfigFactory;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.inject.Inject;
@@ -45,24 +43,22 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @Singleton
+@OAuthServiceProviderConfig(name = FacebookOAuthService.PROVIDER_NAME)
 class FacebookOAuthService implements OAuthServiceProvider {
   private static final Logger log = LoggerFactory.getLogger(FacebookOAuthService.class);
-  static final String CONFIG_SUFFIX = "-facebook-oauth";
   private static final String PROTECTED_RESOURCE_URL = "https://graph.facebook.com/me";
 
-  private static final String FACEBOOK_PROVIDER_PREFIX = "facebook-oauth:";
+  static final String PROVIDER_NAME = "facebook";
   private static final String SCOPE = "email";
   private static final String FIELDS_QUERY = "fields";
   private static final String FIELDS = "email,name";
   private final OAuth20Service service;
+  private final String extIdScheme;
 
   @Inject
   FacebookOAuthService(
-      PluginConfigFactory cfgFactory,
-      @PluginName String pluginName,
-      @CanonicalWebUrl Provider<String> urlProvider) {
-
-    PluginConfig cfg = cfgFactory.getFromGerritConfig(pluginName + CONFIG_SUFFIX);
+      OAuthPluginConfigFactory cfgFactory, @CanonicalWebUrl Provider<String> urlProvider) {
+    PluginConfig cfg = cfgFactory.create(PROVIDER_NAME);
     String canonicalWebUrl = CharMatcher.is('/').trimTrailingFrom(urlProvider.get()) + "/";
 
     service =
@@ -71,6 +67,7 @@ class FacebookOAuthService implements OAuthServiceProvider {
             .callback(canonicalWebUrl + "oauth")
             .defaultScope(SCOPE)
             .build(new Facebook2Api());
+    extIdScheme = OAuthServiceProviderExternalIdScheme.create(PROVIDER_NAME);
   }
 
   @Override
@@ -107,7 +104,7 @@ class FacebookOAuthService implements OAuthServiceProvider {
         JsonElement login = jsonObject.get("email");
 
         return new OAuthUserInfo(
-            FACEBOOK_PROVIDER_PREFIX + id.getAsString(),
+            extIdScheme + ":" + id.getAsString(),
             asString(login),
             asString(email),
             asString(name),

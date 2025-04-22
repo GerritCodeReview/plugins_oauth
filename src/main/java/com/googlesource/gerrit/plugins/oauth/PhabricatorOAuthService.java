@@ -25,14 +25,12 @@ import com.github.scribejava.core.model.Response;
 import com.github.scribejava.core.model.Verb;
 import com.github.scribejava.core.oauth.OAuth20Service;
 import com.google.common.base.CharMatcher;
-import com.google.gerrit.extensions.annotations.PluginName;
 import com.google.gerrit.extensions.auth.oauth.OAuthServiceProvider;
 import com.google.gerrit.extensions.auth.oauth.OAuthToken;
 import com.google.gerrit.extensions.auth.oauth.OAuthUserInfo;
 import com.google.gerrit.extensions.auth.oauth.OAuthVerifier;
 import com.google.gerrit.server.config.CanonicalWebUrl;
 import com.google.gerrit.server.config.PluginConfig;
-import com.google.gerrit.server.config.PluginConfigFactory;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.inject.Inject;
@@ -47,20 +45,19 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @Singleton
+@OAuthServiceProviderConfig(name = PhabricatorOAuthService.PROVIDER_NAME)
 class PhabricatorOAuthService implements OAuthServiceProvider {
   private static final Logger log = LoggerFactory.getLogger(PhabricatorOAuthService.class);
-  static final String CONFIG_SUFFIX = "-phabricator-oauth";
-  private static final String PHABRICATOR_PROVIDER_PREFIX = "phabricator-oauth:";
+  static final String PROVIDER_NAME = "phabricator";
   private static final String PROTECTED_RESOURCE_URL = "%s/api/user.whoami";
   private final String rootUrl;
   private final OAuth20Service service;
+  private final String extIdScheme;
 
   @Inject
   PhabricatorOAuthService(
-      PluginConfigFactory cfgFactory,
-      @PluginName String pluginName,
-      @CanonicalWebUrl Provider<String> urlProvider) {
-    PluginConfig cfg = cfgFactory.getFromGerritConfig(pluginName + CONFIG_SUFFIX);
+      OAuthPluginConfigFactory cfgFactory, @CanonicalWebUrl Provider<String> urlProvider) {
+    PluginConfig cfg = cfgFactory.create(PROVIDER_NAME);
     String canonicalWebUrl = CharMatcher.is('/').trimTrailingFrom(urlProvider.get()) + "/";
     rootUrl = cfg.getString(InitOAuth.ROOT_URL);
     if (!URI.create(rootUrl).isAbsolute()) {
@@ -74,6 +71,7 @@ class PhabricatorOAuthService implements OAuthServiceProvider {
     if (log.isDebugEnabled()) {
       log.debug("OAuth2: canonicalWebUrl={}", canonicalWebUrl);
     }
+    extIdScheme = OAuthServiceProviderExternalIdScheme.create(PROVIDER_NAME);
   }
 
   @Override
@@ -115,11 +113,7 @@ class PhabricatorOAuthService implements OAuthServiceProvider {
           login = username.getAsString();
         }
         return new OAuthUserInfo(
-            PHABRICATOR_PROVIDER_PREFIX + id.getAsString(),
-            login,
-            asString(email),
-            asString(name),
-            null);
+            extIdScheme + ":" + id.getAsString(), login, asString(email), asString(name), null);
       }
     } catch (ExecutionException | InterruptedException e) {
       throw new RuntimeException("Cannot retrieve user info resource", e);
