@@ -25,14 +25,12 @@ import com.github.scribejava.core.model.Response;
 import com.github.scribejava.core.model.Verb;
 import com.github.scribejava.core.oauth.OAuth20Service;
 import com.google.common.base.CharMatcher;
-import com.google.gerrit.extensions.annotations.PluginName;
 import com.google.gerrit.extensions.auth.oauth.OAuthServiceProvider;
 import com.google.gerrit.extensions.auth.oauth.OAuthToken;
 import com.google.gerrit.extensions.auth.oauth.OAuthUserInfo;
 import com.google.gerrit.extensions.auth.oauth.OAuthVerifier;
 import com.google.gerrit.server.config.CanonicalWebUrl;
 import com.google.gerrit.server.config.PluginConfig;
-import com.google.gerrit.server.config.PluginConfigFactory;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -41,6 +39,9 @@ import com.google.inject.Provider;
 import com.google.inject.ProvisionException;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.oauth.InitOAuth;
+import com.googlesource.gerrit.plugins.oauth.OAuthPluginConfigFactory;
+import com.googlesource.gerrit.plugins.oauth.OAuthServiceProviderConfig;
+import com.googlesource.gerrit.plugins.oauth.OAuthServiceProviderExternalIdScheme;
 import java.io.IOException;
 import java.net.URI;
 import java.util.concurrent.ExecutionException;
@@ -49,23 +50,22 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @Singleton
+@OAuthServiceProviderConfig(name = CasOAuthService.PROVIDER_NAME)
 public class CasOAuthService implements OAuthServiceProvider {
   private static final Logger log = LoggerFactory.getLogger(CasOAuthService.class);
-  public static final String CONFIG_SUFFIX = "-cas-oauth";
-  private static final String CAS_PROVIDER_PREFIX = "cas-oauth:";
+  public static final String PROVIDER_NAME = "cas";
   private static final String PROTECTED_RESOURCE_URL = "%s/oauth2.0/profile";
   private static final String USE_JSON_EXTRACTOR = "use-json-extractor";
 
   private final String rootUrl;
   private final boolean fixLegacyUserId;
   private final OAuth20Service service;
+  private final String extIdScheme;
 
   @Inject
   CasOAuthService(
-      PluginConfigFactory cfgFactory,
-      @PluginName String pluginName,
-      @CanonicalWebUrl Provider<String> urlProvider) {
-    PluginConfig cfg = cfgFactory.getFromGerritConfig(pluginName + CONFIG_SUFFIX);
+      OAuthPluginConfigFactory cfgFactory, @CanonicalWebUrl Provider<String> urlProvider) {
+    PluginConfig cfg = cfgFactory.create(PROVIDER_NAME);
     rootUrl = cfg.getString(InitOAuth.ROOT_URL);
     if (!URI.create(rootUrl).isAbsolute()) {
       throw new ProvisionException("Root URL must be absolute URL");
@@ -78,6 +78,7 @@ public class CasOAuthService implements OAuthServiceProvider {
             .apiSecret(cfg.getString(InitOAuth.CLIENT_SECRET))
             .callback(canonicalWebUrl + "oauth")
             .build(new CasApi(rootUrl, useJsonExtractor));
+    extIdScheme = OAuthServiceProviderExternalIdScheme.create(PROVIDER_NAME);
   }
 
   @Override
@@ -148,7 +149,7 @@ public class CasOAuthService implements OAuthServiceProvider {
       }
 
       return new OAuthUserInfo(
-          CAS_PROVIDER_PREFIX + id.getAsString(),
+          extIdScheme + ":" + id.getAsString(),
           login,
           email,
           name,

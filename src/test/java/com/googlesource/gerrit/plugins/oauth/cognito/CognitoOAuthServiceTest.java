@@ -25,9 +25,9 @@ import com.github.scribejava.core.oauth.OAuth20Service;
 import com.google.gerrit.extensions.auth.oauth.OAuthToken;
 import com.google.gerrit.extensions.auth.oauth.OAuthUserInfo;
 import com.google.gerrit.server.config.PluginConfig;
-import com.google.gerrit.server.config.PluginConfigFactory;
 import com.google.inject.Provider;
 import com.googlesource.gerrit.plugins.oauth.InitOAuth;
+import com.googlesource.gerrit.plugins.oauth.OAuthPluginConfigFactory;
 import java.lang.reflect.Field;
 import javax.servlet.http.HttpServletResponse;
 import org.junit.Before;
@@ -40,7 +40,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 public class CognitoOAuthServiceTest {
 
   // Mocks for constructor dependencies of CognitoOAuthService
-  @Mock private PluginConfigFactory mockConfigFactory;
+  @Mock private OAuthPluginConfigFactory mockConfigFactory;
   @Mock private PluginConfig mockPluginConfig;
   @Mock private Provider<String> mockUrlProvider;
 
@@ -48,7 +48,6 @@ public class CognitoOAuthServiceTest {
   @Mock private OAuth20Service mockScribeOAuthService;
 
   // Constants for configuration values
-  private static final String TEST_PLUGIN_NAME = "gerrit-oauth-provider-cognito";
   private static final String TEST_CANONICAL_WEB_URL = "http://gerrit.example.com";
   private static final String TEST_COGNITO_ROOT_URL =
       "https://cognito-idp.us-east-1.amazonaws.com/USER_POOL_ID";
@@ -68,9 +67,7 @@ public class CognitoOAuthServiceTest {
   @Before
   public void setUp() throws Exception {
     // Mock the PluginConfigFactory to return our mockPluginConfig
-    when(mockConfigFactory.getFromGerritConfig(
-            TEST_PLUGIN_NAME + CognitoOAuthService.CONFIG_SUFFIX))
-        .thenReturn(mockPluginConfig);
+    when(mockConfigFactory.create(CognitoOAuthService.PROVIDER_NAME)).thenReturn(mockPluginConfig);
 
     // Mock the CanonicalWebUrl provider
     when(mockUrlProvider.get()).thenReturn(TEST_CANONICAL_WEB_URL);
@@ -99,7 +96,7 @@ public class CognitoOAuthServiceTest {
         .thenReturn(linkExistingGerritAccounts);
 
     CognitoOAuthService serviceInstance =
-        new CognitoOAuthService(mockConfigFactory, TEST_PLUGIN_NAME, mockUrlProvider);
+        new CognitoOAuthService(mockConfigFactory, mockUrlProvider);
 
     // Replace the internal OAuth20Service with our mock using reflection.
     Field serviceField = CognitoOAuthService.class.getDeclaredField("service");

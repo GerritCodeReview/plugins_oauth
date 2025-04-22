@@ -1,4 +1,4 @@
-// Copyright (C) 2017 The Android Open Source Project
+// Copyright (C) 2025 The Android Open Source Project
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,11 +14,10 @@
 
 package com.googlesource.gerrit.plugins.oauth;
 
-import com.google.inject.AbstractModule;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
-public class Module extends AbstractModule {
-  @Override
-  protected void configure() {
-    bind(OAuthPluginConfigFactory.class);
-  }
+@Retention(RetentionPolicy.RUNTIME)
+public @interface OAuthServiceProviderConfig {
+  String name();
 }
