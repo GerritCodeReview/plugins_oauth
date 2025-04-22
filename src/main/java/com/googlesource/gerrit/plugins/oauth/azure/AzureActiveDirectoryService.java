@@ -28,14 +28,12 @@ import com.github.scribejava.core.model.Verb;
 import com.github.scribejava.core.oauth.OAuth20Service;
 import com.google.common.base.CharMatcher;
 import com.google.common.collect.ImmutableSet;
-import com.google.gerrit.extensions.annotations.PluginName;
 import com.google.gerrit.extensions.auth.oauth.OAuthServiceProvider;
 import com.google.gerrit.extensions.auth.oauth.OAuthToken;
 import com.google.gerrit.extensions.auth.oauth.OAuthUserInfo;
 import com.google.gerrit.extensions.auth.oauth.OAuthVerifier;
 import com.google.gerrit.server.config.CanonicalWebUrl;
 import com.google.gerrit.server.config.PluginConfig;
-import com.google.gerrit.server.config.PluginConfigFactory;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -43,6 +41,9 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.oauth.InitOAuth;
+import com.googlesource.gerrit.plugins.oauth.OAuthPluginConfigFactory;
+import com.googlesource.gerrit.plugins.oauth.OAuthServiceProviderConfig;
+import com.googlesource.gerrit.plugins.oauth.OAuthServiceProviderExternalIdScheme;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
@@ -52,10 +53,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @Singleton
+@OAuthServiceProviderConfig(name = AzureActiveDirectoryService.PROVIDER_NAME)
 public class AzureActiveDirectoryService implements OAuthServiceProvider {
   private static final Logger log = LoggerFactory.getLogger(AzureActiveDirectoryService.class);
-  public static final String CONFIG_SUFFIX = "-azure-oauth";
-  private static final String AZURE_PROVIDER_PREFIX = "azure-oauth:";
+  public static final String PROVIDER_NAME = "azure";
   private static final String PROTECTED_RESOURCE_URL = "https://graph.microsoft.com/v1.0/me";
   private static final String SCOPE =
       "openid offline_access https://graph.microsoft.com/user.readbasic.all";
@@ -68,13 +69,12 @@ public class AzureActiveDirectoryService implements OAuthServiceProvider {
   private final boolean useEmailAsUsername;
   private final String tenant;
   private final String clientId;
+  private final String extIdScheme;
 
   @Inject
   AzureActiveDirectoryService(
-      PluginConfigFactory cfgFactory,
-      @PluginName String pluginName,
-      @CanonicalWebUrl Provider<String> urlProvider) {
-    PluginConfig cfg = cfgFactory.getFromGerritConfig(pluginName + CONFIG_SUFFIX);
+      OAuthPluginConfigFactory cfgFactory, @CanonicalWebUrl Provider<String> urlProvider) {
+    PluginConfig cfg = cfgFactory.create(PROVIDER_NAME);
     this.canonicalWebUrl = CharMatcher.is('/').trimTrailingFrom(urlProvider.get()) + "/";
     this.useEmailAsUsername = cfg.getBoolean(InitOAuth.USE_EMAIL_AS_USERNAME, false);
     this.tenant = cfg.getString(InitOAuth.TENANT, DEFAULT_TENANT);
@@ -91,6 +91,7 @@ public class AzureActiveDirectoryService implements OAuthServiceProvider {
       log.debug("OAuth2: scope={}", SCOPE);
       log.debug("OAuth2: useEmailAsUsername={}", useEmailAsUsername);
     }
+    extIdScheme = OAuthServiceProviderExternalIdScheme.create(PROVIDER_NAME);
   }
 
   @Override
@@ -172,7 +173,7 @@ public class AzureActiveDirectoryService implements OAuthServiceProvider {
         }
 
         return new OAuthUserInfo(
-            AZURE_PROVIDER_PREFIX + id.getAsString(),
+            extIdScheme + ":" + id.getAsString(),
             login,
             asString(email),
             asString(name),

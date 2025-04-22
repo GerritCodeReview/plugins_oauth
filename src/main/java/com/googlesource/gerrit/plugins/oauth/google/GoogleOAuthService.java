@@ -27,20 +27,21 @@ import com.github.scribejava.core.oauth.OAuth20Service;
 import com.google.common.base.CharMatcher;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
-import com.google.gerrit.extensions.annotations.PluginName;
 import com.google.gerrit.extensions.auth.oauth.OAuthServiceProvider;
 import com.google.gerrit.extensions.auth.oauth.OAuthToken;
 import com.google.gerrit.extensions.auth.oauth.OAuthUserInfo;
 import com.google.gerrit.extensions.auth.oauth.OAuthVerifier;
 import com.google.gerrit.server.config.CanonicalWebUrl;
 import com.google.gerrit.server.config.PluginConfig;
-import com.google.gerrit.server.config.PluginConfigFactory;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.oauth.InitOAuth;
+import com.googlesource.gerrit.plugins.oauth.OAuthPluginConfigFactory;
+import com.googlesource.gerrit.plugins.oauth.OAuthServiceProviderConfig;
+import com.googlesource.gerrit.plugins.oauth.OAuthServiceProviderExternalIdScheme;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -54,10 +55,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @Singleton
+@OAuthServiceProviderConfig(name = GoogleOAuthService.PROVIDER_NAME)
 public class GoogleOAuthService implements OAuthServiceProvider {
   private static final Logger log = LoggerFactory.getLogger(GoogleOAuthService.class);
-  public static final String CONFIG_SUFFIX = "-google-oauth";
-  private static final String GOOGLE_PROVIDER_PREFIX = "google-oauth:";
+  public static final String PROVIDER_NAME = "google";
   private static final String PROTECTED_RESOURCE_URL =
       "https://www.googleapis.com/oauth2/v2/userinfo";
   private static final String SCOPE = "email profile";
@@ -66,13 +67,12 @@ public class GoogleOAuthService implements OAuthServiceProvider {
   private final List<String> domains;
   private final boolean useEmailAsUsername;
   private final boolean fixLegacyUserId;
+  private final String extIdScheme;
 
   @Inject
   GoogleOAuthService(
-      PluginConfigFactory cfgFactory,
-      @PluginName String pluginName,
-      @CanonicalWebUrl Provider<String> urlProvider) {
-    PluginConfig cfg = cfgFactory.getFromGerritConfig(pluginName + CONFIG_SUFFIX);
+      OAuthPluginConfigFactory cfgFactory, @CanonicalWebUrl Provider<String> urlProvider) {
+    PluginConfig cfg = cfgFactory.create(PROVIDER_NAME);
     this.canonicalWebUrl = CharMatcher.is('/').trimTrailingFrom(urlProvider.get()) + "/";
     if (cfg.getBoolean(InitOAuth.LINK_TO_EXISTING_OPENID_ACCOUNT, false)) {
       log.warn(
@@ -94,6 +94,7 @@ public class GoogleOAuthService implements OAuthServiceProvider {
       log.debug("OAuth2: domains={}", domains);
       log.debug("OAuth2: useEmailAsUsername={}", useEmailAsUsername);
     }
+    extIdScheme = OAuthServiceProviderExternalIdScheme.create(PROVIDER_NAME);
   }
 
   @Override
@@ -144,7 +145,7 @@ public class GoogleOAuthService implements OAuthServiceProvider {
           login = email.getAsString().split("@")[0];
         }
         return new OAuthUserInfo(
-            GOOGLE_PROVIDER_PREFIX + id.getAsString(),
+            extIdScheme + ":" + id.getAsString(),
             login,
             asString(email),
             asString(name),
