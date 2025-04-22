@@ -17,6 +17,7 @@ import static java.util.Objects.requireNonNull;
 
 import com.google.common.base.Strings;
 import com.google.gerrit.extensions.annotations.PluginName;
+import com.google.gerrit.extensions.auth.oauth.OAuthServiceProvider;
 import com.google.gerrit.pgm.init.api.ConsoleUI;
 import com.google.gerrit.pgm.init.api.InitStep;
 import com.google.gerrit.pgm.init.api.Section;
@@ -59,6 +60,8 @@ public class InitOAuth implements InitStep {
   static String FIX_LEGACY_USER_ID_QUESTION = "Fix legacy user id, without oauth provider prefix?";
 
   private final ConsoleUI ui;
+  private final Section.Factory sections;
+  private final String pluginName;
   private final Section googleOAuthProviderSection;
   private final Section githubOAuthProviderSection;
   private final Section bitbucketOAuthProviderSection;
@@ -80,40 +83,27 @@ public class InitOAuth implements InitStep {
   @Inject
   InitOAuth(ConsoleUI ui, Section.Factory sections, @PluginName String pluginName) {
     this.ui = ui;
-    this.googleOAuthProviderSection =
-        sections.get(PLUGIN_SECTION, pluginName + GoogleOAuthService.CONFIG_SUFFIX);
-    this.githubOAuthProviderSection =
-        sections.get(PLUGIN_SECTION, pluginName + GitHubOAuthService.CONFIG_SUFFIX);
-    this.bitbucketOAuthProviderSection =
-        sections.get(PLUGIN_SECTION, pluginName + BitbucketOAuthService.CONFIG_SUFFIX);
-    this.casOAuthProviderSection =
-        sections.get(PLUGIN_SECTION, pluginName + CasOAuthService.CONFIG_SUFFIX);
-    this.facebookOAuthProviderSection =
-        sections.get(PLUGIN_SECTION, pluginName + FacebookOAuthService.CONFIG_SUFFIX);
-    this.gitlabOAuthProviderSection =
-        sections.get(PLUGIN_SECTION, pluginName + GitLabOAuthService.CONFIG_SUFFIX);
-    this.lemonldapOAuthProviderSection =
-        sections.get(PLUGIN_SECTION, pluginName + LemonLDAPOAuthService.CONFIG_SUFFIX);
-    this.dexOAuthProviderSection =
-        sections.get(PLUGIN_SECTION, pluginName + DexOAuthService.CONFIG_SUFFIX);
-    this.keycloakOAuthProviderSection =
-        sections.get(PLUGIN_SECTION, pluginName + KeycloakOAuthService.CONFIG_SUFFIX);
-    this.office365OAuthProviderSection =
-        sections.get(PLUGIN_SECTION, pluginName + AzureActiveDirectoryService.CONFIG_SUFFIX_LEGACY);
+    this.sections = sections;
+    this.pluginName = pluginName;
+    this.googleOAuthProviderSection = getConfigSection(GoogleOAuthService.class);
+    this.githubOAuthProviderSection = getConfigSection(GitHubOAuthService.class);
+    this.bitbucketOAuthProviderSection = getConfigSection(BitbucketOAuthService.class);
+    this.casOAuthProviderSection = getConfigSection(CasOAuthService.class);
+    this.facebookOAuthProviderSection = getConfigSection(FacebookOAuthService.class);
+    this.gitlabOAuthProviderSection = getConfigSection(GitLabOAuthService.class);
+    this.lemonldapOAuthProviderSection = getConfigSection(LemonLDAPOAuthService.class);
+    this.dexOAuthProviderSection = getConfigSection(DexOAuthService.class);
+    this.keycloakOAuthProviderSection = getConfigSection(KeycloakOAuthService.class);
     this.azureActiveDirectoryAuthProviderSection =
-        sections.get(PLUGIN_SECTION, pluginName + AzureActiveDirectoryService.CONFIG_SUFFIX);
-    this.airVantageOAuthProviderSection =
-        sections.get(PLUGIN_SECTION, pluginName + AirVantageOAuthService.CONFIG_SUFFIX);
-    this.phabricatorOAuthProviderSection =
-        sections.get(PLUGIN_SECTION, pluginName + PhabricatorOAuthService.CONFIG_SUFFIX);
-    this.tuleapOAuthProviderSection =
-        sections.get(PLUGIN_SECTION, pluginName + TuleapOAuthService.CONFIG_SUFFIX);
-    this.auth0OAuthProviderSection =
-        sections.get(PLUGIN_SECTION, pluginName + Auth0OAuthService.CONFIG_SUFFIX);
-    this.authentikOAuthProviderSection =
-        sections.get(PLUGIN_SECTION, pluginName + AuthentikOAuthService.CONFIG_SUFFIX);
-    this.cognitoOAuthProviderSection =
-        sections.get(PLUGIN_SECTION, pluginName + CognitoOAuthService.CONFIG_SUFFIX);
+        getConfigSection(AzureActiveDirectoryService.class);
+    this.office365OAuthProviderSection =
+        getConfigSection(AzureActiveDirectoryService.LEGACY_PROVIDER_NAME);
+    this.airVantageOAuthProviderSection = getConfigSection(AirVantageOAuthService.class);
+    this.phabricatorOAuthProviderSection = getConfigSection(PhabricatorOAuthService.class);
+    this.tuleapOAuthProviderSection = getConfigSection(TuleapOAuthService.class);
+    this.auth0OAuthProviderSection = getConfigSection(Auth0OAuthService.class);
+    this.authentikOAuthProviderSection = getConfigSection(AuthentikOAuthService.class);
+    this.cognitoOAuthProviderSection = getConfigSection(CognitoOAuthService.class);
   }
 
   @Override
@@ -305,6 +295,17 @@ public class InitOAuth implements InitStep {
     if (!URI.create(rootUrl).isAbsolute()) {
       throw new ProvisionException("Root URL must be absolute URL");
     }
+  }
+
+  private Section getConfigSection(Class<? extends OAuthServiceProvider> serviceClass) {
+    String serviceProviderName =
+        serviceClass.getAnnotation(OAuthServiceProviderConfig.class).name();
+    return getConfigSection(serviceProviderName);
+  }
+
+  private Section getConfigSection(String serviceProviderName) {
+    String sectionName = pluginName + "-" + serviceProviderName + "-oauth";
+    return sections.get(PLUGIN_SECTION, sectionName);
   }
 
   @Override

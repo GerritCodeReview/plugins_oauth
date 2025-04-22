@@ -25,20 +25,22 @@ import com.github.scribejava.core.model.Response;
 import com.github.scribejava.core.model.Verb;
 import com.github.scribejava.core.oauth.OAuth20Service;
 import com.google.common.base.CharMatcher;
-import com.google.gerrit.extensions.annotations.PluginName;
 import com.google.gerrit.extensions.auth.oauth.OAuthServiceProvider;
 import com.google.gerrit.extensions.auth.oauth.OAuthToken;
 import com.google.gerrit.extensions.auth.oauth.OAuthUserInfo;
 import com.google.gerrit.extensions.auth.oauth.OAuthVerifier;
 import com.google.gerrit.server.config.CanonicalWebUrl;
 import com.google.gerrit.server.config.PluginConfig;
-import com.google.gerrit.server.config.PluginConfigFactory;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.ProvisionException;
+import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.oauth.InitOAuth;
+import com.googlesource.gerrit.plugins.oauth.OAuthPluginConfigFactory;
+import com.googlesource.gerrit.plugins.oauth.OAuthServiceProviderConfig;
+import com.googlesource.gerrit.plugins.oauth.OAuthServiceProviderExternalIdScheme;
 import java.io.IOException;
 import java.net.URI;
 import java.util.concurrent.ExecutionException;
@@ -46,21 +48,21 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@Singleton
+@OAuthServiceProviderConfig(name = Auth0OAuthService.PROVIDER_NAME)
 public class Auth0OAuthService implements OAuthServiceProvider {
   private static final Logger log = LoggerFactory.getLogger(Auth0OAuthService.class);
-  private static final String AUTH0_PROVIDER_PREFIX = "auth0-oauth:";
-  public static final String CONFIG_SUFFIX = "-auth0-oauth";
+  public static final String PROVIDER_NAME = "auth0";
   private static final String PROTECTED_RESOURCE_URL = "%s/userinfo";
   private final OAuth20Service service;
   private final String serviceName;
   private final String rootUrl;
+  private final String extIdScheme;
 
   @Inject
   Auth0OAuthService(
-      PluginConfigFactory cfgFactory,
-      @PluginName String pluginName,
-      @CanonicalWebUrl Provider<String> urlProvider) {
-    PluginConfig cfg = cfgFactory.getFromGerritConfig(pluginName + CONFIG_SUFFIX);
+      OAuthPluginConfigFactory cfgFactory, @CanonicalWebUrl Provider<String> urlProvider) {
+    PluginConfig cfg = cfgFactory.create(PROVIDER_NAME);
     String canonicalWebUrl = CharMatcher.is('/').trimTrailingFrom(urlProvider.get()) + "/";
 
     rootUrl = cfg.getString(InitOAuth.ROOT_URL);
@@ -75,6 +77,7 @@ public class Auth0OAuthService implements OAuthServiceProvider {
             .callback(canonicalWebUrl + "oauth")
             .defaultScope("openid profile email")
             .build(new Auth0Api(rootUrl));
+    extIdScheme = OAuthServiceProviderExternalIdScheme.create(PROVIDER_NAME);
   }
 
   @Override
@@ -104,7 +107,7 @@ public class Auth0OAuthService implements OAuthServiceProvider {
       JsonElement email = jsonObject.get("email");
       JsonElement name = jsonObject.get("name");
       return new OAuthUserInfo(
-          AUTH0_PROVIDER_PREFIX + id.getAsString(),
+          extIdScheme + ":" + id.getAsString(),
           asString(username),
           asString(email),
           asString(name),

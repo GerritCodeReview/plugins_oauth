@@ -25,20 +25,21 @@ import com.github.scribejava.core.model.Response;
 import com.github.scribejava.core.model.Verb;
 import com.github.scribejava.core.oauth.OAuth20Service;
 import com.google.common.base.CharMatcher;
-import com.google.gerrit.extensions.annotations.PluginName;
 import com.google.gerrit.extensions.auth.oauth.OAuthServiceProvider;
 import com.google.gerrit.extensions.auth.oauth.OAuthToken;
 import com.google.gerrit.extensions.auth.oauth.OAuthUserInfo;
 import com.google.gerrit.extensions.auth.oauth.OAuthVerifier;
 import com.google.gerrit.server.config.CanonicalWebUrl;
 import com.google.gerrit.server.config.PluginConfig;
-import com.google.gerrit.server.config.PluginConfigFactory;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.oauth.InitOAuth;
+import com.googlesource.gerrit.plugins.oauth.OAuthPluginConfigFactory;
+import com.googlesource.gerrit.plugins.oauth.OAuthServiceProviderConfig;
+import com.googlesource.gerrit.plugins.oauth.OAuthServiceProviderExternalIdScheme;
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 import javax.servlet.http.HttpServletResponse;
@@ -46,10 +47,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @Singleton
+@OAuthServiceProviderConfig(name = GitHubOAuthService.PROVIDER_NAME)
 public class GitHubOAuthService implements OAuthServiceProvider {
   private static final Logger log = LoggerFactory.getLogger(GitHubOAuthService.class);
-  public static final String CONFIG_SUFFIX = "-github-oauth";
-  private static final String GITHUB_PROVIDER_PREFIX = "github-oauth:";
+  public static final String PROVIDER_NAME = "github";
   private static final String GITHUB_API_ENDPOINT_URL = "https://api.github.com/";
   private static final String GHE_API_ENDPOINT_URL = "%sapi/v3/";
   static final String GITHUB_ROOT_URL = "https://github.com/";
@@ -58,13 +59,12 @@ public class GitHubOAuthService implements OAuthServiceProvider {
   static final String SCOPE = "user:email";
   private final boolean fixLegacyUserId;
   private final OAuth20Service service;
+  private final String extIdScheme;
 
   @Inject
   GitHubOAuthService(
-      PluginConfigFactory cfgFactory,
-      @PluginName String pluginName,
-      @CanonicalWebUrl Provider<String> urlProvider) {
-    PluginConfig cfg = cfgFactory.getFromGerritConfig(pluginName + CONFIG_SUFFIX);
+      OAuthPluginConfigFactory cfgFactory, @CanonicalWebUrl Provider<String> urlProvider) {
+    PluginConfig cfg = cfgFactory.create(PROVIDER_NAME);
     String canonicalWebUrl = CharMatcher.is('/').trimTrailingFrom(urlProvider.get()) + "/";
     fixLegacyUserId = cfg.getBoolean(InitOAuth.FIX_LEGACY_USER_ID, false);
     rootUrl =
@@ -77,6 +77,7 @@ public class GitHubOAuthService implements OAuthServiceProvider {
             .callback(canonicalWebUrl + "oauth")
             .defaultScope(SCOPE)
             .build(new GitHub2Api(rootUrl));
+    extIdScheme = OAuthServiceProviderExternalIdScheme.create(PROVIDER_NAME);
   }
 
   private String getApiUrl() {
@@ -117,7 +118,7 @@ public class GitHubOAuthService implements OAuthServiceProvider {
         JsonElement name = jsonObject.get("name");
         JsonElement login = jsonObject.get("login");
         return new OAuthUserInfo(
-            GITHUB_PROVIDER_PREFIX + id.getAsString(),
+            extIdScheme + ":" + id.getAsString(),
             asString(login),
             asString(email),
             asString(name),
