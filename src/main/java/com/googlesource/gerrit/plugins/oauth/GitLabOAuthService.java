@@ -27,14 +27,12 @@ import com.github.scribejava.core.model.Response;
 import com.github.scribejava.core.model.Verb;
 import com.github.scribejava.core.oauth.OAuth20Service;
 import com.google.common.base.CharMatcher;
-import com.google.gerrit.extensions.annotations.PluginName;
 import com.google.gerrit.extensions.auth.oauth.OAuthServiceProvider;
 import com.google.gerrit.extensions.auth.oauth.OAuthToken;
 import com.google.gerrit.extensions.auth.oauth.OAuthUserInfo;
 import com.google.gerrit.extensions.auth.oauth.OAuthVerifier;
 import com.google.gerrit.server.config.CanonicalWebUrl;
 import com.google.gerrit.server.config.PluginConfig;
-import com.google.gerrit.server.config.PluginConfigFactory;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.inject.Inject;
@@ -47,20 +45,19 @@ import java.util.concurrent.ExecutionException;
 import org.slf4j.Logger;
 
 @Singleton
+@OAuthServiceProviderConfig(name = GitLabOAuthService.PROVIDER_NAME)
 public class GitLabOAuthService implements OAuthServiceProvider {
   private static final Logger log = getLogger(GitLabOAuthService.class);
-  static final String CONFIG_SUFFIX = "-gitlab-oauth";
   private static final String PROTECTED_RESOURCE_URL = "%s/api/v3/user";
-  private static final String GITLAB_PROVIDER_PREFIX = "gitlab-oauth:";
+  static final String PROVIDER_NAME = "gitlab";
   private final OAuth20Service service;
   private final String rootUrl;
+  private final String extIdScheme;
 
   @Inject
   GitLabOAuthService(
-      PluginConfigFactory cfgFactory,
-      @PluginName String pluginName,
-      @CanonicalWebUrl Provider<String> urlProvider) {
-    PluginConfig cfg = cfgFactory.getFromGerritConfig(pluginName + CONFIG_SUFFIX);
+      OAuthPluginConfigFactory cfgFactory, @CanonicalWebUrl Provider<String> urlProvider) {
+    PluginConfig cfg = cfgFactory.create(PROVIDER_NAME);
     String canonicalWebUrl = CharMatcher.is('/').trimTrailingFrom(urlProvider.get()) + "/";
     rootUrl = cfg.getString(InitOAuth.ROOT_URL);
     if (!URI.create(rootUrl).isAbsolute()) {
@@ -71,6 +68,7 @@ public class GitLabOAuthService implements OAuthServiceProvider {
             .apiSecret(cfg.getString(InitOAuth.CLIENT_SECRET))
             .callback(canonicalWebUrl + "oauth")
             .build(new GitLabApi(rootUrl));
+    extIdScheme = OAuthServiceProviderExternalIdScheme.create(PROVIDER_NAME);
   }
 
   @Override
@@ -100,7 +98,7 @@ public class GitLabOAuthService implements OAuthServiceProvider {
       JsonElement email = jsonObject.get("email");
       JsonElement name = jsonObject.get("name");
       return new OAuthUserInfo(
-          GITLAB_PROVIDER_PREFIX + id.getAsString(),
+          extIdScheme + ":" + id.getAsString(),
           asString(username),
           asString(email),
           asString(name),
