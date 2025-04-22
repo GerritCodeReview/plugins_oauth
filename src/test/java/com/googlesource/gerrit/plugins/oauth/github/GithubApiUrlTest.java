@@ -21,9 +21,9 @@ import com.google.common.base.CharMatcher;
 import com.google.common.base.Strings;
 import com.google.gerrit.extensions.auth.oauth.OAuthServiceProvider;
 import com.google.gerrit.server.config.PluginConfig;
-import com.google.gerrit.server.config.PluginConfigFactory;
 import com.google.inject.Provider;
 import com.googlesource.gerrit.plugins.oauth.InitOAuth;
+import com.googlesource.gerrit.plugins.oauth.OAuthPluginConfigFactory;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import org.eclipse.jgit.lib.Config;
@@ -38,23 +38,21 @@ public class GithubApiUrlTest {
   private static final String CANONICAL_URL = "https://localhost";
   private static final String TEST_CLIENT_ID = "test_client_id";
 
-  @Mock private PluginConfigFactory pluginConfigFactoryMock;
   @Mock private Provider<String> urlProviderMock;
+  @Mock OAuthPluginConfigFactory oauthPluginConfigFactoryMock;
 
   private OAuthServiceProvider getGithubOAuthProvider(String rootUrl) {
-    PluginConfig.Update pluginConfig =
-        PluginConfig.Update.forTest(PLUGIN_NAME + GitHubOAuthService.CONFIG_SUFFIX, new Config());
+    String configSection = PLUGIN_NAME + "-" + GitHubOAuthService.PROVIDER_NAME + "-oauth";
+    PluginConfig.Update pluginConfig = PluginConfig.Update.forTest(configSection, new Config());
     if (!Strings.isNullOrEmpty(rootUrl)) {
       pluginConfig.setString(InitOAuth.ROOT_URL, rootUrl);
     }
     pluginConfig.setString(InitOAuth.CLIENT_ID, TEST_CLIENT_ID);
     pluginConfig.setString(InitOAuth.CLIENT_SECRET, "secret");
-    when(pluginConfigFactoryMock.getFromGerritConfig(
-            PLUGIN_NAME + GitHubOAuthService.CONFIG_SUFFIX))
-        .thenReturn(pluginConfig.asPluginConfig());
     when(urlProviderMock.get()).thenReturn(CANONICAL_URL);
-
-    return new GitHubOAuthService(pluginConfigFactoryMock, PLUGIN_NAME, urlProviderMock);
+    when(oauthPluginConfigFactoryMock.create(GitHubOAuthService.PROVIDER_NAME))
+        .thenReturn(pluginConfig.asPluginConfig());
+    return new GitHubOAuthService(oauthPluginConfigFactoryMock, urlProviderMock);
   }
 
   private String getExpectedUrl(String rootUrl) throws Exception {
