@@ -15,18 +15,16 @@
 package com.googlesource.gerrit.plugins.oauth;
 
 import static com.google.gerrit.server.account.externalids.ExternalId.SCHEME_USERNAME;
-import static com.googlesource.gerrit.plugins.oauth.SAPIasOAuthService.CONFIG_SUFFIX;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 import com.github.scribejava.core.model.OAuth2AccessToken;
 import com.google.gerrit.entities.Account;
-import com.google.gerrit.extensions.annotations.PluginName;
 import com.google.gerrit.extensions.auth.oauth.OAuthLoginProvider;
 import com.google.gerrit.extensions.auth.oauth.OAuthUserInfo;
 import com.google.gerrit.server.account.externalids.ExternalId;
 import com.google.gerrit.server.account.externalids.ExternalIdKeyFactory;
 import com.google.gerrit.server.account.externalids.ExternalIds;
-import com.google.gerrit.server.config.PluginConfigFactory;
+import com.google.gerrit.server.config.PluginConfig;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -38,6 +36,7 @@ import java.util.Base64;
 import java.util.Optional;
 
 @Singleton
+@OAuthServiceProviderConfig(name = SAPIasOAuthService.PROVIDER_NAME)
 class SAPIasOAuthLoginProvider implements OAuthLoginProvider {
   private static final String USER_NAME_ATTRIBUTE = "sub";
 
@@ -45,21 +44,21 @@ class SAPIasOAuthLoginProvider implements OAuthLoginProvider {
   private final boolean enableResourceOwnerPasswordFlow;
   private final ExternalIds externalIds;
   private final ExternalIdKeyFactory externalIdKeyFactory;
+  private final String extIdScheme;
 
   @Inject
   SAPIasOAuthLoginProvider(
+      OAuthPluginConfigFactory cfgFactory,
       SAPIasOAuthService service,
-      @PluginName String pluginName,
-      PluginConfigFactory cfgFactory,
       ExternalIds externalIds,
       ExternalIdKeyFactory externalIdKeyFactory) {
+    PluginConfig cfg = cfgFactory.create(SAPIasOAuthService.PROVIDER_NAME);
     this.service = service;
-    this.enableResourceOwnerPasswordFlow =
-        cfgFactory
-            .getFromGerritConfig(pluginName + CONFIG_SUFFIX)
-            .getBoolean("enableResourceOwnerPasswordFlow", false);
+    this.enableResourceOwnerPasswordFlow = cfg.getBoolean("enableResourceOwnerPasswordFlow", false);
     this.externalIds = externalIds;
     this.externalIdKeyFactory = externalIdKeyFactory;
+    this.extIdScheme =
+        OAuthServiceProviderExternalIdScheme.create(SAPIasOAuthService.PROVIDER_NAME);
   }
 
   @Override
@@ -83,7 +82,7 @@ class SAPIasOAuthLoginProvider implements OAuthLoginProvider {
       }
       ExternalId extId =
           externalIds.byAccount(accountId.get()).stream()
-              .filter(e -> e.key().isScheme(CONFIG_SUFFIX.substring(1)))
+              .filter(e -> e.key().isScheme(extIdScheme.substring(0, extIdScheme.length())))
               .findAny()
               .orElseThrow(() -> new IOException("Authentication error"));
       accessToken = service.getAccessToken(extId.email(), secret);
