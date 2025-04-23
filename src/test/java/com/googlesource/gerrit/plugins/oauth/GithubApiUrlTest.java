@@ -36,6 +36,7 @@ public class GithubApiUrlTest {
   private static final String CANONICAL_URL = "https://localhost";
   private static final String TEST_CLIENT_ID = "test_client_id";
 
+  @Mock private OAuthPluginConfigFactory cfgFactory;
   @Mock private Provider<String> urlProviderMock;
 
   private OAuthServiceProvider getGithubOAuthProvider(String rootUrl) {
@@ -47,11 +48,10 @@ public class GithubApiUrlTest {
     pluginConfig.setString(InitOAuth.CLIENT_ID, TEST_CLIENT_ID);
     pluginConfig.setString(InitOAuth.CLIENT_SECRET, "secret");
     when(urlProviderMock.get()).thenReturn(CANONICAL_URL);
+    when(cfgFactory.create(GitHubOAuthService.PROVIDER_NAME))
+        .thenReturn(pluginConfig.asPluginConfig());
 
-    return new GitHubOAuthService(
-        pluginConfig.asPluginConfig(),
-        urlProviderMock,
-        GoogleOAuthService.PROVIDER_NAME + "-oauth:");
+    return new GitHubOAuthService(cfgFactory, urlProviderMock);
   }
 
   private String getExpectedUrl(String rootUrl) throws Exception {
