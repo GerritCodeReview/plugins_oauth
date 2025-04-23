@@ -51,7 +51,6 @@ class InitOAuth implements InitStep {
   private final Section lemonldapOAuthProviderSection;
   private final Section dexOAuthProviderSection;
   private final Section keycloakOAuthProviderSection;
-  private final Section office365OAuthProviderSection;
   private final Section azureActiveDirectoryAuthProviderSection;
   private final Section airVantageOAuthProviderSection;
   private final Section phabricatorOAuthProviderSection;
@@ -81,8 +80,6 @@ class InitOAuth implements InitStep {
         sections.get(PLUGIN_SECTION, pluginName + DexOAuthService.CONFIG_SUFFIX);
     this.keycloakOAuthProviderSection =
         sections.get(PLUGIN_SECTION, pluginName + KeycloakOAuthService.CONFIG_SUFFIX);
-    this.office365OAuthProviderSection =
-        sections.get(PLUGIN_SECTION, pluginName + AzureActiveDirectoryService.CONFIG_SUFFIX_LEGACY);
     this.azureActiveDirectoryAuthProviderSection =
         sections.get(PLUGIN_SECTION, pluginName + AzureActiveDirectoryService.CONFIG_SUFFIX);
     this.airVantageOAuthProviderSection =
@@ -177,28 +174,14 @@ class InitOAuth implements InitStep {
       keycloakOAuthProviderSection.string("Keycloak Realm", REALM, null);
     }
 
-    // ?: Are there legacy office365 already configured on the system?
-    if (isConfigured(office365OAuthProviderSection)) {
-      // -> Yes, this system has already configured the old legacy office365.
-      boolean configureOffice365OAuthProvider =
-          ui.yesno(
-              isConfigured(office365OAuthProviderSection),
-              "Use Office365 OAuth provider for Gerrit login ?");
-      if (configureOffice365OAuthProvider) {
-        configureOAuth(office365OAuthProviderSection);
-      }
-    }
-    // E-> No, we either are setting up on an new system or using the new azure config
-    else {
-      boolean configureAzureActiveDirectoryAuthProvider =
-          ui.yesno(
-              isConfigured(azureActiveDirectoryAuthProviderSection),
-              "Use Azure OAuth provider for Gerrit login ?");
-      if (configureAzureActiveDirectoryAuthProvider) {
-        configureOAuth(azureActiveDirectoryAuthProviderSection);
-        azureActiveDirectoryAuthProviderSection.string(
-            "Tenant", TENANT, AzureActiveDirectoryService.DEFAULT_TENANT);
-      }
+    boolean configureAzureActiveDirectoryAuthProvider =
+        ui.yesno(
+            isConfigured(azureActiveDirectoryAuthProviderSection),
+            "Use Azure OAuth provider for Gerrit login ?");
+    if (configureAzureActiveDirectoryAuthProvider) {
+      configureOAuth(azureActiveDirectoryAuthProviderSection);
+      azureActiveDirectoryAuthProviderSection.string(
+          "Tenant", TENANT, AzureActiveDirectoryService.DEFAULT_TENANT);
     }
 
     boolean configureAirVantageOAuthProvider =

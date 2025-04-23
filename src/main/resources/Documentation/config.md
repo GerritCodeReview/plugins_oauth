@@ -50,17 +50,10 @@ appended with provider suffix: e.g. `-google-oauth` or `-github-oauth`:
     client-secret = "<client-secret>"
     root-url = "<phabricator url>"
 
-  # The office365 has been renamed to azure and is deprecated.
-  [plugin "@PLUGIN@-office365-oauth"]
-    client-id = "<client-id>"
-    client-secret = "<client-secret>"
-    tenant = "<tenant (optional defaults to organizations if not set)>"
-
   [plugin "@PLUGIN@-azure-oauth"]
     client-id = "<client-id>"
     client-secret = "<client-secret>"
     tenant = "<tenant (optional defaults to organizations if not set)>"
-    link-to-existing-office365-accounts = true #Optional, if set will try to link old account with the @PLUGIN@-office365-oauth naming
 
   [plugin "@PLUGIN@-keycloak-oauth"]
     # Prior to Keycloak V17 /auth path must be added to the root-url, see this migration instruction:
@@ -275,11 +268,6 @@ Client application.
 See [Registering a new application](https://docs.tuleap.org/user-guide/oauth2.html#client-registration).
 
 ### Azure (previously named Office365)
-Were previously named Office365 but both `plugin.gerrit-oauth-provider-azure-oauth` and
-`plugin.gerrit-oauth-provider-office365-oauth` is supported by the Azure OAuth.
-When running *java gerrit.war init* it will check the existing config to see if it finds the old
-naming and use that during the init run, if it does not find the `office365-oauth` it will
-use the new `azure-oauth` naming.
 
 The client-id and client-secret for Azure can be obtained by registering a new application,
 see [OAuth 2.0 and OpenID Connect protocols on Microsoft identity platform](https://docs.microsoft.com/en-us/azure/active-directory/develop/active-directory-v2-protocols).
@@ -302,16 +290,6 @@ plugin.gerrit-oauth-provider-azure-oauth.tenant = <tenant to use>
 
 Regardless of tenant all tokens will be checked that they contain the client_id set
 in the Azure OAuth.
-
-####Migrating from Office365 naming
-If this where previously installed with the `office365-oauth` you can migrate to `azure-oauth` by setting the
-flag.
-```
-plugin.gerrit-oauth-provider-azure-oauth.link-to-existing-office365-accounts = true
-```
-This will try to link the old `office365-oauth` external id to the new `azure-oauth` external id automatically.
-Another option is to migrate these manually offline, see [External IDs](https://gerrit-review.googlesource.com/Documentation/config-accounts.html#external-ids)
-for more information.
 
 ### Keycloak
 
