@@ -53,10 +53,8 @@ import org.slf4j.LoggerFactory;
 @Singleton
 class AzureActiveDirectoryService implements OAuthServiceProvider {
   private static final Logger log = LoggerFactory.getLogger(AzureActiveDirectoryService.class);
-  static final String CONFIG_SUFFIX_LEGACY = "-office365-oauth";
   static final String CONFIG_SUFFIX = "-azure-oauth";
   private static final String AZURE_PROVIDER_PREFIX = "azure-oauth:";
-  private static final String OFFICE365_PROVIDER_PREFIX = "office365-oauth:";
   private static final String PROTECTED_RESOURCE_URL = "https://graph.microsoft.com/v1.0/me";
   private static final String SCOPE =
       "openid offline_access https://graph.microsoft.com/user.readbasic.all";
@@ -69,8 +67,6 @@ class AzureActiveDirectoryService implements OAuthServiceProvider {
   private final boolean useEmailAsUsername;
   private final String tenant;
   private final String clientId;
-  private String providerPrefix;
-  private final boolean linkOffice365Id;
 
   @Inject
   AzureActiveDirectoryService(
@@ -78,17 +74,6 @@ class AzureActiveDirectoryService implements OAuthServiceProvider {
       @PluginName String pluginName,
       @CanonicalWebUrl Provider<String> urlProvider) {
     PluginConfig cfg = cfgFactory.getFromGerritConfig(pluginName + CONFIG_SUFFIX);
-    providerPrefix = AZURE_PROVIDER_PREFIX;
-
-    // ?: Did we find the client_id with the CONFIG_SUFFIX
-    if (cfg.getString(InitOAuth.CLIENT_ID) == null) {
-      // -> No, we did not find the client_id in the azure config so we should try the old legacy
-      // office365 section
-      cfg = cfgFactory.getFromGerritConfig(pluginName + CONFIG_SUFFIX_LEGACY);
-      // We must also use the new provider prefix
-      providerPrefix = OFFICE365_PROVIDER_PREFIX;
-    }
-    this.linkOffice365Id = cfg.getBoolean(InitOAuth.LINK_TO_EXISTING_OFFICE365_ACCOUNT, false);
     this.canonicalWebUrl = CharMatcher.is('/').trimTrailingFrom(urlProvider.get()) + "/";
     this.useEmailAsUsername = cfg.getBoolean(InitOAuth.USE_EMAIL_AS_USERNAME, false);
     this.tenant = cfg.getString(InitOAuth.TENANT, DEFAULT_TENANT);
@@ -186,11 +171,11 @@ class AzureActiveDirectoryService implements OAuthServiceProvider {
         }
 
         return new OAuthUserInfo(
-            providerPrefix + id.getAsString(),
+            AZURE_PROVIDER_PREFIX + id.getAsString(),
             login,
             asString(email),
             asString(name),
-            linkOffice365Id ? OFFICE365_PROVIDER_PREFIX + id.getAsString() : null);
+            id.getAsString());
       }
     } catch (ExecutionException | InterruptedException e) {
       throw new RuntimeException("Cannot retrieve user info resource", e);
