@@ -24,6 +24,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6addcd6f_bdb4d0f9",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 4007888
+      },
+      "writtenOn": "2025-05-13T18:16:59Z",
+      "side": 1,
+      "message": "Changes done.",
+      "parentUuid": "936f9ed3_7b33f234",
+      "range": {
+        "startLine": 9,
+        "startChar": 72,
+        "endLine": 9,
+        "endChar": 90
+      },
+      "revId": "344378b482c3e4c1e9369bd12d6be8fc4dcac833",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "61e81697_e5c514d7",
@@ -58,6 +82,42 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f88d0efe_99fbf43d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4007888
+      },
+      "writtenOn": "2025-05-13T18:16:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "61e81697_e5c514d7",
+      "revId": "344378b482c3e4c1e9369bd12d6be8fc4dcac833",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b698776f_93581e44",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4007888
+      },
+      "writtenOn": "2025-05-13T18:16:59Z",
+      "side": 1,
+      "message": "Updated a test case in Patch set #3",
+      "parentUuid": "c14d9e01_b4f3d611",
+      "revId": "344378b482c3e4c1e9369bd12d6be8fc4dcac833",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "17daad9e_be32d7b0",
@@ -81,6 +141,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "435728a8_ae4c732c",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/InitOAuth.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 252,
+      "author": {
+        "id": 4007888
+      },
+      "writtenOn": "2025-05-13T18:16:59Z",
+      "side": 1,
+      "message": "Changes done.",
+      "parentUuid": "17daad9e_be32d7b0",
+      "range": {
+        "startLine": 252,
+        "startChar": 28,
+        "endLine": 252,
+        "endChar": 43
+      },
+      "revId": "344378b482c3e4c1e9369bd12d6be8fc4dcac833",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bf3925af_2b1c9a74",
@@ -94,6 +178,30 @@
       "writtenOn": "2025-05-13T13:03:05Z",
       "side": 1,
       "message": "These two descriptions look identical: why not consolidating them together?",
+      "range": {
+        "startLine": 343,
+        "startChar": 0,
+        "endLine": 359,
+        "endChar": 129
+      },
+      "revId": "344378b482c3e4c1e9369bd12d6be8fc4dcac833",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "006fed3a_49ffe010",
+        "filename": "src/main/resources/Documentation/config.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 359,
+      "author": {
+        "id": 4007888
+      },
+      "writtenOn": "2025-05-13T18:16:59Z",
+      "side": 1,
+      "message": "Thanks for this. I was unsure whether to change the original description or not.\nI have made the changes as per your suggestion.",
+      "parentUuid": "bf3925af_2b1c9a74",
       "range": {
         "startLine": 343,
         "startChar": 0,
