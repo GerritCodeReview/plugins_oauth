@@ -1,12 +1,13 @@
 {
   "checks": {
     "zuul-check:plugins_oauth": {
-      "state": "RUNNING",
-      "message": "Jobs have started running",
-      "url": "https://ci.gerritcodereview.com/t/gerrit/status/change/467501,3",
+      "state": "SUCCESSFUL",
+      "message": "Change passed all voting jobs",
+      "url": "https://ci.gerritcodereview.com/t/gerrit/buildset/4d6cc736f5504e41a1e20df5758e0628",
       "started": "2025-05-17T05:38:38Z",
+      "finished": "2025-05-17T05:43:34Z",
       "created": "2025-05-13T18:14:48Z",
-      "updated": "2025-05-17T05:38:42Z"
+      "updated": "2025-05-17T05:43:35Z"
     }
   }
 }
