@@ -96,6 +96,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "30cd7012_5f75316e",
+        "filename": "src/main/resources/Documentation/config.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 341,
+      "author": {
+        "id": 4007888
+      },
+      "writtenOn": "2025-05-18T11:43:28Z",
+      "side": 1,
+      "message": "Luca,\nI think this should be a part of this section only.\nHere we are giving the user Standard config (L337) as well as Optional config (L340).\nThe chapter at L345 expands on this Optional config.",
+      "parentUuid": "ee27d6be_6251a0da",
+      "range": {
+        "startLine": 340,
+        "startChar": 0,
+        "endLine": 341,
+        "endChar": 89
+      },
+      "revId": "c6872067a3769c9f8a74a38b17589b0bab391f2f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b2409554_25ec84be",
         "filename": "src/test/java/com/googlesource/gerrit/plugins/oauth/CognitoApiTest.java",
         "patchSetId": 3
