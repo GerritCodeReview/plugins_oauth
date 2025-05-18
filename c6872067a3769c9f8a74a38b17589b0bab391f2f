@@ -157,6 +157,24 @@
       "message": "This isn\u0027t really testing anything of the changes you\u0027ve made on CognitoOAuthService. Can you write *at least* one test for it 🙏?",
       "revId": "c6872067a3769c9f8a74a38b17589b0bab391f2f",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d403e37a_43946b45",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/oauth/CognitoApiTest.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4007888
+      },
+      "writtenOn": "2025-05-18T15:41:41Z",
+      "side": 1,
+      "message": "Luca,\nI have added some test cases for the CognitoOAuthService\n\nsrc/test/java/com/googlesource/gerrit/plugins/oauth/CognitoOAuthServiceTest.java\n\nShall I keep the CognitoApiTest.java as a boilerplate and to maintain this repo\u0027s consistency as this is present for other services?",
+      "parentUuid": "b2409554_25ec84be",
+      "revId": "c6872067a3769c9f8a74a38b17589b0bab391f2f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
