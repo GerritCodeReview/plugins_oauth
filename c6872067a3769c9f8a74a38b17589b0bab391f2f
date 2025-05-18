@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "184681fe_4249a023",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/CognitoOAuthService.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2025-05-18T10:41:11Z",
+      "side": 1,
+      "message": "Unrelated change? Why are you getting rid of the use of `asString()` construct here?",
+      "range": {
+        "startLine": 111,
+        "startChar": 0,
+        "endLine": 114,
+        "endChar": 88
+      },
+      "revId": "c6872067a3769c9f8a74a38b17589b0bab391f2f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5c2df6f6_602649e9",
+        "filename": "src/main/resources/Documentation/config.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2025-05-18T10:41:11Z",
+      "side": 1,
+      "message": "This is the default, therefore it won\u0027t be needed. It makes sense to have it in the examples only if you set the value to `true` IMHO.",
+      "range": {
+        "startLine": 95,
+        "startChar": 0,
+        "endLine": 95,
+        "endChar": 44
+      },
+      "revId": "c6872067a3769c9f8a74a38b17589b0bab391f2f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ee27d6be_6251a0da",
+        "filename": "src/main/resources/Documentation/config.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 341,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2025-05-18T10:41:11Z",
+      "side": 1,
+      "message": "Should this be part of the next chapter after L345?",
+      "range": {
+        "startLine": 340,
+        "startChar": 0,
+        "endLine": 341,
+        "endChar": 89
+      },
+      "revId": "c6872067a3769c9f8a74a38b17589b0bab391f2f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b2409554_25ec84be",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/oauth/CognitoApiTest.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2025-05-18T10:41:11Z",
+      "side": 1,
+      "message": "This isn\u0027t really testing anything of the changes you\u0027ve made on CognitoOAuthService. Can you write *at least* one test for it 🙏?",
+      "revId": "c6872067a3769c9f8a74a38b17589b0bab391f2f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
