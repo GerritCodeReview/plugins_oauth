@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1b412d40_a1a86fbd",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/CognitoOAuthService.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 4007888
+      },
+      "writtenOn": "2025-05-18T11:48:28Z",
+      "side": 1,
+      "message": "Good catch.. Functionally, this is the same as asString(). While working on the claimedIdentity logic, I made these changes to the adjacent lines for username, email, and name to explicitly show the null checks, thinking it might add a bit of clarity in this context.\n\nIt wasn\u0027t strictly necessary for this logic. I can revert these lines to use asString() if you\u0027d like to keep the change more focused.",
+      "parentUuid": "184681fe_4249a023",
+      "range": {
+        "startLine": 111,
+        "startChar": 0,
+        "endLine": 114,
+        "endChar": 88
+      },
+      "revId": "c6872067a3769c9f8a74a38b17589b0bab391f2f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5c2df6f6_602649e9",
         "filename": "src/main/resources/Documentation/config.md",
         "patchSetId": 3
