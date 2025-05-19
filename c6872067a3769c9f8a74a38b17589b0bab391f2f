@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4a308ce5_140b286f",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/CognitoOAuthService.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2025-05-19T12:14:14Z",
+      "side": 1,
+      "message": "One change should address only one concern and fix only one thing. If you believe this is related, you can leave for review, otherwise, just revert this section of the change and upload as a separate follow up.",
+      "parentUuid": "1b412d40_a1a86fbd",
+      "range": {
+        "startLine": 111,
+        "startChar": 0,
+        "endLine": 114,
+        "endChar": 88
+      },
+      "revId": "c6872067a3769c9f8a74a38b17589b0bab391f2f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5c2df6f6_602649e9",
         "filename": "src/main/resources/Documentation/config.md",
         "patchSetId": 3
@@ -132,6 +156,30 @@
       "side": 1,
       "message": "Luca,\nI think this should be a part of this section only.\nHere we are giving the user Standard config (L337) as well as Optional config (L340).\nThe chapter at L345 expands on this Optional config.",
       "parentUuid": "ee27d6be_6251a0da",
+      "range": {
+        "startLine": 340,
+        "startChar": 0,
+        "endLine": 341,
+        "endChar": 89
+      },
+      "revId": "c6872067a3769c9f8a74a38b17589b0bab391f2f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "55ee959f_d55abaa5",
+        "filename": "src/main/resources/Documentation/config.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 341,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2025-05-19T12:14:14Z",
+      "side": 1,
+      "message": "Can you then remove it from L345? If you have the same setting described two times, you always risk to update one and leave the other stale.",
+      "parentUuid": "30cd7012_5f75316e",
       "range": {
         "startLine": 340,
         "startChar": 0,
