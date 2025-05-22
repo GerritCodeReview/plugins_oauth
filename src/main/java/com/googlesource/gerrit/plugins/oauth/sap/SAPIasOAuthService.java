@@ -38,6 +38,9 @@ import com.googlesource.gerrit.plugins.oauth.OAuthServiceProviderConfig;
 import com.googlesource.gerrit.plugins.oauth.OAuthServiceProviderExternalIdScheme;
 import com.sap.cloud.security.json.DefaultJsonObject;
 import com.sap.cloud.security.token.SapIdToken;
+import com.sap.cloud.security.token.Token;
+import com.sap.cloud.security.token.validation.CombiningValidator;
+import com.sap.cloud.security.token.validation.ValidationResult;
 import java.io.IOException;
 import java.net.URI;
 import java.util.concurrent.ExecutionException;
@@ -57,10 +60,13 @@ public class SAPIasOAuthService implements OAuthServiceProvider {
   private final boolean enablePKCE;
   private final AuthorizationUrlBuilder authorizationUrlBuilder;
   private final String extIdScheme;
+  private final CombiningValidator<Token> tokenValidator;
 
   @Inject
   SAPIasOAuthService(
-      OAuthPluginConfigFactory cfgFactory, @CanonicalWebUrl Provider<String> urlProvider) {
+      OAuthPluginConfigFactory cfgFactory,
+      @CanonicalWebUrl Provider<String> urlProvider,
+      CombiningValidator<Token> tokenValidator) {
     PluginConfig cfg = cfgFactory.create(PROVIDER_NAME);
     String canonicalWebUrl = urlProvider.get();
     rootUrl = cfg.getString(InitOAuth.ROOT_URL);
@@ -78,6 +84,7 @@ public class SAPIasOAuthService implements OAuthServiceProvider {
             .build(new SAPIasApi(rootUrl));
     authorizationUrlBuilder = service.createAuthorizationUrlBuilder();
     extIdScheme = OAuthServiceProviderExternalIdScheme.create(PROVIDER_NAME);
+    this.tokenValidator = tokenValidator;
   }
 
   @Override
@@ -86,8 +93,14 @@ public class SAPIasOAuthService implements OAuthServiceProvider {
     return getUserInfo(t);
   }
 
-  public OAuthUserInfo getUserInfo(OAuth2AccessToken token) {
+  public OAuthUserInfo getUserInfo(OAuth2AccessToken token) throws IOException {
     SapIdToken sapToken = new SapIdToken(getIdToken(token));
+    ValidationResult res = tokenValidator.validate(sapToken);
+    if (!res.isValid()) {
+      log.warn("Invalid token received for " + sapToken.getClaimAsString("sub"));
+      throw new IOException("Authentication error");
+    }
+
     String username = sapToken.getClaimAsString("sub");
     String externalId = this.extIdScheme + ":" + username;
     String email = sapToken.getClaimAsString("email");

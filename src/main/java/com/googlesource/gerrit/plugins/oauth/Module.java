@@ -22,6 +22,7 @@ import com.google.gerrit.server.account.externalids.ExternalIdFactory;
 import com.google.gerrit.server.config.GerritServerConfig;
 import com.google.inject.AbstractModule;
 import com.google.inject.Inject;
+import com.googlesource.gerrit.plugins.oauth.sap.SAPIasModule;
 import com.googlesource.gerrit.plugins.oauth.sap.SAPIasOAuthLoginProvider;
 import java.util.List;
 import org.eclipse.jgit.lib.Config;
@@ -58,21 +59,22 @@ public class Module extends AbstractModule {
                   externalIdFactory, OAuthServiceProviderExternalIdScheme.create(provider)));
     }
 
-    boolean loginProviderBound = bindOAuthLoginProvider(SAPIasOAuthLoginProvider.class);
+    boolean oAuthModuleInstalled =
+        installOAuthModule(SAPIasOAuthLoginProvider.class, new SAPIasModule());
 
-    if (!loginProviderBound) {
+    if (!oAuthModuleInstalled) {
       bind(OAuthLoginProvider.class)
           .annotatedWith(Exports.named(pluginName))
           .to(DisabledOAuthLoginProvider.class);
     }
   }
 
-  private boolean bindOAuthLoginProvider(Class<SAPIasOAuthLoginProvider> loginClass) {
+  private boolean installOAuthModule(
+      Class<? extends OAuthLoginProvider> loginClass, AbstractModule oAuthModule) {
     String loginProviderName = loginClass.getAnnotation(OAuthServiceProviderConfig.class).name();
     String cfgSuffix = OAuthPluginConfigFactory.getConfigSuffix(loginProviderName);
-    String extIdScheme = OAuthServiceProviderExternalIdScheme.create(loginProviderName);
     if (cfg.getString("plugin", pluginName + cfgSuffix, InitOAuth.CLIENT_ID) != null) {
-      bind(OAuthLoginProvider.class).annotatedWith(Exports.named(extIdScheme)).to(loginClass);
+      install(oAuthModule);
       return true;
     }
     return false;
