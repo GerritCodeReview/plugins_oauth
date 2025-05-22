@@ -24,6 +24,7 @@ import com.google.gerrit.extensions.auth.oauth.OAuthUserInfo;
 import com.google.gerrit.server.account.externalids.ExternalId;
 import com.google.gerrit.server.account.externalids.ExternalIdKeyFactory;
 import com.google.gerrit.server.account.externalids.ExternalIds;
+import com.google.gerrit.server.config.PluginConfig;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -54,11 +55,9 @@ public class SAPIasOAuthLoginProvider implements OAuthLoginProvider {
       OAuthPluginConfigFactory cfgFactory,
       ExternalIds externalIds,
       ExternalIdKeyFactory externalIdKeyFactory) {
+    PluginConfig cfg = cfgFactory.create(SAPIasOAuthService.PROVIDER_NAME);
     this.service = service;
-    this.enableResourceOwnerPasswordFlow =
-        cfgFactory
-            .create(SAPIasOAuthService.PROVIDER_NAME)
-            .getBoolean("enableResourceOwnerPasswordFlow", false);
+    this.enableResourceOwnerPasswordFlow = cfg.getBoolean("enableResourceOwnerPasswordFlow", false);
     this.externalIds = externalIds;
     this.externalIdKeyFactory = externalIdKeyFactory;
     this.extIdScheme =
