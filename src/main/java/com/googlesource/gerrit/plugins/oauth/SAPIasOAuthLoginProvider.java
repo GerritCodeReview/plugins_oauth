@@ -16,6 +16,7 @@ package com.googlesource.gerrit.plugins.oauth;
 
 import static com.google.gerrit.server.account.externalids.ExternalId.SCHEME_USERNAME;
 import static java.nio.charset.StandardCharsets.UTF_8;
+import static org.slf4j.LoggerFactory.getLogger;
 
 import com.github.scribejava.core.model.OAuth2AccessToken;
 import com.google.gerrit.entities.Account;
@@ -31,20 +32,35 @@ import com.google.gson.JsonParser;
 import com.google.gson.JsonPrimitive;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.sap.cloud.security.client.DefaultHttpClientFactory;
+import com.sap.cloud.security.config.ClientCredentials;
+import com.sap.cloud.security.config.OAuth2ServiceConfiguration;
+import com.sap.cloud.security.config.OAuth2ServiceConfigurationBuilder;
+import com.sap.cloud.security.config.Service;
+import com.sap.cloud.security.token.SapIdToken;
+import com.sap.cloud.security.token.Token;
+import com.sap.cloud.security.token.validation.CombiningValidator;
+import com.sap.cloud.security.token.validation.ValidationResult;
+import com.sap.cloud.security.token.validation.validators.JwtValidatorBuilder;
 import java.io.IOException;
 import java.util.Base64;
 import java.util.Optional;
+import org.slf4j.Logger;
 
 @Singleton
 @OAuthServiceProviderConfig(name = SAPIasOAuthService.PROVIDER_NAME)
 class SAPIasOAuthLoginProvider implements OAuthLoginProvider {
+  private static final Logger log = getLogger(SAPIasOAuthLoginProvider.class);
   private static final String USER_NAME_ATTRIBUTE = "sub";
+  private static final String ONDEMAND_DOMAIN = ".ondemand.com";
+  private static final String CLOUD_DOMAIN = ".cloud.sap";
 
   private final SAPIasOAuthService service;
   private final boolean enableResourceOwnerPasswordFlow;
   private final ExternalIds externalIds;
   private final ExternalIdKeyFactory externalIdKeyFactory;
   private final String extIdScheme;
+  private final CombiningValidator<Token> tokenValidator;
 
   @Inject
   SAPIasOAuthLoginProvider(
@@ -59,6 +75,24 @@ class SAPIasOAuthLoginProvider implements OAuthLoginProvider {
     this.externalIdKeyFactory = externalIdKeyFactory;
     this.extIdScheme =
         OAuthServiceProviderExternalIdScheme.create(SAPIasOAuthService.PROVIDER_NAME);
+
+    String[] rootUrlParts = cfg.getString(InitOAuth.ROOT_URL).split("\\.");
+    String universeSubdomain = rootUrlParts[rootUrlParts.length - 3];
+    OAuth2ServiceConfiguration serviceConfiguration =
+        OAuth2ServiceConfigurationBuilder.forService(Service.IAS)
+            .withUrl(cfg.getString(InitOAuth.ROOT_URL))
+            .withClientId(cfg.getString(InitOAuth.CLIENT_ID))
+            .withDomains(universeSubdomain + ONDEMAND_DOMAIN, universeSubdomain + CLOUD_DOMAIN)
+            .build();
+    tokenValidator =
+        JwtValidatorBuilder.getInstance(serviceConfiguration)
+            .withHttpClient(
+                new DefaultHttpClientFactory()
+                    .createClient(
+                        new ClientCredentials(
+                            cfg.getString(InitOAuth.CLIENT_ID),
+                            cfg.getString(InitOAuth.CLIENT_SECRET))))
+            .build();
   }
 
   @Override
@@ -68,6 +102,11 @@ class SAPIasOAuthLoginProvider implements OAuthLoginProvider {
     }
     OAuth2AccessToken accessToken;
     if (isAccessToken(secret)) {
+      ValidationResult res = tokenValidator.validate(new SapIdToken(secret));
+      if (res.isErroneous()) {
+        log.warn("Token validation failed: {}", res.getErrorDescription());
+        throw new IOException("Authentication error");
+      }
       accessToken = new OAuth2AccessToken(secret);
     } else if (enableResourceOwnerPasswordFlow) {
       if (username == null) {
