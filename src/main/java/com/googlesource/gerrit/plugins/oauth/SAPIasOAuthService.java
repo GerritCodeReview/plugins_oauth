@@ -14,34 +14,30 @@
 
 package com.googlesource.gerrit.plugins.oauth;
 
-import static com.google.gerrit.json.OutputFormat.JSON;
 import static org.slf4j.LoggerFactory.getLogger;
 
 import com.github.scribejava.core.builder.ServiceBuilder;
 import com.github.scribejava.core.model.OAuth2AccessToken;
-import com.github.scribejava.core.model.OAuthRequest;
-import com.github.scribejava.core.model.Response;
-import com.github.scribejava.core.model.Verb;
 import com.github.scribejava.core.oauth.AccessTokenRequestParams;
 import com.github.scribejava.core.oauth.AuthorizationUrlBuilder;
 import com.github.scribejava.core.oauth.OAuth20Service;
 import com.google.common.base.CharMatcher;
+import com.google.common.base.Strings;
 import com.google.gerrit.extensions.auth.oauth.OAuthServiceProvider;
 import com.google.gerrit.extensions.auth.oauth.OAuthToken;
 import com.google.gerrit.extensions.auth.oauth.OAuthUserInfo;
 import com.google.gerrit.extensions.auth.oauth.OAuthVerifier;
 import com.google.gerrit.server.config.CanonicalWebUrl;
 import com.google.gerrit.server.config.PluginConfig;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.ProvisionException;
 import com.google.inject.Singleton;
+import com.sap.cloud.security.json.DefaultJsonObject;
+import com.sap.cloud.security.token.SapIdToken;
 import java.io.IOException;
 import java.net.URI;
 import java.util.concurrent.ExecutionException;
-import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 
 @Singleton
@@ -49,7 +45,6 @@ import org.slf4j.Logger;
 public class SAPIasOAuthService implements OAuthServiceProvider {
   private static final Logger log = getLogger(SAPIasOAuthService.class);
   static final String PROVIDER_NAME = "sapias";
-  private static final String PROTECTED_RESOURCE_URL = "%s/oauth2/userinfo";
   private final OAuth20Service service;
   private final String serviceName;
   private final String rootUrl;
@@ -86,41 +81,23 @@ public class SAPIasOAuthService implements OAuthServiceProvider {
     return getUserInfo(t);
   }
 
-  public OAuthUserInfo getUserInfo(OAuth2AccessToken token) throws IOException {
-    OAuthRequest request =
-        new OAuthRequest(Verb.GET, String.format(PROTECTED_RESOURCE_URL, rootUrl));
-    service.signRequest(token, request);
-
-    try (Response response = service.execute(request)) {
-      if (response.getCode() != HttpServletResponse.SC_OK) {
-        throw new IOException(
-            String.format(
-                "Status %s (%s) for request %s",
-                response.getCode(), response.getBody(), request.getUrl()));
-      }
-      JsonElement userJson = JSON.newGson().fromJson(response.getBody(), JsonElement.class);
-      if (log.isDebugEnabled()) {
-        log.debug("User info response: {}", response.getBody());
-      }
-      JsonObject jsonObject = userJson.getAsJsonObject();
-      if (jsonObject == null || jsonObject.isJsonNull()) {
-        throw new IOException("Response doesn't contain 'user' field" + jsonObject);
-      }
-      JsonElement id = jsonObject.get("sub");
-      JsonElement username = jsonObject.get("preferred_username");
-      JsonElement email = jsonObject.get("email");
-      JsonElement name = jsonObject.get("name");
-      return new OAuthUserInfo(
-          this.extIdScheme + ":" + id.getAsString() /*externalId*/,
-          username == null || username.isJsonNull()
-              ? id.getAsString()
-              : username.getAsString() /*username*/,
-          email == null || email.isJsonNull() ? null : email.getAsString() /*email*/,
-          name == null || name.isJsonNull() ? null : name.getAsString() /*displayName*/,
-          linkExistingGerrit ? "gerrit:" + username.getAsString() : null /*claimedIdentity*/);
-    } catch (ExecutionException | InterruptedException e) {
-      throw new RuntimeException("Cannot retrieve user info resource", e);
+  public OAuthUserInfo getUserInfo(OAuth2AccessToken token) {
+    SapIdToken sapToken = new SapIdToken(getIdToken(token));
+    String username = sapToken.getClaimAsString("sub");
+    String externalId = this.extIdScheme + ":" + username;
+    String email = sapToken.getClaimAsString("email");
+    String firstName = sapToken.getClaimAsString("first_name");
+    String lastName = sapToken.getClaimAsString("last_name");
+    String displayName = null;
+    if (!Strings.isNullOrEmpty(firstName) && !Strings.isNullOrEmpty(lastName)) {
+      displayName = firstName + " " + lastName;
+    } else if (!Strings.isNullOrEmpty(firstName)) {
+      displayName = firstName;
+    } else if (!Strings.isNullOrEmpty(lastName)) {
+      displayName = lastName;
     }
+    String claimedIdentity = linkExistingGerrit ? "gerrit:" + username : null;
+    return new OAuthUserInfo(externalId, username, email, displayName, claimedIdentity);
   }
 
   @Override
@@ -166,5 +143,14 @@ public class SAPIasOAuthService implements OAuthServiceProvider {
   @Override
   public String getName() {
     return serviceName;
+  }
+
+  private String getIdToken(OAuth2AccessToken token) {
+    try {
+      String raw = token.getRawResponse();
+      return new DefaultJsonObject(raw).getAsString("id_token");
+    } catch (IllegalStateException e) {
+      return token.getAccessToken();
+    }
   }
 }
