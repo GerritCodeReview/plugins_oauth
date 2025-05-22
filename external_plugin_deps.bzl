@@ -47,6 +47,11 @@ def external_plugin_deps(omit_commons_codec = True):
         artifact = "com.sap.cloud.security:env:" + SAP_SECURITY_VERS,
         sha1 = "b0d84d8a7d0a73fef9329941226e725d0de00322",
     )
+    maven_jar(
+        name = "sap-xsuaa-token-client",
+        artifact = "com.sap.cloud.security.xsuaa:token-client:" + SAP_SECURITY_VERS,
+        sha1 = "dea8c6f5cb7d02c014dd19006a249df376bcbf38",
+    )
     if not omit_commons_codec:
         maven_jar(
             name = "commons-codec",

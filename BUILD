@@ -26,6 +26,7 @@ gerrit_plugin(
         "@sap-env//jar",
         "@sap-java-api//jar",
         "@sap-java-security//jar",
+        "@sap-xsuaa-token-client//jar",
         "@scribejava-apis//jar",
         "@scribejava-core//jar",
     ],
