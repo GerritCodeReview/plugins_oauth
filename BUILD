@@ -23,6 +23,7 @@ gerrit_plugin(
         "@commons-codec//jar:neverlink",
         "@jackson-core//jar",
         "@jackson-databind//jar",
+        "@json//jar",
         "@sap-env//jar",
         "@sap-java-api//jar",
         "@sap-java-security//jar",
