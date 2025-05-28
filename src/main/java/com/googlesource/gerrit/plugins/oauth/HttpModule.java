@@ -21,6 +21,22 @@ import com.google.gerrit.server.config.PluginConfig;
 import com.google.gerrit.server.config.PluginConfigFactory;
 import com.google.inject.Inject;
 import com.google.inject.servlet.ServletModule;
+import com.googlesource.gerrit.plugins.oauth.airvantage.AirVantageOAuthService;
+import com.googlesource.gerrit.plugins.oauth.auth0.Auth0OAuthService;
+import com.googlesource.gerrit.plugins.oauth.authentik.AuthentikOAuthService;
+import com.googlesource.gerrit.plugins.oauth.azure.AzureActiveDirectoryService;
+import com.googlesource.gerrit.plugins.oauth.bitbucket.BitbucketOAuthService;
+import com.googlesource.gerrit.plugins.oauth.cas.CasOAuthService;
+import com.googlesource.gerrit.plugins.oauth.cognito.CognitoOAuthService;
+import com.googlesource.gerrit.plugins.oauth.dex.DexOAuthService;
+import com.googlesource.gerrit.plugins.oauth.facebook.FacebookOAuthService;
+import com.googlesource.gerrit.plugins.oauth.github.GitHubOAuthService;
+import com.googlesource.gerrit.plugins.oauth.gitlab.GitLabOAuthService;
+import com.googlesource.gerrit.plugins.oauth.google.GoogleOAuthService;
+import com.googlesource.gerrit.plugins.oauth.keycloak.KeycloakOAuthService;
+import com.googlesource.gerrit.plugins.oauth.lemon.LemonLDAPOAuthService;
+import com.googlesource.gerrit.plugins.oauth.phabricator.PhabricatorOAuthService;
+import com.googlesource.gerrit.plugins.oauth.tuleap.TuleapOAuthService;
 
 class HttpModule extends ServletModule {
 
