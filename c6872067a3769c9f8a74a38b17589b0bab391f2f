@@ -72,6 +72,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5de05f60_51b8a603",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/CognitoOAuthService.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 4007888
+      },
+      "writtenOn": "2025-07-05T14:42:49Z",
+      "side": 1,
+      "message": "I have added back the asString() construct in the latest patchset,",
+      "parentUuid": "4a308ce5_140b286f",
+      "range": {
+        "startLine": 111,
+        "startChar": 0,
+        "endLine": 114,
+        "endChar": 88
+      },
+      "revId": "c6872067a3769c9f8a74a38b17589b0bab391f2f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5c2df6f6_602649e9",
