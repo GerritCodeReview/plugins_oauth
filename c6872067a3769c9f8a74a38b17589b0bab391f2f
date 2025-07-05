@@ -190,6 +190,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a8aaa23d_5881e780",
+        "filename": "src/main/resources/Documentation/config.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 341,
+      "author": {
+        "id": 4007888
+      },
+      "writtenOn": "2025-07-05T12:56:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "55ee959f_d55abaa5",
+      "range": {
+        "startLine": 340,
+        "startChar": 0,
+        "endLine": 341,
+        "endChar": 89
+      },
+      "revId": "c6872067a3769c9f8a74a38b17589b0bab391f2f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b2409554_25ec84be",
@@ -221,6 +245,24 @@
       "side": 1,
       "message": "Luca,\nI have added some test cases for the CognitoOAuthService\n\nsrc/test/java/com/googlesource/gerrit/plugins/oauth/CognitoOAuthServiceTest.java\n\nShall I keep the CognitoApiTest.java as a boilerplate and to maintain this repo\u0027s consistency as this is present for other services?",
       "parentUuid": "b2409554_25ec84be",
+      "revId": "c6872067a3769c9f8a74a38b17589b0bab391f2f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b638ecff_8fd80499",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/oauth/CognitoApiTest.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4007888
+      },
+      "writtenOn": "2025-07-05T12:56:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d403e37a_43946b45",
       "revId": "c6872067a3769c9f8a74a38b17589b0bab391f2f",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
