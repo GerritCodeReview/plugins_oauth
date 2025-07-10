@@ -58,6 +58,7 @@ public class KeycloakOAuthService implements OAuthServiceProvider {
   private final String serviceName;
   private final boolean usePreferredUsername;
   private final String extIdScheme;
+  private final boolean linkExistingGerrit;
 
   @Inject
   KeycloakOAuthService(
@@ -72,6 +73,7 @@ public class KeycloakOAuthService implements OAuthServiceProvider {
     String realm = cfg.getString(InitOAuth.REALM);
     serviceName = cfg.getString(InitOAuth.SERVICE_NAME, "Keycloak OAuth2");
     usePreferredUsername = cfg.getBoolean(InitOAuth.USE_PREFERRED_USERNAME, true);
+    linkExistingGerrit = cfg.getBoolean(InitOAuth.LINK_TO_EXISTING_GERRIT_ACCOUNT, false);
 
     service =
         new ServiceBuilder(cfg.getString(InitOAuth.CLIENT_ID))
@@ -136,7 +138,7 @@ public class KeycloakOAuthService implements OAuthServiceProvider {
         username /*username*/,
         email /*email*/,
         name /*displayName*/,
-        null /*claimedIdentity*/);
+        linkExistingGerrit ? "gerrit:" + usernameElement.getAsString() : null /*claimedIdentity*/);
   }
 
   @Override

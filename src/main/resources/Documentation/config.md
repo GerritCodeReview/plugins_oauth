@@ -70,6 +70,7 @@ appended with provider suffix: e.g. `-google-oauth` or `-github-oauth`:
     client-id = "<client-id>"
     client-secret = "<client-secret>"
     use-preferred-username = true # Optional, if false will not send preferred_username from Keycloak to leave username unset
+    link-to-existing-gerrit-accounts = false
 
   [plugin "@PLUGIN@-tuleap-oauth"]
     service-name = "<custom service name (optional)>"
@@ -329,8 +330,12 @@ the Secret.
 
 The root URL will the protocol and hostname of your Keycloak instance (for example, https://signon.example.com).
 
+You can optionally set `link-to-existing-gerrit-accounts = true` if you want the provider to link a account based
+on the username instead of trying to create a new account, see below migration from LDAP.
+
 You can optionally set `use-preferred-username = false` if you would prefer to not have the `preferred_username`
 token be automatically set as the users username, and instead let users choose their own usernames.
+If you use the `link-to-existing-gerrit-accounts = true` setting, you also need to use the `use-preferred-username = true` setting.
 
 ### Authentik
 
