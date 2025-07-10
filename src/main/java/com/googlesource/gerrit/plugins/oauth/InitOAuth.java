@@ -175,6 +175,7 @@ class InitOAuth implements InitStep {
     if (configureKeycloakOAuthProvider && configureOAuth(keycloakOAuthProviderSection)) {
       checkRootUrl(keycloakOAuthProviderSection.string("Keycloak Root URL", ROOT_URL, null));
       keycloakOAuthProviderSection.string("Keycloak Realm", REALM, null);
+      keycloakOAuthProviderSection.string("Link to existing gerrit accounts?", LINK_TO_EXISTING_GERRIT_ACCOUNT, "false");
     }
 
     // ?: Are there legacy office365 already configured on the system?
