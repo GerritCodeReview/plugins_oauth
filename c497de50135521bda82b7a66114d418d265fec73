@@ -16,6 +16,24 @@
       "message": "Hi,\n\nCould you please review my code?\n\nThanks, Martin",
       "revId": "c497de50135521bda82b7a66114d418d265fec73",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8ec365a9_6f25094d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4157143
+      },
+      "writtenOn": "2025-07-13T12:48:11Z",
+      "side": 1,
+      "message": "Reply",
+      "parentUuid": "bda94c26_227c52f6",
+      "revId": "c497de50135521bda82b7a66114d418d265fec73",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
