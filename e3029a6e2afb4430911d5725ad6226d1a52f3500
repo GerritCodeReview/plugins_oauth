@@ -16,6 +16,98 @@
       "message": "Please review",
       "revId": "e3029a6e2afb4430911d5725ad6226d1a52f3500",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d966dcf3_c4a14e5f",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/InitOAuth.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 252,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2025-07-15T19:58:50Z",
+      "side": 1,
+      "message": "Why not asking for a yes/no like at L246?",
+      "range": {
+        "startLine": 251,
+        "startChar": 6,
+        "endLine": 252,
+        "endChar": 94
+      },
+      "revId": "e3029a6e2afb4430911d5725ad6226d1a52f3500",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8b2a3ca0_08654872",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/oauth/CognitoApiTest.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2025-07-15T19:58:50Z",
+      "side": 1,
+      "message": "We are in 2025.\n\n\n\n```suggestion\n// Copyright (C) 2025 The Android Open Source Project\n```",
+      "range": {
+        "startLine": 1,
+        "startChar": 17,
+        "endLine": 1,
+        "endChar": 21
+      },
+      "revId": "e3029a6e2afb4430911d5725ad6226d1a52f3500",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3e1bf0a2_3a8e1211",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/oauth/CognitoOAuthServiceTest.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2025-07-15T19:58:50Z",
+      "side": 1,
+      "message": "Why do you need `System.out.println` in tests?",
+      "range": {
+        "startLine": 157,
+        "startChar": 0,
+        "endLine": 172,
+        "endChar": 86
+      },
+      "revId": "e3029a6e2afb4430911d5725ad6226d1a52f3500",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f2202c65_ee36c304",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/oauth/CognitoOAuthServiceTest.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 217,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2025-07-15T19:58:50Z",
+      "side": 1,
+      "message": "Same as above: why do you need `System.out.println`?",
+      "range": {
+        "startLine": 202,
+        "startChar": 0,
+        "endLine": 217,
+        "endChar": 89
+      },
+      "revId": "e3029a6e2afb4430911d5725ad6226d1a52f3500",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
