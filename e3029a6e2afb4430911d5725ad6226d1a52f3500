@@ -64,6 +64,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4b9dba6f_d1c91043",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/oauth/CognitoApiTest.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 4007888
+      },
+      "writtenOn": "2025-07-16T12:58:58Z",
+      "side": 1,
+      "message": "Fix applied.",
+      "parentUuid": "8b2a3ca0_08654872",
+      "range": {
+        "startLine": 1,
+        "startChar": 17,
+        "endLine": 1,
+        "endChar": 21
+      },
+      "revId": "e3029a6e2afb4430911d5725ad6226d1a52f3500",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3e1bf0a2_3a8e1211",
