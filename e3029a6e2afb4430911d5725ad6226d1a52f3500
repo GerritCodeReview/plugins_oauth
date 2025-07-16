@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "106c4465_954bd65d",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/InitOAuth.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 252,
+      "author": {
+        "id": 4007888
+      },
+      "writtenOn": "2025-07-16T14:30:06Z",
+      "side": 1,
+      "message": "This is to maintain the code flow consistency with other Oauth providers.(See L241.) I would rather implement this as a separate request. What do you think?",
+      "parentUuid": "d966dcf3_c4a14e5f",
+      "range": {
+        "startLine": 251,
+        "startChar": 6,
+        "endLine": 252,
+        "endChar": 94
+      },
+      "revId": "e3029a6e2afb4430911d5725ad6226d1a52f3500",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8b2a3ca0_08654872",
         "filename": "src/test/java/com/googlesource/gerrit/plugins/oauth/CognitoApiTest.java",
         "patchSetId": 6
