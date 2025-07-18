@@ -89,6 +89,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "31c88af6_fc71fb78",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/InitOAuth.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 252,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2025-07-18T23:19:20Z",
+      "side": 1,
+      "message": "OK, let\u0027s keep it consistent.",
+      "parentUuid": "c700ff5d_040b9aa7",
+      "range": {
+        "startLine": 251,
+        "startChar": 6,
+        "endLine": 252,
+        "endChar": 94
+      },
+      "revId": "e3029a6e2afb4430911d5725ad6226d1a52f3500",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8b2a3ca0_08654872",
