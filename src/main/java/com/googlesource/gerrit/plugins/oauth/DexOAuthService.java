@@ -69,6 +69,7 @@ public class DexOAuthService implements OAuthServiceProvider, OAuthLoginProvider
   private final String serviceName;
   private final boolean useDexEndpointPrefix;
   private final boolean linkExistingGerrit;
+  private final JwkProvider jwkProvider;
 
   @Inject
   DexOAuthService(
@@ -96,6 +97,21 @@ public class DexOAuthService implements OAuthServiceProvider, OAuthLoginProvider
     JwksCacheSize = cfg.getInt(InitOAuth.JWKS_CACHE_SIZE, 10);
     JwksCacheRefillRateMinutes = cfg.getInt(InitOAuth.JWKS_CACHE_REFILL_RATE_MINUTES, 1);
 
+    // Initialize JwkProvider once during construction if JWKS URL is provided
+    if (!jwksUrl.isEmpty()) {
+      try {
+        URI jwksUri = URI.create(jwksUrl);
+        jwkProvider = new JwkProviderBuilder(jwksUri.toURL())
+            .cached(JwksCacheSize, JwksCacheTimeoutHours, TimeUnit.HOURS)
+            .rateLimited(JwksCacheSize, JwksCacheRefillRateMinutes, TimeUnit.MINUTES)
+            .build();
+      } catch (MalformedURLException e) {
+        throw new ProvisionException("Invalid JWKS URL: " + jwksUrl, e);
+      }
+    } else {
+      jwkProvider = null;
+    }
+
     service =
         new ServiceBuilder(cfg.getString(InitOAuth.CLIENT_ID))
             .apiSecret(cfg.getString(InitOAuth.CLIENT_SECRET))
@@ -105,21 +121,14 @@ public class DexOAuthService implements OAuthServiceProvider, OAuthLoginProvider
   }
 
   private DecodedJWT parseJwt(String input) throws JWTVerificationException {
-    try {
-      if (jwksUrl.isEmpty()) {
-        return JWT.decode(input);
-      }
-      URI jwksUri = URI.create(jwksUrl);
-      JwkProvider provider =
-          new JwkProviderBuilder(jwksUri.toURL())
-              .cached(JwksCacheSize, JwksCacheTimeoutHours, TimeUnit.HOURS)
-              .rateLimited(JwksCacheSize, JwksCacheRefillRateMinutes, TimeUnit.MINUTES)
-              .build();
-      Algorithm algorithm = getAlgorithm(provider);
-      return JWT.require(algorithm).build().verify(input);
-    } catch (MalformedURLException e) {
-      throw new RuntimeException(e);
+    if (jwkProvider == null) {
+      // No JWKS URL configured, decode without verification
+      return JWT.decode(input);
     }
+    
+    // Use the shared JwkProvider instance for verification
+    Algorithm algorithm = getAlgorithm(jwkProvider);
+    return JWT.require(algorithm).build().verify(input);
   }
 
   private Algorithm getAlgorithm(JwkProvider provider) {
