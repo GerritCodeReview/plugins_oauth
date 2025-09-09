@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a2cedb31_20a5c950",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 3604707
+      },
+      "writtenOn": "2025-09-09T21:17:30Z",
+      "side": 1,
+      "message": "Can you quantify this so that others have a better understanding?",
+      "revId": "1db6a5c1dd2dda7e63f014ae3708b88927980dce",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b18c67fd_26948f8b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 3604707
+      },
+      "writtenOn": "2025-09-09T21:17:30Z",
+      "side": 1,
+      "message": "This seems potentially like something that may not be agree upon by everyone, if possible, I would not make this the base that many changes, especially if they would be less potentially controversial,rely on.",
+      "revId": "1db6a5c1dd2dda7e63f014ae3708b88927980dce",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
