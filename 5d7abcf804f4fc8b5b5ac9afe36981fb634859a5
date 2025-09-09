@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b6ddeaae_62a44e5c",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/InitOAuth.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 3604707
+      },
+      "writtenOn": "2025-09-09T21:32:27Z",
+      "side": 1,
+      "message": "I don\u0027t love how this section got longer. Perhaps the OAuth from the name since we are in that plugin, or just make it getConfigSection() or getConfig() even? Also, we probably don\u0027t need to pass in PLUGIN_SECTION since it is available in the called method (create a wrapper method if needed)?",
+      "revId": "5d7abcf804f4fc8b5b5ac9afe36981fb634859a5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
