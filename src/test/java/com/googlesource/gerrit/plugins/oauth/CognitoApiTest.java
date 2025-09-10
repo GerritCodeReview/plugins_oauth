@@ -21,21 +21,21 @@ import org.junit.Test;
 
 public class CognitoApiTest {
 
-    private CognitoApi api;
-    private static final String TEST_ROOT_URL = "https://test.example.com";
+  private CognitoApi api;
+  private static final String TEST_ROOT_URL = "https://test.example.com";
 
-    @Before
-    public void setUp() {
-        api = new CognitoApi(TEST_ROOT_URL);
-    }
+  @Before
+  public void setUp() {
+    api = new CognitoApi(TEST_ROOT_URL);
+  }
 
-    @Test
-    public void testGetAccessTokenEndpoint() {
-        assertThat(api.getAccessTokenEndpoint()).isEqualTo(TEST_ROOT_URL + "/oauth2/token/");
-    }
+  @Test
+  public void testGetAccessTokenEndpoint() {
+    assertThat(api.getAccessTokenEndpoint()).isEqualTo(TEST_ROOT_URL + "/oauth2/token/");
+  }
 
-    @Test
-    public void testGetAuthorizationBaseUrl() {
-        assertThat(api.getAuthorizationBaseUrl()).isEqualTo(TEST_ROOT_URL + "/oauth2/authorize/");
-    }
+  @Test
+  public void testGetAuthorizationBaseUrl() {
+    assertThat(api.getAuthorizationBaseUrl()).isEqualTo(TEST_ROOT_URL + "/oauth2/authorize/");
+  }
 }
