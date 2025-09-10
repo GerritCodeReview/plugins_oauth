@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4be59f4f_d1f00431",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1004034
+      },
+      "writtenOn": "2025-09-10T15:01:39Z",
+      "side": 1,
+      "message": "```suggestion\ndeprecated in Jan 2021 [1]. Admins of sites that previously used\n```",
+      "revId": "b253f4833de97e73d477be4b0f5f47a6440e1dc0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d53a302d_7f8a7553",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1004034
+      },
+      "writtenOn": "2025-09-10T15:01:39Z",
+      "side": 1,
+      "message": "```suggestion\nnew one.\n\n[1] https://gerrit.googlesource.com/plugins/oauth/+/31d9b6472c7f29b36cb26f6056cd07d9ba92c282\n```",
+      "revId": "b253f4833de97e73d477be4b0f5f47a6440e1dc0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
