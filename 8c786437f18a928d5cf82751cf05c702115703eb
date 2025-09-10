@@ -16,6 +16,24 @@
       "message": "It\u0027s not obvious to me (I know very little about OAUTH, but I would love to help review this) what this affects behavior wise, can you add a bit on that here?",
       "revId": "8c786437f18a928d5cf82751cf05c702115703eb",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ea280f55_2b1d957c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1065256
+      },
+      "writtenOn": "2025-09-10T11:12:13Z",
+      "side": 1,
+      "message": "To create an account you either have to login via the UI or an admin has to create it via REST API. The former worked without issue, since OAuth is directly involved in account creation, i.e. the data returned by the identity provider is being used to set up the account. However, it was not possible to create an account via REST API and then log into it via OAuth. The reason was that the account created via REST API didn\u0027t get an external ID on creation that linked it to the IDP. On authentication Gerrit would thus complain that the account exists and that the provided secret didn\u0027t match the stored password instead of contacting the OAuth server. Gerrit provides an extension point where plugins can provide additional external IDs on account creation. This is what I have done here, thereby linking the created account to the OAuth provider.",
+      "parentUuid": "18fe396a_cfaf029e",
+      "revId": "8c786437f18a928d5cf82751cf05c702115703eb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
