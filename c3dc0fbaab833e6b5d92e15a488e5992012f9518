@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a0256193_f9fe7847",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/Module.java",
+        "patchSetId": 18
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1003873
+      },
+      "writtenOn": "2025-09-26T15:21:28Z",
+      "side": 1,
+      "message": "return `boolean` from this method instead of using side-effect of setting a field.",
+      "revId": "c3dc0fbaab833e6b5d92e15a488e5992012f9518",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
