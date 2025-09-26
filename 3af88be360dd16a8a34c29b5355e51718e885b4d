@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "651d5f1f_e477ee5a",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/sap/SAPIasOAuthService.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1003873
+      },
+      "writtenOn": "2025-09-26T15:17:25Z",
+      "side": 1,
+      "message": "This is not necessary because the `CanonicalWebUrlProider` in Gerrit core already ensures that it ends with a trailing `/`",
+      "revId": "3af88be360dd16a8a34c29b5355e51718e885b4d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7ccc06fa_5e50c7f4",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/sap/SAPIasOAuthService.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1003873
+      },
+      "writtenOn": "2025-09-26T15:17:25Z",
+      "side": 1,
+      "message": "Should we rather inject these instead of building them from the constructor? When we have code like this in the constructor then unit testing becomes hard.",
+      "range": {
+        "startLine": 67,
+        "startChar": 0,
+        "endLine": 73,
+        "endChar": 77
+      },
+      "revId": "3af88be360dd16a8a34c29b5355e51718e885b4d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "13731e6f_e20776d5",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/sap/SAPIasOAuthService.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 1003873
+      },
+      "writtenOn": "2025-09-26T15:17:25Z",
+      "side": 1,
+      "message": "This may be coded a little less elaborate using streams:\n```\nString displayName \u003d Stream.of(firstName, lastName)\n    .filter(s -\u003e !Strings.isNullOrEmpty(s))\n    .collect(Collectors.joining(\" \"));\n```\n\nThe only difference is that in `null`/`null` case the result will be an empty string instead of `null`.",
+      "range": {
+        "startLine": 89,
+        "startChar": 4,
+        "endLine": 96,
+        "endChar": 5
+      },
+      "revId": "3af88be360dd16a8a34c29b5355e51718e885b4d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
