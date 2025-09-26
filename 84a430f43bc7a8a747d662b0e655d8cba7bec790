@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "16ab1fe6_8aedada7",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/Module.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1003873
+      },
+      "writtenOn": "2025-09-26T15:04:41Z",
+      "side": 1,
+      "message": "I think that this can be just `.toList()`. Besides more concise code, the returned list is also immutable.",
+      "revId": "84a430f43bc7a8a747d662b0e655d8cba7bec790",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
