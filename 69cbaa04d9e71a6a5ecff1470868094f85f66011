@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "bd7ef50f_5c1912c8",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/AzureOAuthServiceModule.java",
+        "patchSetId": 8
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1065256
+      },
+      "writtenOn": "2025-09-29T07:17:22Z",
+      "side": 1,
+      "message": "This was already the case before the refactoring, thus I would not change it in context of this change, but will test it. I guess, this might be because the ServiceProviders are only used in context of the `OAuthWebFilter`.",
+      "parentUuid": "1d72addc_1b42f67f",
+      "range": {
+        "startLine": 25,
+        "startChar": 45,
+        "endLine": 25,
+        "endChar": 58
+      },
+      "revId": "69cbaa04d9e71a6a5ecff1470868094f85f66011",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "82838d92_6cdca056",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/HttpModule.java",
         "patchSetId": 8
