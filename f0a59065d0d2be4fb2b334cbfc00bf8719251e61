@@ -24,6 +24,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cf55e2a4_05d846de",
+        "filename": "src/main/resources/Documentation/config.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 369,
+      "author": {
+        "id": 1065256
+      },
+      "writtenOn": "2025-09-29T13:19:24Z",
+      "side": 1,
+      "message": "Fix applied.",
+      "parentUuid": "b7e5aae3_82155de5",
+      "range": {
+        "startLine": 369,
+        "startChar": 35,
+        "endLine": 369,
+        "endChar": 39
+      },
+      "revId": "f0a59065d0d2be4fb2b334cbfc00bf8719251e61",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8bd46d95_838b07b7",
@@ -37,6 +61,30 @@
       "writtenOn": "2025-02-05T13:16:47Z",
       "side": 1,
       "message": "```suggestion\nthis flow is not considered to be secure since credentials are not only sent to the oauth server but to the application. To enable this flow set `enableResourceOwnerPasswordFlow \u003d true`.\n```",
+      "range": {
+        "startLine": 372,
+        "startChar": 34,
+        "endLine": 372,
+        "endChar": 40
+      },
+      "revId": "f0a59065d0d2be4fb2b334cbfc00bf8719251e61",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e2f986c0_246df4e7",
+        "filename": "src/main/resources/Documentation/config.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 372,
+      "author": {
+        "id": 1065256
+      },
+      "writtenOn": "2025-09-29T13:19:24Z",
+      "side": 1,
+      "message": "Fix applied.",
+      "parentUuid": "8bd46d95_838b07b7",
       "range": {
         "startLine": 372,
         "startChar": 34,

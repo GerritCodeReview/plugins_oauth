@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b6bb2aa8_381cf72d",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/sap/SAPIasOAuthLoginProvider.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1065256
+      },
+      "writtenOn": "2025-09-29T13:19:24Z",
+      "side": 1,
+      "message": "Yes, with annotations (since there can be multiple providers at the same time) this would work. I would do that in a separate change, since this would then also change for all other providers.",
+      "parentUuid": "6af2fe39_98df744a",
+      "range": {
+        "startLine": 59,
+        "startChar": 0,
+        "endLine": 60,
+        "endChar": 53
+      },
+      "revId": "f1f97943af77644a87194cfdf6b8386e9e81a6be",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ff69c161_4915624f",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/sap/SAPIasOAuthLoginProvider.java",
         "patchSetId": 10
@@ -37,6 +61,30 @@
       "writtenOn": "2025-09-29T11:09:46Z",
       "side": 1,
       "message": "note that `String.split` assumes that the parameter is a regex. This has an unnecessary performance penalty (compiling the regex) for the case where we need to split on a single character. Using Guava `Splitter` here is more conforming to the Gerrit\u0027s code base and also shall provide better performance:\n```\nSplitter.on(\u0027.\u0027).splitToList(accessToken);\n```",
+      "range": {
+        "startLine": 139,
+        "startChar": 36,
+        "endLine": 139,
+        "endChar": 48
+      },
+      "revId": "f1f97943af77644a87194cfdf6b8386e9e81a6be",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bb056fe8_7b9ad09f",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/sap/SAPIasOAuthLoginProvider.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 1065256
+      },
+      "writtenOn": "2025-09-29T13:19:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ff69c161_4915624f",
       "range": {
         "startLine": 139,
         "startChar": 36,
@@ -60,6 +108,30 @@
       "writtenOn": "2025-09-29T11:09:46Z",
       "side": 1,
       "message": "I see here a mix of camelCase option names and dash-case (lines 366 and 369 as a few examples).",
+      "range": {
+        "startLine": 375,
+        "startChar": 67,
+        "endLine": 375,
+        "endChar": 98
+      },
+      "revId": "f1f97943af77644a87194cfdf6b8386e9e81a6be",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "96ca0a65_2cef4fc3",
+        "filename": "src/main/resources/Documentation/config.md",
+        "patchSetId": 10
+      },
+      "lineNbr": 375,
+      "author": {
+        "id": 1065256
+      },
+      "writtenOn": "2025-09-29T13:19:24Z",
+      "side": 1,
+      "message": "I hate that this plugin is not consistent with Gerrit core in that regard.",
+      "parentUuid": "4f78a30d_ca12dfef",
       "range": {
         "startLine": 375,
         "startChar": 67,
