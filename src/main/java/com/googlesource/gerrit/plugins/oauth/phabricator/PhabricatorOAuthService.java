@@ -18,7 +18,6 @@ import static com.google.gerrit.json.OutputFormat.JSON;
 import static com.googlesource.gerrit.plugins.oauth.JsonUtil.asString;
 import static com.googlesource.gerrit.plugins.oauth.JsonUtil.isNull;
 
-import com.github.scribejava.core.builder.ServiceBuilder;
 import com.github.scribejava.core.model.OAuth2AccessToken;
 import com.github.scribejava.core.model.OAuthRequest;
 import com.github.scribejava.core.model.Response;
@@ -38,6 +37,7 @@ import com.google.inject.Provider;
 import com.google.inject.ProvisionException;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.oauth.InitOAuth;
+import com.googlesource.gerrit.plugins.oauth.OAuth20ServiceFactory;
 import com.googlesource.gerrit.plugins.oauth.OAuthPluginConfigFactory;
 import com.googlesource.gerrit.plugins.oauth.OAuthServiceProviderConfig;
 import com.googlesource.gerrit.plugins.oauth.OAuthServiceProviderExternalIdScheme;
@@ -60,18 +60,17 @@ public class PhabricatorOAuthService implements OAuthServiceProvider {
 
   @Inject
   PhabricatorOAuthService(
-      OAuthPluginConfigFactory cfgFactory, @CanonicalWebUrl Provider<String> urlProvider) {
+      OAuthPluginConfigFactory cfgFactory,
+      @CanonicalWebUrl Provider<String> urlProvider,
+      OAuth20ServiceFactory oauth20ServiceFactory) {
     PluginConfig cfg = cfgFactory.create(PROVIDER_NAME);
     String canonicalWebUrl = CharMatcher.is('/').trimTrailingFrom(urlProvider.get()) + "/";
     rootUrl = cfg.getString(InitOAuth.ROOT_URL);
     if (!URI.create(rootUrl).isAbsolute()) {
       throw new ProvisionException("Root URL must be absolute URL");
     }
-    this.service =
-        new ServiceBuilder(cfg.getString(InitOAuth.CLIENT_ID))
-            .apiSecret(cfg.getString(InitOAuth.CLIENT_SECRET))
-            .callback(canonicalWebUrl + "oauth")
-            .build(new PhabricatorApi(rootUrl));
+    this.service = oauth20ServiceFactory.create(PROVIDER_NAME, new PhabricatorApi(rootUrl));
+
     if (log.isDebugEnabled()) {
       log.debug("OAuth2: canonicalWebUrl={}", canonicalWebUrl);
     }

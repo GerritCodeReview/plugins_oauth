@@ -16,7 +16,6 @@ package com.googlesource.gerrit.plugins.oauth.sap;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
-import com.github.scribejava.core.builder.ServiceBuilder;
 import com.github.scribejava.core.model.OAuth2AccessToken;
 import com.github.scribejava.core.oauth.AccessTokenRequestParams;
 import com.github.scribejava.core.oauth.AuthorizationUrlBuilder;
@@ -26,13 +25,12 @@ import com.google.gerrit.extensions.auth.oauth.OAuthServiceProvider;
 import com.google.gerrit.extensions.auth.oauth.OAuthToken;
 import com.google.gerrit.extensions.auth.oauth.OAuthUserInfo;
 import com.google.gerrit.extensions.auth.oauth.OAuthVerifier;
-import com.google.gerrit.server.config.CanonicalWebUrl;
 import com.google.gerrit.server.config.PluginConfig;
 import com.google.inject.Inject;
-import com.google.inject.Provider;
 import com.google.inject.ProvisionException;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.oauth.InitOAuth;
+import com.googlesource.gerrit.plugins.oauth.OAuth20ServiceFactory;
 import com.googlesource.gerrit.plugins.oauth.OAuthPluginConfigFactory;
 import com.googlesource.gerrit.plugins.oauth.OAuthServiceProviderConfig;
 import com.googlesource.gerrit.plugins.oauth.OAuthServiceProviderExternalIdScheme;
@@ -65,10 +63,9 @@ public class SAPIasOAuthService implements OAuthServiceProvider {
   @Inject
   SAPIasOAuthService(
       OAuthPluginConfigFactory cfgFactory,
-      @CanonicalWebUrl Provider<String> urlProvider,
+      OAuth20ServiceFactory oauth20ServiceFactory,
       CombiningValidator<Token> tokenValidator) {
     PluginConfig cfg = cfgFactory.create(PROVIDER_NAME);
-    String canonicalWebUrl = urlProvider.get();
     rootUrl = cfg.getString(InitOAuth.ROOT_URL);
     if (!URI.create(rootUrl).isAbsolute()) {
       throw new ProvisionException("Root URL must be absolute URL");
@@ -77,11 +74,8 @@ public class SAPIasOAuthService implements OAuthServiceProvider {
     linkExistingGerrit = cfg.getBoolean(InitOAuth.LINK_TO_EXISTING_GERRIT_ACCOUNT, false);
     enablePKCE = cfg.getBoolean(InitOAuth.ENABLE_PKCE, false);
     service =
-        new ServiceBuilder(cfg.getString(InitOAuth.CLIENT_ID))
-            .apiSecret(cfg.getString(InitOAuth.CLIENT_SECRET))
-            .callback(canonicalWebUrl + "oauth")
-            .defaultScope("openid profile email")
-            .build(new SAPIasApi(rootUrl));
+        oauth20ServiceFactory.create(PROVIDER_NAME, new SAPIasApi(rootUrl), "openid profile email");
+
     authorizationUrlBuilder = service.createAuthorizationUrlBuilder();
     extIdScheme = OAuthServiceProviderExternalIdScheme.create(PROVIDER_NAME);
     this.tokenValidator = tokenValidator;
