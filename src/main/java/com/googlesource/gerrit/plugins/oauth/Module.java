@@ -71,11 +71,11 @@ public class Module extends AbstractModule {
   }
 
   private boolean installOAuthModule(
-      Class<? extends OAuthLoginProvider> loginClass, AbstractModule module) {
+      Class<? extends OAuthLoginProvider> loginClass, AbstractModule oAuthModule) {
     String loginProviderName = loginClass.getAnnotation(OAuthServiceProviderConfig.class).name();
     String cfgSuffix = OAuthPluginConfigFactory.getConfigSuffix(loginProviderName);
     if (cfg.getString("plugin", pluginName + cfgSuffix, InitOAuth.CLIENT_ID) != null) {
-      install(module);
+      install(oAuthModule);
       return true;
     }
     return false;
