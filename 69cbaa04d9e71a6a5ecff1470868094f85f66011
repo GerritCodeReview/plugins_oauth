@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4e140380_9c346426",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/AzureOAuthServiceModule.java",
+        "patchSetId": 8
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1065256
+      },
+      "writtenOn": "2025-09-29T07:46:05Z",
+      "side": 1,
+      "message": "Not using a ServletModule results in\n\n```\n[2025-09-29T09:43:49.771+02:00] [main] ERROR com.google.gerrit.pgm.Daemon : Unable to start daemon\njava.lang.IllegalStateException: Cannot start HTTP daemon\n\tat com.google.gerrit.pgm.http.jetty.JettyServer$Lifecycle.start(JettyServer.java:111)\n\tat com.google.gerrit.lifecycle.LifecycleManager.start(LifecycleManager.java:95)\n\tat com.google.gerrit.pgm.Daemon.start(Daemon.java:432)\n\tat com.google.gerrit.pgm.Daemon.run(Daemon.java:318)\n\tat com.google.gerrit.pgm.util.AbstractProgram.main(AbstractProgram.java:62)\n\tat java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)\n\tat java.base/java.lang.reflect.Method.invoke(Method.java:580)\n\tat com.google.gerrit.launcher.GerritLauncher.invokeProgram(GerritLauncher.java:251)\n\tat com.google.gerrit.launcher.GerritLauncher.mainImpl(GerritLauncher.java:147)\n\tat com.google.gerrit.launcher.GerritLauncher.main(GerritLauncher.java:92)\n\tat Main.main(Main.java:30)\nCaused by: javax.servlet.ServletException: OAuth service provider wasn\u0027t installed\n\tat com.google.gerrit.httpd.auth.oauth.OAuthWebFilter.pickSSOServiceProvider(OAuthWebFilter.java:182)\n\tat com.google.gerrit.httpd.auth.oauth.OAuthWebFilter.init(OAuthWebFilter.java:74)\n\tat com.google.inject.servlet.FilterDefinition.init(FilterDefinition.java:110)\n\tat com.google.inject.servlet.ManagedFilterPipeline.initPipeline(ManagedFilterPipeline.java:98)\n\tat com.google.inject.servlet.GuiceFilter.init(GuiceFilter.java:232)\n\tat org.eclipse.jetty.servlet.FilterHolder.initialize(FilterHolder.java:140)\n\tat org.eclipse.jetty.servlet.ServletHandler.lambda$initialize$0(ServletHandler.java:750)\n\tat java.base/java.util.Spliterators$ArraySpliterator.forEachRemaining(Spliterators.java:1024)\n\tat java.base/java.util.stream.Streams$ConcatSpliterator.forEachRemaining(Streams.java:734)\n\tat java.base/java.util.stream.ReferencePipeline$Head.forEach(ReferencePipeline.java:762)\n\tat org.eclipse.jetty.servlet.ServletHandler.initialize(ServletHandler.java:774)\n\tat org.eclipse.jetty.servlet.ServletContextHandler.startContext(ServletContextHandler.java:379)\n\tat org.eclipse.jetty.server.handler.ContextHandler.doStart(ContextHandler.java:916)\n\tat org.eclipse.jetty.servlet.ServletContextHandler.doStart(ServletContextHandler.java:288)\n\tat org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:73)\n\tat org.eclipse.jetty.util.component.ContainerLifeCycle.start(ContainerLifeCycle.java:169)\n\tat org.eclipse.jetty.util.component.ContainerLifeCycle.doStart(ContainerLifeCycle.java:110)\n\tat org.eclipse.jetty.server.handler.AbstractHandler.doStart(AbstractHandler.java:97)\n\tat org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:73)\n\tat org.eclipse.jetty.util.component.ContainerLifeCycle.start(ContainerLifeCycle.java:169)\n\tat org.eclipse.jetty.server.Server.start(Server.java:423)\n\tat org.eclipse.jetty.util.component.ContainerLifeCycle.doStart(ContainerLifeCycle.java:110)\n\tat org.eclipse.jetty.server.handler.AbstractHandler.doStart(AbstractHandler.java:97)\n\tat org.eclipse.jetty.server.Server.doStart(Server.java:387)\n\tat org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:73)\n\tat com.google.gerrit.pgm.http.jetty.JettyServer$Lifecycle.start(JettyServer.java:97)\n\t... 10 more\n```",
+      "parentUuid": "bd7ef50f_5c1912c8",
+      "range": {
+        "startLine": 25,
+        "startChar": 45,
+        "endLine": 25,
+        "endChar": 58
+      },
+      "revId": "69cbaa04d9e71a6a5ecff1470868094f85f66011",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "82838d92_6cdca056",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/HttpModule.java",
         "patchSetId": 8
