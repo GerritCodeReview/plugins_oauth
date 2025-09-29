@@ -16,6 +16,24 @@
       "message": "The other strings have a space before the question mark:\n`\"Use GitLab OAuth provider for Gerrit login ?\"`\n`\"Use SAP IAS OAuth provider for Gerrit login ?\"`\nFor consistency should this be the same?",
       "revId": "51e200686299013343081e2f6bf6de5b480a91f0",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "91427679_59192ef8",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/InitOAuth.java",
+        "patchSetId": 11
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 1065256
+      },
+      "writtenOn": "2025-09-29T13:18:59Z",
+      "side": 1,
+      "message": "I think this whitespace is unnecessary. I have a change removing it from all occurrences here: https://gerrit-review.googlesource.com/c/plugins/oauth/+/513766/2?usp\u003drelated-change",
+      "parentUuid": "2c72d370_8c18c1f4",
+      "revId": "51e200686299013343081e2f6bf6de5b480a91f0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
