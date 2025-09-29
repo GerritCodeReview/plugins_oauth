@@ -16,6 +16,23 @@
       "message": "return `boolean` from this method instead of using side-effect of setting a field.",
       "revId": "c3dc0fbaab833e6b5d92e15a488e5992012f9518",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "80a0cd81_ae9e7c07",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/sap/SAPIasOAuthLoginProvider.java",
+        "patchSetId": 18
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1144862
+      },
+      "writtenOn": "2025-09-29T09:49:06Z",
+      "side": 1,
+      "message": "It seems like `username` isn\u0027t used here except in the non-null check, do we need it for some reason still? Should we validate it against the userinfo?",
+      "revId": "c3dc0fbaab833e6b5d92e15a488e5992012f9518",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
