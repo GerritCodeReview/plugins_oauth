@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b40be177_0ef6b5af",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/DefaultOAuthModule.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1003873
+      },
+      "writtenOn": "2025-09-29T11:16:32Z",
+      "side": 1,
+      "message": "what is the purpose of this binding?",
+      "range": {
+        "startLine": 33,
+        "startChar": 0,
+        "endLine": 35,
+        "endChar": 45
+      },
+      "revId": "f112a729a23c024c8e41d173a81c12123ace4d5f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f8ba38e3_ac590d98",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/Module.java",
         "patchSetId": 9
@@ -14,6 +37,52 @@
       "writtenOn": "2025-09-29T09:53:10Z",
       "side": 1,
       "message": "can make installOAuthModule return `boolean` instead for \n```\nif (!installOAuthModule(SAPIasOAuthLoginProvider.class, new SAPIasModule())) {\n   install(new DefaultOAuthModule(pluginName));\n}\n```\nas Sasa commented on an earlier change in the series: https://gerrit-review.googlesource.com/c/plugins/oauth/+/448941/comment/a0256193_f9fe7847/",
+      "revId": "f112a729a23c024c8e41d173a81c12123ace4d5f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "52df003d_9edf5695",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/Module.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1003873
+      },
+      "writtenOn": "2025-09-29T11:16:32Z",
+      "side": 1,
+      "message": "It looks like this whole logic could be moved into an `OAuthModule` which would merge both cases: `DeaultOAuthModule` and `SAPIasModule` into one.",
+      "range": {
+        "startLine": 65,
+        "startChar": 0,
+        "endLine": 69,
+        "endChar": 5
+      },
+      "revId": "f112a729a23c024c8e41d173a81c12123ace4d5f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ea0c8e03_8dbdc449",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/Module.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1003873
+      },
+      "writtenOn": "2025-09-29T11:16:32Z",
+      "side": 1,
+      "message": "`module` is a keyword in Java, avoid using it as a variable name",
+      "range": {
+        "startLine": 73,
+        "startChar": 69,
+        "endLine": 73,
+        "endChar": 75
+      },
       "revId": "f112a729a23c024c8e41d173a81c12123ace4d5f",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
