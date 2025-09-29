@@ -117,7 +117,7 @@ public class InitOAuth implements InitStep {
     boolean configureGoogleOAuthProvider =
         ui.yesno(
             isConfigured(googleOAuthProviderSection),
-            "Use Google OAuth provider for Gerrit login ?");
+            "Use Google OAuth provider for Gerrit login?");
     if (configureGoogleOAuthProvider && configureOAuth(googleOAuthProviderSection)) {
       googleOAuthProviderSection.string(FIX_LEGACY_USER_ID_QUESTION, FIX_LEGACY_USER_ID, "false");
     }
@@ -125,7 +125,7 @@ public class InitOAuth implements InitStep {
     boolean configueGitHubOAuthProvider =
         ui.yesno(
             isConfigured(githubOAuthProviderSection),
-            "Use GitHub OAuth provider for Gerrit login ?");
+            "Use GitHub OAuth provider for Gerrit login?");
     if (configueGitHubOAuthProvider && configureOAuth(githubOAuthProviderSection)) {
       githubOAuthProviderSection.string(FIX_LEGACY_USER_ID_QUESTION, FIX_LEGACY_USER_ID, "false");
     }
@@ -133,15 +133,14 @@ public class InitOAuth implements InitStep {
     boolean configureBitbucketOAuthProvider =
         ui.yesno(
             isConfigured(bitbucketOAuthProviderSection),
-            "Use Bitbucket OAuth provider for Gerrit login ?");
+            "Use Bitbucket OAuth provider for Gerrit login?");
     if (configureBitbucketOAuthProvider && configureOAuth(bitbucketOAuthProviderSection)) {
       bitbucketOAuthProviderSection.string(
           FIX_LEGACY_USER_ID_QUESTION, FIX_LEGACY_USER_ID, "false");
     }
 
     boolean configureCasOAuthProvider =
-        ui.yesno(
-            isConfigured(casOAuthProviderSection), "Use CAS OAuth provider for Gerrit login ?");
+        ui.yesno(isConfigured(casOAuthProviderSection), "Use CAS OAuth provider for Gerrit login?");
     if (configureCasOAuthProvider && configureOAuth(casOAuthProviderSection)) {
       checkRootUrl(casOAuthProviderSection.string("CAS Root URL", ROOT_URL, null));
       casOAuthProviderSection.string(FIX_LEGACY_USER_ID_QUESTION, FIX_LEGACY_USER_ID, "false");
@@ -150,7 +149,7 @@ public class InitOAuth implements InitStep {
     boolean configueFacebookOAuthProvider =
         ui.yesno(
             isConfigured(facebookOAuthProviderSection),
-            "Use Facebook OAuth provider for Gerrit login ?");
+            "Use Facebook OAuth provider for Gerrit login?");
     if (configueFacebookOAuthProvider) {
       configureOAuth(facebookOAuthProviderSection);
     }
@@ -158,14 +157,14 @@ public class InitOAuth implements InitStep {
     boolean configureGitLabOAuthProvider =
         ui.yesno(
             isConfigured(gitlabOAuthProviderSection),
-            "Use GitLab OAuth provider for Gerrit login ?");
+            "Use GitLab OAuth provider for Gerrit login?");
     if (configureGitLabOAuthProvider && configureOAuth(gitlabOAuthProviderSection)) {
       checkRootUrl(gitlabOAuthProviderSection.string("GitLab Root URL", ROOT_URL, null));
     }
 
     boolean configureIASOAuthProvider =
         ui.yesno(
-            isConfigured(iasOAuthProviderSection), "Use SAP IAS OAuth provider for Gerrit login ?");
+            isConfigured(iasOAuthProviderSection), "Use SAP IAS OAuth provider for Gerrit login?");
     if (configureIASOAuthProvider && configureOAuth(iasOAuthProviderSection)) {
       checkRootUrl(iasOAuthProviderSection.string("SAP IAS Root URL", ROOT_URL, null));
       iasOAuthProviderSection.string(
@@ -175,15 +174,14 @@ public class InitOAuth implements InitStep {
     boolean configureLemonLDAPOAuthProvider =
         ui.yesno(
             isConfigured(lemonldapOAuthProviderSection),
-            "Use LemonLDAP OAuth provider for Gerrit login ?");
+            "Use LemonLDAP OAuth provider for Gerrit login?");
     if (configureLemonLDAPOAuthProvider) {
       checkRootUrl(lemonldapOAuthProviderSection.string("LemonLDAP Root URL", ROOT_URL, null));
       configureOAuth(lemonldapOAuthProviderSection);
     }
 
     boolean configureDexOAuthProvider =
-        ui.yesno(
-            isConfigured(dexOAuthProviderSection), "Use Dex OAuth provider for Gerrit login ?");
+        ui.yesno(isConfigured(dexOAuthProviderSection), "Use Dex OAuth provider for Gerrit login?");
     if (configureDexOAuthProvider && configureOAuth(dexOAuthProviderSection)) {
       checkRootUrl(dexOAuthProviderSection.string("Dex Root URL", ROOT_URL, null));
     }
@@ -191,7 +189,7 @@ public class InitOAuth implements InitStep {
     boolean configureKeycloakOAuthProvider =
         ui.yesno(
             isConfigured(keycloakOAuthProviderSection),
-            "Use Keycloak OAuth provider for Gerrit login ?");
+            "Use Keycloak OAuth provider for Gerrit login?");
     if (configureKeycloakOAuthProvider && configureOAuth(keycloakOAuthProviderSection)) {
       checkRootUrl(keycloakOAuthProviderSection.string("Keycloak Root URL", ROOT_URL, null));
       keycloakOAuthProviderSection.string("Keycloak Realm", REALM, null);
@@ -203,7 +201,7 @@ public class InitOAuth implements InitStep {
       boolean configureOffice365OAuthProvider =
           ui.yesno(
               isConfigured(office365OAuthProviderSection),
-              "Use Office365 OAuth provider for Gerrit login ?");
+              "Use Office365 OAuth provider for Gerrit login?");
       if (configureOffice365OAuthProvider) {
         configureOAuth(office365OAuthProviderSection);
       }
@@ -213,7 +211,7 @@ public class InitOAuth implements InitStep {
       boolean configureAzureActiveDirectoryAuthProvider =
           ui.yesno(
               isConfigured(azureActiveDirectoryAuthProviderSection),
-              "Use Azure OAuth provider for Gerrit login ?");
+              "Use Azure OAuth provider for Gerrit login?");
       if (configureAzureActiveDirectoryAuthProvider) {
         configureOAuth(azureActiveDirectoryAuthProviderSection);
         azureActiveDirectoryAuthProviderSection.string(
@@ -224,7 +222,7 @@ public class InitOAuth implements InitStep {
     boolean configureAirVantageOAuthProvider =
         ui.yesno(
             isConfigured(airVantageOAuthProviderSection),
-            "Use AirVantage OAuth provider for Gerrit login ?");
+            "Use AirVantage OAuth provider for Gerrit login?");
     if (configureAirVantageOAuthProvider) {
       configureOAuth(airVantageOAuthProviderSection);
     }
@@ -232,7 +230,7 @@ public class InitOAuth implements InitStep {
     boolean configurePhabricatorOAuthProvider =
         ui.yesno(
             isConfigured(phabricatorOAuthProviderSection),
-            "Use Phabricator OAuth provider for Gerrit login ?");
+            "Use Phabricator OAuth provider for Gerrit login?");
     if (configurePhabricatorOAuthProvider && configureOAuth(phabricatorOAuthProviderSection)) {
       checkRootUrl(phabricatorOAuthProviderSection.string("Phabricator Root URL", ROOT_URL, null));
     }
@@ -240,14 +238,14 @@ public class InitOAuth implements InitStep {
     boolean configureTuleapOAuthProvider =
         ui.yesno(
             isConfigured(tuleapOAuthProviderSection),
-            "Use Tuleap OAuth provider for Gerrit login ?");
+            "Use Tuleap OAuth provider for Gerrit login?");
     if (configureTuleapOAuthProvider && configureOAuth(tuleapOAuthProviderSection)) {
       checkRootUrl(tuleapOAuthProviderSection.string("Tuleap Root URL", ROOT_URL, null));
     }
 
     boolean configureAuth0OAuthProvider =
         ui.yesno(
-            isConfigured(auth0OAuthProviderSection), "Use Auth0 OAuth provider for Gerrit login ?");
+            isConfigured(auth0OAuthProviderSection), "Use Auth0 OAuth provider for Gerrit login?");
     if (configureAuth0OAuthProvider && configureOAuth(auth0OAuthProviderSection)) {
       checkRootUrl(auth0OAuthProviderSection.string("Auth0 Root URL", ROOT_URL, null));
     }
@@ -255,7 +253,7 @@ public class InitOAuth implements InitStep {
     boolean configureAuthentikOAuthProvider =
         ui.yesno(
             isConfigured(authentikOAuthProviderSection),
-            "Use Authentik OAuth provider for Gerrit login ?");
+            "Use Authentik OAuth provider for Gerrit login?");
     if (configureAuthentikOAuthProvider && configureOAuth(authentikOAuthProviderSection)) {
       checkRootUrl(authentikOAuthProviderSection.string("Authentik Root URL", ROOT_URL, null));
       authentikOAuthProviderSection.string(
@@ -265,7 +263,7 @@ public class InitOAuth implements InitStep {
     boolean configureCognitoOAuthProvider =
         ui.yesno(
             isConfigured(cognitoOAuthProviderSection),
-            "Use Cognito OAuth provider for Gerrit login ?");
+            "Use Cognito OAuth provider for Gerrit login?");
     if (configureCognitoOAuthProvider && configureOAuth(cognitoOAuthProviderSection)) {
       checkRootUrl(cognitoOAuthProviderSection.string("Cognito Root URL", ROOT_URL, null));
       cognitoOAuthProviderSection.string(
