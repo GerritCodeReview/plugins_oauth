@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f8ba38e3_ac590d98",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/Module.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1144862
+      },
+      "writtenOn": "2025-09-29T09:53:10Z",
+      "side": 1,
+      "message": "can make installOAuthModule return `boolean` instead for \n```\nif (!installOAuthModule(SAPIasOAuthLoginProvider.class, new SAPIasModule())) {\n   install(new DefaultOAuthModule(pluginName));\n}\n```\nas Sasa commented on an earlier change in the series: https://gerrit-review.googlesource.com/c/plugins/oauth/+/448941/comment/a0256193_f9fe7847/",
+      "revId": "f112a729a23c024c8e41d173a81c12123ace4d5f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
