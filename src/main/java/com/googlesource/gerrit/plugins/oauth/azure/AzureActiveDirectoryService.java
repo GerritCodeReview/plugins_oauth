@@ -19,28 +19,25 @@ import static com.googlesource.gerrit.plugins.oauth.JsonUtil.asString;
 import static com.googlesource.gerrit.plugins.oauth.JsonUtil.isNull;
 
 import com.github.scribejava.apis.MicrosoftAzureActiveDirectory20Api;
-import com.github.scribejava.core.builder.ServiceBuilder;
 import com.github.scribejava.core.exceptions.OAuthException;
 import com.github.scribejava.core.model.OAuth2AccessToken;
 import com.github.scribejava.core.model.OAuthRequest;
 import com.github.scribejava.core.model.Response;
 import com.github.scribejava.core.model.Verb;
 import com.github.scribejava.core.oauth.OAuth20Service;
-import com.google.common.base.CharMatcher;
 import com.google.common.collect.ImmutableSet;
 import com.google.gerrit.extensions.auth.oauth.OAuthServiceProvider;
 import com.google.gerrit.extensions.auth.oauth.OAuthToken;
 import com.google.gerrit.extensions.auth.oauth.OAuthUserInfo;
 import com.google.gerrit.extensions.auth.oauth.OAuthVerifier;
-import com.google.gerrit.server.config.CanonicalWebUrl;
 import com.google.gerrit.server.config.PluginConfig;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.inject.Inject;
-import com.google.inject.Provider;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.oauth.InitOAuth;
+import com.googlesource.gerrit.plugins.oauth.OAuth20ServiceFactory;
 import com.googlesource.gerrit.plugins.oauth.OAuthPluginConfigFactory;
 import com.googlesource.gerrit.plugins.oauth.OAuthServiceProviderConfig;
 import com.googlesource.gerrit.plugins.oauth.OAuthServiceProviderExternalIdScheme;
@@ -68,7 +65,6 @@ public class AzureActiveDirectoryService implements OAuthServiceProvider {
       ImmutableSet.<String>builder().add(DEFAULT_TENANT).add("common").add("consumers").build();
   private final OAuth20Service service;
   private final Gson gson;
-  private final String canonicalWebUrl;
   private final boolean useEmailAsUsername;
   private final String tenant;
   private final String clientId;
@@ -80,24 +76,19 @@ public class AzureActiveDirectoryService implements OAuthServiceProvider {
 
   @Inject
   AzureActiveDirectoryService(
-      OAuthPluginConfigFactory cfgFactory, @CanonicalWebUrl Provider<String> urlProvider) {
+      OAuthPluginConfigFactory cfgFactory, OAuth20ServiceFactory oauth20ServiceFactory) {
     PluginConfig cfg = cfgFactory.create(PROVIDER_NAME);
     this.extIdScheme = OAuthServiceProviderExternalIdScheme.create(PROVIDER_NAME);
     this.extIdDeprecatedScheme =
         OAuthServiceProviderExternalIdScheme.create(PROVIDER_DEPRECATED_NAME);
-    this.canonicalWebUrl = CharMatcher.is('/').trimTrailingFrom(urlProvider.get()) + "/";
     this.useEmailAsUsername = cfg.getBoolean(InitOAuth.USE_EMAIL_AS_USERNAME, false);
     this.tenant = cfg.getString(InitOAuth.TENANT, DEFAULT_TENANT);
     this.clientId = cfg.getString(InitOAuth.CLIENT_ID);
     this.service =
-        new ServiceBuilder(cfg.getString(InitOAuth.CLIENT_ID))
-            .apiSecret(cfg.getString(InitOAuth.CLIENT_SECRET))
-            .callback(canonicalWebUrl + "oauth")
-            .defaultScope(SCOPE)
-            .build(MicrosoftAzureActiveDirectory20Api.custom(tenant));
+        oauth20ServiceFactory.create(
+            PROVIDER_NAME, MicrosoftAzureActiveDirectory20Api.custom(tenant), SCOPE);
     this.gson = JSON.newGson();
     if (log.isDebugEnabled()) {
-      log.debug("OAuth2: canonicalWebUrl={}", canonicalWebUrl);
       log.debug("OAuth2: scope={}", SCOPE);
       log.debug("OAuth2: useEmailAsUsername={}", useEmailAsUsername);
     }
