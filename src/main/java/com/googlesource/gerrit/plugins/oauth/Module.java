@@ -64,16 +64,18 @@ public class Module extends AbstractModule {
         installOAuthModule(SAPIasOAuthLoginProvider.class, new SAPIasModule());
 
     if (!oAuthModuleInstalled) {
-      install(new DefaultOAuthModule(pluginName));
+      bind(OAuthLoginProvider.class)
+          .annotatedWith(Exports.named(pluginName))
+          .to(DisabledOAuthLoginProvider.class);
     }
   }
 
   private boolean installOAuthModule(
-      Class<? extends OAuthLoginProvider> loginClass, AbstractModule module) {
+      Class<? extends OAuthLoginProvider> loginClass, AbstractModule oAuthModule) {
     String loginProviderName = loginClass.getAnnotation(OAuthServiceProviderConfig.class).name();
     String cfgSuffix = OAuthPluginConfigFactory.getConfigSuffix(loginProviderName);
     if (cfg.getString("plugin", pluginName + cfgSuffix, InitOAuth.CLIENT_ID) != null) {
-      install(module);
+      install(oAuthModule);
       return true;
     }
     return false;
