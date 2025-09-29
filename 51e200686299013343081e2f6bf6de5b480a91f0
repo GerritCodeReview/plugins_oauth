@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2c72d370_8c18c1f4",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/InitOAuth.java",
+        "patchSetId": 11
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 1144862
+      },
+      "writtenOn": "2025-09-29T09:26:09Z",
+      "side": 1,
+      "message": "The other strings have a space before the question mark:\n`\"Use GitLab OAuth provider for Gerrit login ?\"`\n`\"Use SAP IAS OAuth provider for Gerrit login ?\"`\nFor consistency should this be the same?",
+      "revId": "51e200686299013343081e2f6bf6de5b480a91f0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
