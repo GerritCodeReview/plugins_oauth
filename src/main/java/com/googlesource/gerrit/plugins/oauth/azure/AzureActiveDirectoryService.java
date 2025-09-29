@@ -19,7 +19,6 @@ import static com.googlesource.gerrit.plugins.oauth.JsonUtil.asString;
 import static com.googlesource.gerrit.plugins.oauth.JsonUtil.isNull;
 
 import com.github.scribejava.apis.MicrosoftAzureActiveDirectory20Api;
-import com.github.scribejava.core.builder.ServiceBuilder;
 import com.github.scribejava.core.exceptions.OAuthException;
 import com.github.scribejava.core.model.OAuth2AccessToken;
 import com.github.scribejava.core.model.OAuthRequest;
@@ -41,6 +40,7 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.oauth.InitOAuth;
+import com.googlesource.gerrit.plugins.oauth.OAuth20ServiceFactory;
 import com.googlesource.gerrit.plugins.oauth.OAuthPluginConfigFactory;
 import com.googlesource.gerrit.plugins.oauth.OAuthServiceProviderConfig;
 import com.googlesource.gerrit.plugins.oauth.OAuthServiceProviderExternalIdScheme;
@@ -76,7 +76,9 @@ public class AzureActiveDirectoryService implements OAuthServiceProvider {
 
   @Inject
   AzureActiveDirectoryService(
-      OAuthPluginConfigFactory cfgFactory, @CanonicalWebUrl Provider<String> urlProvider) {
+      OAuthPluginConfigFactory cfgFactory,
+      @CanonicalWebUrl Provider<String> urlProvider,
+      OAuth20ServiceFactory oauth20ServiceFactory) {
     PluginConfig cfg = cfgFactory.create(PROVIDER_NAME);
     if (cfg.getString(InitOAuth.CLIENT_ID) == null) {
       cfg = cfgFactory.create(LEGACY_PROVIDER_NAME);
@@ -89,11 +91,9 @@ public class AzureActiveDirectoryService implements OAuthServiceProvider {
     this.tenant = cfg.getString(InitOAuth.TENANT, DEFAULT_TENANT);
     this.clientId = cfg.getString(InitOAuth.CLIENT_ID);
     this.service =
-        new ServiceBuilder(cfg.getString(InitOAuth.CLIENT_ID))
-            .apiSecret(cfg.getString(InitOAuth.CLIENT_SECRET))
-            .callback(canonicalWebUrl + "oauth")
-            .defaultScope(SCOPE)
-            .build(MicrosoftAzureActiveDirectory20Api.custom(tenant));
+        oauth20ServiceFactory.create(
+            PROVIDER_NAME, MicrosoftAzureActiveDirectory20Api.custom(tenant), SCOPE);
+
     this.gson = JSON.newGson();
     if (log.isDebugEnabled()) {
       log.debug("OAuth2: canonicalWebUrl={}", canonicalWebUrl);
