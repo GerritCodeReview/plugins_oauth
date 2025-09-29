@@ -24,6 +24,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8ac4d584_9cedc761",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/DefaultOAuthModule.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1065256
+      },
+      "writtenOn": "2025-09-29T13:17:04Z",
+      "side": 1,
+      "message": "I had this model created in symmetry to the provider-specific modules. In hindsight this was overdesigned. Removed that.",
+      "parentUuid": "b40be177_0ef6b5af",
+      "range": {
+        "startLine": 33,
+        "startChar": 0,
+        "endLine": 35,
+        "endChar": 45
+      },
+      "revId": "f112a729a23c024c8e41d173a81c12123ace4d5f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f8ba38e3_ac590d98",
@@ -37,6 +61,24 @@
       "writtenOn": "2025-09-29T09:53:10Z",
       "side": 1,
       "message": "can make installOAuthModule return `boolean` instead for \n```\nif (!installOAuthModule(SAPIasOAuthLoginProvider.class, new SAPIasModule())) {\n   install(new DefaultOAuthModule(pluginName));\n}\n```\nas Sasa commented on an earlier change in the series: https://gerrit-review.googlesource.com/c/plugins/oauth/+/448941/comment/a0256193_f9fe7847/",
+      "revId": "f112a729a23c024c8e41d173a81c12123ace4d5f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "abef2a37_67e0efd9",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/Module.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1065256
+      },
+      "writtenOn": "2025-09-29T13:17:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f8ba38e3_ac590d98",
       "revId": "f112a729a23c024c8e41d173a81c12123ace4d5f",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -66,6 +108,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "97158021_4c0ee7f5",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/Module.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1065256
+      },
+      "writtenOn": "2025-09-29T13:17:04Z",
+      "side": 1,
+      "message": "You forget all the other OAuth providers in this plugin. While those do not have implementations for an OAuthLoginProvider yet, they might have in the future. As with SAP IAS they might bring additional bindings. Putting all that in a single module doesn\u0027t improve readability IMO.",
+      "parentUuid": "52df003d_9edf5695",
+      "range": {
+        "startLine": 65,
+        "startChar": 0,
+        "endLine": 69,
+        "endChar": 5
+      },
+      "revId": "f112a729a23c024c8e41d173a81c12123ace4d5f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ea0c8e03_8dbdc449",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/Module.java",
         "patchSetId": 9
@@ -77,6 +143,30 @@
       "writtenOn": "2025-09-29T11:16:32Z",
       "side": 1,
       "message": "`module` is a keyword in Java, avoid using it as a variable name",
+      "range": {
+        "startLine": 73,
+        "startChar": 69,
+        "endLine": 73,
+        "endChar": 75
+      },
+      "revId": "f112a729a23c024c8e41d173a81c12123ace4d5f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4e6dceb4_ae98ed84",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/Module.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1065256
+      },
+      "writtenOn": "2025-09-29T13:17:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ea0c8e03_8dbdc449",
       "range": {
         "startLine": 73,
         "startChar": 69,
