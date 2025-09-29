@@ -51,6 +51,7 @@ public class Module extends AbstractModule {
   @Override
   protected void configure() {
     bind(OAuthPluginConfigFactory.class);
+    bind(OAuth20ServiceFactory.class);
     for (String provider : configuredProviders) {
       bind(AccountExternalIdCreator.class)
           .annotatedWith(Exports.named(provider))
