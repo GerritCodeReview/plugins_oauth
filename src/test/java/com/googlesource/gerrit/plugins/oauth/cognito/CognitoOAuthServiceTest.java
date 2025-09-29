@@ -25,8 +25,8 @@ import com.github.scribejava.core.oauth.OAuth20Service;
 import com.google.gerrit.extensions.auth.oauth.OAuthToken;
 import com.google.gerrit.extensions.auth.oauth.OAuthUserInfo;
 import com.google.gerrit.server.config.PluginConfig;
-import com.google.inject.Provider;
 import com.googlesource.gerrit.plugins.oauth.InitOAuth;
+import com.googlesource.gerrit.plugins.oauth.OAuth20ServiceFactory;
 import com.googlesource.gerrit.plugins.oauth.OAuthPluginConfigFactory;
 import java.lang.reflect.Field;
 import javax.servlet.http.HttpServletResponse;
@@ -42,7 +42,6 @@ public class CognitoOAuthServiceTest {
   // Mocks for constructor dependencies of CognitoOAuthService
   @Mock private OAuthPluginConfigFactory mockConfigFactory;
   @Mock private PluginConfig mockPluginConfig;
-  @Mock private Provider<String> mockUrlProvider;
 
   // This is the ScribeJava service we want to mock
   @Mock private OAuth20Service mockScribeOAuthService;
@@ -69,9 +68,6 @@ public class CognitoOAuthServiceTest {
     // Mock the PluginConfigFactory to return our mockPluginConfig
     when(mockConfigFactory.create(CognitoOAuthService.PROVIDER_NAME)).thenReturn(mockPluginConfig);
 
-    // Mock the CanonicalWebUrl provider
-    when(mockUrlProvider.get()).thenReturn(TEST_CANONICAL_WEB_URL);
-
     // Configure the mockPluginConfig with necessary values for CognitoOAuthService
     // constructor
     when(mockPluginConfig.getString(InitOAuth.ROOT_URL)).thenReturn(TEST_COGNITO_ROOT_URL);
@@ -95,8 +91,10 @@ public class CognitoOAuthServiceTest {
     when(mockPluginConfig.getBoolean(InitOAuth.LINK_TO_EXISTING_GERRIT_ACCOUNT, false))
         .thenReturn(linkExistingGerritAccounts);
 
+    OAuth20ServiceFactory serviceFactory =
+        new OAuth20ServiceFactory(mockConfigFactory, TEST_CANONICAL_WEB_URL);
     CognitoOAuthService serviceInstance =
-        new CognitoOAuthService(mockConfigFactory, mockUrlProvider);
+        new CognitoOAuthService(mockConfigFactory, serviceFactory);
 
     // Replace the internal OAuth20Service with our mock using reflection.
     Field serviceField = CognitoOAuthService.class.getDeclaredField("service");

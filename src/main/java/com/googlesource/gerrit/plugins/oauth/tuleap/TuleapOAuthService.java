@@ -18,26 +18,23 @@ import static com.google.gerrit.json.OutputFormat.JSON;
 import static com.googlesource.gerrit.plugins.oauth.JsonUtil.asString;
 import static com.googlesource.gerrit.plugins.oauth.JsonUtil.isNull;
 
-import com.github.scribejava.core.builder.ServiceBuilder;
 import com.github.scribejava.core.model.OAuth2AccessToken;
 import com.github.scribejava.core.model.OAuthRequest;
 import com.github.scribejava.core.model.Response;
 import com.github.scribejava.core.model.Verb;
 import com.github.scribejava.core.oauth.OAuth20Service;
-import com.google.common.base.CharMatcher;
 import com.google.gerrit.extensions.auth.oauth.OAuthServiceProvider;
 import com.google.gerrit.extensions.auth.oauth.OAuthToken;
 import com.google.gerrit.extensions.auth.oauth.OAuthUserInfo;
 import com.google.gerrit.extensions.auth.oauth.OAuthVerifier;
-import com.google.gerrit.server.config.CanonicalWebUrl;
 import com.google.gerrit.server.config.PluginConfig;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.inject.Inject;
-import com.google.inject.Provider;
 import com.google.inject.ProvisionException;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.oauth.InitOAuth;
+import com.googlesource.gerrit.plugins.oauth.OAuth20ServiceFactory;
 import com.googlesource.gerrit.plugins.oauth.OAuthPluginConfigFactory;
 import com.googlesource.gerrit.plugins.oauth.OAuthServiceProviderConfig;
 import com.googlesource.gerrit.plugins.oauth.OAuthServiceProviderExternalIdScheme;
@@ -61,9 +58,8 @@ public class TuleapOAuthService implements OAuthServiceProvider {
 
   @Inject
   TuleapOAuthService(
-      OAuthPluginConfigFactory cfgFactory, @CanonicalWebUrl Provider<String> urlProvider) {
+      OAuthPluginConfigFactory cfgFactory, OAuth20ServiceFactory oauth20ServiceFactory) {
     PluginConfig cfg = cfgFactory.create(PROVIDER_NAME);
-    String canonicalWebUrl = CharMatcher.is('/').trimTrailingFrom(urlProvider.get()) + "/";
 
     rootUrl = cfg.getString(InitOAuth.ROOT_URL);
     if (!URI.create(rootUrl).isAbsolute()) {
@@ -72,11 +68,8 @@ public class TuleapOAuthService implements OAuthServiceProvider {
     serviceName = cfg.getString(InitOAuth.SERVICE_NAME, "Tuleap");
 
     service =
-        new ServiceBuilder(cfg.getString(InitOAuth.CLIENT_ID))
-            .apiSecret(cfg.getString(InitOAuth.CLIENT_SECRET))
-            .callback(canonicalWebUrl + "oauth")
-            .defaultScope("openid profile email")
-            .build(new TuleapApi(rootUrl));
+        oauth20ServiceFactory.create(PROVIDER_NAME, new TuleapApi(rootUrl), "openid profile email");
+
     extIdScheme = OAuthServiceProviderExternalIdScheme.create(PROVIDER_NAME);
   }
 

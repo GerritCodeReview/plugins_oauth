@@ -21,8 +21,8 @@ import com.google.common.base.CharMatcher;
 import com.google.common.base.Strings;
 import com.google.gerrit.extensions.auth.oauth.OAuthServiceProvider;
 import com.google.gerrit.server.config.PluginConfig;
-import com.google.inject.Provider;
 import com.googlesource.gerrit.plugins.oauth.InitOAuth;
+import com.googlesource.gerrit.plugins.oauth.OAuth20ServiceFactory;
 import com.googlesource.gerrit.plugins.oauth.OAuthPluginConfigFactory;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -35,10 +35,9 @@ import org.mockito.junit.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class GithubApiUrlTest {
   private static final String PLUGIN_NAME = "gerrit-oauth-provider";
-  private static final String CANONICAL_URL = "https://localhost";
+  private static final String CANONICAL_URL = "https://localhost/";
   private static final String TEST_CLIENT_ID = "test_client_id";
 
-  @Mock private Provider<String> urlProviderMock;
   @Mock OAuthPluginConfigFactory oauthPluginConfigFactoryMock;
 
   private OAuthServiceProvider getGithubOAuthProvider(String rootUrl) {
@@ -49,10 +48,12 @@ public class GithubApiUrlTest {
     }
     pluginConfig.setString(InitOAuth.CLIENT_ID, TEST_CLIENT_ID);
     pluginConfig.setString(InitOAuth.CLIENT_SECRET, "secret");
-    when(urlProviderMock.get()).thenReturn(CANONICAL_URL);
     when(oauthPluginConfigFactoryMock.create(GitHubOAuthService.PROVIDER_NAME))
         .thenReturn(pluginConfig.asPluginConfig());
-    return new GitHubOAuthService(oauthPluginConfigFactoryMock, urlProviderMock);
+
+    OAuth20ServiceFactory serviceFactory =
+        new OAuth20ServiceFactory(oauthPluginConfigFactoryMock, CANONICAL_URL);
+    return new GitHubOAuthService(oauthPluginConfigFactoryMock, serviceFactory);
   }
 
   private String getExpectedUrl(String rootUrl) throws Exception {
@@ -65,7 +66,7 @@ public class GithubApiUrlTest {
         rootUrl,
         TEST_CLIENT_ID,
         URLEncoder.encode(CANONICAL_URL, StandardCharsets.UTF_8.name()),
-        URLEncoder.encode("/oauth", StandardCharsets.UTF_8.name()),
+        URLEncoder.encode("oauth", StandardCharsets.UTF_8.name()),
         URLEncoder.encode(GitHubOAuthService.SCOPE, StandardCharsets.UTF_8.name()));
   }
 
