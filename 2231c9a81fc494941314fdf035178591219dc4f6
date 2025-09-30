@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1df3a72c_120edbda",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1144862
+      },
+      "writtenOn": "2025-09-30T12:40:10Z",
+      "side": 1,
+      "message": "This change also appears to remove \nsrc/main/java/com/googlesource/gerrit/plugins/oauth/DefaultOAuthModule.java - unrelated?",
+      "revId": "2231c9a81fc494941314fdf035178591219dc4f6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
