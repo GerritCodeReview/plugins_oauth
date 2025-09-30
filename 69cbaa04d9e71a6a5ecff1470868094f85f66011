@@ -74,6 +74,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "bef0abbe_ae3b23f6",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/AzureOAuthServiceModule.java",
+        "patchSetId": 8
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1003873
+      },
+      "writtenOn": "2025-09-30T08:47:24Z",
+      "side": 1,
+      "message": "I don\u0027t understand how usage of of the `ServletModule` (which comes from Guava) can resolve the issue that `OAuth service provider wasn\u0027t installed\"",
+      "parentUuid": "4e140380_9c346426",
+      "range": {
+        "startLine": 25,
+        "startChar": 45,
+        "endLine": 25,
+        "endChar": 58
+      },
+      "revId": "69cbaa04d9e71a6a5ecff1470868094f85f66011",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "82838d92_6cdca056",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/HttpModule.java",
         "patchSetId": 8
