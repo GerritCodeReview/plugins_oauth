@@ -48,6 +48,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "48b1526d_da92590a",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/sap/SAPIasOAuthLoginProvider.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1003873
+      },
+      "writtenOn": "2025-10-07T10:26:40Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "b6bb2aa8_381cf72d",
+      "range": {
+        "startLine": 59,
+        "startChar": 0,
+        "endLine": 60,
+        "endChar": 53
+      },
+      "revId": "f1f97943af77644a87194cfdf6b8386e9e81a6be",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ff69c161_4915624f",
