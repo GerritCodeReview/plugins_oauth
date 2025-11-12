@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5a28ef9d_8f525a76",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1065256
+      },
+      "writtenOn": "2025-11-12T08:21:29Z",
+      "side": 1,
+      "message": "An example how we can use bazel modules for plugins with external dependencies.",
+      "revId": "df0a4e3809408d121374c72079481c6218e205ea",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
