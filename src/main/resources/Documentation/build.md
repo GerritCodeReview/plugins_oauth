@@ -47,32 +47,34 @@ source tree, and issue the command:
   ln -s ../../@PLUGIN@ .
 ```
 
-Put the external dependency Bazel build file into the Gerrit /plugins
-directory, replacing the existing empty one.
+Then link the plugin's module fragment into Gerrit's `plugins`
+directory, replacing the placeholder file provided by Gerrit.
+This fragment exposes the plugin's Bazel module and its external
+dependencies to the Gerrit root module when building in-tree.
 
 ```
   cd gerrit/plugins
-  rm external_plugin_deps.bzl
-  ln -s @PLUGIN@/external_plugin_deps.bzl .
+  rm external_plugin_deps.MODULE.bazel
+  ln -s @PLUGIN@/external_plugin_deps.MODULE.bazel .
 ```
 
-From Gerrit source tree issue the command:
+From the Gerrit source tree run:
 
 ```
   bazel build plugins/@PLUGIN@
 ```
 
-The output is created in
+The output is created in:
 
 ```
   bazel-bin/plugins/@PLUGIN@/@PLUGIN@.jar
 ```
 
-To execute the tests run either one of:
+To execute the tests run either of:
 
 ```
+  bazel test plugins/@PLUGIN@/...
   bazel test --test_tag_filters=@PLUGIN@ //...
-  bazel test plugins/@PLUGIN@:@PLUGIN@_tests
 ```
 
 This project can be imported into the Eclipse IDE.
