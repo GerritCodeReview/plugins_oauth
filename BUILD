@@ -1,9 +1,7 @@
 load("@rules_java//java:defs.bzl", "java_library")
-load("//tools/bzl:junit.bzl", "junit_tests")
+load("@com_googlesource_gerrit_bazlets//tools:junit.bzl", "junit_tests")
 load(
-    "//tools/bzl:plugin.bzl",
-    "PLUGIN_DEPS",
-    "PLUGIN_TEST_DEPS",
+    "@com_googlesource_gerrit_bazlets//:gerrit_plugin.bzl",
     "gerrit_plugin",
 )
 
@@ -20,16 +18,16 @@ gerrit_plugin(
     ],
     resources = glob(["src/main/resources/**/*"]),
     deps = [
-        "@commons-codec//jar:neverlink",
-        "@jackson-core//jar",
-        "@jackson-databind//jar",
-        "@json//jar",
-        "@sap-env//jar",
-        "@sap-java-api//jar",
-        "@sap-java-security//jar",
-        "@sap-xsuaa-token-client//jar",
-        "@scribejava-apis//jar",
-        "@scribejava-core//jar",
+        ":commons-codec-neverlink",
+        "@gerrit_plugin_deps//:com_fasterxml_jackson_core_jackson_core",
+        "@gerrit_plugin_deps//:com_fasterxml_jackson_core_jackson_databind",
+        "@gerrit_plugin_deps//:org_json_json",
+        "@gerrit_plugin_deps//:com_sap_cloud_security_env",
+        "@gerrit_plugin_deps//:com_sap_cloud_security_java_api",
+        "@gerrit_plugin_deps//:com_sap_cloud_security_java_security",
+        "@gerrit_plugin_deps//:com_sap_cloud_security_xsuaa_token_client",
+        "@gerrit_plugin_deps//:com_github_scribejava_scribejava_apis",
+        "@gerrit_plugin_deps//:com_github_scribejava_scribejava_core",
     ],
 )
 
@@ -39,8 +37,8 @@ junit_tests(
     tags = ["oauth"],
     deps = [
         ":oauth__plugin_test_deps",
-        "@scribejava-apis//jar",
-        "@scribejava-core//jar",
+        "@gerrit_plugin_deps//:com_github_scribejava_scribejava_apis",
+        "@gerrit_plugin_deps//:com_github_scribejava_scribejava_core",
     ],
 )
 
@@ -48,7 +46,15 @@ java_library(
     name = "oauth__plugin_test_deps",
     testonly = 1,
     visibility = ["//visibility:public"],
-    exports = PLUGIN_DEPS + PLUGIN_TEST_DEPS + [
+    exports = [
         ":oauth__plugin",
+        "@gerrit_plugin_deps//:com_google_gerrit_gerrit_acceptance_framework",
+        "@gerrit_plugin_deps//:com_google_gerrit_gerrit_plugin_api",
     ],
+)
+
+java_library(
+    name = "commons-codec-neverlink",
+    neverlink = 1,
+    exports = ["@gerrit_plugin_deps//:commons_codec_commons_codec"],
 )

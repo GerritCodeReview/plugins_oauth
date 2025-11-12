@@ -1,2 +1,55 @@
-# TODO(davido): Migrate all dependencies from WORKSPACE to MODULE.bazel
-# https://issues.gerritcodereview.com/issues/303819949
+module(name = "gerrit-plugin-oauth")
+
+bazel_dep(name = "rules_jvm_external", version = "6.9")
+
+bazel_dep(name = "com_googlesource_gerrit_bazlets")
+git_override(
+    module_name = "com_googlesource_gerrit_bazlets",
+    remote = "https://gerrit.googlesource.com/bazlets",
+    commit = "fbebd63ac8779907f2b4ef5e9dab6374ceaf5b8c",
+)
+
+GERRIT_API_VERS = "3.11.0"
+
+gerrit_api_version = use_repo_rule("@com_googlesource_gerrit_bazlets//:gerrit_api_version.bzl", "gerrit_api_version")
+gerrit_api_version(
+    name = "gerrit_api_version",
+    version = GERRIT_API_VERS,
+    visibility = ["//visibility:public"],
+)
+
+maven = use_extension("@rules_jvm_external//:extensions.bzl", "maven")
+
+JACKSON_VERS = "2.10.2"
+SCRIBEJAVA_VERS = "6.9.0"
+SAP_SECURITY_VERS = "3.6.0"
+
+maven.install(
+    name = "gerrit_plugin_deps",
+    artifacts = [
+        "com.fasterxml.jackson.core:jackson-annotations:" + JACKSON_VERS,
+        "com.fasterxml.jackson.core:jackson-core:" + JACKSON_VERS,
+        "com.fasterxml.jackson.core:jackson-databind:" + JACKSON_VERS,
+        "com.github.scribejava:scribejava-apis:" + SCRIBEJAVA_VERS,
+        "com.github.scribejava:scribejava-core:" + SCRIBEJAVA_VERS,
+        "com.google.gerrit:gerrit-acceptance-framework:" + GERRIT_API_VERS,
+        "com.google.gerrit:gerrit-plugin-api:" + GERRIT_API_VERS,
+        "com.sap.cloud.security:env:" + SAP_SECURITY_VERS,
+        "com.sap.cloud.security:java-api:" + SAP_SECURITY_VERS,
+        "com.sap.cloud.security:java-security:" + SAP_SECURITY_VERS,
+        "com.sap.cloud.security.xsuaa:token-client:" + SAP_SECURITY_VERS,
+        "commons-codec:commons-codec:1.15",
+        "org.json:json:20250517",
+    ],
+    repositories = [
+        "https://repo1.maven.org/maven2",
+        "https://gerrit-maven.storage.googleapis.com",
+    ],
+    duplicate_version_warning = "error",
+    fail_on_missing_checksum = True,
+    fetch_sources = True,
+    strict_visibility = True,
+    version_conflict_policy = "pinned",
+)
+
+use_repo(maven, "gerrit_plugin_deps")
