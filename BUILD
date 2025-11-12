@@ -1,10 +1,7 @@
-load("@rules_java//java:defs.bzl", "java_library")
-load("//tools/bzl:junit.bzl", "junit_tests")
 load(
-    "//tools/bzl:plugin.bzl",
-    "PLUGIN_DEPS",
-    "PLUGIN_TEST_DEPS",
+    "@com_googlesource_gerrit_bazlets//:gerrit_plugin.bzl",
     "gerrit_plugin",
+    "gerrit_plugin_tests",
 )
 
 gerrit_plugin(
@@ -20,34 +17,23 @@ gerrit_plugin(
     ],
     resources = glob(["src/main/resources/**/*"]),
     deps = [
-        "@jackson-core//jar",
-        "@jackson-databind//jar",
-        "@json//jar",
-        "@sap-env//jar",
-        "@sap-java-api//jar",
-        "@sap-java-security//jar",
-        "@sap-xsuaa-token-client//jar",
-        "@scribejava-apis//jar",
-        "@scribejava-core//jar",
+        "@external_plugin_deps//:com_fasterxml_jackson_core_jackson_databind",
+        "@external_plugin_deps//:com_github_scribejava_scribejava_apis",
+        "@external_plugin_deps//:com_github_scribejava_scribejava_core",
+        "@external_plugin_deps//:com_sap_cloud_security_env",
+        "@external_plugin_deps//:com_sap_cloud_security_java_api",
+        "@external_plugin_deps//:com_sap_cloud_security_java_security",
+        "@external_plugin_deps//:com_sap_cloud_security_xsuaa_token_client",
     ],
 )
 
-junit_tests(
+gerrit_plugin_tests(
     name = "oauth_tests",
     srcs = glob(["src/test/java/**/*.java"]),
     tags = ["oauth"],
     deps = [
-        ":oauth__plugin_test_deps",
-        "@scribejava-apis//jar",
-        "@scribejava-core//jar",
-    ],
-)
-
-java_library(
-    name = "oauth__plugin_test_deps",
-    testonly = 1,
-    visibility = ["//visibility:public"],
-    exports = PLUGIN_DEPS + PLUGIN_TEST_DEPS + [
         ":oauth__plugin",
+        "@external_plugin_deps//:com_github_scribejava_scribejava_apis",
+        "@external_plugin_deps//:com_github_scribejava_scribejava_core",
     ],
 )
