@@ -47,14 +47,19 @@ source tree, and issue the command:
   ln -s ../../@PLUGIN@ .
 ```
 
-Put the external dependency Bazel build file into the Gerrit /plugins
-directory, replacing the existing empty one.
+Load the plugin's Bazel module by adding the following lines to
+Gerrit's root module:
 
 ```
-  cd gerrit/plugins
-  rm external_plugin_deps.bzl
-  ln -s @PLUGIN@/external_plugin_deps.bzl .
+bazel_dep(name = "gerrit-plugin-oauth")
+local_path_override(
+    module_name = "gerrit-plugin-oauth",
+    path = "./plugins/oauth",
+)
 ```
+
+This will make the plugin's external dependencies available for
+the build.
 
 From Gerrit source tree issue the command:
 
