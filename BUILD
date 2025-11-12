@@ -20,16 +20,16 @@ gerrit_plugin(
     ],
     resources = glob(["src/main/resources/**/*"]),
     deps = [
-        "@commons-codec//jar:neverlink",
-        "@jackson-core//jar",
-        "@jackson-databind//jar",
-        "@json//jar",
-        "@sap-env//jar",
-        "@sap-java-api//jar",
-        "@sap-java-security//jar",
-        "@sap-xsuaa-token-client//jar",
-        "@scribejava-apis//jar",
-        "@scribejava-core//jar",
+        "@maven_deps//commons-codec/jar:neverlink",
+        "@maven_deps//jackson-core/jar",
+        "@maven_deps//jackson-databind/jar",
+        "@maven_deps//json/jar",
+        "@maven_deps//sap-env/jar",
+        "@maven_deps//sap-java-api/jar",
+        "@maven_deps//sap-java-security/jar",
+        "@maven_deps//sap-xsuaa-token-client/jar",
+        "@maven_deps//scribejava-apis/jar",
+        "@maven_deps//scribejava-core/jar",
     ],
 )
 
@@ -39,8 +39,8 @@ junit_tests(
     tags = ["oauth"],
     deps = [
         ":oauth__plugin_test_deps",
-        "@scribejava-apis//jar",
-        "@scribejava-core//jar",
+        "@maven_deps//scribejava-apis/jar",
+        "@maven_deps//scribejava-core/jar",
     ],
 )
 
