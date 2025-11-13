@@ -16,6 +16,24 @@
       "message": "For consistency and readability use here, and everywhere else in case I missed it, Guava\u0027s Splitter:\n\n\n```suggestion\n    List\u003cString\u003e rootUrlParts \u003d Splitter.on(\u0027.\u0027).splitToList(cfg.getString(InitOAuth.ROOT_URL));\n```",
       "revId": "e35341e636f01c47f8fcba837c75f422ba7ecf28",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a1e390fe_4d561845",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/sap/SAPIasTokenValidatorProvider.java",
+        "patchSetId": 15
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1065256
+      },
+      "writtenOn": "2025-11-13T07:35:22Z",
+      "side": 1,
+      "message": "Fix applied.",
+      "parentUuid": "baf82a6d_5c44312c",
+      "revId": "e35341e636f01c47f8fcba837c75f422ba7ecf28",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
