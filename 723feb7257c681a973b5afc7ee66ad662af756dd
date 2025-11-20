@@ -3,11 +3,11 @@
     "zuul-check:plugins_oauth": {
       "state": "SCHEDULED",
       "message": "Change has been enqueued in check",
-      "url": "https://ci.gerritcodereview.com/t/gerrit/status/change/526562,3",
-      "started": "2025-11-20T11:46:47Z",
+      "url": "https://ci.gerritcodereview.com/t/gerrit/status/change/521223,1",
+      "started": "2025-11-20T11:47:25Z",
       "finished": "2025-11-19T18:14:47Z",
       "created": "2025-11-12T08:25:43Z",
-      "updated": "2025-11-20T11:46:48Z"
+      "updated": "2025-11-20T11:47:29Z"
     }
   }
 }
