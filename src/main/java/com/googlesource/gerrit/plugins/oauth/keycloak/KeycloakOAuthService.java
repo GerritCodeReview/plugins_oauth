@@ -50,7 +50,6 @@ import org.slf4j.LoggerFactory;
 @Singleton
 @OAuthServiceProviderConfig(name = KeycloakOAuthService.PROVIDER_NAME)
 public class KeycloakOAuthService implements OAuthServiceProvider {
-
   private static final Logger log = LoggerFactory.getLogger(KeycloakOAuthService.class);
   public static final String PROVIDER_NAME = "keycloak";
 
@@ -92,6 +91,15 @@ public class KeycloakOAuthService implements OAuthServiceProvider {
   @Override
   public OAuthUserInfo getUserInfo(OAuthToken token) throws IOException {
     JsonElement tokenJson = JSON.newGson().fromJson(token.getRaw(), JsonElement.class);
+    return getUserInfo(tokenJson);
+  }
+
+  public OAuthUserInfo getUserInfo(OAuth2AccessToken token) throws IOException {
+    JsonElement tokenJson = JSON.newGson().fromJson(token.getRawResponse(), JsonElement.class);
+    return getUserInfo(tokenJson);
+  }
+
+  private OAuthUserInfo getUserInfo(JsonElement tokenJson) throws IOException {
     JsonObject tokenObject = tokenJson.getAsJsonObject();
     JsonElement id_token = tokenObject.get("id_token");
     String jwt;
@@ -145,6 +153,16 @@ public class KeycloakOAuthService implements OAuthServiceProvider {
       OAuth2AccessToken accessToken = service.getAccessToken(rv.getValue());
       return new OAuthToken(
           accessToken.getAccessToken(), accessToken.getTokenType(), accessToken.getRawResponse());
+    } catch (InterruptedException | ExecutionException | IOException e) {
+      String msg = "Cannot retrieve access token";
+      log.error(msg, e);
+      throw new RuntimeException(msg, e);
+    }
+  }
+
+  public OAuth2AccessToken getAccessToken(String email, String password) {
+    try {
+	return service.getAccessTokenPasswordGrant(email, password);
     } catch (InterruptedException | ExecutionException | IOException e) {
       String msg = "Cannot retrieve access token";
       log.error(msg, e);
