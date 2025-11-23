@@ -24,10 +24,23 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Inject;
 import com.googlesource.gerrit.plugins.oauth.sap.SAPIasModule;
 import com.googlesource.gerrit.plugins.oauth.sap.SAPIasOAuthLoginProvider;
+import com.googlesource.gerrit.plugins.oauth.keycloak.KeycloakModule;
+import com.googlesource.gerrit.plugins.oauth.keycloak.KeycloakOAuthLoginProvider;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import org.eclipse.jgit.lib.Config;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Module extends AbstractModule {
+  private static final Logger log = LoggerFactory.getLogger(Module.class);
+  private static final Map<Class<? extends OAuthLoginProvider>, AbstractModule> SUPPORTED_LOGIN_PROVIDERS =
+    Map.of(
+      SAPIasOAuthLoginProvider.class, new SAPIasModule(),
+      KeycloakOAuthLoginProvider.class, new KeycloakModule()
+    );
+
   private final List<String> configuredProviders;
   private final ExternalIdFactory externalIdFactory;
   private final String pluginName;
@@ -39,7 +52,7 @@ public class Module extends AbstractModule {
       @PluginName String pluginName,
       ExternalIdFactory externalIdFactory) {
     this.pluginName = pluginName;
-    configuredProviders =
+    this.configuredProviders =
         config.getSubsections("plugin").stream()
             .filter(s -> s.startsWith(pluginName))
             .map(s -> s.substring(pluginName.length() + 1, s.length() - 6))
@@ -59,24 +72,45 @@ public class Module extends AbstractModule {
                   externalIdFactory, OAuthServiceProviderExternalIdScheme.create(provider)));
     }
 
-    boolean oAuthModuleInstalled =
-        installOAuthModule(SAPIasOAuthLoginProvider.class, new SAPIasModule());
-
+    boolean oAuthModuleInstalled = false;
+    for (String provider : configuredProviders) {
+      Optional<Map.Entry<Class<? extends OAuthLoginProvider>, AbstractModule>> providerEntry = 
+          tryGetSupportedLoginProvider(provider);
+      if (providerEntry.isPresent()) {
+        oAuthModuleInstalled = installOAuthModule(
+          providerEntry.get().getKey(),
+          providerEntry.get().getValue()
+        );
+        break;
+      }
+    }
     if (!oAuthModuleInstalled) {
       bind(OAuthLoginProvider.class)
           .annotatedWith(Exports.named(pluginName))
           .to(DisabledOAuthLoginProvider.class);
+      log.warn("Successfully bound the disabled OAuth login provider");
     }
   }
 
-  private boolean installOAuthModule(
-      Class<? extends OAuthLoginProvider> loginClass, AbstractModule oAuthModule) {
-    String loginProviderName = loginClass.getAnnotation(OAuthServiceProviderConfig.class).name();
+  private boolean installOAuthModule(Class<? extends OAuthLoginProvider> loginClass, AbstractModule oAuthModule) {
+    String loginProviderName = getLoginProviderName(loginClass);
     String cfgSuffix = OAuthPluginConfigFactory.getConfigSuffix(loginProviderName);
     if (cfg.getString("plugin", pluginName + cfgSuffix, InitOAuth.CLIENT_ID) != null) {
       install(oAuthModule);
+      log.info("Successfully bound {} as OAuth login provider", loginProviderName);
       return true;
     }
+    log.error("Failed to bind {} as OAuth login provider", loginProviderName);
     return false;
+  }
+
+  private static String getLoginProviderName(Class<? extends OAuthLoginProvider> loginProviderClass) {
+    return loginProviderClass.getAnnotation(OAuthServiceProviderConfig.class).name();
+  }
+
+  private static Optional<Map.Entry<Class<? extends OAuthLoginProvider>, AbstractModule>> tryGetSupportedLoginProvider(String providerName) {
+    return SUPPORTED_LOGIN_PROVIDERS.entrySet().stream()
+        .filter(entry -> getLoginProviderName(entry.getKey()).equals(providerName))
+        .findFirst();
   }
 }
