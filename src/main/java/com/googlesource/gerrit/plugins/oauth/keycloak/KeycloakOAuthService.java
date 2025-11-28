@@ -38,11 +38,14 @@ import com.googlesource.gerrit.plugins.oauth.InitOAuth;
 import com.googlesource.gerrit.plugins.oauth.OAuthPluginConfigFactory;
 import com.googlesource.gerrit.plugins.oauth.OAuthServiceProviderConfig;
 import com.googlesource.gerrit.plugins.oauth.OAuthServiceProviderExternalIdScheme;
+import com.googlesource.gerrit.plugins.oauth.OAuthUserInfoWithGroups;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.ExecutionException;
+import java.util.HashSet;
+import java.util.Set;
 import org.apache.commons.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,9 +61,13 @@ public class KeycloakOAuthService implements OAuthServiceProvider {
   private final boolean usePreferredUsername;
   private final String extIdScheme;
 
+  private final KeycloakGroupCache keycloakGroupCache;
+
   @Inject
   KeycloakOAuthService(
-      OAuthPluginConfigFactory cfgFactory, @CanonicalWebUrl Provider<String> urlProvider) {
+      OAuthPluginConfigFactory cfgFactory, @CanonicalWebUrl Provider<String> urlProvider, KeycloakGroupCache groupCache) {
+    keycloakGroupCache = groupCache;
+
     PluginConfig cfg = cfgFactory.create(PROVIDER_NAME);
     String canonicalWebUrl = CharMatcher.is('/').trimTrailingFrom(urlProvider.get()) + "/";
 
@@ -139,12 +146,28 @@ public class KeycloakOAuthService implements OAuthServiceProvider {
     String email = emailElement.getAsString();
     String name = nameElement.getAsString();
 
-    return new OAuthUserInfo(
+    Set<String> groups = new HashSet<>();
+    JsonElement groupsElement = claimObject.get("groups");
+    if (groupsElement != null && groupsElement.isJsonArray()) {
+        groupsElement.getAsJsonArray().forEach(element -> {
+            String group = element.getAsString();
+            groups.add(group);
+        });
+    } else {
+        log.warn("No groups claim found in JWT for user {}", usernameAsString);
+    }
+    keycloakGroupCache.put(externalId, groups);
+    if (log.isDebugEnabled()) {
+      log.debug("User {} has groups {}", usernameAsString, groups);
+    }
+
+    return new OAuthUserInfoWithGroups(
         externalId /*externalId*/,
         username /*username*/,
         email /*email*/,
         name /*displayName*/,
-        null /*claimedIdentity*/);
+        null /*claimedIdentity*/,
+        groups);
   }
 
   @Override

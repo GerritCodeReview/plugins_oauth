@@ -17,14 +17,21 @@ package com.googlesource.gerrit.plugins.oauth;
 import com.google.gerrit.extensions.annotations.Exports;
 import com.google.gerrit.extensions.annotations.PluginName;
 import com.google.gerrit.extensions.auth.oauth.OAuthLoginProvider;
+import com.google.gerrit.extensions.registration.DynamicSet;
+import com.google.gerrit.extensions.registration.DynamicMap;
 import com.google.gerrit.server.account.AccountExternalIdCreator;
 import com.google.gerrit.server.account.externalids.ExternalIdFactory;
+import com.google.gerrit.server.account.GroupBackend;
 import com.google.gerrit.server.config.GerritServerConfig;
 import com.google.inject.AbstractModule;
 import com.google.inject.Inject;
+import com.googlesource.gerrit.plugins.oauth.GroupCache;
+import com.googlesource.gerrit.plugins.oauth.keycloak.KeycloakGroupCache;
+import com.googlesource.gerrit.plugins.oauth.keycloak.KeycloakGroupBackend;
 import com.googlesource.gerrit.plugins.oauth.sap.SAPIasOAuthLoginProvider;
 import com.googlesource.gerrit.plugins.oauth.keycloak.KeycloakOAuthLoginProvider;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import org.eclipse.jgit.lib.Config;
 import org.slf4j.Logger;
@@ -36,6 +43,14 @@ public class Module extends AbstractModule {
     List.of(
         SAPIasOAuthLoginProvider.class,
         KeycloakOAuthLoginProvider.class
+    );
+  private static final Map<Class<? extends OAuthLoginProvider>, Class<? extends GroupBackend>> PROVIDER_TO_GROUP_BACKEND =
+    Map.of(
+        KeycloakOAuthLoginProvider.class, KeycloakGroupBackend.class
+    );
+  private static final Map<Class<? extends GroupBackend>, Class<? extends GroupCache>> GROUP_BACKEND_TO_GROUP_CACHE =
+    Map.of(
+        KeycloakGroupBackend.class, KeycloakGroupCache.class
     );
 
   private final List<String> configuredProviders;
@@ -61,27 +76,35 @@ public class Module extends AbstractModule {
   @Override
   protected void configure() {
     bind(OAuthPluginConfigFactory.class);
+    bindExternalIdCreators();
+    bindOAuthProviders();
+  }
+
+  private void bindExternalIdCreators() {
     for (String provider : configuredProviders) {
       bind(AccountExternalIdCreator.class)
           .annotatedWith(Exports.named(provider))
-          .toInstance(
-              new OAuthExternalIdCreator(
-                  externalIdFactory, OAuthServiceProviderExternalIdScheme.create(provider)));
+          .toInstance(new OAuthExternalIdCreator(externalIdFactory, OAuthServiceProviderExternalIdScheme.create(provider)));
     }
+  }
 
-    boolean loginProviderBound = false;
-    for (String provider : configuredProviders) {
-      Optional<Class<? extends OAuthLoginProvider>> loginProviderClass = tryGetSupportedLoginProvider(provider);
-      if (loginProviderClass.isPresent()) {
-        loginProviderBound = bindOAuthLoginProvider(loginProviderClass.get());
+  private void bindOAuthProviders() {
+    Optional<Class<? extends OAuthLoginProvider>> boundLoginProviderClass = Optional.empty();
+    for (String configuredProvider : configuredProviders) {
+      Optional<Class<? extends OAuthLoginProvider>> loginProviderClass = tryGetSupportedLoginProvider(configuredProvider);
+      if (!loginProviderClass.isEmpty()) {
+        if (bindOAuthLoginProvider(loginProviderClass.get())) {
+          boundLoginProviderClass = loginProviderClass;
+        }
         break;
+      } else {
+        log.warn("Skipping unsupported configured provider {}", configuredProvider);
       }
     }
-    if (!loginProviderBound) {
-      bind(OAuthLoginProvider.class)
-          .annotatedWith(Exports.named(pluginName))
-          .to(DisabledOAuthLoginProvider.class);
-      log.warn("Successfully bound the disabled OAuth login provider");
+    if (boundLoginProviderClass.isEmpty()) {
+      bindDisabledOAuthProvider();
+    } else {
+      bindGroupBackendIfSupported(boundLoginProviderClass.get());
     }
   }
 
@@ -96,6 +119,33 @@ public class Module extends AbstractModule {
     }
     log.error("Failed to bind {} as OAuth login provider", loginProviderName);
     return false;
+  }
+
+  private void bindDisabledOAuthProvider() {
+    bind(OAuthLoginProvider.class)
+        .annotatedWith(Exports.named(pluginName))
+        .to(DisabledOAuthLoginProvider.class);
+    log.warn("Successfully bound the disabled OAuth login provider");
+  }
+
+  private void bindGroupBackendIfSupported(Class<? extends OAuthLoginProvider> loginProviderClass) {
+    Class<? extends GroupBackend> groupBackendClass = PROVIDER_TO_GROUP_BACKEND.get(loginProviderClass);
+    if (groupBackendClass == null) {
+      log.warn("No supported group backend for OAuth login provider {}", getLoginProviderName(loginProviderClass));
+      return;
+    }
+    bindGroupCache(groupBackendClass);
+    DynamicSet.bind(binder(), GroupBackend.class).to(groupBackendClass);
+    log.info("Successfully bound {} as group backend for {}", groupBackendClass.getSimpleName(), getLoginProviderName(loginProviderClass));
+  }
+
+  private void bindGroupCache(Class<? extends GroupBackend> groupBackendClass) {
+    Class<? extends GroupCache> groupCacheClass = GROUP_BACKEND_TO_GROUP_CACHE.get(groupBackendClass);
+    if (groupCacheClass == null) {
+      log.error("No supported group cache found for group backend {}", groupBackendClass.getSimpleName());
+      return;
+    }
+    bind(groupCacheClass).asEagerSingleton();
   }
 
   private static String getLoginProviderName(Class<? extends OAuthLoginProvider> loginProviderClass) {
