@@ -38,11 +38,14 @@ import com.googlesource.gerrit.plugins.oauth.InitOAuth;
 import com.googlesource.gerrit.plugins.oauth.OAuthPluginConfigFactory;
 import com.googlesource.gerrit.plugins.oauth.OAuthServiceProviderConfig;
 import com.googlesource.gerrit.plugins.oauth.OAuthServiceProviderExternalIdScheme;
+import com.googlesource.gerrit.plugins.oauth.OAuthUserInfoWithGroups;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.ExecutionException;
+import java.util.HashSet;
+import java.util.Set;
 import org.apache.commons.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,9 +61,13 @@ public class KeycloakOAuthService implements OAuthServiceProvider {
   private final boolean usePreferredUsername;
   private final String extIdScheme;
 
+  private final KeycloakGroupCache keycloakGroupCache;
+
   @Inject
   KeycloakOAuthService(
-      OAuthPluginConfigFactory cfgFactory, @CanonicalWebUrl Provider<String> urlProvider) {
+      OAuthPluginConfigFactory cfgFactory, @CanonicalWebUrl Provider<String> urlProvider, KeycloakGroupCache groupCache) {
+    keycloakGroupCache = groupCache;
+
     PluginConfig cfg = cfgFactory.create(PROVIDER_NAME);
     String canonicalWebUrl = CharMatcher.is('/').trimTrailingFrom(urlProvider.get()) + "/";
 
@@ -81,13 +88,6 @@ public class KeycloakOAuthService implements OAuthServiceProvider {
     extIdScheme = OAuthServiceProviderExternalIdScheme.create(PROVIDER_NAME);
   }
 
-  private String parseJwt(String input) throws UnsupportedEncodingException {
-    String[] parts = input.split("\\.");
-    Preconditions.checkState(parts.length == 3);
-    Preconditions.checkNotNull(parts[1]);
-    return new String(Base64.decodeBase64(parts[1]), StandardCharsets.UTF_8.name());
-  }
-
   @Override
   public OAuthUserInfo getUserInfo(OAuthToken token) throws IOException {
     JsonElement tokenJson = JSON.newGson().fromJson(token.getRaw(), JsonElement.class);
@@ -97,6 +97,48 @@ public class KeycloakOAuthService implements OAuthServiceProvider {
   public OAuthUserInfo getUserInfo(OAuth2AccessToken token) throws IOException {
     JsonElement tokenJson = JSON.newGson().fromJson(token.getRawResponse(), JsonElement.class);
     return getUserInfo(tokenJson);
+  }
+
+  @Override
+  public OAuthToken getAccessToken(OAuthVerifier rv) {
+    try {
+      OAuth2AccessToken accessToken = service.getAccessToken(rv.getValue());
+      return new OAuthToken(
+          accessToken.getAccessToken(), accessToken.getTokenType(), accessToken.getRawResponse());
+    } catch (InterruptedException | ExecutionException | IOException e) {
+      String msg = "Cannot retrieve access token";
+      log.error(msg, e);
+      throw new RuntimeException(msg, e);
+    }
+  }
+
+  public OAuth2AccessToken getAccessToken(String email, String password) {
+    try {
+	    return service.getAccessTokenPasswordGrant(email, password);
+    } catch (InterruptedException | ExecutionException | IOException e) {
+      String msg = "Cannot retrieve access token";
+      log.error(msg, e);
+      throw new RuntimeException(msg, e);
+    }
+  }
+
+  @Override
+  public String getAuthorizationUrl() {
+    return service.getAuthorizationUrl();
+  }
+
+  @Override
+  public String getVersion() {
+    return service.getVersion();
+  }
+
+  @Override
+  public String getName() {
+    return serviceName;
+  }
+
+  public String getExternalIdScheme() {
+    return extIdScheme;
   }
 
   private OAuthUserInfo getUserInfo(JsonElement tokenJson) throws IOException {
@@ -139,49 +181,34 @@ public class KeycloakOAuthService implements OAuthServiceProvider {
     String email = emailElement.getAsString();
     String name = nameElement.getAsString();
 
-    return new OAuthUserInfo(
+    Set<String> groups = new HashSet<>();
+    JsonElement groupsElement = claimObject.get("groups");
+    if (groupsElement != null && groupsElement.isJsonArray()) {
+        groupsElement.getAsJsonArray().forEach(element -> {
+            String group = element.getAsString();
+            groups.add(group);
+        });
+    } else {
+        log.warn("No groups claim found in JWT for user {}", usernameAsString);
+    }
+    keycloakGroupCache.put(externalId, groups);
+    if (log.isDebugEnabled()) {
+      log.debug("User {} has groups {}", usernameAsString, groups);
+    }
+
+    return new OAuthUserInfoWithGroups(
         externalId /*externalId*/,
         username /*username*/,
         email /*email*/,
         name /*displayName*/,
-        null /*claimedIdentity*/);
+        null /*claimedIdentity*/,
+        groups);
   }
 
-  @Override
-  public OAuthToken getAccessToken(OAuthVerifier rv) {
-    try {
-      OAuth2AccessToken accessToken = service.getAccessToken(rv.getValue());
-      return new OAuthToken(
-          accessToken.getAccessToken(), accessToken.getTokenType(), accessToken.getRawResponse());
-    } catch (InterruptedException | ExecutionException | IOException e) {
-      String msg = "Cannot retrieve access token";
-      log.error(msg, e);
-      throw new RuntimeException(msg, e);
-    }
-  }
-
-  public OAuth2AccessToken getAccessToken(String email, String password) {
-    try {
-	return service.getAccessTokenPasswordGrant(email, password);
-    } catch (InterruptedException | ExecutionException | IOException e) {
-      String msg = "Cannot retrieve access token";
-      log.error(msg, e);
-      throw new RuntimeException(msg, e);
-    }
-  }
-
-  @Override
-  public String getAuthorizationUrl() {
-    return service.getAuthorizationUrl();
-  }
-
-  @Override
-  public String getVersion() {
-    return service.getVersion();
-  }
-
-  @Override
-  public String getName() {
-    return serviceName;
+  private String parseJwt(String input) throws UnsupportedEncodingException {
+    String[] parts = input.split("\\.");
+    Preconditions.checkState(parts.length == 3);
+    Preconditions.checkNotNull(parts[1]);
+    return new String(Base64.decodeBase64(parts[1]), StandardCharsets.UTF_8.name());
   }
 }
