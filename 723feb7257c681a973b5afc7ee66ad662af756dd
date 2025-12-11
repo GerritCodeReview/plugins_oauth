@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "97069c19_35bb320e",
+        "filename": "MODULE.bazel",
+        "patchSetId": 3
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1065256
+      },
+      "writtenOn": "2025-12-11T10:16:23Z",
+      "side": 1,
+      "message": "It will fetch by commit.",
+      "parentUuid": "a0e7fe2d_38ec09a5",
+      "revId": "723feb7257c681a973b5afc7ee66ad662af756dd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9db24f4e_6af7de91",
@@ -31,6 +49,24 @@
       "writtenOn": "2025-11-12T20:06:31Z",
       "side": 1,
       "message": "Do these instructions still work? (assuming you have the updated bazlets cloned in `../../bazlets` for that `local_path_override` TODO)",
+      "revId": "723feb7257c681a973b5afc7ee66ad662af756dd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cfa858ca_969e4b80",
+        "filename": "src/main/resources/Documentation/build.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1065256
+      },
+      "writtenOn": "2025-12-11T10:16:23Z",
+      "side": 1,
+      "message": "Standalone builds work now.",
+      "parentUuid": "9db24f4e_6af7de91",
       "revId": "723feb7257c681a973b5afc7ee66ad662af756dd",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
