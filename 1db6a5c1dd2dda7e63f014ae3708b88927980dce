@@ -74,6 +74,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3bd29be8_fe8984e7",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1002666
+      },
+      "writtenOn": "2025-12-11T02:00:50Z",
+      "side": 1,
+      "message": "I don\u0027t think MS is supporting the legacy naming, this seems like Gerrit-specific naming. All the MS links to the old stuff just go the new stuff now, but the APIs are the same. Since the APIs are the same, I agree that we shouldn\u0027t artificially break people. It is ugly to maintain docs, config, and code doing the same thing named two different ways, so it would be nice to solve that.",
+      "parentUuid": "af0ec85b_4625be33",
+      "revId": "1db6a5c1dd2dda7e63f014ae3708b88927980dce",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b18c67fd_26948f8b",
         "filename": "/COMMIT_MSG",
         "patchSetId": 5
