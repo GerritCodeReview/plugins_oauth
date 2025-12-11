@@ -92,6 +92,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "29e2fecd_cf8065d6",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1065256
+      },
+      "writtenOn": "2025-12-11T06:46:47Z",
+      "side": 1,
+      "message": "This was mostly intended by me to get rid of complex code that keeps support for a long deprecated naming. At one point we should get rid of it. I guess a migration tool could be provided that rewrites all legacy externalIDs to the new scheme.",
+      "parentUuid": "3bd29be8_fe8984e7",
+      "revId": "1db6a5c1dd2dda7e63f014ae3708b88927980dce",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b18c67fd_26948f8b",
         "filename": "/COMMIT_MSG",
         "patchSetId": 5
