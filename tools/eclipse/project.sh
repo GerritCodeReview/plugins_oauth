@@ -12,4 +12,10 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-`bazel query @com_googlesource_gerrit_bazlets//tools/eclipse:project --output location | sed s/BUILD:.*//`project.py -n oauth -r .
+
+BAZEL_EXE="$(which bazelisk)"
+if [ $? -ne 0 ]; then
+  BAZEL_EXE="bazel"
+fi
+
+`$BAZEL_EXE query @com_googlesource_gerrit_bazlets//tools/eclipse:project --output location | sed s/BUILD:.*//`project.py -n oauth -r .

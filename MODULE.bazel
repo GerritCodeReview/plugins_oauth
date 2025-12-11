@@ -3,6 +3,7 @@ module(name = "gerrit-plugin-oauth")
 bazel_dep(name = "rules_jvm_external", version = "6.9")
 
 bazel_dep(name = "com_googlesource_gerrit_bazlets")
+
 git_override(
     module_name = "com_googlesource_gerrit_bazlets",
     remote = "https://gerrit.googlesource.com/bazlets",
