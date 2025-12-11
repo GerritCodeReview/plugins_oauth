@@ -33,6 +33,23 @@
       "message": "```suggestion\nnew one.\n\n[1] https://gerrit.googlesource.com/plugins/oauth/+/31d9b6472c7f29b36cb26f6056cd07d9ba92c282\n```",
       "revId": "b253f4833de97e73d477be4b0f5f47a6440e1dc0",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a07fbfea_c7c5dfb3",
+        "filename": "src/main/resources/Documentation/config.md",
+        "patchSetId": 6
+      },
+      "lineNbr": 270,
+      "author": {
+        "id": 1002666
+      },
+      "writtenOn": "2025-12-11T01:53:21Z",
+      "side": 1,
+      "message": "In fact, you could even rename this to `Entra` now 😄",
+      "revId": "b253f4833de97e73d477be4b0f5f47a6440e1dc0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
