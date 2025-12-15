@@ -1,3 +1,4 @@
+load("@gerrit_api_version//:version.bzl", "GERRIT_API_VERSION")
 load("@rules_java//java:defs.bzl", "java_library")
 load("@com_googlesource_gerrit_bazlets//tools:junit.bzl", "junit_tests")
 load(
@@ -31,6 +32,7 @@ gerrit_plugin(
         "@maven//:com_github_scribejava_scribejava_apis",
         "@maven//:com_github_scribejava_scribejava_core",
     ],
+    gerrit_api_version = GERRIT_API_VERSION,
 )
 
 junit_tests(
