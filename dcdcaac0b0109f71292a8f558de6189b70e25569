@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d4f177d4_e9d2696d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1065256
+      },
+      "writtenOn": "2026-01-13T13:44:40Z",
+      "side": 1,
+      "message": "I agree 100%. We are not using standalone builds at all and since we are all Gerrit core developers we don\u0027t need to. In general however others use that mode and at least for some plugins we can\u0027t just remove it and will have to ensure that it works until the whole community decides to discontinue standalone build support.",
+      "parentUuid": "3990a099_674459be",
+      "revId": "dcdcaac0b0109f71292a8f558de6189b70e25569",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "37d43994_5dadbb15",
         "filename": "BUILD",
         "patchSetId": 7
@@ -37,6 +55,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "556ed1fe_f550882a",
+        "filename": "BUILD",
+        "patchSetId": 7
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1065256
+      },
+      "writtenOn": "2026-01-13T13:44:40Z",
+      "side": 1,
+      "message": "As an alternative I have created a `gerrit_plugin_tests` rule that takes over the decision.",
+      "parentUuid": "37d43994_5dadbb15",
+      "revId": "dcdcaac0b0109f71292a8f558de6189b70e25569",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "eb6ab038_acda58c6",
         "filename": "BUILD",
         "patchSetId": 7
@@ -48,6 +84,24 @@
       "writtenOn": "2026-01-13T09:30:56Z",
       "side": 1,
       "message": "That would use the plugin API from Central Repository, in both build modes, wouldn\u0027t it?\nIn gerrit in-tree build mode the point is to use the plugin API from the Gerrit tree.\n\nThat was achieved with the constants, that were defined differently in different build modes.\n\nOr am I missing something here?",
+      "revId": "dcdcaac0b0109f71292a8f558de6189b70e25569",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "343c91f1_261f4979",
+        "filename": "BUILD",
+        "patchSetId": 7
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1065256
+      },
+      "writtenOn": "2026-01-13T13:44:40Z",
+      "side": 1,
+      "message": "Right.\nI have added a new `gerrit_plugin_tests` rule to the bazlets, which includes the selection of where to get the API dependencies from.",
+      "parentUuid": "eb6ab038_acda58c6",
       "revId": "dcdcaac0b0109f71292a8f558de6189b70e25569",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -71,6 +125,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8eaeaa80_0fff8a81",
+        "filename": "MODULE.bazel",
+        "patchSetId": 7
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1065256
+      },
+      "writtenOn": "2026-01-13T13:44:40Z",
+      "side": 1,
+      "message": "Yes, it would be, but I would even prefer that. We had some occasions where we had issues with different dependency versions in different plugins. It would be good to enforce using the same version in all plugins, at least when people are building everything together like we do.\nI also thought about using specific repos per plugin, but this doesn\u0027t work with the current way the gerrit_plugin rule loads the Gerrit API as dependency for standalone builds.",
+      "parentUuid": "50b3c086_ceb095ed",
+      "revId": "dcdcaac0b0109f71292a8f558de6189b70e25569",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6fd73780_280cf459",
         "filename": "MODULE.bazel",
         "patchSetId": 7
@@ -82,6 +154,24 @@
       "writtenOn": "2026-01-13T09:30:56Z",
       "side": 1,
       "message": "Add the Option that the build fail if repin is required?",
+      "revId": "dcdcaac0b0109f71292a8f558de6189b70e25569",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "229bdb11_cd829d20",
+        "filename": "MODULE.bazel",
+        "patchSetId": 7
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1065256
+      },
+      "writtenOn": "2026-01-13T13:44:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6fd73780_280cf459",
       "revId": "dcdcaac0b0109f71292a8f558de6189b70e25569",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -99,6 +189,24 @@
       "writtenOn": "2026-01-13T09:30:56Z",
       "side": 1,
       "message": "Keep this file to delegate to the right definition of plugin-API?",
+      "revId": "dcdcaac0b0109f71292a8f558de6189b70e25569",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "46d0ce7e_6c81fbf8",
+        "filename": "tools/bzl/plugin.bzl",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1065256
+      },
+      "writtenOn": "2026-01-13T13:44:40Z",
+      "side": 1,
+      "message": "I don\u0027t see the reason why. I believe it was a good suggestion in Gerrit core, since it allows for a migration period, but here a load statement in `BUILD` should be clear enough.",
+      "parentUuid": "97c4ada3_b31622a8",
       "revId": "dcdcaac0b0109f71292a8f558de6189b70e25569",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
