@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0332f014_0d983ff3",
+        "filename": "BUILD",
+        "patchSetId": 8
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2026-01-13T14:44:39Z",
+      "side": 1,
+      "message": "We should check, classpath generation depends on this specific rule name.",
+      "revId": "6eaba3c1ce3982591ba7402d7f802dd26ac5755b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
