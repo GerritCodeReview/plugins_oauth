@@ -1,0 +1,106 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3990a099_674459be",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2026-01-13T09:30:56Z",
+      "side": 1,
+      "message": "It\u0027s a bit of hurdle to maintain both plugin modes: standalone and in-tree build mode.\n\nAs maintainer of this plugin, I wouldn\u0027t object to remove standalone build mode.",
+      "revId": "dcdcaac0b0109f71292a8f558de6189b70e25569",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "37d43994_5dadbb15",
+        "filename": "BUILD",
+        "patchSetId": 7
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2026-01-13T09:30:56Z",
+      "side": 1,
+      "message": "We have to change this because we want to support in-tree and standalone build mode, correct?\n\nBut can\u0027t we expose the constants from bazlets rules as well?\n\nIn-tree build mode, those constants would reference plugin-API from the Gerrit tree and not from the Central Repository.\n\nKeep it as-is, and delegate in tools/bzl/plugin.bzl to the bazlets. In gerrit-tree mode, the Constants would come from gerrit tree, but the rule implementation would delegate to bazlets.",
+      "revId": "dcdcaac0b0109f71292a8f558de6189b70e25569",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eb6ab038_acda58c6",
+        "filename": "BUILD",
+        "patchSetId": 7
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2026-01-13T09:30:56Z",
+      "side": 1,
+      "message": "That would use the plugin API from Central Repository, in both build modes, wouldn\u0027t it?\nIn gerrit in-tree build mode the point is to use the plugin API from the Gerrit tree.\n\nThat was achieved with the constants, that were defined differently in different build modes.\n\nOr am I missing something here?",
+      "revId": "dcdcaac0b0109f71292a8f558de6189b70e25569",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "50b3c086_ceb095ed",
+        "filename": "MODULE.bazel",
+        "patchSetId": 7
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2026-01-13T09:30:56Z",
+      "side": 1,
+      "message": "This generic module would potentially conflict with other plugins, with Extertal dependencies?\n\nWould it make sense to isolate the external trampoline repository in RJE per plugin?\nSo call it here: \"oauth_plugin_deps\"?",
+      "revId": "dcdcaac0b0109f71292a8f558de6189b70e25569",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6fd73780_280cf459",
+        "filename": "MODULE.bazel",
+        "patchSetId": 7
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2026-01-13T09:30:56Z",
+      "side": 1,
+      "message": "Add the Option that the build fail if repin is required?",
+      "revId": "dcdcaac0b0109f71292a8f558de6189b70e25569",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "97c4ada3_b31622a8",
+        "filename": "tools/bzl/plugin.bzl",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2026-01-13T09:30:56Z",
+      "side": 1,
+      "message": "Keep this file to delegate to the right definition of plugin-API?",
+      "revId": "dcdcaac0b0109f71292a8f558de6189b70e25569",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
