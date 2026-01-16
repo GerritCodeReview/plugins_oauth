@@ -39,6 +39,24 @@
       "message": "The original code ensured that the URL always ends with a trailing `/` before appending the \"oauth\" suffix:\n\n```java\n  String canonicalWebUrl \u003d\n        CharMatcher.is(\u0027/\u0027).trimTrailingFrom(urlProvider.get()) + \"/\";\n```\n\nIs this behavior no longer required?\n\nHas something changed in the gerrit core logic that makes the trailing slash check or addition unnecessary now?",
       "revId": "fdcf5adb97b91197c10260db76458d2c51e44254",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2b7cb500_8d21e182",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/OAuth20ServiceFactory.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1065256
+      },
+      "writtenOn": "2026-01-16T07:35:00Z",
+      "side": 1,
+      "message": "This is already ensured by the Provider: https://gerrit.googlesource.com/gerrit/+/refs/heads/master/java/com/google/gerrit/server/config/CanonicalWebUrlProvider.java",
+      "parentUuid": "e9be5a1c_4bd04c75",
+      "revId": "fdcf5adb97b91197c10260db76458d2c51e44254",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
