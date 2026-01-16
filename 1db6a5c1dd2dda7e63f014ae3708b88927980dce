@@ -110,6 +110,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5b7d5a0d_5ff1e45f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2026-01-16T11:26:55Z",
+      "side": 1,
+      "message": "Breaking existing users is something we should avoid where possible.\n\nAt the same time, a fundamental design decision of this plugin is to provide a single entry point for all supported OAuth2 providers, rather than having one plugin per provider.\n\nThis differs from the *single-provider-per-plugin* approach, for example:\nhttps://gerrit-review.googlesource.com/admin/repos/plugins/cfoauth\n\nIn that context, continuing to carry long-deprecated naming increases complexity across configuration, documentation, and code paths. Removing such legacy support helps simplify the implementation and reduce long-term maintenance effort.",
+      "parentUuid": "29e2fecd_cf8065d6",
+      "revId": "1db6a5c1dd2dda7e63f014ae3708b88927980dce",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b18c67fd_26948f8b",
         "filename": "/COMMIT_MSG",
         "patchSetId": 5
