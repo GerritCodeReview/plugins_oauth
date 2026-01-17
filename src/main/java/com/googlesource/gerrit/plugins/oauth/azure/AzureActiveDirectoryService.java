@@ -56,9 +56,10 @@ import org.slf4j.LoggerFactory;
 @OAuthServiceProviderConfig(name = AzureActiveDirectoryService.PROVIDER_NAME)
 public class AzureActiveDirectoryService implements OAuthServiceProvider {
   private static final Logger log = LoggerFactory.getLogger(AzureActiveDirectoryService.class);
-  private static final String OFFICE365_PROVIDER_PREFIX = "office365-oauth:";
+  // Canonical provider name (Azure AD)
   public static final String PROVIDER_NAME = "azure";
-  public static final String LEGACY_PROVIDER_NAME = "office365";
+  // Deprecated provider name kept for backward compatibility
+  private static final String PROVIDER_DEPRECATED_NAME = "office365";
   private static final String PROTECTED_RESOURCE_URL = "https://graph.microsoft.com/v1.0/me";
   private static final String SCOPE =
       "openid offline_access https://graph.microsoft.com/user.readbasic.all";
@@ -73,17 +74,17 @@ public class AzureActiveDirectoryService implements OAuthServiceProvider {
   private final String clientId;
   private final boolean linkOffice365Id;
   private final String extIdScheme;
+  // The deprecated Office365 external ID is used for linking
+  // existing accounts from previous Gerrit installations.
+  private final String extIdDeprecatedScheme;
 
   @Inject
   AzureActiveDirectoryService(
       OAuthPluginConfigFactory cfgFactory, @CanonicalWebUrl Provider<String> urlProvider) {
     PluginConfig cfg = cfgFactory.create(PROVIDER_NAME);
-    if (cfg.getString(InitOAuth.CLIENT_ID) == null) {
-      cfg = cfgFactory.create(LEGACY_PROVIDER_NAME);
-      extIdScheme = OAuthServiceProviderExternalIdScheme.create(LEGACY_PROVIDER_NAME);
-    } else {
-      extIdScheme = OAuthServiceProviderExternalIdScheme.create(PROVIDER_NAME);
-    }
+    this.extIdScheme = OAuthServiceProviderExternalIdScheme.create(PROVIDER_NAME);
+    this.extIdDeprecatedScheme =
+        OAuthServiceProviderExternalIdScheme.create(PROVIDER_DEPRECATED_NAME);
     this.canonicalWebUrl = CharMatcher.is('/').trimTrailingFrom(urlProvider.get()) + "/";
     this.useEmailAsUsername = cfg.getBoolean(InitOAuth.USE_EMAIL_AS_USERNAME, false);
     this.tenant = cfg.getString(InitOAuth.TENANT, DEFAULT_TENANT);
@@ -186,7 +187,7 @@ public class AzureActiveDirectoryService implements OAuthServiceProvider {
             login,
             asString(email),
             asString(name),
-            linkOffice365Id ? OFFICE365_PROVIDER_PREFIX + id.getAsString() : null);
+            linkOffice365Id ? extIdDeprecatedScheme + ":" + id.getAsString() : null);
       }
     } catch (ExecutionException | InterruptedException e) {
       throw new RuntimeException("Cannot retrieve user info resource", e);
