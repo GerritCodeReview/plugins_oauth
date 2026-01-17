@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "114abd68_31002f5d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2026-01-17T09:33:27Z",
+      "side": 1,
+      "message": "Thanks for working on adding Keycloak OAuth support for Git-over-HTTP 👍\n\nBefore merging, I think a few refinements would help improve correctness, security, and long-term maintainability.\n\n**Split the change into smaller commits**\n\nTo make the change easier to review and reason about, it would be helpful to split it into multiple commits, for example:\n\n* OAuth Login provider selection logic (avoid implicitly selecting the first configured provider)\n* Git-over-HTTP support with proper access token handling and validation\n* Optional ROPC - Resource Owner Password Credentials (password grant) support, gated behind configuration option: `enable-resource-owner-password-credentials`.\n\nIf ROPC support is included, it would also be good to document the associated security implications, as the OAuth 2.0 specification explicitly discourages use of this flow `The ROPC grant MUST NOT be used` [1].\n\nAdditionally, there is ongoing discussion in the Keycloak project around deprecating or removing ROPC support altogether: [2], which could be referenced in the configuration documentation. Isolating this flow in its own commit would make it easier to revert if support is discontinued upstream.\n\n**Provider selection behaviour**\n\nBefore this change, only a single OAuth provider (`SAPIasOAuthLoginProvider`) implemented Git-over-HTTP support. As a result, there was no ambiguity in OAuth Login provider selection, regardless of how many OAuth providers were configured in the Gerrit site.\n\nWith this change, multiple OAuth providers may now offer Git-over-HTTP support. In such setups, the correct OAuth Login provider needs to be clearly identified during plugin startup.\n\nCurrently, the implementation implicitly selects the first available OAuth provider that supports Git-over-HTTP. This implicit selection can be surprising and potentially fragile in environments where more than one provider is configured.\n\nRequiring an explicit configuration to select the desired OAuth Login provider, or alternatively failing fast when multiple providers are detected, would make the behaviour more predictable and easier to reason about, especially in larger or more complex installations.\n\n**Clarify and harden access token validation**\n\nIn the Git-over-HTTP flow, the client provides an access token only.\n\nIt would be good to validate this token via Keycloak (e.g. using `/userinfo` endpoint, token introspection, or equivalent), rather than relying on local JWT parsing, which does not perform full validation.\n\n**Tests**\n\nGiven that this change affects authentication, it would be great to add some basic tests, if possible, covering:\n\n* Successful Git-over-HTTP authentication with a valid token\n* Failure cases (e.g. invalid or expired token)\n* User identity mapping\n\n**Documentation and test instructions**\n\nPlease consider adding a short description covering:\n\n* Required Keycloak and Gerrit configuration\n* Which authentication flows are supported\n* Step-by-step instructions to test the integration (how to obtain a token and use it with `git` commands)\n\nI’ve already added some basic documentation for using Keycloak as a Gerrit OAuth provider here [3]. It would be great to extend this and document how to configure Keycloak OAuth specifically for Git-over-HTTP.\n\nThese additions would help make the change easier to review now and easier to maintain in the future.\n\n[1]: https://datatracker.ietf.org/doc/html/draft-ietf-oauth-security-topics-24#name-resource-owner-password-cre\n[2]: https://github.com/keycloak/keycloak/discussions/24585\n[3]: https://github.com/davido/keycloak-gerrit-oauth-provider",
+      "revId": "ecefc05581fb8f3e38ecd8b2f8c34906dea75b92",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
