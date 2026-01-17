@@ -19,6 +19,7 @@ import com.google.inject.Inject;
 import com.googlesource.gerrit.plugins.oauth.airvantage.AirVantageOAuthService;
 import com.googlesource.gerrit.plugins.oauth.auth0.Auth0OAuthService;
 import com.googlesource.gerrit.plugins.oauth.authentik.AuthentikOAuthService;
+import com.googlesource.gerrit.plugins.oauth.azure.AzureActiveDirectoryService;
 import com.googlesource.gerrit.plugins.oauth.bitbucket.BitbucketOAuthService;
 import com.googlesource.gerrit.plugins.oauth.cas.CasOAuthService;
 import com.googlesource.gerrit.plugins.oauth.cognito.CognitoOAuthService;
@@ -46,7 +47,7 @@ class HttpModule extends AbstractModule {
     install(new OAuthServiceModule(cfgFactory, AirVantageOAuthService.class));
     install(new OAuthServiceModule(cfgFactory, Auth0OAuthService.class));
     install(new OAuthServiceModule(cfgFactory, AuthentikOAuthService.class));
-    install(new AzureOAuthServiceModule(cfgFactory));
+    install(new OAuthServiceModule(cfgFactory, AzureActiveDirectoryService.class));
     install(new OAuthServiceModule(cfgFactory, BitbucketOAuthService.class));
     install(new OAuthServiceModule(cfgFactory, CasOAuthService.class));
     install(new OAuthServiceModule(cfgFactory, CognitoOAuthService.class));

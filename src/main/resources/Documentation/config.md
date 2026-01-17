@@ -50,12 +50,6 @@ appended with provider suffix: e.g. `-google-oauth` or `-github-oauth`:
     client-secret = "<client-secret>"
     root-url = "<phabricator url>"
 
-  # The office365 has been renamed to azure and is deprecated.
-  [plugin "@PLUGIN@-office365-oauth"]
-    client-id = "<client-id>"
-    client-secret = "<client-secret>"
-    tenant = "<tenant (optional defaults to organizations if not set)>"
-
   [plugin "@PLUGIN@-azure-oauth"]
     client-id = "<client-id>"
     client-secret = "<client-secret>"
