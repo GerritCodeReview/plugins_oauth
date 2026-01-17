@@ -77,6 +77,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "82342c76_9b3b2ed5",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/InitOAuth.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2026-01-17T11:55:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4624b2c3_b12261d6",
+      "range": {
+        "startLine": 39,
+        "startChar": 2,
+        "endLine": 39,
+        "endChar": 97
+      },
+      "revId": "b253f4833de97e73d477be4b0f5f47a6440e1dc0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "a07fbfea_c7c5dfb3",
         "filename": "src/main/resources/Documentation/config.md",
         "patchSetId": 6
