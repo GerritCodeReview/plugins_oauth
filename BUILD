@@ -20,7 +20,6 @@ gerrit_plugin(
     ],
     resources = glob(["src/main/resources/**/*"]),
     deps = [
-        "@commons-codec//jar:neverlink",
         "@jackson-core//jar",
         "@jackson-databind//jar",
         "@json//jar",

@@ -14,8 +14,12 @@
 
 package com.googlesource.gerrit.plugins.oauth;
 
+import com.google.common.base.Preconditions;
 import com.google.gerrit.common.Nullable;
 import com.google.gson.JsonElement;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 
 public class JsonUtil {
 
@@ -26,5 +30,17 @@ public class JsonUtil {
   @Nullable
   public static String asString(JsonElement e) {
     return isNull(e) ? null : e.getAsString();
+  }
+
+  /** Returns the decoded JSON payload (2nd segment) of a JWT (base64url encoded). */
+  public static String jwtPayloadJson(String jwt) throws IOException {
+    try {
+      String[] parts = jwt.split("\\.", -1);
+      Preconditions.checkState(
+          parts.length == 3 && !parts[0].isEmpty() && !parts[1].isEmpty() && !parts[2].isEmpty());
+      return new String(Base64.getUrlDecoder().decode(parts[1]), StandardCharsets.UTF_8);
+    } catch (IllegalArgumentException e) {
+      throw new IOException("Invalid JWT payload encoding", e);
+    }
   }
 }

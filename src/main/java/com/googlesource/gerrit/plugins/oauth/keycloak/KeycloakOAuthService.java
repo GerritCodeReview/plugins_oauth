@@ -16,12 +16,12 @@ package com.googlesource.gerrit.plugins.oauth.keycloak;
 
 import static com.google.gerrit.json.OutputFormat.JSON;
 import static com.googlesource.gerrit.plugins.oauth.JsonUtil.isNull;
+import static com.googlesource.gerrit.plugins.oauth.JsonUtil.jwtPayloadJson;
 
 import com.github.scribejava.core.builder.ServiceBuilder;
 import com.github.scribejava.core.model.OAuth2AccessToken;
 import com.github.scribejava.core.oauth.OAuth20Service;
 import com.google.common.base.CharMatcher;
-import com.google.common.base.Preconditions;
 import com.google.gerrit.extensions.auth.oauth.OAuthServiceProvider;
 import com.google.gerrit.extensions.auth.oauth.OAuthToken;
 import com.google.gerrit.extensions.auth.oauth.OAuthUserInfo;
@@ -39,11 +39,8 @@ import com.googlesource.gerrit.plugins.oauth.OAuthPluginConfigFactory;
 import com.googlesource.gerrit.plugins.oauth.OAuthServiceProviderConfig;
 import com.googlesource.gerrit.plugins.oauth.OAuthServiceProviderExternalIdScheme;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.URI;
-import java.nio.charset.StandardCharsets;
 import java.util.concurrent.ExecutionException;
-import org.apache.commons.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -82,27 +79,12 @@ public class KeycloakOAuthService implements OAuthServiceProvider {
     extIdScheme = OAuthServiceProviderExternalIdScheme.create(PROVIDER_NAME);
   }
 
-  private String parseJwt(String input) throws UnsupportedEncodingException {
-    String[] parts = input.split("\\.");
-    Preconditions.checkState(parts.length == 3);
-    Preconditions.checkNotNull(parts[1]);
-    return new String(Base64.decodeBase64(parts[1]), StandardCharsets.UTF_8.name());
-  }
-
   @Override
   public OAuthUserInfo getUserInfo(OAuthToken token) throws IOException {
     JsonElement tokenJson = JSON.newGson().fromJson(token.getRaw(), JsonElement.class);
     JsonObject tokenObject = tokenJson.getAsJsonObject();
     JsonElement id_token = tokenObject.get("id_token");
-    String jwt;
-    try {
-      jwt = parseJwt(id_token.getAsString());
-    } catch (UnsupportedEncodingException e) {
-      throw new IOException(
-          String.format(
-              "%s support is required to interact with JWTs", StandardCharsets.UTF_8.name()),
-          e);
-    }
+    String jwt = jwtPayloadJson(id_token.getAsString());
 
     JsonElement claimJson = JSON.newGson().fromJson(jwt, JsonElement.class);
 
