@@ -123,6 +123,75 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6a0e99d8_39b577d0",
+        "filename": "MODULE.bazel",
+        "patchSetId": 8
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2026-02-13T20:49:23Z",
+      "side": 1,
+      "message": "You don\u0027t need to specify all three Jackson artifacts for dependency resolution.\nrules_jvm_external uses Maven Resolver under the hood and will pull in\njackson-core and jackson-annotations transitively via\njackson-databind.\n\nThe jackson-databind module declares explicit dependencies on both:\n\nPackage also depends on jackson-core and jackson-annotations packages,\nbut when using build tools like Maven or Gradle, dependencies are\nautomatically included.\n\nSee: [1].\n\nNote that in Bazel it may still make sense to list them explicitly in\nmaven_install.artifacts if they need to be referenced directly as\n@external_deps// labels.\n\nYou can check that with bazel query command, see: [2].\n\n[1]: https://github.com/FasterXML/jackson-databind\n[2]: \nhttps://paste.opendev.org/show/bdHGP8rGv3Rqey8UfMkK/",
+      "range": {
+        "startLine": 30,
+        "startChar": 0,
+        "endLine": 32,
+        "endChar": 70
+      },
+      "revId": "6eaba3c1ce3982591ba7402d7f802dd26ac5755b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3e7651a8_f46bd7e9",
+        "filename": "MODULE.bazel",
+        "patchSetId": 8
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2026-02-13T20:49:23Z",
+      "side": 1,
+      "message": "Same situation here: scribejava-apis depends transitively on\nscribejava-core, but our plugin code references DefaultApi20 from\nscribejava-core directly.\n\nWith strict_visibility enabled in rules_jvm_external, transitively\nresolved Maven artifacts are generated with //visibility:private.\nThis prevents us from adding scribejava-core as a direct dependency\nin the plugin BUILD target to satisfy Bazel strict-deps, even though\nMaven resolver (via RJE/coursier) has already resolved it.\n\nDisabling strict_visibility allows us to reference such transitively\nresolved artifacts directly in BUILD files when required by\nstrict-deps, without having to maintain an explicit allowlist of\nexported artifacts in maven_install().\n\nShould we consider doing the same in Gerrit core? This would allow\nsimplifying the deps.toml and nongoogle.toml by listing only top-level\ndependencies and relying on Maven (via RJE/coursier) to resolve\ntransitives, while still keeping strict-deps enabled for correctness.",
+      "range": {
+        "startLine": 33,
+        "startChar": 8,
+        "endLine": 34,
+        "endChar": 67
+      },
+      "revId": "6eaba3c1ce3982591ba7402d7f802dd26ac5755b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "da3b4a26_91369bd0",
+        "filename": "MODULE.bazel",
+        "patchSetId": 8
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2026-02-13T20:49:23Z",
+      "side": 1,
+      "message": "Same here and \"org.json:json\". Top level target is: \"com.sap.cloud.security:java-security\".\n\n```\njava-security\n  -\u003e token-client\n     -\u003e org.json:json\n```",
+      "range": {
+        "startLine": 37,
+        "startChar": 0,
+        "endLine": 40,
+        "endChar": 73
+      },
+      "revId": "6eaba3c1ce3982591ba7402d7f802dd26ac5755b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2cac79d3_2cf96fed",
         "filename": "MODULE.bazel",
         "patchSetId": 8
