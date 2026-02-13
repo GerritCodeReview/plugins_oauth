@@ -17,6 +17,7 @@ package com.googlesource.gerrit.plugins.oauth.azure;
 import static com.google.gerrit.json.OutputFormat.JSON;
 import static com.googlesource.gerrit.plugins.oauth.JsonUtil.asString;
 import static com.googlesource.gerrit.plugins.oauth.JsonUtil.isNull;
+import static com.googlesource.gerrit.plugins.oauth.JsonUtil.jwtPayloadJson;
 
 import com.github.scribejava.apis.MicrosoftAzureActiveDirectory20Api;
 import com.github.scribejava.core.builder.ServiceBuilder;
@@ -45,8 +46,6 @@ import com.googlesource.gerrit.plugins.oauth.OAuthPluginConfigFactory;
 import com.googlesource.gerrit.plugins.oauth.OAuthServiceProviderConfig;
 import com.googlesource.gerrit.plugins.oauth.OAuthServiceProviderExternalIdScheme;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.util.Base64;
 import java.util.concurrent.ExecutionException;
 import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
@@ -226,15 +225,10 @@ public class AzureActiveDirectoryService implements OAuthServiceProvider {
 
   /** Get the {@link JsonObject} of a given token. */
   private JsonObject getTokenJson(String tokenBase64) {
-    String[] tokenParts = tokenBase64.split("\\.");
-    if (tokenParts.length != 3) {
-      throw new OAuthException("Token does not contain expected number of parts");
+    try {
+      return gson.fromJson(jwtPayloadJson(tokenBase64), JsonObject.class);
+    } catch (IOException e) {
+      throw new OAuthException("Invalid token payload encoding", e);
     }
-
-    // Extract the payload part from the JWT token (header.payload.signature) by retrieving
-    // tokenParts[1].
-    return gson.fromJson(
-        new String(Base64.getUrlDecoder().decode(tokenParts[1]), StandardCharsets.UTF_8),
-        JsonObject.class);
   }
 }

@@ -17,6 +17,7 @@ package com.googlesource.gerrit.plugins.oauth.google;
 import static com.google.gerrit.json.OutputFormat.JSON;
 import static com.googlesource.gerrit.plugins.oauth.JsonUtil.asString;
 import static com.googlesource.gerrit.plugins.oauth.JsonUtil.isNull;
+import static com.googlesource.gerrit.plugins.oauth.JsonUtil.jwtPayloadJson;
 
 import com.github.scribejava.core.builder.ServiceBuilder;
 import com.github.scribejava.core.model.OAuth2AccessToken;
@@ -25,7 +26,6 @@ import com.github.scribejava.core.model.Response;
 import com.github.scribejava.core.model.Verb;
 import com.github.scribejava.core.oauth.OAuth20Service;
 import com.google.common.base.CharMatcher;
-import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import com.google.gerrit.extensions.auth.oauth.OAuthServiceProvider;
 import com.google.gerrit.extensions.auth.oauth.OAuthToken;
@@ -50,7 +50,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import javax.servlet.http.HttpServletResponse;
-import org.apache.commons.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -164,15 +163,7 @@ public class GoogleOAuthService implements OAuthServiceProvider {
       JsonObject idTokenObj = idToken.getAsJsonObject();
       JsonElement idTokenElement = idTokenObj.get("id_token");
       if (idTokenElement != null && !idTokenElement.isJsonNull()) {
-        String payload;
-        try {
-          payload = decodePayload(idTokenElement.getAsString());
-        } catch (UnsupportedEncodingException e) {
-          throw new IOException(
-              String.format(
-                  "%s support is required to interact with JWTs", StandardCharsets.UTF_8.name()),
-              e);
-        }
+        String payload = decodePayload(idTokenElement.getAsString());
         if (!Strings.isNullOrEmpty(payload)) {
           JsonElement tokenJsonElement = JSON.newGson().fromJson(payload, JsonElement.class);
           if (tokenJsonElement.isJsonObject()) {
@@ -185,6 +176,10 @@ public class GoogleOAuthService implements OAuthServiceProvider {
   }
 
   private static String retrieveHostedDomain(JsonObject jwtToken) {
+    if (jwtToken == null) {
+      log.debug("OAuth2: JWT token is null");
+      return null;
+    }
     JsonElement hdClaim = jwtToken.get("hd");
     if (!isNull(hdClaim)) {
       String hd = hdClaim.getAsString();
@@ -201,13 +196,8 @@ public class GoogleOAuthService implements OAuthServiceProvider {
    * @param idToken Base64 encoded tripple, separated with dot
    * @return openid_id part of payload, when contained, null otherwise
    */
-  private static String decodePayload(String idToken) throws UnsupportedEncodingException {
-    Preconditions.checkNotNull(idToken);
-    String[] jwtParts = idToken.split("\\.");
-    Preconditions.checkState(jwtParts.length == 3);
-    String payloadStr = jwtParts[1];
-    Preconditions.checkNotNull(payloadStr);
-    return new String(Base64.decodeBase64(payloadStr), StandardCharsets.UTF_8.name());
+  private static String decodePayload(String idToken) throws IOException {
+    return jwtPayloadJson(idToken);
   }
 
   @Override

@@ -15,10 +15,9 @@
 package com.googlesource.gerrit.plugins.oauth.sap;
 
 import static com.google.gerrit.server.account.externalids.ExternalId.SCHEME_USERNAME;
-import static java.nio.charset.StandardCharsets.UTF_8;
+import static com.googlesource.gerrit.plugins.oauth.JsonUtil.jwtPayloadJson;
 
 import com.github.scribejava.core.model.OAuth2AccessToken;
-import com.google.common.base.Splitter;
 import com.google.gerrit.entities.Account;
 import com.google.gerrit.extensions.auth.oauth.OAuthLoginProvider;
 import com.google.gerrit.extensions.auth.oauth.OAuthUserInfo;
@@ -36,8 +35,6 @@ import com.googlesource.gerrit.plugins.oauth.OAuthPluginConfigFactory;
 import com.googlesource.gerrit.plugins.oauth.OAuthServiceProviderConfig;
 import com.googlesource.gerrit.plugins.oauth.OAuthServiceProviderExternalIdScheme;
 import java.io.IOException;
-import java.util.Base64;
-import java.util.List;
 import java.util.Optional;
 
 @Singleton
@@ -137,19 +134,10 @@ public class SAPIasOAuthLoginProvider implements OAuthLoginProvider {
   }
 
   private JsonObject toJsonWebToken(String accessToken) throws IOException {
-    List<String> segments = getSegments(accessToken);
-    return getAsJsonObject(decodeBase64(segments.get(1)));
-  }
-
-  private String decodeBase64(String s) {
-    return new String(Base64.getDecoder().decode(s), UTF_8);
-  }
-
-  private List<String> getSegments(String accessToken) throws IOException {
-    List<String> segments = Splitter.on('.').splitToList(accessToken);
-    if (segments.size() != 3) {
-      throw new IOException("Invalid token: must be of the form 'header.token.signature'");
+    try {
+      return getAsJsonObject(jwtPayloadJson(accessToken));
+    } catch (IllegalStateException e) {
+      throw new IOException("Invalid token: must be of the form 'header.token.signature'", e);
     }
-    return segments;
   }
 }
