@@ -161,6 +161,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "61a4f54b_5ce92049",
+        "filename": "MODULE.bazel",
+        "patchSetId": 7
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2026-02-13T13:59:05Z",
+      "side": 1,
+      "message": "To align with the recent `rules_jvm_external` refactoring in Gerrit core, I suggest naming this `external_plugin_deps` (matching the existing `external_plugin_deps.bzl` macro name we’ve used so far):\n\n```\nload(\"//plugins:external_plugin_deps.bzl\", \"external_plugin_deps\")\n```\n\nIt also represents the direct successor of `external_plugin_deps.bzl` after the `bzlmod` transition.",
+      "parentUuid": "8eaeaa80_0fff8a81",
+      "revId": "dcdcaac0b0109f71292a8f558de6189b70e25569",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6fd73780_280cf459",
         "filename": "MODULE.bazel",
         "patchSetId": 7

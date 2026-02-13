@@ -16,6 +16,293 @@
       "message": "We should check, classpath generation depends on this specific rule name.",
       "revId": "6eaba3c1ce3982591ba7402d7f802dd26ac5755b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "191ac117_b5bb9b24",
+        "filename": "BUILD",
+        "patchSetId": 8
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2026-02-13T13:59:05Z",
+      "side": 1,
+      "message": "Shouldn\u0027t be needed after my refactoring.",
+      "range": {
+        "startLine": 46,
+        "startChar": 0,
+        "endLine": 50,
+        "endChar": 1
+      },
+      "revId": "6eaba3c1ce3982591ba7402d7f802dd26ac5755b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5740767e_72b90dc9",
+        "filename": "MODULE.bazel",
+        "patchSetId": 8
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2026-02-13T13:59:05Z",
+      "side": 1,
+      "message": "The plugin name is gerrit-oauth-provider (per BUILD). How should we choose the Bazel module name for this repo (and/or the deps module)? I expected something like: `module(name \u003d \"gerrit-oauth-provider\")`.\n\nIf the module name is intentionally different (e.g. like all Bazel `rules_xxx` prefix), can you clarify the convention and how we avoid name collisions when multiple plugins are built together?",
+      "range": {
+        "startLine": 1,
+        "startChar": 15,
+        "endLine": 1,
+        "endChar": 34
+      },
+      "revId": "6eaba3c1ce3982591ba7402d7f802dd26ac5755b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0a8131e7_2ca2be80",
+        "filename": "MODULE.bazel",
+        "patchSetId": 8
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2026-02-13T13:59:05Z",
+      "side": 1,
+      "message": "6.10 release fixed some issues, should we use it instead?",
+      "range": {
+        "startLine": 3,
+        "startChar": 49,
+        "endLine": 3,
+        "endChar": 54
+      },
+      "revId": "6eaba3c1ce3982591ba7402d7f802dd26ac5755b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2cac79d3_2cf96fed",
+        "filename": "MODULE.bazel",
+        "patchSetId": 8
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2026-02-13T13:59:05Z",
+      "side": 1,
+      "message": "I removed the usage if commons-codec from this plugin in change 552183.",
+      "range": {
+        "startLine": 41,
+        "startChar": 8,
+        "endLine": 41,
+        "endChar": 43
+      },
+      "revId": "6eaba3c1ce3982591ba7402d7f802dd26ac5755b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "83c5f30b_6188b522",
+        "filename": "MODULE.bazel",
+        "patchSetId": 8
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2026-02-13T13:59:05Z",
+      "side": 1,
+      "message": "This does not appear to be needed here and could be removed.\n\nIn Gerrit core it is used to fetch artifacts that are published only in\nGoogle Cloud Storage (e.g. the `prolog` compiler or the `gitiles´\nservlet), neither of which is used by this plugin.",
+      "range": {
+        "startLine": 46,
+        "startChar": 8,
+        "endLine": 46,
+        "endChar": 54
+      },
+      "revId": "6eaba3c1ce3982591ba7402d7f802dd26ac5755b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5e08d73f_e9cedb14",
+        "filename": "MODULE.bazel",
+        "patchSetId": 8
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2026-02-13T13:59:05Z",
+      "side": 1,
+      "message": "Can we rename the lock file from `maven_install.json` to something plugin-specific like `external_plugin_deps_install.json`? It better reflects the owning deps macro and avoids ambiguity when multiple plugins use RJE.",
+      "range": {
+        "startLine": 52,
+        "startChar": 20,
+        "endLine": 52,
+        "endChar": 25
+      },
+      "revId": "6eaba3c1ce3982591ba7402d7f802dd26ac5755b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "afbb3b91_78e64174",
+        "filename": "MODULE.bazel",
+        "patchSetId": 8
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2026-02-13T13:59:05Z",
+      "side": 1,
+      "message": "external_plugin_deps?",
+      "range": {
+        "startLine": 57,
+        "startChar": 17,
+        "endLine": 57,
+        "endChar": 35
+      },
+      "revId": "6eaba3c1ce3982591ba7402d7f802dd26ac5755b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8c6bec82_a15ba3c0",
+        "filename": "src/main/resources/Documentation/build.md",
+        "patchSetId": 8
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2026-02-13T13:59:05Z",
+      "side": 1,
+      "message": "With the recent changes in bazel_plugin that derive the Gerrit Plugin API\ndependency from native.module_name(), Gerrit\u0027s MODULE.bazel must define:\n\n```python\nmodule(name \u003d \"gerrit\")\n```\n\nOtherwise, even with bzlmod enabled, the in-tree build hits the not native.module_name() branch and falls back to using the legacy Plugin API from Maven instead of the Gerrit source tree, which causes the build to fail.\n\nThis module declaration currently appears to be missing in Gerrit core.",
+      "range": {
+        "startLine": 38,
+        "startChar": 0,
+        "endLine": 38,
+        "endChar": 24
+      },
+      "revId": "6eaba3c1ce3982591ba7402d7f802dd26ac5755b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cc8752ce_9d7f10dc",
+        "filename": "src/main/resources/Documentation/build.md",
+        "patchSetId": 8
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2026-02-13T13:59:05Z",
+      "side": 1,
+      "message": "Mention here `MODULE.bazel`?",
+      "range": {
+        "startLine": 51,
+        "startChar": 14,
+        "endLine": 51,
+        "endChar": 20
+      },
+      "revId": "6eaba3c1ce3982591ba7402d7f802dd26ac5755b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "47045e05_dc9ac5f1",
+        "filename": "src/main/resources/Documentation/build.md",
+        "patchSetId": 8
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2026-02-13T13:59:05Z",
+      "side": 1,
+      "message": "If we agree on different Bazel module name, this should be changes here as well).",
+      "revId": "6eaba3c1ce3982591ba7402d7f802dd26ac5755b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4583fc1b_743c2932",
+        "filename": "src/main/resources/Documentation/build.md",
+        "patchSetId": 8
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2026-02-13T13:59:05Z",
+      "side": 1,
+      "message": "Nit: point is not needed.",
+      "range": {
+        "startLine": 57,
+        "startChar": 12,
+        "endLine": 57,
+        "endChar": 14
+      },
+      "revId": "6eaba3c1ce3982591ba7402d7f802dd26ac5755b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "89107736_5ba844d0",
+        "filename": "src/main/resources/Documentation/build.md",
+        "patchSetId": 8
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2026-02-13T13:59:05Z",
+      "side": 1,
+      "message": "Since this plugin has external dependencies, I believe this line should also be added (or with new namespace: `external_plugin_deps`)?\n\nuse_repo(maven, \"gerrit_plugin_deps\")\n\nOr it could be edde generally in MODULE.bazel, similarly to how we add empty `external_plugin_deps()` in `WORKSPACE` file:\n\nFor Example:\n\n```python\nexternal_plugin_deps \u003d use_extension(\"@rules_jvm_external//:extensions.bzl\", \"maven\")\n\nuse_repo(external_plugin_deps, \"external_plugin_deps\")\n```",
+      "revId": "6eaba3c1ce3982591ba7402d7f802dd26ac5755b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d4f343a4_224c139a",
+        "filename": "tools/eclipse/BUILD",
+        "patchSetId": 8
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2026-02-13T13:59:05Z",
+      "side": 1,
+      "message": "This rule was removed in the latest patch set?",
+      "range": {
+        "startLine": 7,
+        "startChar": 9,
+        "endLine": 7,
+        "endChar": 35
+      },
+      "revId": "6eaba3c1ce3982591ba7402d7f802dd26ac5755b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
