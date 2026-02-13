@@ -3,6 +3,40 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "fc1223f2_df594010",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2026-02-13T14:11:05Z",
+      "side": 1,
+      "message": "To test this plugin change against the pending Gerrit change in CI,\nyou can use Zuul-CI cross-repo dependencies by adding:\n\nDepends-On: https://gerrit-review.googlesource.com/c/gerrit/+/xxxxx\n\nSee for example the recent refactoring change implemented in the\n`delete-project` plugin: [1].\n\n[1]: https://gerrit-review.googlesource.com/c/plugins/delete-project/+/549766/2",
+      "revId": "6eaba3c1ce3982591ba7402d7f802dd26ac5755b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ec00c531_5edc1ab9",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2026-02-13T14:11:05Z",
+      "side": 1,
+      "message": "Nit: remove blank line.",
+      "revId": "6eaba3c1ce3982591ba7402d7f802dd26ac5755b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0332f014_0d983ff3",
         "filename": "BUILD",
         "patchSetId": 8
