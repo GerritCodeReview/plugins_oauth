@@ -4,7 +4,7 @@ bazel_dep(name = "rules_jvm_external", version = "6.10")
 bazel_dep(name = "com_googlesource_gerrit_bazlets")
 git_override(
     module_name = "com_googlesource_gerrit_bazlets",
-    commit = "6166cef56705308547a67ab28f61ee1c090915cc",
+    commit = "36fe0395b55eb127f85661c82fd26e4844fab060",
     remote = "https://gerrit.googlesource.com/bazlets",
 )
 
@@ -35,11 +35,13 @@ maven.install(
         # avoid bundling it into the plugin and prevent duplicate classes
         # or version skew at runtime in Gerrit's plugin classloader.
         "commons-io:commons-io",
-        # com.sap.cloud.security.xsuaa:token-client depends on caffeine cache.
-        # Gerrit core already provides caffeine cache, so exclude it here to
-        # avoid bundling it into the plugin and prevent duplicate classes
-        # or version skew at runtime in Gerrit's plugin classloader.
+        # com.sap.cloud.security.xsuaa:token-client depends on caffeine cache,
+        # and slf4j-api. Gerrit core already provides caffeine cache and
+        # slf4j-api, so exclude it here to  avoid bundling it into the plugin
+        # and prevent duplicate classes or version skew at runtime in Gerrit's
+        # plugin classloader.
         "com.github.ben-manes.caffeine:caffeine",
+        "org.slf4j:slf4j-api",
     ],
     fail_if_repin_required = True,
     fail_on_missing_checksum = True,
