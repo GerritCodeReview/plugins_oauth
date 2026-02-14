@@ -3,6 +3,10 @@ load(
     "gerrit_plugin",
     "gerrit_plugin_tests",
 )
+load(
+    "@com_googlesource_gerrit_bazlets//tools:runtime_jars_allowlist.bzl",
+    "runtime_jars_allowlist_test",
+)
 
 gerrit_plugin(
     name = "oauth",
@@ -36,4 +40,11 @@ gerrit_plugin_tests(
         "@external_plugin_deps//:com_github_scribejava_scribejava_apis",
         "@external_plugin_deps//:com_github_scribejava_scribejava_core",
     ],
+)
+
+runtime_jars_allowlist_test(
+    name = "check_oauth_third_party_runtime_jars",
+    allowlist = ":oauth_third_party_runtime_jars.allowlist.txt",
+    hint = ":check_oauth_third_party_runtime_jars_manifest",
+    target = ":oauth__plugin",
 )
