@@ -7,6 +7,14 @@ load(
     "@com_googlesource_gerrit_bazlets//tools:runtime_jars_allowlist.bzl",
     "runtime_jars_allowlist_test",
 )
+load(
+    "@com_googlesource_gerrit_bazlets//tools:runtime_jars_overlap.bzl",
+    "runtime_jars_overlap_test",
+)
+load(
+    "@com_googlesource_gerrit_bazlets//tools:in_gerrit_tree.bzl",
+    "in_gerrit_tree_enabled",
+)
 
 gerrit_plugin(
     name = "oauth",
@@ -47,4 +55,27 @@ runtime_jars_allowlist_test(
     allowlist = ":oauth_third_party_runtime_jars.allowlist.txt",
     hint = ":check_oauth_third_party_runtime_jars_manifest",
     target = ":oauth__plugin",
+)
+
+# Gerrit-tree-only dependency overlap check
+#
+# This test compares the plugin's packaged runtime jars against Gerrit's own
+# runtime jar list (//:release.war.jars.txt). It is meaningful only when the
+# plugin is built inside the Gerrit source tree where that manifest exists.
+#
+# In standalone plugin builds (this repository), the test is marked
+# "incompatible" via target_compatible_with, so `bazel test //...` reports it
+# as SKIPPED rather than failing.
+#
+# In the Gerrit tree, Gerrit's .bazelrc sets:
+#   common --@com_googlesource_gerrit_bazlets//flags:in_gerrit_tree=true
+#
+# To run explicitly in-tree:
+#   bazelisk test //plugins/oauth:oauth_no_overlap_with_gerrit
+runtime_jars_overlap_test(
+    name = "oauth_no_overlap_with_gerrit",
+    against = "//:release.war.jars.txt",
+    hint = "Exclude overlaps via maven.install(excluded_artifacts=[...]) and re-run this test.",
+    target = ":oauth__plugin",
+    target_compatible_with = in_gerrit_tree_enabled(),
 )
