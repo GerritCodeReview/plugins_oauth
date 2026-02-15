@@ -7,6 +7,14 @@ load(
     "@com_googlesource_gerrit_bazlets//tools:runtime_jars_allowlist.bzl",
     "runtime_jars_allowlist_test",
 )
+load(
+    "@com_googlesource_gerrit_bazlets//tools:runtime_jars_overlap.bzl",
+    "runtime_jars_overlap_test",
+)
+load(
+    "@com_googlesource_gerrit_bazlets//tools:in_gerrit_tree.bzl",
+    "in_gerrit_tree_enabled",
+)
 
 gerrit_plugin(
     name = "oauth",
@@ -47,4 +55,12 @@ runtime_jars_allowlist_test(
     allowlist = ":oauth_third_party_runtime_jars.allowlist.txt",
     hint = ":check_oauth_third_party_runtime_jars_manifest",
     target = ":oauth__plugin",
+)
+
+runtime_jars_overlap_test(
+    name = "oauth_no_overlap_with_gerrit",
+    against = "//:release.war.jars.txt",
+    hint = "Exclude overlaps via maven.install(excluded_artifacts=[...]) and re-run this test.",
+    target = ":oauth__plugin",
+    target_compatible_with = in_gerrit_tree_enabled(),
 )

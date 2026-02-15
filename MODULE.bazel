@@ -4,7 +4,7 @@ bazel_dep(name = "rules_jvm_external", version = "6.10")
 bazel_dep(name = "com_googlesource_gerrit_bazlets")
 git_override(
     module_name = "com_googlesource_gerrit_bazlets",
-    commit = "36fe0395b55eb127f85661c82fd26e4844fab060",
+    commit = "202b90383675fd8a759a865a4e0efe75de9a8932",
     remote = "https://gerrit.googlesource.com/bazlets",
 )
 
