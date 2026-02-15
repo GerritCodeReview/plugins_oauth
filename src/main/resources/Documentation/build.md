@@ -118,6 +118,29 @@ Gerrit core in `tools/bzl/plugins.bzl`, and execute:
   ./tools/eclipse/project.py
 ```
 
+### Gerrit-tree-only plugin checks
+
+This plugin contains additional guardrail tests that are meaningful only
+when it is built inside the Gerrit source tree (e.g. checks comparing the
+plugin’s packaged runtime jars against Gerrit’s own runtime classpath).
+
+These tests are intentionally skipped in standalone plugin builds.
+
+To run them, ensure the following is set in Gerrit's `.bazelrc`:
+
+```
+common --@com_googlesource_gerrit_bazlets//flags:in_gerrit_tree=true
+```
+
+Then execute:
+
+```
+bazel test plugins/@PLUGIN@:oauth_no_overlap_with_gerrit
+```
+
+Standalone plugin workspaces should not set this flag. In that case, the
+corresponding targets are marked incompatible and reported as SKIPPED by Bazel.
+
 [Back to @PLUGIN@ documentation index][index]
 
 [index]: index.html
