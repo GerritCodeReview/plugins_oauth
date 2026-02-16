@@ -44,9 +44,12 @@ gerrit_plugin_tests(
     srcs = glob(["src/test/java/**/*.java"]),
     tags = ["oauth"],
     deps = [
+        ":oauth__plugin_test_deps",
         ":oauth__plugin",
         "@oauth_plugin_deps//:com_github_scribejava_scribejava_apis",
         "@oauth_plugin_deps//:com_github_scribejava_scribejava_core",
+        "@sap-java-security//jar",
+        "@sap-java-api//jar",
     ],
 )
 
