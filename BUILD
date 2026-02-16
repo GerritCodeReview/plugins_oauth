@@ -47,8 +47,16 @@ gerrit_plugin_tests(
         ":oauth__plugin",
         "@oauth_plugin_deps//:com_github_scribejava_scribejava_apis",
         "@oauth_plugin_deps//:com_github_scribejava_scribejava_core",
+<<<<<<< PATCH SET (f6511c37396dab74380b1848482aad7a1f1decc7 [SAP IAS] Add tests for SAP IAS)
+        "@oauth_plugin_deps//:com_sap_cloud_security_env",
         "@oauth_plugin_deps//:com_sap_cloud_security_java_api",
         "@oauth_plugin_deps//:com_sap_cloud_security_java_security",
+        "@oauth_plugin_deps//:com_sap_cloud_security_xsuaa_token_client",
+||||||| BASE      (775e886efab693987170bead272f86159ea3fd1a Discovery OAuth: Validate discovery config and add tests)
+=======
+        "@oauth_plugin_deps//:com_sap_cloud_security_java_api",
+        "@oauth_plugin_deps//:com_sap_cloud_security_java_security",
+>>>>>>> BASE      (f255dcc44146a48eb9121133a46dd14cf1b1aeb9 [SAP IAS] Fix thread-safety race condition in PKCE handling)
     ],
 )
 
