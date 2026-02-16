@@ -47,6 +47,8 @@ gerrit_plugin_tests(
         ":oauth__plugin",
         "@oauth_plugin_deps//:com_github_scribejava_scribejava_apis",
         "@oauth_plugin_deps//:com_github_scribejava_scribejava_core",
+        "@sap-java-security//jar",
+        "@sap-java-api//jar",
     ],
 )
 
