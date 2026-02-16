@@ -44,9 +44,21 @@ gerrit_plugin_tests(
     srcs = glob(["src/test/java/**/*.java"]),
     tags = ["oauth"],
     deps = [
+<<<<<<< PATCH SET (b258d294b3cc49b342b72584f1f36cf5a297f7b3 [SAP IAS] Add tests for SAP IAS)
+        ":oauth__plugin_test_deps",
+        "@scribejava-apis//jar",
+        "@scribejava-core//jar",
+        "@sap-java-security//jar",
+        "@sap-java-api//jar",
+||||||| BASE      (62e16441ea3b73c1fe17a70f2f1eb89f0e0b5088 Replace commons-codec Base64 with JDK Base64 for JWT decodin)
+        ":oauth__plugin_test_deps",
+        "@scribejava-apis//jar",
+        "@scribejava-core//jar",
+=======
         ":oauth__plugin",
         "@oauth_plugin_deps//:com_github_scribejava_scribejava_apis",
         "@oauth_plugin_deps//:com_github_scribejava_scribejava_core",
+>>>>>>> BASE      (775e886efab693987170bead272f86159ea3fd1a Discovery OAuth: Validate discovery config and add tests)
     ],
 )
 
