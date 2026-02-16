@@ -4,16 +4,16 @@ load(
     "gerrit_plugin_tests",
 )
 load(
+    "@com_googlesource_gerrit_bazlets//tools:in_gerrit_tree.bzl",
+    "in_gerrit_tree_enabled",
+)
+load(
     "@com_googlesource_gerrit_bazlets//tools:runtime_jars_allowlist.bzl",
     "runtime_jars_allowlist_test",
 )
 load(
     "@com_googlesource_gerrit_bazlets//tools:runtime_jars_overlap.bzl",
     "runtime_jars_overlap_test",
-)
-load(
-    "@com_googlesource_gerrit_bazlets//tools:in_gerrit_tree.bzl",
-    "in_gerrit_tree_enabled",
 )
 
 gerrit_plugin(
@@ -29,13 +29,13 @@ gerrit_plugin(
     ],
     resources = glob(["src/main/resources/**/*"]),
     deps = [
-        "@external_plugin_deps//:com_fasterxml_jackson_core_jackson_databind",
-        "@external_plugin_deps//:com_github_scribejava_scribejava_apis",
-        "@external_plugin_deps//:com_github_scribejava_scribejava_core",
-        "@external_plugin_deps//:com_sap_cloud_security_env",
-        "@external_plugin_deps//:com_sap_cloud_security_java_api",
-        "@external_plugin_deps//:com_sap_cloud_security_java_security",
-        "@external_plugin_deps//:com_sap_cloud_security_xsuaa_token_client",
+        "@oauth_plugin_deps//:com_fasterxml_jackson_core_jackson_databind",
+        "@oauth_plugin_deps//:com_github_scribejava_scribejava_apis",
+        "@oauth_plugin_deps//:com_github_scribejava_scribejava_core",
+        "@oauth_plugin_deps//:com_sap_cloud_security_env",
+        "@oauth_plugin_deps//:com_sap_cloud_security_java_api",
+        "@oauth_plugin_deps//:com_sap_cloud_security_java_security",
+        "@oauth_plugin_deps//:com_sap_cloud_security_xsuaa_token_client",
     ],
 )
 
@@ -45,8 +45,8 @@ gerrit_plugin_tests(
     tags = ["oauth"],
     deps = [
         ":oauth__plugin",
-        "@external_plugin_deps//:com_github_scribejava_scribejava_apis",
-        "@external_plugin_deps//:com_github_scribejava_scribejava_core",
+        "@oauth_plugin_deps//:com_github_scribejava_scribejava_apis",
+        "@oauth_plugin_deps//:com_github_scribejava_scribejava_core",
     ],
 )
 
