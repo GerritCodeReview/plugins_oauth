@@ -40,6 +40,8 @@ junit_tests(
         ":oauth__plugin_test_deps",
         "@scribejava-apis//jar",
         "@scribejava-core//jar",
+        "@sap-java-security//jar",
+        "@sap-java-api//jar",
     ],
 )
 
