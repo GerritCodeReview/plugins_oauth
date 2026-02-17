@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "683b563d_012ec630",
+        "filename": "MODULE.bazel",
+        "patchSetId": 3
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2026-02-17T18:37:30Z",
+      "side": 1,
+      "message": "Thanks for working on this - this Bazlets/Bzlmod runtime separation is exactly what the oauth plugin needs.\n\nIn the oauth plugin series I’m currently preparing: [1], each change depends on specific Bazlets behaviour introduced across this chain (runtime overlap check, packaged runtime JAR allowlist, split shared API deps, etc).\n\nTo keep the oauth series bisectable and ensure every patch builds, I temporarily reference the corresponding Bazlets commit in each dependent change.\n\nOnce this Bazlets series lands, I’ll rebase the oauth changes and collapse the Bazlets bumps to a single update.\n\nFor now I intend to keep the per-change Bazlets updates in oauth until this work is merged.\n\n[1]: https://gerrit-review.googlesource.com/c/plugins/oauth/+/552744",
+      "revId": "8affe28bb319d1994a994a1216dcf89d76b6014e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
