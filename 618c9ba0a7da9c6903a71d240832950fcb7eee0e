@@ -3,11 +3,11 @@
     "zuul-check:plugins_oauth": {
       "state": "FAILED",
       "message": "Change failed",
-      "url": "https://ci.gerritcodereview.com/t/gerrit/buildset/65e58d5a1af64f0594ffdf9b1db98628",
-      "started": "2026-02-18T00:00:25Z",
-      "finished": "2026-02-18T00:00:25Z",
+      "url": "https://ci.gerritcodereview.com/t/gerrit/buildset/4b944a1082e94ef5b0f054b572f01f95",
+      "started": "2026-02-18T00:00:27Z",
+      "finished": "2026-02-18T00:00:27Z",
       "created": "2026-02-13T20:50:15Z",
-      "updated": "2026-02-18T00:00:25Z"
+      "updated": "2026-02-18T00:00:27Z"
     }
   }
 }
