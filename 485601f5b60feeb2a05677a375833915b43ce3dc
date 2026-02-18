@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1b4d6043_4412dbcb",
+        "filename": "MODULE.bazel",
+        "patchSetId": 1
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1065256
+      },
+      "writtenOn": "2026-02-18T09:45:22Z",
+      "side": 1,
+      "message": "+1 for using `_`.\nI also considered `_deps` but in the other cases it was always used, if the dependencies were dependencies of the prefix in the name. This is not the case here, since these are not the deps of the Gerrit API.",
+      "parentUuid": "ac0f510a_f4633c8a",
+      "range": {
+        "startLine": 23,
+        "startChar": 12,
+        "endLine": 23,
+        "endChar": 32
+      },
+      "revId": "485601f5b60feeb2a05677a375833915b43ce3dc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "27a6a084_2590f1f0",
         "filename": "MODULE.bazel",
         "patchSetId": 1
