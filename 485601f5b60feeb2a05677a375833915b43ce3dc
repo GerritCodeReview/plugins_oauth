@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ac0f510a_f4633c8a",
+        "filename": "MODULE.bazel",
+        "patchSetId": 1
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2026-02-18T08:44:42Z",
+      "side": 1,
+      "message": "Good point.\n\nJust use consequently `_` and `deps` suffix: `gerrit_plugin_api_deps`?",
+      "parentUuid": "1c178a2a_e7fed575",
+      "range": {
+        "startLine": 23,
+        "startChar": 12,
+        "endLine": 23,
+        "endChar": 32
+      },
+      "revId": "485601f5b60feeb2a05677a375833915b43ce3dc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "27a6a084_2590f1f0",
         "filename": "MODULE.bazel",
         "patchSetId": 1
