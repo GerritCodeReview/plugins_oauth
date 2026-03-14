@@ -77,37 +77,34 @@ source tree, and issue the command:
   ln -s ../../@PLUGIN@ .
 ```
 
-Load the plugin's Bazel module by adding the following lines to
-Gerrit's root module:
+Then link the plugin's module fragment into Gerrit's `plugins`
+directory, replacing the placeholder file provided by Gerrit.
+This fragment exposes the plugin's Bazel module and its external
+dependencies to the Gerrit root module when building in-tree.
 
 ```
-bazel_dep(name = "gerrit-plugin-oauth")
-local_path_override(
-    module_name = "gerrit-plugin-oauth",
-    path = "./plugins/oauth",
-)
+  cd gerrit/plugins
+  rm external_plugin_deps.MODULE.bazel
+  ln -s @PLUGIN@/external_plugin_deps.MODULE.bazel .
 ```
 
-This will make the plugin's external dependencies available for
-the build.
-
-From Gerrit source tree issue the command:
+From the Gerrit source tree run:
 
 ```
   bazel build plugins/@PLUGIN@
 ```
 
-The output is created in
+The output is created in:
 
 ```
   bazel-bin/plugins/@PLUGIN@/@PLUGIN@.jar
 ```
 
-To execute the tests run either one of:
+To execute the tests run either of:
 
 ```
+  bazel test plugins/@PLUGIN@/...
   bazel test --test_tag_filters=@PLUGIN@ //...
-  bazel test plugins/@PLUGIN@:@PLUGIN@_tests
 ```
 
 This project can be imported into the Eclipse IDE.
