@@ -406,6 +406,30 @@
       },
       "revId": "6eaba3c1ce3982591ba7402d7f802dd26ac5755b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8f8f24d1_ac8b2144",
+        "filename": "tools/eclipse/BUILD",
+        "patchSetId": 8
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2026-03-14T11:41:36Z",
+      "side": 1,
+      "message": "This could be restored for standalone plugin builds by keeping `main_classpath_collect` and adding the plugin API deps explicitly, for example:\n\n```python\nclasspath_collector(\n    name \u003d \"main_classpath_collect\",\n    testonly \u003d 1,\n    deps \u003d [\n        \"//:oauth__plugin\",\n        \"@external_plugin_deps//:com_google_gerrit_gerrit_acceptance_framework\",\n        \"@external_plugin_deps//:com_google_gerrit_gerrit_plugin_api\",\n    ],\n)\n```\n\nWithout that rule, Eclipse classpath generation in standalone mode no longer has the Gerrit-provided API jars on its classpath.",
+      "parentUuid": "d4f343a4_224c139a",
+      "range": {
+        "startLine": 7,
+        "startChar": 9,
+        "endLine": 7,
+        "endChar": 35
+      },
+      "revId": "6eaba3c1ce3982591ba7402d7f802dd26ac5755b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
