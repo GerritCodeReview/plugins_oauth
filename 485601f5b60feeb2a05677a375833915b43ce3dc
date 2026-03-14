@@ -96,6 +96,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2258c8f2_d58a8f02",
+        "filename": "MODULE.bazel",
+        "patchSetId": 1
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2026-03-14T15:34:19Z",
+      "side": 1,
+      "message": "This can be done later.",
+      "parentUuid": "aac26ce3_92e2f658",
+      "range": {
+        "startLine": 23,
+        "startChar": 12,
+        "endLine": 23,
+        "endChar": 32
+      },
+      "revId": "485601f5b60feeb2a05677a375833915b43ce3dc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "27a6a084_2590f1f0",
@@ -109,6 +133,30 @@
       "writtenOn": "2026-02-17T18:06:08Z",
       "side": 1,
       "message": "This is now stale and should be removed.",
+      "range": {
+        "startLine": 73,
+        "startChar": 4,
+        "endLine": 76,
+        "endChar": 6
+      },
+      "revId": "485601f5b60feeb2a05677a375833915b43ce3dc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ba743f51_0c424fa8",
+        "filename": "MODULE.bazel",
+        "patchSetId": 1
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2026-03-14T15:34:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "27a6a084_2590f1f0",
       "range": {
         "startLine": 73,
         "startChar": 4,
