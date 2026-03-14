@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "85150e3d_3ec7e15b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2026-03-14T15:28:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fc1223f2_df594010",
+      "revId": "6eaba3c1ce3982591ba7402d7f802dd26ac5755b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ec00c531_5edc1ab9",
@@ -31,6 +49,24 @@
       "writtenOn": "2026-02-13T14:11:05Z",
       "side": 1,
       "message": "Nit: remove blank line.",
+      "revId": "6eaba3c1ce3982591ba7402d7f802dd26ac5755b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "85b324a8_23b7fce1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2026-03-14T15:28:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ec00c531_5edc1ab9",
       "revId": "6eaba3c1ce3982591ba7402d7f802dd26ac5755b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -75,6 +111,48 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cb4cf724_c9c8e80b",
+        "filename": "BUILD",
+        "patchSetId": 8
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2026-03-14T15:28:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0332f014_0d983ff3",
+      "revId": "6eaba3c1ce3982591ba7402d7f802dd26ac5755b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ae5d9525_c04d97ff",
+        "filename": "BUILD",
+        "patchSetId": 8
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2026-03-14T15:28:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "191ac117_b5bb9b24",
+      "range": {
+        "startLine": 46,
+        "startChar": 0,
+        "endLine": 50,
+        "endChar": 1
+      },
+      "revId": "6eaba3c1ce3982591ba7402d7f802dd26ac5755b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5740767e_72b90dc9",
@@ -88,6 +166,30 @@
       "writtenOn": "2026-02-13T13:59:05Z",
       "side": 1,
       "message": "The plugin name is gerrit-oauth-provider (per BUILD). How should we choose the Bazel module name for this repo (and/or the deps module)? I expected something like: `module(name \u003d \"gerrit-oauth-provider\")`.\n\nIf the module name is intentionally different (e.g. like all Bazel `rules_xxx` prefix), can you clarify the convention and how we avoid name collisions when multiple plugins are built together?",
+      "range": {
+        "startLine": 1,
+        "startChar": 15,
+        "endLine": 1,
+        "endChar": 34
+      },
+      "revId": "6eaba3c1ce3982591ba7402d7f802dd26ac5755b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "03bb2740_c358d49e",
+        "filename": "MODULE.bazel",
+        "patchSetId": 8
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2026-03-14T15:28:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5740767e_72b90dc9",
       "range": {
         "startLine": 1,
         "startChar": 15,
@@ -121,6 +223,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7ca9f035_58988ef5",
+        "filename": "MODULE.bazel",
+        "patchSetId": 8
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2026-03-14T15:28:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0a8131e7_2ca2be80",
+      "range": {
+        "startLine": 3,
+        "startChar": 49,
+        "endLine": 3,
+        "endChar": 54
+      },
+      "revId": "6eaba3c1ce3982591ba7402d7f802dd26ac5755b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6a0e99d8_39b577d0",
@@ -134,6 +260,30 @@
       "writtenOn": "2026-02-13T20:49:23Z",
       "side": 1,
       "message": "You don\u0027t need to specify all three Jackson artifacts for dependency resolution.\nrules_jvm_external uses Maven Resolver under the hood and will pull in\njackson-core and jackson-annotations transitively via\njackson-databind.\n\nThe jackson-databind module declares explicit dependencies on both:\n\nPackage also depends on jackson-core and jackson-annotations packages,\nbut when using build tools like Maven or Gradle, dependencies are\nautomatically included.\n\nSee: [1].\n\nNote that in Bazel it may still make sense to list them explicitly in\nmaven_install.artifacts if they need to be referenced directly as\n@external_deps// labels.\n\nYou can check that with bazel query command, see: [2].\n\n[1]: https://github.com/FasterXML/jackson-databind\n[2]: \nhttps://paste.opendev.org/show/bdHGP8rGv3Rqey8UfMkK/",
+      "range": {
+        "startLine": 30,
+        "startChar": 0,
+        "endLine": 32,
+        "endChar": 70
+      },
+      "revId": "6eaba3c1ce3982591ba7402d7f802dd26ac5755b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0d4d1192_cb719b0e",
+        "filename": "MODULE.bazel",
+        "patchSetId": 8
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2026-03-14T15:28:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6a0e99d8_39b577d0",
       "range": {
         "startLine": 30,
         "startChar": 0,
@@ -167,6 +317,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d9cdf94b_6cb8dac4",
+        "filename": "MODULE.bazel",
+        "patchSetId": 8
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2026-03-14T15:28:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3e7651a8_f46bd7e9",
+      "range": {
+        "startLine": 33,
+        "startChar": 8,
+        "endLine": 34,
+        "endChar": 67
+      },
+      "revId": "6eaba3c1ce3982591ba7402d7f802dd26ac5755b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "da3b4a26_91369bd0",
@@ -180,6 +354,30 @@
       "writtenOn": "2026-02-13T20:49:23Z",
       "side": 1,
       "message": "Same here and \"org.json:json\". Top level target is: \"com.sap.cloud.security:java-security\".\n\n```\njava-security\n  -\u003e token-client\n     -\u003e org.json:json\n```",
+      "range": {
+        "startLine": 37,
+        "startChar": 0,
+        "endLine": 40,
+        "endChar": 73
+      },
+      "revId": "6eaba3c1ce3982591ba7402d7f802dd26ac5755b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d3f0bd58_a1074610",
+        "filename": "MODULE.bazel",
+        "patchSetId": 8
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2026-03-14T15:28:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "da3b4a26_91369bd0",
       "range": {
         "startLine": 37,
         "startChar": 0,
@@ -213,6 +411,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "952e6c66_560938d1",
+        "filename": "MODULE.bazel",
+        "patchSetId": 8
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2026-03-14T15:28:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2cac79d3_2cf96fed",
+      "range": {
+        "startLine": 41,
+        "startChar": 8,
+        "endLine": 41,
+        "endChar": 43
+      },
+      "revId": "6eaba3c1ce3982591ba7402d7f802dd26ac5755b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "83c5f30b_6188b522",
@@ -226,6 +448,30 @@
       "writtenOn": "2026-02-13T13:59:05Z",
       "side": 1,
       "message": "This does not appear to be needed here and could be removed.\n\nIn Gerrit core it is used to fetch artifacts that are published only in\nGoogle Cloud Storage (e.g. the `prolog` compiler or the `gitiles´\nservlet), neither of which is used by this plugin.",
+      "range": {
+        "startLine": 46,
+        "startChar": 8,
+        "endLine": 46,
+        "endChar": 54
+      },
+      "revId": "6eaba3c1ce3982591ba7402d7f802dd26ac5755b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6a77b5d0_e4aeb4da",
+        "filename": "MODULE.bazel",
+        "patchSetId": 8
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2026-03-14T15:28:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "83c5f30b_6188b522",
       "range": {
         "startLine": 46,
         "startChar": 8,
@@ -259,6 +505,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a9a1137e_34f02fe1",
+        "filename": "MODULE.bazel",
+        "patchSetId": 8
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2026-03-14T15:28:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5e08d73f_e9cedb14",
+      "range": {
+        "startLine": 52,
+        "startChar": 20,
+        "endLine": 52,
+        "endChar": 25
+      },
+      "revId": "6eaba3c1ce3982591ba7402d7f802dd26ac5755b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "afbb3b91_78e64174",
@@ -272,6 +542,30 @@
       "writtenOn": "2026-02-13T13:59:05Z",
       "side": 1,
       "message": "external_plugin_deps?",
+      "range": {
+        "startLine": 57,
+        "startChar": 17,
+        "endLine": 57,
+        "endChar": 35
+      },
+      "revId": "6eaba3c1ce3982591ba7402d7f802dd26ac5755b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2ac829ea_f757c41e",
+        "filename": "MODULE.bazel",
+        "patchSetId": 8
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2026-03-14T15:28:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "afbb3b91_78e64174",
       "range": {
         "startLine": 57,
         "startChar": 17,
@@ -305,6 +599,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1bfdbe81_834f6ae5",
+        "filename": "src/main/resources/Documentation/build.md",
+        "patchSetId": 8
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2026-03-14T15:28:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8c6bec82_a15ba3c0",
+      "range": {
+        "startLine": 38,
+        "startChar": 0,
+        "endLine": 38,
+        "endChar": 24
+      },
+      "revId": "6eaba3c1ce3982591ba7402d7f802dd26ac5755b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cc8752ce_9d7f10dc",
@@ -318,6 +636,30 @@
       "writtenOn": "2026-02-13T13:59:05Z",
       "side": 1,
       "message": "Mention here `MODULE.bazel`?",
+      "range": {
+        "startLine": 51,
+        "startChar": 14,
+        "endLine": 51,
+        "endChar": 20
+      },
+      "revId": "6eaba3c1ce3982591ba7402d7f802dd26ac5755b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c46b431a_15469a23",
+        "filename": "src/main/resources/Documentation/build.md",
+        "patchSetId": 8
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2026-03-14T15:28:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cc8752ce_9d7f10dc",
       "range": {
         "startLine": 51,
         "startChar": 14,
@@ -345,6 +687,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ea3fc67f_526daeef",
+        "filename": "src/main/resources/Documentation/build.md",
+        "patchSetId": 8
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2026-03-14T15:28:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "47045e05_dc9ac5f1",
+      "revId": "6eaba3c1ce3982591ba7402d7f802dd26ac5755b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4583fc1b_743c2932",
@@ -368,6 +728,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "781cdcde_6d9564d2",
+        "filename": "src/main/resources/Documentation/build.md",
+        "patchSetId": 8
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2026-03-14T15:28:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4583fc1b_743c2932",
+      "range": {
+        "startLine": 57,
+        "startChar": 12,
+        "endLine": 57,
+        "endChar": 14
+      },
+      "revId": "6eaba3c1ce3982591ba7402d7f802dd26ac5755b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "89107736_5ba844d0",
@@ -381,6 +765,24 @@
       "writtenOn": "2026-02-13T13:59:05Z",
       "side": 1,
       "message": "Since this plugin has external dependencies, I believe this line should also be added (or with new namespace: `external_plugin_deps`)?\n\nuse_repo(maven, \"gerrit_plugin_deps\")\n\nOr it could be edde generally in MODULE.bazel, similarly to how we add empty `external_plugin_deps()` in `WORKSPACE` file:\n\nFor Example:\n\n```python\nexternal_plugin_deps \u003d use_extension(\"@rules_jvm_external//:extensions.bzl\", \"maven\")\n\nuse_repo(external_plugin_deps, \"external_plugin_deps\")\n```",
+      "revId": "6eaba3c1ce3982591ba7402d7f802dd26ac5755b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a7fbd252_7749414f",
+        "filename": "src/main/resources/Documentation/build.md",
+        "patchSetId": 8
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2026-03-14T15:28:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "89107736_5ba844d0",
       "revId": "6eaba3c1ce3982591ba7402d7f802dd26ac5755b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -422,6 +824,30 @@
       "side": 1,
       "message": "This could be restored for standalone plugin builds by keeping `main_classpath_collect` and adding the plugin API deps explicitly, for example:\n\n```python\nclasspath_collector(\n    name \u003d \"main_classpath_collect\",\n    testonly \u003d 1,\n    deps \u003d [\n        \"//:oauth__plugin\",\n        \"@external_plugin_deps//:com_google_gerrit_gerrit_acceptance_framework\",\n        \"@external_plugin_deps//:com_google_gerrit_gerrit_plugin_api\",\n    ],\n)\n```\n\nWithout that rule, Eclipse classpath generation in standalone mode no longer has the Gerrit-provided API jars on its classpath.",
       "parentUuid": "d4f343a4_224c139a",
+      "range": {
+        "startLine": 7,
+        "startChar": 9,
+        "endLine": 7,
+        "endChar": 35
+      },
+      "revId": "6eaba3c1ce3982591ba7402d7f802dd26ac5755b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5fee8af1_c6e227ba",
+        "filename": "tools/eclipse/BUILD",
+        "patchSetId": 8
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2026-03-14T15:28:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8f8f24d1_ac8b2144",
       "range": {
         "startLine": 7,
         "startChar": 9,
