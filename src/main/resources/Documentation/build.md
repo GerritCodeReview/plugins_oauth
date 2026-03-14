@@ -77,15 +77,11 @@ source tree, and issue the command:
   ln -s ../../@PLUGIN@ .
 ```
 
-Load the plugin's Bazel module by adding the following lines to
-Gerrit's root module:
+Append the plugin's module fragment to Gerrit's top-level `MODULE.bazel`:
 
 ```
-bazel_dep(name = "gerrit-plugin-oauth")
-local_path_override(
-    module_name = "gerrit-plugin-oauth",
-    path = "./plugins/oauth",
-)
+  cd gerrit
+  cat plugins/@PLUGIN@/external_plugin_deps.MODULE.bazel >> MODULE.bazel
 ```
 
 This will make the plugin's external dependencies available for
@@ -106,6 +102,7 @@ The output is created in
 To execute the tests run either one of:
 
 ```
+  bazel test plugins/@PLUGIN@/...
   bazel test --test_tag_filters=@PLUGIN@ //...
   bazel test plugins/@PLUGIN@:@PLUGIN@_tests
 ```
