@@ -1,6 +1,6 @@
 load("//tools/bzl:maven_jar.bzl", "maven_jar")
 
-def external_plugin_deps(omit_commons_codec = True):
+def external_plugin_deps():
     JACKSON_VERS = "2.10.2"
     SCRIBEJAVA_VERS = "6.9.0"
     SAP_SECURITY_VERS = "3.6.0"
@@ -57,9 +57,3 @@ def external_plugin_deps(omit_commons_codec = True):
         artifact = "org.json:json:20250517",
         sha1 = "d67181bbd819ccceb929b580a4e2fcb0c8b17cd8",
     )
-    if not omit_commons_codec:
-        maven_jar(
-            name = "commons-codec",
-            artifact = "commons-codec:commons-codec:1.4",
-            sha1 = "4216af16d38465bbab0f3dff8efa14204f7a399a",
-        )
