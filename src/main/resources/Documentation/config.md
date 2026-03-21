@@ -94,6 +94,11 @@ appended with provider suffix: e.g. `-google-oauth` or `-github-oauth`:
     link-to-existing-gerrit-accounts = false
     enable-pkce = false
     enable-resource-owner-password-flow = false
+
+  [plugin "@PLUGIN@-discovery-oauth"]
+    root-url = "<root url>" # The part before /.well-known. for example, https://kanidm.example.com/oauth2/openid/gerrit
+    client-id = "<client-id>"
+    client-secret = "<client-secret>"
 ```
 
 When one from the sections above is omitted, OAuth SSO is used.
@@ -368,3 +373,17 @@ If login via password for git over HTTp or REST API should still be possible, th
 Owner Password Flow can optionally be enabled. This OAuth flow lets the user send the password
 and Gerrit will use that password to authenticate the user against the OAuth server. Note, that
 this flow is not considered to be secure. To enable this flow set `enable-resource-owner-password-flow = true`.
+
+### OpenID Connect Discovery 1.0 URL
+
+This supports the [OpenID Connect Discovery 1.0 spec](https://openid.net/specs/openid-connect-discovery-1_0.html), which is supported by many providers.
+
+The discovery URL looks like below:
+
+  https://idm.example.com/oauth2/openid/:client_id:/.well-known/openid-configuration
+
+Set the `root-url` to the part before `/.well-known` of the discovery URL of your OAuth server, and client-id and client-secret in gerrit.config.
+
+Tested providers:
+- Authelia
+- Kanidm
