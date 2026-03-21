@@ -264,6 +264,8 @@ public class InitOAuth implements InitStep {
       checkRootUrl(
           discoveryOAuthProviderSection.string(
               "Discovery Root URL(before `/.well-known')", ROOT_URL, null));
+      discoveryOAuthProviderSection.string(
+          "Enable PKCE for Discovery OAuth provider?", ENABLE_PKCE, "false");
     }
   }
 
