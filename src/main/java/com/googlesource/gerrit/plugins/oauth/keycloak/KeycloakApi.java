@@ -23,6 +23,7 @@ import com.github.scribejava.core.oauth2.clientauthentication.RequestBodyAuthent
 public class KeycloakApi extends DefaultApi20 {
 
   private static final String AUTHORIZE_URL = "%s/realms/%s/protocol/openid-connect/auth";
+  private static final String USERINFO_URL = "%s/realms/%s/protocol/openid-connect/userinfo";
 
   private final String rootUrl;
   private final String realm;
@@ -40,6 +41,10 @@ public class KeycloakApi extends DefaultApi20 {
   @Override
   public String getAccessTokenEndpoint() {
     return String.format("%s/realms/%s/protocol/openid-connect/token", rootUrl, realm);
+  }
+
+  public String getUserInfoEndpoint() {
+    return String.format(USERINFO_URL, rootUrl, realm);
   }
 
   @Override

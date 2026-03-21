@@ -19,6 +19,9 @@ import static com.googlesource.gerrit.plugins.oauth.JsonUtil.isNull;
 import static com.googlesource.gerrit.plugins.oauth.JsonUtil.jwtPayloadJson;
 
 import com.github.scribejava.core.model.OAuth2AccessToken;
+import com.github.scribejava.core.model.OAuthRequest;
+import com.github.scribejava.core.model.Response;
+import com.github.scribejava.core.model.Verb;
 import com.github.scribejava.core.oauth.OAuth20Service;
 import com.google.gerrit.extensions.auth.oauth.OAuthServiceProvider;
 import com.google.gerrit.extensions.auth.oauth.OAuthToken;
@@ -38,10 +41,9 @@ import com.googlesource.gerrit.plugins.oauth.OAuthServiceProviderExternalIdSchem
 import com.googlesource.gerrit.plugins.oauth.OAuthUserInfoWithGroups;
 import java.io.IOException;
 import java.net.URI;
-import java.util.concurrent.ExecutionException;
 import java.util.HashSet;
 import java.util.Set;
-import org.apache.commons.codec.binary.Base64;
+import java.util.concurrent.ExecutionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -55,6 +57,7 @@ public class KeycloakOAuthService implements OAuthServiceProvider {
   private final String serviceName;
   private final boolean usePreferredUsername;
   private final String extIdScheme;
+  private final String userInfoEndpoint;
 
   private final KeycloakGroupCache keycloakGroupCache;
 
@@ -73,10 +76,10 @@ public class KeycloakOAuthService implements OAuthServiceProvider {
     serviceName = cfg.getString(InitOAuth.SERVICE_NAME, "Keycloak OAuth2");
     usePreferredUsername = cfg.getBoolean(InitOAuth.USE_PREFERRED_USERNAME, true);
 
-    service =
-        oauth20ServiceFactory.create(PROVIDER_NAME, new KeycloakApi(rootUrl, realm), "openid");
-
+    KeycloakApi keycloakApi = new KeycloakApi(rootUrl, realm);
+    service = oauth20ServiceFactory.create(PROVIDER_NAME, keycloakApi, "openid");
     extIdScheme = OAuthServiceProviderExternalIdScheme.create(PROVIDER_NAME);
+    userInfoEndpoint = keycloakApi.getUserInfoEndpoint();
   }
 
   @Override
@@ -132,14 +135,31 @@ public class KeycloakOAuthService implements OAuthServiceProvider {
     return extIdScheme;
   }
 
+  public OAuthUserInfo getUserInfoFromBearerToken(String bearerToken) throws IOException {
+    OAuthRequest request = new OAuthRequest(Verb.GET, userInfoEndpoint);
+    service.signRequest(new OAuth2AccessToken(bearerToken), request);
+    Response response;
+    try {
+      response = service.execute(request);
+    } catch (InterruptedException | ExecutionException e) {
+      throw new IOException("Failed to validate token via Keycloak userinfo endpoint", e);
+    }
+    if (response.getCode() != 200) {
+      throw new IOException("Token validation failed: HTTP " + response.getCode());
+    }
+    JsonObject userInfoObject = JSON.newGson().fromJson(response.getBody(), JsonObject.class);
+    return parseUserClaims(userInfoObject);
+  }
+
   private OAuthUserInfo getUserInfo(JsonElement tokenJson) throws IOException {
     JsonObject tokenObject = tokenJson.getAsJsonObject();
     JsonElement id_token = tokenObject.get("id_token");
     String jwt = jwtPayloadJson(id_token.getAsString());
+    JsonObject claimObject = JSON.newGson().fromJson(jwt, JsonElement.class).getAsJsonObject();
+    return parseUserClaims(claimObject);
+  }
 
-    JsonElement claimJson = JSON.newGson().fromJson(jwt, JsonElement.class);
-
-    JsonObject claimObject = claimJson.getAsJsonObject();
+  private OAuthUserInfo parseUserClaims(JsonObject claimObject) throws IOException {
     if (log.isDebugEnabled()) {
       log.debug("Claim object: {}", claimObject);
     }
@@ -156,10 +176,7 @@ public class KeycloakOAuthService implements OAuthServiceProvider {
       throw new IOException("Response doesn't contain name field");
     }
     String usernameAsString = usernameElement.getAsString();
-    String username = null;
-    if (usePreferredUsername) {
-      username = usernameAsString;
-    }
+    String username = usePreferredUsername ? usernameAsString : null;
     String externalId = extIdScheme + ":" + usernameAsString;
     String email = emailElement.getAsString();
     String name = nameElement.getAsString();
@@ -167,31 +184,16 @@ public class KeycloakOAuthService implements OAuthServiceProvider {
     Set<String> groups = new HashSet<>();
     JsonElement groupsElement = claimObject.get("groups");
     if (groupsElement != null && groupsElement.isJsonArray()) {
-        groupsElement.getAsJsonArray().forEach(element -> {
-            String group = element.getAsString();
-            groups.add(group);
-        });
+      groupsElement.getAsJsonArray().forEach(element -> groups.add(element.getAsString()));
     } else {
-        log.warn("No groups claim found in JWT for user {}", usernameAsString);
+      log.warn("No groups claim found in response for user {}", usernameAsString);
     }
     keycloakGroupCache.put(externalId, groups);
     if (log.isDebugEnabled()) {
       log.debug("User {} has groups {}", usernameAsString, groups);
     }
 
-    return new OAuthUserInfoWithGroups(
-        externalId /*externalId*/,
-        username /*username*/,
-        email /*email*/,
-        name /*displayName*/,
-        null /*claimedIdentity*/,
-        groups);
+    return new OAuthUserInfoWithGroups(externalId, username, email, name, null, groups);
   }
 
-  private String parseJwt(String input) throws UnsupportedEncodingException {
-    String[] parts = input.split("\\.");
-    Preconditions.checkState(parts.length == 3);
-    Preconditions.checkNotNull(parts[1]);
-    return new String(Base64.decodeBase64(parts[1]), StandardCharsets.UTF_8.name());
-  }
 }
