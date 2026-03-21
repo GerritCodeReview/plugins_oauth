@@ -18,14 +18,20 @@ import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.github.scribejava.core.builder.api.DefaultApi20;
 import com.github.scribejava.core.model.OAuthRequest;
 import com.github.scribejava.core.model.Response;
+import com.github.scribejava.core.oauth.AccessTokenRequestParams;
+import com.github.scribejava.core.oauth.AuthorizationUrlBuilder;
 import com.github.scribejava.core.oauth.OAuth20Service;
+import com.github.scribejava.core.pkce.PKCE;
+import com.google.gerrit.extensions.auth.oauth.OAuthAuthorizationInfo;
 import com.google.gerrit.extensions.auth.oauth.OAuthToken;
 import com.google.gerrit.extensions.auth.oauth.OAuthUserInfo;
+import com.google.gerrit.extensions.auth.oauth.OAuthVerifier;
 import com.google.gerrit.server.config.PluginConfig;
 import com.google.inject.ProvisionException;
 import com.googlesource.gerrit.plugins.oauth.InitOAuth;
@@ -36,6 +42,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
@@ -114,6 +121,53 @@ public class DiscoveryOAuthServiceTest {
     when(mockHttpResponse.getCode()).thenReturn(HttpServletResponse.SC_OK);
     when(mockHttpResponse.getBody()).thenReturn(body);
     when(mockScribeOAuthService.execute(any(OAuthRequest.class))).thenReturn(mockHttpResponse);
+  }
+
+  @Test
+  public void getAuthorizationInfo_withPkceEnabled_shouldReturnVerifier() throws Exception {
+    when(mockPluginConfig.getBoolean("enable-pkce", false)).thenReturn(true);
+
+    AuthorizationUrlBuilder mockUrlBuilder = mock(AuthorizationUrlBuilder.class);
+    when(mockScribeOAuthService.createAuthorizationUrlBuilder()).thenReturn(mockUrlBuilder);
+
+    PKCE pkce = new PKCE();
+    pkce.setCodeVerifier("secret-verifier-123");
+
+    when(mockUrlBuilder.getPkce()).thenReturn(pkce);
+    when(mockUrlBuilder.build()).thenReturn("https://id.example.com/auth?code_challenge=xyz");
+
+    DiscoveryOAuthService service = createServiceWithDiscoveryDoc(validDiscoveryDocument());
+    OAuthAuthorizationInfo info = service.getAuthorizationInfo();
+
+    assertThat(info.getAuthorizationUrl()).contains("code_challenge=xyz");
+    assertThat(info.getPkceVerifier()).isEqualTo("secret-verifier-123");
+  }
+
+  @Test
+  public void getAccessToken_withPkce_shouldPassVerifierToScribe() throws Exception {
+    when(mockPluginConfig.getBoolean("enable-pkce", false)).thenReturn(true);
+    DiscoveryOAuthService service = createServiceWithDiscoveryDoc(validDiscoveryDocument());
+
+    OAuthVerifier verifier = new OAuthVerifier("auth-code");
+    String secureVerifierFromSession = "session-secret-verifier";
+
+    com.github.scribejava.core.model.OAuth2AccessToken mockToken =
+        mock(com.github.scribejava.core.model.OAuth2AccessToken.class);
+
+    when(mockToken.getAccessToken()).thenReturn("dummy-access-token");
+    when(mockToken.getTokenType()).thenReturn("Bearer");
+    when(mockToken.getRawResponse()).thenReturn("raw-json-response");
+
+    when(mockScribeOAuthService.getAccessToken(any(AccessTokenRequestParams.class)))
+        .thenReturn(mockToken);
+
+    service.getAccessToken(verifier, secureVerifierFromSession);
+
+    ArgumentCaptor<AccessTokenRequestParams> captor =
+        ArgumentCaptor.forClass(AccessTokenRequestParams.class);
+    verify(mockScribeOAuthService).getAccessToken(captor.capture());
+
+    assertThat(captor.getValue().getPkceCodeVerifier()).isEqualTo(secureVerifierFromSession);
   }
 
   @Test

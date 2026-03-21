@@ -22,8 +22,12 @@ import com.github.scribejava.core.model.OAuth2AccessToken;
 import com.github.scribejava.core.model.OAuthRequest;
 import com.github.scribejava.core.model.Response;
 import com.github.scribejava.core.model.Verb;
+import com.github.scribejava.core.oauth.AccessTokenRequestParams;
+import com.github.scribejava.core.oauth.AuthorizationUrlBuilder;
 import com.github.scribejava.core.oauth.OAuth20Service;
 import com.google.common.io.CharStreams;
+import com.google.gerrit.common.Nullable;
+import com.google.gerrit.extensions.auth.oauth.OAuthAuthorizationInfo;
 import com.google.gerrit.extensions.auth.oauth.OAuthServiceProvider;
 import com.google.gerrit.extensions.auth.oauth.OAuthToken;
 import com.google.gerrit.extensions.auth.oauth.OAuthUserInfo;
@@ -60,6 +64,7 @@ public class DiscoveryOAuthService implements OAuthServiceProvider {
   private static final String SCOPE = "openid profile email";
 
   private final OAuth20Service service;
+  private final boolean enablePKCE;
   private final String extIdScheme;
   private final String userinfoEndpoint;
 
@@ -74,6 +79,7 @@ public class DiscoveryOAuthService implements OAuthServiceProvider {
     DiscoveryOpenIdConnect discovery = fetchDiscoveryDocument(rootUri.toString() + WELL_KNOWN_PATH);
     validateDiscoveryDocument(discovery);
 
+    enablePKCE = cfg.getBoolean(InitOAuth.ENABLE_PKCE, false);
     service =
         oauth20ServiceFactory.create(
             PROVIDER_NAME,
@@ -252,9 +258,13 @@ public class DiscoveryOAuthService implements OAuthServiceProvider {
   }
 
   @Override
-  public OAuthToken getAccessToken(OAuthVerifier rv) {
+  public OAuthToken getAccessToken(OAuthVerifier rv, @Nullable String codeVerifier) {
     try {
-      OAuth2AccessToken accessToken = service.getAccessToken(rv.getValue());
+      AccessTokenRequestParams reqParams = AccessTokenRequestParams.create(rv.getValue());
+      if (enablePKCE && codeVerifier != null) {
+        reqParams.pkceCodeVerifier(codeVerifier);
+      }
+      OAuth2AccessToken accessToken = service.getAccessToken(reqParams);
       return new OAuthToken(
           accessToken.getAccessToken(), accessToken.getTokenType(), accessToken.getRawResponse());
     } catch (InterruptedException | ExecutionException | IOException e) {
@@ -265,8 +275,16 @@ public class DiscoveryOAuthService implements OAuthServiceProvider {
   }
 
   @Override
-  public String getAuthorizationUrl() {
-    return service.getAuthorizationUrl();
+  public OAuthAuthorizationInfo getAuthorizationInfo() {
+    AuthorizationUrlBuilder builder = service.createAuthorizationUrlBuilder();
+    String verifier = null;
+
+    if (enablePKCE) {
+      builder.initPKCE();
+      verifier = builder.getPkce().getCodeVerifier();
+    }
+
+    return new OAuthAuthorizationInfo(builder.build(), verifier);
   }
 
   @Override
