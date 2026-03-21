@@ -32,9 +32,11 @@ import com.googlesource.gerrit.plugins.oauth.sap.SAPIasModule;
 import com.googlesource.gerrit.plugins.oauth.sap.SAPIasOAuthLoginProvider;
 import com.googlesource.gerrit.plugins.oauth.keycloak.KeycloakModule;
 import com.googlesource.gerrit.plugins.oauth.keycloak.KeycloakOAuthLoginProvider;
+import com.google.inject.ProvisionException;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import org.eclipse.jgit.lib.Config;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -92,21 +94,31 @@ public class Module extends AbstractModule {
   }
 
   private void bindOAuthProviders() {
+    List<Map.Entry<Class<? extends OAuthLoginProvider>, AbstractModule>> gitHttpProviders =
+        configuredProviders.stream()
+            .flatMap(p -> tryGetSupportedLoginProvider(p).stream())
+            .collect(Collectors.toList());
+
+    if (gitHttpProviders.size() > 1) {
+      String names =
+          gitHttpProviders.stream()
+              .map(e -> getLoginProviderName(e.getKey()))
+              .collect(Collectors.joining(", "));
+      throw new ProvisionException(
+          "Multiple OAuth providers configured that support Git-over-HTTP ("
+              + names
+              + "). Exactly one provider that supports Git-over-HTTP must be configured.");
+    }
+
     Class<? extends OAuthLoginProvider> boundLoginProviderClass = null;
-    for (String configuredProvider : configuredProviders) {
-      Optional<Map.Entry<Class<? extends OAuthLoginProvider>, AbstractModule>> providerEntry =
-          tryGetSupportedLoginProvider(configuredProvider);
-      if (providerEntry.isPresent()) {
-        Class<? extends OAuthLoginProvider> loginProviderClass = providerEntry.get().getKey();
-        AbstractModule oAuthModule = providerEntry.get().getValue();
-        if (installOAuthModule(loginProviderClass, oAuthModule)) {
-          boundLoginProviderClass = loginProviderClass;
-        }
-        break;
-      } else {
-        log.warn("Skipping unsupported configured provider {}", configuredProvider);
+    if (!gitHttpProviders.isEmpty()) {
+      Map.Entry<Class<? extends OAuthLoginProvider>, AbstractModule> entry =
+          gitHttpProviders.get(0);
+      if (installOAuthModule(entry.getKey(), entry.getValue())) {
+        boundLoginProviderClass = entry.getKey();
       }
     }
+
     if (boundLoginProviderClass != null) {
       bindGroupBackendIfSupported(boundLoginProviderClass);
     } else {
