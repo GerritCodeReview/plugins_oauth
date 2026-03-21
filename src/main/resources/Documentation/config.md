@@ -99,6 +99,7 @@ appended with provider suffix: e.g. `-google-oauth` or `-github-oauth`:
     root-url = "<root url>" # The part before /.well-known. for example, https://kanidm.example.com/oauth2/openid/gerrit
     client-id = "<client-id>"
     client-secret = "<client-secret>"
+    enable-pkce = false
 ```
 
 When one from the sections above is omitted, OAuth SSO is used.
@@ -383,6 +384,8 @@ The discovery URL looks like below:
   https://idm.example.com/oauth2/openid/:client_id:/.well-known/openid-configuration
 
 Set the `root-url` to the part before `/.well-known` of the discovery URL of your OAuth server, and client-id and client-secret in gerrit.config.
+
+You can optionally set `enable-pkce = true` if you want to use PKCE as part of the authorization workflow during login.
 
 Tested providers:
 - Authelia
