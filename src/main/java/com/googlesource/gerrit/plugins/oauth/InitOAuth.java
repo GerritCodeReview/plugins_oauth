@@ -262,6 +262,8 @@ public class InitOAuth implements InitStep {
             "Use Well Known Discovery OAuth provider for Gerrit login?");
     if (configureDiscoveryOAuthProvider && configureOAuth(discoveryOAuthProviderSection)) {
       checkRootUrl(discoveryOAuthProviderSection.string("Discovery Root URL(before `/.well-known')", ROOT_URL, null));
+      discoveryOAuthProviderSection.string(
+          "Enable PKCE for Discovery OAuth provider?", ENABLE_PKCE, "false");
     }
   }
 
