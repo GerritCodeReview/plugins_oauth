@@ -15,11 +15,21 @@
 package com.googlesource.gerrit.plugins.oauth.keycloak;
 
 import static com.google.common.truth.Truth.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import com.google.common.collect.ImmutableSet;
+import com.google.gerrit.entities.Account;
 import com.google.gerrit.extensions.auth.oauth.OAuthUserInfo;
+import com.google.gerrit.server.account.externalids.ExternalId;
+import com.google.gerrit.server.account.externalids.ExternalIdKeyFactory;
+import com.google.gerrit.server.account.externalids.ExternalIds;
+import com.google.gerrit.server.config.PluginConfig;
+import com.googlesource.gerrit.plugins.oauth.OAuthPluginConfigFactory;
 import com.googlesource.gerrit.plugins.oauth.OAuthUserInfoWithGroups;
 import java.io.IOException;
+import java.util.Optional;
 import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
@@ -41,18 +51,28 @@ public class KeycloakOAuthLoginProviderTest {
   private static final String EXTERNAL_ID = "keycloak-oauth:" + USERNAME;
 
   @Mock private KeycloakOAuthService mockService;
+  @Mock private OAuthPluginConfigFactory mockConfigFactory;
+  @Mock private PluginConfig mockPluginConfig;
+  @Mock private ExternalIds mockExternalIds;
+  @Mock private ExternalIdKeyFactory mockExternalIdKeyFactory;
 
   private OAuthUserInfo validUserInfo;
 
   @Before
   public void setUp() {
+    when(mockConfigFactory.create(KeycloakOAuthService.PROVIDER_NAME)).thenReturn(mockPluginConfig);
+    when(mockPluginConfig.getBoolean("enable-resource-owner-password-credentials", false))
+        .thenReturn(false);
     validUserInfo =
         new OAuthUserInfoWithGroups(EXTERNAL_ID, USERNAME, EMAIL, DISPLAY_NAME, null, Set.of());
   }
 
   private KeycloakOAuthLoginProvider createProvider() {
-    return new KeycloakOAuthLoginProvider(mockService);
+    return new KeycloakOAuthLoginProvider(
+        mockService, mockConfigFactory, mockExternalIds, mockExternalIdKeyFactory);
   }
+
+  // --- Access token (JWT) path ---
 
   @Test
   public void login_withValidAccessToken_succeeds() throws Exception {
@@ -93,12 +113,38 @@ public class KeycloakOAuthLoginProviderTest {
   }
 
   @Test(expected = IOException.class)
-  public void login_withNonJwtSecret_throwsIOException() throws Exception {
+  public void login_withNonJwtSecret_ropcDisabled_throwsIOException() throws Exception {
     createProvider().login(USERNAME, PLAIN_PASSWORD);
   }
 
   @Test(expected = IOException.class)
   public void login_withNullSecret_throwsIOException() throws Exception {
     createProvider().login(USERNAME, null);
+  }
+
+  // --- ROPC (Resource Owner Password Credentials) path ---
+
+  @Test(expected = IOException.class)
+  public void login_ropcEnabled_userNotFound_throwsIOException() throws Exception {
+    when(mockPluginConfig.getBoolean("enable-resource-owner-password-credentials", false))
+        .thenReturn(true);
+    when(mockExternalIds.get(any())).thenReturn(Optional.empty());
+
+    createProvider().login(USERNAME, PLAIN_PASSWORD);
+  }
+
+  @Test(expected = IOException.class)
+  public void login_ropcEnabled_noKeycloakExtId_throwsIOException() throws Exception {
+    when(mockPluginConfig.getBoolean("enable-resource-owner-password-credentials", false))
+        .thenReturn(true);
+
+    Account.Id accountId = Account.id(1001);
+    ExternalId usernameExtId = mock(ExternalId.class);
+    when(usernameExtId.accountId()).thenReturn(accountId);
+    when(mockExternalIds.get(any())).thenReturn(Optional.of(usernameExtId));
+    // Account exists but has no Keycloak-scheme external ID
+    when(mockExternalIds.byAccount(accountId)).thenReturn(ImmutableSet.of());
+
+    createProvider().login(USERNAME, PLAIN_PASSWORD);
   }
 }
