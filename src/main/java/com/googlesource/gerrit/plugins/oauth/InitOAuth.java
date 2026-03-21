@@ -31,6 +31,7 @@ import com.googlesource.gerrit.plugins.oauth.bitbucket.BitbucketOAuthService;
 import com.googlesource.gerrit.plugins.oauth.cas.CasOAuthService;
 import com.googlesource.gerrit.plugins.oauth.cognito.CognitoOAuthService;
 import com.googlesource.gerrit.plugins.oauth.dex.DexOAuthService;
+import com.googlesource.gerrit.plugins.oauth.discovery.DiscoveryOAuthService;
 import com.googlesource.gerrit.plugins.oauth.facebook.FacebookOAuthService;
 import com.googlesource.gerrit.plugins.oauth.github.GitHubOAuthService;
 import com.googlesource.gerrit.plugins.oauth.gitlab.GitLabOAuthService;
@@ -81,6 +82,7 @@ public class InitOAuth implements InitStep {
   private final Section auth0OAuthProviderSection;
   private final Section authentikOAuthProviderSection;
   private final Section cognitoOAuthProviderSection;
+  private final Section discoveryOAuthProviderSection;
 
   @Inject
   InitOAuth(ConsoleUI ui, Section.Factory sections, @PluginName String pluginName) {
@@ -105,6 +107,7 @@ public class InitOAuth implements InitStep {
     this.authentikOAuthProviderSection = getConfigSection(AuthentikOAuthService.class);
     this.cognitoOAuthProviderSection = getConfigSection(CognitoOAuthService.class);
     this.iasOAuthProviderSection = getConfigSection(SAPIasOAuthService.class);
+    this.discoveryOAuthProviderSection = getConfigSection(DiscoveryOAuthService.class);
   }
 
   @Override
@@ -251,6 +254,16 @@ public class InitOAuth implements InitStep {
       checkRootUrl(cognitoOAuthProviderSection.string("Cognito Root URL", ROOT_URL, null));
       cognitoOAuthProviderSection.string(
           "Link to existing Gerrit LDAP accounts?", LINK_TO_EXISTING_GERRIT_ACCOUNT, "false");
+    }
+
+    boolean configureDiscoveryOAuthProvider =
+        ui.yesno(
+            isConfigured(discoveryOAuthProviderSection),
+            "Use Well Known Discovery OAuth provider for Gerrit login?");
+    if (configureDiscoveryOAuthProvider && configureOAuth(discoveryOAuthProviderSection)) {
+      checkRootUrl(
+          discoveryOAuthProviderSection.string(
+              "Discovery Root URL(before `/.well-known')", ROOT_URL, null));
     }
   }
 
