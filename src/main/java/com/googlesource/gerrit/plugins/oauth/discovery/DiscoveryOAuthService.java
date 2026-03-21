@@ -22,6 +22,8 @@ import com.github.scribejava.core.model.OAuth2AccessToken;
 import com.github.scribejava.core.model.OAuthRequest;
 import com.github.scribejava.core.model.Response;
 import com.github.scribejava.core.model.Verb;
+import com.github.scribejava.core.oauth.AccessTokenRequestParams;
+import com.github.scribejava.core.oauth.AuthorizationUrlBuilder;
 import com.github.scribejava.core.oauth.OAuth20Service;
 import com.google.gerrit.extensions.auth.oauth.OAuthServiceProvider;
 import com.google.gerrit.extensions.auth.oauth.OAuthToken;
@@ -55,6 +57,8 @@ public class DiscoveryOAuthService implements OAuthServiceProvider {
   public static final String PROVIDER_NAME = "discovery";
   private static final String WELL_KNOWN_PATH = "/.well-known/openid-configuration";
   private final OAuth20Service service;
+  private final boolean enablePKCE;
+  private final AuthorizationUrlBuilder authorizationUrlBuilder;
   private final String extIdScheme;
   private final String userinfoEndpoint;
 
@@ -86,11 +90,13 @@ public class DiscoveryOAuthService implements OAuthServiceProvider {
 
     this.userinfoEndpoint = discovery.getUserinfoEndpoint();
 
+    enablePKCE = cfg.getBoolean(InitOAuth.ENABLE_PKCE, false);
     service =
         oauth20ServiceFactory.create(
             PROVIDER_NAME,
             new DiscoveryApi(discovery.getAuthorizationEndpoint(), discovery.getTokenEndpoint()),
             "openid profile email");
+    authorizationUrlBuilder = service.createAuthorizationUrlBuilder();
     extIdScheme = OAuthServiceProviderExternalIdScheme.create(PROVIDER_NAME);
   }
 
@@ -175,7 +181,11 @@ public class DiscoveryOAuthService implements OAuthServiceProvider {
   @Override
   public OAuthToken getAccessToken(OAuthVerifier rv) {
     try {
-      OAuth2AccessToken accessToken = service.getAccessToken(rv.getValue());
+      AccessTokenRequestParams reqParams = AccessTokenRequestParams.create(rv.getValue());
+      if (enablePKCE) {
+        reqParams.pkceCodeVerifier(authorizationUrlBuilder.getPkce().getCodeVerifier());
+      }
+      OAuth2AccessToken accessToken = service.getAccessToken(reqParams);
       return new OAuthToken(
           accessToken.getAccessToken(), accessToken.getTokenType(), accessToken.getRawResponse());
     } catch (InterruptedException | ExecutionException | IOException e) {
@@ -187,7 +197,10 @@ public class DiscoveryOAuthService implements OAuthServiceProvider {
 
   @Override
   public String getAuthorizationUrl() {
-    return service.getAuthorizationUrl();
+    if (enablePKCE) {
+      authorizationUrlBuilder.initPKCE();
+    }
+    return authorizationUrlBuilder.build();
   }
 
   @Override
