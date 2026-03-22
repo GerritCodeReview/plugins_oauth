@@ -145,6 +145,16 @@ public class KeycloakOAuthService implements OAuthServiceProvider {
     return serviceName;
   }
 
+  public OAuth2AccessToken getAccessToken(String email, String password) {
+    try {
+      return service.getAccessTokenPasswordGrant(email, password);
+    } catch (InterruptedException | ExecutionException | IOException e) {
+      String msg = "Cannot retrieve access token";
+      log.error(msg, e);
+      throw new RuntimeException(msg, e);
+    }
+  }
+
   public String getExternalIdScheme() {
     return extIdScheme;
   }
