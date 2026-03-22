@@ -1,4 +1,4 @@
-// Copyright (C) 2023 The Android Open Source Project
+// Copyright (C) 2026 The Android Open Source Project
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,14 +17,16 @@ package com.googlesource.gerrit.plugins.oauth.discovery;
 import com.github.scribejava.core.builder.api.DefaultApi20;
 import com.github.scribejava.core.oauth2.clientauthentication.ClientAuthentication;
 import com.github.scribejava.core.oauth2.clientauthentication.HttpBasicAuthenticationScheme;
+import java.util.Objects;
 
 public class DiscoveryApi extends DefaultApi20 {
   private final String authorizationUrl;
   private final String accessTokenEndpoint;
 
   public DiscoveryApi(String authorizationUrl, String accessTokenEndpoint) {
-    this.authorizationUrl = authorizationUrl;
-    this.accessTokenEndpoint = accessTokenEndpoint;
+    this.authorizationUrl = Objects.requireNonNull(authorizationUrl, "auth url is required");
+    this.accessTokenEndpoint =
+        Objects.requireNonNull(accessTokenEndpoint, "token endpoint is required");
   }
 
   @Override
