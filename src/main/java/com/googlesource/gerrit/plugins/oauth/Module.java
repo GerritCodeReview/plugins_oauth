@@ -22,12 +22,23 @@ import com.google.gerrit.server.account.externalids.ExternalIdFactory;
 import com.google.gerrit.server.config.GerritServerConfig;
 import com.google.inject.AbstractModule;
 import com.google.inject.Inject;
+import com.google.inject.ProvisionException;
 import com.googlesource.gerrit.plugins.oauth.sap.SAPIasModule;
 import com.googlesource.gerrit.plugins.oauth.sap.SAPIasOAuthLoginProvider;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 import org.eclipse.jgit.lib.Config;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Module extends AbstractModule {
+  private static final Logger log = LoggerFactory.getLogger(Module.class);
+  private static final Map<Class<? extends OAuthLoginProvider>, AbstractModule>
+      SUPPORTED_LOGIN_PROVIDERS =
+          Map.of(SAPIasOAuthLoginProvider.class, new SAPIasModule());
+
   private final List<String> configuredProviders;
   private final ExternalIdFactory externalIdFactory;
   private final String pluginName;
@@ -39,7 +50,7 @@ public class Module extends AbstractModule {
       @PluginName String pluginName,
       ExternalIdFactory externalIdFactory) {
     this.pluginName = pluginName;
-    configuredProviders =
+    this.configuredProviders =
         config.getSubsections("plugin").stream()
             .filter(s -> s.startsWith(pluginName))
             .map(s -> s.substring(pluginName.length() + 1, s.length() - 6))
@@ -52,6 +63,11 @@ public class Module extends AbstractModule {
   protected void configure() {
     bind(OAuthPluginConfigFactory.class);
     bind(OAuth20ServiceFactory.class);
+    bindExternalIdCreators();
+    bindOAuthProviders();
+  }
+
+  private void bindExternalIdCreators() {
     for (String provider : configuredProviders) {
       bind(AccountExternalIdCreator.class)
           .annotatedWith(Exports.named(provider))
@@ -59,25 +75,65 @@ public class Module extends AbstractModule {
               new OAuthExternalIdCreator(
                   externalIdFactory, OAuthServiceProviderExternalIdScheme.create(provider)));
     }
+  }
 
-    boolean oAuthModuleInstalled =
-        installOAuthModule(SAPIasOAuthLoginProvider.class, new SAPIasModule());
+  private void bindOAuthProviders() {
+    List<Map.Entry<Class<? extends OAuthLoginProvider>, AbstractModule>> gitHttpProviders =
+        configuredProviders.stream()
+            .flatMap(p -> tryGetSupportedLoginProvider(p).stream())
+            .collect(Collectors.toList());
 
-    if (!oAuthModuleInstalled) {
-      bind(OAuthLoginProvider.class)
-          .annotatedWith(Exports.named(pluginName))
-          .to(DisabledOAuthLoginProvider.class);
+    if (gitHttpProviders.size() > 1) {
+      String names =
+          gitHttpProviders.stream()
+              .map(e -> getLoginProviderName(e.getKey()))
+              .collect(Collectors.joining(", "));
+      throw new ProvisionException(
+          "Multiple OAuth providers configured that support Git-over-HTTP ("
+              + names
+              + "). Exactly one provider that supports Git-over-HTTP must be configured.");
+    }
+
+    if (!gitHttpProviders.isEmpty()) {
+      Map.Entry<Class<? extends OAuthLoginProvider>, AbstractModule> entry =
+          gitHttpProviders.get(0);
+      if (!installOAuthModule(entry.getKey(), entry.getValue())) {
+        bindDisabledOAuthProvider();
+      }
+    } else {
+      bindDisabledOAuthProvider();
     }
   }
 
   private boolean installOAuthModule(
       Class<? extends OAuthLoginProvider> loginClass, AbstractModule oAuthModule) {
-    String loginProviderName = loginClass.getAnnotation(OAuthServiceProviderConfig.class).name();
+    String loginProviderName = getLoginProviderName(loginClass);
     String cfgSuffix = OAuthPluginConfigFactory.getConfigSuffix(loginProviderName);
     if (cfg.getString("plugin", pluginName + cfgSuffix, InitOAuth.CLIENT_ID) != null) {
       install(oAuthModule);
+      log.info("Successfully bound {} as OAuth login provider", loginProviderName);
       return true;
     }
+    log.error("Failed to bind {} as OAuth login provider", loginProviderName);
     return false;
+  }
+
+  private void bindDisabledOAuthProvider() {
+    bind(OAuthLoginProvider.class)
+        .annotatedWith(Exports.named(pluginName))
+        .to(DisabledOAuthLoginProvider.class);
+    log.warn("Successfully bound the disabled OAuth login provider");
+  }
+
+  private static String getLoginProviderName(
+      Class<? extends OAuthLoginProvider> loginProviderClass) {
+    return loginProviderClass.getAnnotation(OAuthServiceProviderConfig.class).name();
+  }
+
+  private static Optional<Map.Entry<Class<? extends OAuthLoginProvider>, AbstractModule>>
+      tryGetSupportedLoginProvider(String providerName) {
+    return SUPPORTED_LOGIN_PROVIDERS.entrySet().stream()
+        .filter(entry -> getLoginProviderName(entry.getKey()).equals(providerName))
+        .findFirst();
   }
 }
