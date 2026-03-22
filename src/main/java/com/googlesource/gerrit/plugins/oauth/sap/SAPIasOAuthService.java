@@ -21,6 +21,8 @@ import com.github.scribejava.core.oauth.AccessTokenRequestParams;
 import com.github.scribejava.core.oauth.AuthorizationUrlBuilder;
 import com.github.scribejava.core.oauth.OAuth20Service;
 import com.google.common.base.Strings;
+import com.google.gerrit.common.Nullable;
+import com.google.gerrit.extensions.auth.oauth.OAuthAuthorizationInfo;
 import com.google.gerrit.extensions.auth.oauth.OAuthServiceProvider;
 import com.google.gerrit.extensions.auth.oauth.OAuthToken;
 import com.google.gerrit.extensions.auth.oauth.OAuthUserInfo;
@@ -56,7 +58,6 @@ public class SAPIasOAuthService implements OAuthServiceProvider {
   private final String rootUrl;
   private final boolean linkExistingGerrit;
   private final boolean enablePKCE;
-  private final AuthorizationUrlBuilder authorizationUrlBuilder;
   private final String extIdScheme;
   private final CombiningValidator<Token> tokenValidator;
 
@@ -76,7 +77,6 @@ public class SAPIasOAuthService implements OAuthServiceProvider {
     service =
         oauth20ServiceFactory.create(PROVIDER_NAME, new SAPIasApi(rootUrl), "openid profile email");
 
-    authorizationUrlBuilder = service.createAuthorizationUrlBuilder();
     extIdScheme = OAuthServiceProviderExternalIdScheme.create(PROVIDER_NAME);
     this.tokenValidator = tokenValidator;
   }
@@ -110,11 +110,11 @@ public class SAPIasOAuthService implements OAuthServiceProvider {
   }
 
   @Override
-  public OAuthToken getAccessToken(OAuthVerifier rv) {
+  public OAuthToken getAccessToken(OAuthVerifier rv, @Nullable String codeVerifier) {
     try {
       AccessTokenRequestParams reqParams = AccessTokenRequestParams.create(rv.getValue());
-      if (enablePKCE) {
-        reqParams.pkceCodeVerifier(authorizationUrlBuilder.getPkce().getCodeVerifier());
+      if (enablePKCE && codeVerifier != null) {
+        reqParams.pkceCodeVerifier(codeVerifier);
       }
       OAuth2AccessToken accessToken = service.getAccessToken(reqParams);
       return new OAuthToken(
@@ -127,11 +127,14 @@ public class SAPIasOAuthService implements OAuthServiceProvider {
   }
 
   @Override
-  public String getAuthorizationUrl() {
+  public OAuthAuthorizationInfo getAuthorizationInfo() {
+    AuthorizationUrlBuilder builder = service.createAuthorizationUrlBuilder();
+    String pkceVerifier = null;
     if (enablePKCE) {
-      authorizationUrlBuilder.initPKCE();
+      builder.initPKCE();
+      pkceVerifier = builder.getPkce().getCodeVerifier();
     }
-    return authorizationUrlBuilder.build();
+    return new OAuthAuthorizationInfo(builder.build(), pkceVerifier);
   }
 
   public OAuth2AccessToken getAccessToken(String externalUsername, String password) {
