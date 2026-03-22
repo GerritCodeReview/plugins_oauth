@@ -17,12 +17,18 @@ package com.googlesource.gerrit.plugins.oauth;
 import com.google.gerrit.extensions.annotations.Exports;
 import com.google.gerrit.extensions.annotations.PluginName;
 import com.google.gerrit.extensions.auth.oauth.OAuthLoginProvider;
+import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.gerrit.server.account.AccountExternalIdCreator;
+import com.google.gerrit.server.account.GroupBackend;
 import com.google.gerrit.server.account.externalids.ExternalIdFactory;
 import com.google.gerrit.server.config.GerritServerConfig;
 import com.google.inject.AbstractModule;
 import com.google.inject.Inject;
 import com.google.inject.ProvisionException;
+import com.googlesource.gerrit.plugins.oauth.keycloak.KeycloakGroupBackend;
+import com.googlesource.gerrit.plugins.oauth.keycloak.KeycloakGroupCache;
+import com.googlesource.gerrit.plugins.oauth.keycloak.KeycloakModule;
+import com.googlesource.gerrit.plugins.oauth.keycloak.KeycloakOAuthLoginProvider;
 import com.googlesource.gerrit.plugins.oauth.sap.SAPIasModule;
 import com.googlesource.gerrit.plugins.oauth.sap.SAPIasOAuthLoginProvider;
 import java.util.List;
@@ -37,7 +43,15 @@ public class Module extends AbstractModule {
   private static final Logger log = LoggerFactory.getLogger(Module.class);
   private static final Map<Class<? extends OAuthLoginProvider>, AbstractModule>
       SUPPORTED_LOGIN_PROVIDERS =
-          Map.of(SAPIasOAuthLoginProvider.class, new SAPIasModule());
+          Map.of(
+              SAPIasOAuthLoginProvider.class, new SAPIasModule(),
+              KeycloakOAuthLoginProvider.class, new KeycloakModule());
+  private static final Map<Class<? extends OAuthLoginProvider>, Class<? extends GroupBackend>>
+      PROVIDER_TO_GROUP_BACKEND =
+          Map.of(KeycloakOAuthLoginProvider.class, KeycloakGroupBackend.class);
+  private static final Map<Class<? extends GroupBackend>, Class<? extends GroupCache>>
+      GROUP_BACKEND_TO_GROUP_CACHE =
+          Map.of(KeycloakGroupBackend.class, KeycloakGroupCache.class);
 
   private final List<String> configuredProviders;
   private final ExternalIdFactory externalIdFactory;
@@ -94,12 +108,17 @@ public class Module extends AbstractModule {
               + "). Exactly one provider that supports Git-over-HTTP must be configured.");
     }
 
+    Class<? extends OAuthLoginProvider> boundLoginProviderClass = null;
     if (!gitHttpProviders.isEmpty()) {
       Map.Entry<Class<? extends OAuthLoginProvider>, AbstractModule> entry =
           gitHttpProviders.get(0);
-      if (!installOAuthModule(entry.getKey(), entry.getValue())) {
-        bindDisabledOAuthProvider();
+      if (installOAuthModule(entry.getKey(), entry.getValue())) {
+        boundLoginProviderClass = entry.getKey();
       }
+    }
+
+    if (boundLoginProviderClass != null) {
+      bindGroupBackendIfSupported(boundLoginProviderClass);
     } else {
       bindDisabledOAuthProvider();
     }
@@ -123,6 +142,36 @@ public class Module extends AbstractModule {
         .annotatedWith(Exports.named(pluginName))
         .to(DisabledOAuthLoginProvider.class);
     log.warn("Successfully bound the disabled OAuth login provider");
+  }
+
+  private void bindGroupBackendIfSupported(
+      Class<? extends OAuthLoginProvider> loginProviderClass) {
+    Class<? extends GroupBackend> groupBackendClass =
+        PROVIDER_TO_GROUP_BACKEND.get(loginProviderClass);
+    if (groupBackendClass == null) {
+      log.warn(
+          "No supported group backend for OAuth login provider {}",
+          getLoginProviderName(loginProviderClass));
+      return;
+    }
+    bindGroupCache(groupBackendClass);
+    DynamicSet.bind(binder(), GroupBackend.class).to(groupBackendClass);
+    log.info(
+        "Successfully bound {} as group backend for {}",
+        groupBackendClass.getSimpleName(),
+        getLoginProviderName(loginProviderClass));
+  }
+
+  private void bindGroupCache(Class<? extends GroupBackend> groupBackendClass) {
+    Class<? extends GroupCache> groupCacheClass =
+        GROUP_BACKEND_TO_GROUP_CACHE.get(groupBackendClass);
+    if (groupCacheClass == null) {
+      log.error(
+          "No supported group cache found for group backend {}",
+          groupBackendClass.getSimpleName());
+      return;
+    }
+    bind(groupCacheClass).asEagerSingleton();
   }
 
   private static String getLoginProviderName(

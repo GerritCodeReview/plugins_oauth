@@ -42,6 +42,10 @@ public class KeycloakApi extends DefaultApi20 {
     return String.format("%s/realms/%s/protocol/openid-connect/token", rootUrl, realm);
   }
 
+  public String getUserInfoEndpoint() {
+    return String.format("%s/realms/%s/protocol/openid-connect/userinfo", rootUrl, realm);
+  }
+
   @Override
   public BearerSignature getBearerSignature() {
     return BearerSignatureURIQueryParameter.instance();
