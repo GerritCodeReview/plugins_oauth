@@ -1,5 +1,29 @@
 {
-  "comments": [],
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "400eff40_8bac5417",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/sap/SAPIasOAuthService.java",
+        "patchSetId": 14
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2026-03-22T20:17:02Z",
+      "side": 1,
+      "message": "During review of PKCE support for new `DiscoveryOAuthService`, see change 564242, that referenced SAP IAS implementation in the commit message:\n\n\n```\nAdd PKCE support according to the same change for SAP IAS.\n```\n\nI noticed a significant concurrency issue in the implementation of `SAPIasOAuthService` that will cause authentication failures under concurrent load.\n\nIn Gerrit, these service classes are singletons. The current patch stores `authorizationUrlBuilder` as a final field in the singleton and calls `initPKCE()` on it inside `getAuthorizationUrl()`. Because this builder is shared across all users, one user\u0027s login request will overwrite the `code_verifier` for another user currently in the middle of a login flow.\n\n**The Failure Scenario**\n\n* User A starts login -\u003e initPKCE() sets Verifier X.\n* User B starts login -\u003e initPKCE() overwrites with Verifier Y.\n* User A returns from the IDP -\u003e getAccessToken() fetches the shared Verifier Y (instead of X).\n\n**Result**\n\nThe IDP rejects the token exchange because the verifier doesn\u0027t match the original challenge.\n\n**Resolution**\n\nTo fix this, the `code_verifier` must be treated as request-scoped data. I have addressed this in two steps:\n\n* change 564343: Extends the Gerrit Extension API to support PKCE by introducing `OAuthAuthorizationInfo`. This allows Gerrit to safely persist the verifier in the user\u0027s session. Note that `OAuthSession` has request scope.\n* change 564344: Updates the SAPIAS provider to use this new API, removing the shared state from the singleton and ensuring thread-safe authentication. I also added the tests, which were completely missing.",
+      "range": {
+        "startLine": 58,
+        "startChar": 2,
+        "endLine": 58,
+        "endChar": 64
+      },
+      "revId": "e4ebdd73ac27b671764743dd3c051b100d8da7a2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ],
   "submitRequirementResults": [
     {
       "submitRequirement": {
