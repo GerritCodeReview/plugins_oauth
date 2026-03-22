@@ -1,4 +1,4 @@
-// Copyright (C) 2023 The Android Open Source Project
+// Copyright (C) 2026 The Android Open Source Project
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
 package com.googlesource.gerrit.plugins.oauth.discovery;
 
 import static com.google.gerrit.json.OutputFormat.JSON;
-import static javax.servlet.http.HttpServletResponse.SC_OK;
+import static com.googlesource.gerrit.plugins.oauth.JsonUtil.asString;
 import static org.slf4j.LoggerFactory.getLogger;
 
 import com.github.scribejava.core.model.OAuth2AccessToken;
@@ -23,6 +23,7 @@ import com.github.scribejava.core.model.OAuthRequest;
 import com.github.scribejava.core.model.Response;
 import com.github.scribejava.core.model.Verb;
 import com.github.scribejava.core.oauth.OAuth20Service;
+import com.google.common.io.CharStreams;
 import com.google.gerrit.extensions.auth.oauth.OAuthServiceProvider;
 import com.google.gerrit.extensions.auth.oauth.OAuthToken;
 import com.google.gerrit.extensions.auth.oauth.OAuthUserInfo;
@@ -38,22 +39,26 @@ import com.googlesource.gerrit.plugins.oauth.OAuth20ServiceFactory;
 import com.googlesource.gerrit.plugins.oauth.OAuthPluginConfigFactory;
 import com.googlesource.gerrit.plugins.oauth.OAuthServiceProviderConfig;
 import com.googlesource.gerrit.plugins.oauth.OAuthServiceProviderExternalIdScheme;
-import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.ExecutionException;
+import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 
 @Singleton
 @OAuthServiceProviderConfig(name = DiscoveryOAuthService.PROVIDER_NAME)
 public class DiscoveryOAuthService implements OAuthServiceProvider {
   private static final Logger log = getLogger(DiscoveryOAuthService.class);
+
   public static final String PROVIDER_NAME = "discovery";
   private static final String WELL_KNOWN_PATH = "/.well-known/openid-configuration";
+  private static final String SCOPE = "openid profile email";
+
   private final OAuth20Service service;
   private final String extIdScheme;
   private final String userinfoEndpoint;
@@ -64,61 +69,130 @@ public class DiscoveryOAuthService implements OAuthServiceProvider {
     PluginConfig cfg = cfgFactory.create(PROVIDER_NAME);
 
     String rootUrl = cfg.getString(InitOAuth.ROOT_URL);
-    if (!URI.create(rootUrl).isAbsolute()) {
-      throw new ProvisionException("Root URL must be absolute URL");
-    }
+    URI rootUri = validateRootUrl(rootUrl);
 
-    // Fetch the entrypoint from discovery
-    DiscoveryOpenIdConnect discovery = fetchDiscoveryDocument(rootUrl + WELL_KNOWN_PATH);
-
-    // Log the discovery endpoints for debugging
-    log.info(
-        "OpenID Connect discovery:\n"
-            + "issuer: {}\n"
-            + "endpoint:\n"
-            + "\tauth: {}\n"
-            + "\ttoken: {}\n"
-            + "\tuser_info: {}",
-        discovery.getIssuer(),
-        discovery.getAuthorizationEndpoint(),
-        discovery.getTokenEndpoint(),
-        discovery.getUserinfoEndpoint());
-
-    this.userinfoEndpoint = discovery.getUserinfoEndpoint();
+    DiscoveryOpenIdConnect discovery = fetchDiscoveryDocument(rootUri.toString() + WELL_KNOWN_PATH);
+    validateDiscoveryDocument(discovery);
 
     service =
         oauth20ServiceFactory.create(
             PROVIDER_NAME,
             new DiscoveryApi(discovery.getAuthorizationEndpoint(), discovery.getTokenEndpoint()),
-            "openid profile email");
+            SCOPE);
+
+    userinfoEndpoint = discovery.getUserinfoEndpoint();
     extIdScheme = OAuthServiceProviderExternalIdScheme.create(PROVIDER_NAME);
+
+    if (log.isDebugEnabled()) {
+      log.debug("OAuth2: discovery issuer={}", discovery.getIssuer());
+      log.debug("OAuth2: authorization endpoint={}", discovery.getAuthorizationEndpoint());
+      log.debug("OAuth2: token endpoint={}", discovery.getTokenEndpoint());
+      log.debug("OAuth2: userinfo endpoint={}", discovery.getUserinfoEndpoint());
+    }
   }
 
-  private DiscoveryOpenIdConnect fetchDiscoveryDocument(String discoveryUrl) {
+  private URI validateRootUrl(String rootUrl) {
+    return validateUrl(
+        rootUrl,
+        true,
+        "Root URL must be configured",
+        "Root URL is not a valid URL",
+        "Root URL must be absolute URL",
+        "Root URL must use http or https");
+  }
+
+  private void validateDiscoveryDocument(DiscoveryOpenIdConnect discovery) {
+    if (discovery == null) {
+      throw new ProvisionException("Discovery document is empty");
+    }
+
+    validateUrlField("issuer", discovery.getIssuer());
+    validateUrlField("authorization_endpoint", discovery.getAuthorizationEndpoint());
+    validateUrlField("token_endpoint", discovery.getTokenEndpoint());
+    validateUrlField("userinfo_endpoint", discovery.getUserinfoEndpoint());
+  }
+
+  private void validateUrlField(String fieldName, String value) {
+    validateUrl(
+        value,
+        false,
+        "Discovery document missing required field: " + fieldName,
+        "Discovery document field is not a valid URL: " + fieldName,
+        "Discovery document field must be absolute URL: " + fieldName,
+        "Discovery document field must use http or https: " + fieldName);
+  }
+
+  private static URI validateUrl(
+      String value,
+      boolean trimTrailingSlashes,
+      String missingMessage,
+      String invalidMessage,
+      String absoluteMessage,
+      String schemeMessage) {
+    if (value == null || value.isBlank()) {
+      throw new ProvisionException(missingMessage);
+    }
+
+    String normalizedValue = trimTrailingSlashes ? value.replaceAll("/+$", "") : value;
+
+    URI uri;
     try {
-      URL url = new URL(discoveryUrl);
-      HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-      connection.setRequestMethod("GET");
+      uri = URI.create(normalizedValue);
+    } catch (IllegalArgumentException e) {
+      throw new ProvisionException(invalidMessage, e);
+    }
+
+    if (!uri.isAbsolute()) {
+      throw new ProvisionException(absoluteMessage);
+    }
+
+    if (uri.getScheme() == null
+        || (!"http".equalsIgnoreCase(uri.getScheme())
+            && !"https".equalsIgnoreCase(uri.getScheme()))) {
+      throw new ProvisionException(schemeMessage);
+    }
+
+    return uri;
+  }
+
+  DiscoveryOpenIdConnect fetchDiscoveryDocument(String discoveryUrl) {
+    HttpURLConnection connection = null;
+    try {
+      URL url = URI.create(discoveryUrl).toURL();
+      connection = (HttpURLConnection) url.openConnection();
       connection.setConnectTimeout(5000);
       connection.setReadTimeout(5000);
 
       int responseCode = connection.getResponseCode();
-      if (responseCode != SC_OK) {
-        throw new IOException("Failed to fetch discovery document: " + responseCode);
+      String responseBody;
+
+      try (InputStream in =
+          (responseCode >= 200 && responseCode < 300)
+              ? connection.getInputStream()
+              : connection.getErrorStream()) {
+        responseBody =
+            (in == null)
+                ? ""
+                : CharStreams.toString(new InputStreamReader(in, StandardCharsets.UTF_8));
       }
 
-      StringBuilder response = new StringBuilder();
-      try (BufferedReader reader =
-          new BufferedReader(
-              new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8))) {
-        String line;
-        while ((line = reader.readLine()) != null) {
-          response.append(line);
-        }
+      if (responseCode != HttpServletResponse.SC_OK) {
+        log.error(
+            "Failed to fetch OIDC discovery from {}. Status: {}. Response: {}",
+            discoveryUrl,
+            responseCode,
+            responseBody);
+        throw new IOException("HTTP " + responseCode);
       }
-      return JSON.newGson().fromJson(response.toString(), DiscoveryOpenIdConnect.class);
+
+      return JSON.newGson().fromJson(responseBody, DiscoveryOpenIdConnect.class);
     } catch (IOException e) {
-      throw new ProvisionException("Cannot fetch OpenID Connect discovery document", e);
+      throw new ProvisionException(
+          "Cannot fetch OpenID Connect discovery document: " + discoveryUrl, e);
+    } finally {
+      if (connection != null) {
+        connection.disconnect();
+      }
     }
   }
 
@@ -128,41 +202,46 @@ public class DiscoveryOAuthService implements OAuthServiceProvider {
     OAuth2AccessToken t = new OAuth2AccessToken(token.getToken(), token.getRaw());
     service.signRequest(t, request);
 
+    JsonElement userJson = null;
     try (Response response = service.execute(request)) {
-      if (response.getCode() != SC_OK) {
+      if (response.getCode() != HttpServletResponse.SC_OK) {
         throw new IOException(
             String.format(
                 "Status %s (%s) for request %s",
                 response.getCode(), response.getBody(), request.getUrl()));
       }
-      JsonElement userJson = JSON.newGson().fromJson(response.getBody(), JsonElement.class);
+
+      userJson = JSON.newGson().fromJson(response.getBody(), JsonElement.class);
       if (log.isDebugEnabled()) {
         log.debug("User info response: {}", response.getBody());
       }
-      JsonObject jsonObject = userJson.getAsJsonObject();
-      if (jsonObject == null || jsonObject.isJsonNull()) {
-        throw new IOException("Response doesn't contain valid user info: " + jsonObject);
+
+      if (userJson != null && userJson.isJsonObject()) {
+        JsonObject jsonObject = userJson.getAsJsonObject();
+        JsonElement sub = jsonObject.get("sub");
+        if (sub == null || sub.isJsonNull()) {
+          throw new IOException("Response doesn't contain sub field");
+        }
+
+        JsonElement username = getPreferredValue(jsonObject, "preferred_username", "username");
+        JsonElement email = jsonObject.get("email");
+        JsonElement name = getPreferredValue(jsonObject, "name", "display_name");
+
+        return new OAuthUserInfo(
+            extIdScheme + ":" + sub.getAsString(),
+            asString(username),
+            asString(email),
+            asString(name),
+            null);
       }
-
-      // Try to get user info from standard fields
-      JsonElement sub = jsonObject.get("sub");
-      JsonElement username = getPreferredValue(jsonObject, "preferred_username", "username");
-      JsonElement email = jsonObject.get("email");
-      JsonElement name = getPreferredValue(jsonObject, "name", "display_name");
-
-      return new OAuthUserInfo(
-          extIdScheme + ":" + (sub != null ? sub.getAsString() : ""),
-          username != null && !username.isJsonNull() ? username.getAsString() : null,
-          email != null && !email.isJsonNull() ? email.getAsString() : null,
-          name != null && !name.isJsonNull() ? name.getAsString() : null,
-          null);
     } catch (ExecutionException | InterruptedException e) {
       throw new RuntimeException("Cannot retrieve user info resource", e);
     }
+
+    throw new IOException(String.format("Invalid JSON '%s': not a JSON Object", userJson));
   }
 
-  // Get the prefered one from multiple possible vaules
-  private JsonElement getPreferredValue(JsonObject obj, String... keys) {
+  private static JsonElement getPreferredValue(JsonObject obj, String... keys) {
     for (String key : keys) {
       JsonElement value = obj.get(key);
       if (value != null && !value.isJsonNull()) {
