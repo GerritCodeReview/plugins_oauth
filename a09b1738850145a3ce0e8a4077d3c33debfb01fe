@@ -36,6 +36,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "49e15683_7b685efc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2026-03-23T09:37:53Z",
+      "side": 1,
+      "message": "This failure is due to a missing Bazel module dependency introduced by recent changes (e.g. “Adapt to Gerrit\u0027s use of bazel modules”).\n\nThis series depends now on a change that hasn\u0027t landed yet change 564343, apply it locally before building.\n\nTo build successfully, you need to use Gerrit at HEAD, or at least change 553005.\n\nWithout this, the `com_googlesource_gerrit_bazlets` repository cannot be resolved and new `external_plugin_deps.MODUILE.bazel` fragment wouldn\u0027t be included.",
+      "parentUuid": "6632281a_0152e006",
+      "revId": "a09b1738850145a3ce0e8a4077d3c33debfb01fe",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1220dbc7_d566729b",
