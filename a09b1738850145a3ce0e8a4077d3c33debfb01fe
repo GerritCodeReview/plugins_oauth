@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1220dbc7_d566729b",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/InitOAuth.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 266,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2026-03-23T07:53:21Z",
+      "side": 1,
+      "message": "This line too long and should be wrapped.",
+      "range": {
+        "startLine": 263,
+        "startChar": 4,
+        "endLine": 266,
+        "endChar": 0
+      },
+      "revId": "a09b1738850145a3ce0e8a4077d3c33debfb01fe",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
