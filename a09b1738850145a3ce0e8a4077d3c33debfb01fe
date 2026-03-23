@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6632281a_0152e006",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1154215
+      },
+      "writtenOn": "2026-03-23T08:44:01Z",
+      "side": 1,
+      "message": "I can\u0027t build the plugin anymore. I got below error:\n\nERROR: Skipping \u0027plugins/oauth\u0027: error loading package \u0027plugins/oauth\u0027: Unable to find package for @@[unknown repo \u0027com_googlesource_gerrit_bazlets\u0027 requested from @@]//:gerrit_plugin.bzl: The repository \u0027@@[unknown repo \u0027com_googlesource_gerrit_bazlets\u0027 requested from @@]\u0027 could not be resolved: No repository visible as \u0027@com_googlesource_gerrit_bazlets\u0027 from main repository.\nERROR: error loading package \u0027plugins/oauth\u0027: Unable to find package for @@[unknown repo \u0027com_googlesource_gerrit_bazlets\u0027 requested from @@]//:gerrit_plugin.bzl: The repository \u0027@@[unknown repo \u0027com_googlesource_gerrit_bazlets\u0027 requested from @@]\u0027 could not be resolved: No repository visible as \u0027@com_googlesource_gerrit_bazlets\u0027 from main repository.\n\nThis seems is related to \"2134c34 Adapt to Gerrit\u0027s use of bazel modules\" but I have no idea how to resolve it. I\u0027ve followed the modified build.md to link external_plugin_deps.MODULE.bazel but it didn\u0027t help.",
+      "parentUuid": "bb2bc420_95b1d583",
+      "revId": "a09b1738850145a3ce0e8a4077d3c33debfb01fe",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1220dbc7_d566729b",
