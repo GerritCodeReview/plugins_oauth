@@ -54,6 +54,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3647e4cb_4e1c9af8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1154215
+      },
+      "writtenOn": "2026-03-23T10:09:50Z",
+      "side": 1,
+      "message": "The build is able to proceed with https://gerrit-review.googlesource.com/553005. However I got a new issue:\n\n```\nplugins/oauth/src/main/java/com/googlesource/gerrit/plugins/oauth/discovery/DiscoveryOAuthService.java:30: error: cannot find symbol\nimport com.google.gerrit.extensions.auth.oauth.OAuthAuthorizationInfo;\n```\n\nWhich was introduced in patchset #3 of change 564242.",
+      "parentUuid": "49e15683_7b685efc",
+      "revId": "a09b1738850145a3ce0e8a4077d3c33debfb01fe",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1220dbc7_d566729b",
