@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bb2bc420_95b1d583",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2026-03-23T08:08:37Z",
+      "side": 1,
+      "message": "Thanks, I addressed the feedback by refactoring DiscoveryOAuthService and adding tests for the authorization/token flow and discovery configuration validation in a follow-up patch set.\n\nCould you please test the final version of this series? I verified the updated `DiscoveryOAuthService` with Google OAuth2, and it appears to work as expected.",
+      "revId": "a09b1738850145a3ce0e8a4077d3c33debfb01fe",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1220dbc7_d566729b",
@@ -14,6 +31,30 @@
       "writtenOn": "2026-03-23T07:53:21Z",
       "side": 1,
       "message": "This line too long and should be wrapped.",
+      "range": {
+        "startLine": 263,
+        "startChar": 4,
+        "endLine": 266,
+        "endChar": 0
+      },
+      "revId": "a09b1738850145a3ce0e8a4077d3c33debfb01fe",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "baa29712_e851a3ce",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/InitOAuth.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 266,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2026-03-23T08:08:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1220dbc7_d566729b",
       "range": {
         "startLine": 263,
         "startChar": 4,
