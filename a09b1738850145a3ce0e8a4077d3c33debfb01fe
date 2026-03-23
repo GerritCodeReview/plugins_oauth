@@ -90,6 +90,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "217ee3ce_8de0037d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1154215
+      },
+      "writtenOn": "2026-03-23T10:23:01Z",
+      "side": 1,
+      "message": "Oh ok, you meant both change 564343 and change 553005 need to be applied. I thought only the second one is needed. Now have the first applied and it builds. I can confirm the new jar works (with the match gerrit.war) without problem with Kanidm OIDC discovery. Thanks!",
+      "parentUuid": "03695ba9_e841096c",
+      "revId": "a09b1738850145a3ce0e8a4077d3c33debfb01fe",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1220dbc7_d566729b",
