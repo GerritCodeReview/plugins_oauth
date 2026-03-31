@@ -16,6 +16,24 @@
       "message": "I also added some tests to SAP IAS provider in change 564344.",
       "revId": "0cce399a2cb7f980289001a1cfab4978b6b92a8f",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "446f2c70_8c74c686",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1144862
+      },
+      "writtenOn": "2026-03-31T09:47:07Z",
+      "side": 1,
+      "message": "Great, looks like our tests are covering two different areas so no real overlap (PKCE authorization flow and user info/token validation). Thanks for working on that. I\u0027ll stack mine on your change since you also update SAPIasOAuthService and I\u0027m still working on these",
+      "parentUuid": "89b77017_49574f09",
+      "revId": "0cce399a2cb7f980289001a1cfab4978b6b92a8f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
