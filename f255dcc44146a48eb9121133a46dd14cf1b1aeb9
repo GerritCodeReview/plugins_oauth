@@ -16,6 +16,24 @@
       "message": "Other reviewers should be aware this depends on https://gerrit-review.googlesource.com/c/gerrit/+/564343",
       "revId": "f255dcc44146a48eb9121133a46dd14cf1b1aeb9",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cdef45f8_6be1e252",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1144862
+      },
+      "writtenOn": "2026-04-01T12:41:25Z",
+      "side": 1,
+      "message": "Just saw that\u0027s already in the commit message, mb.",
+      "parentUuid": "94215244_ea29ef0d",
+      "revId": "f255dcc44146a48eb9121133a46dd14cf1b1aeb9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
