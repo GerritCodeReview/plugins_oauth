@@ -1,13 +1,23 @@
 load(
     "@com_googlesource_gerrit_bazlets//:gerrit_plugin.bzl",
     "gerrit_plugin",
-    "gerrit_plugin_dependency_tests",
     "gerrit_plugin_tests",
 )
 
+EXT_DEPS = [
+    "com.github.scribejava:scribejava-apis",
+    "com.github.scribejava:scribejava-core",
+    "com.sap.cloud.security.java:api",
+    "com.sap.cloud.security.java:security",
+]
+
 gerrit_plugin(
-    name = "oauth",
     srcs = glob(["src/main/java/**/*.java"]),
+    ext_deps = [
+        "com.fasterxml.jackson.core:jackson-databind",
+        "com.sap.cloud.security:env",
+        "com.sap.cloud.security.xsuaa:token-client",
+    ] + EXT_DEPS,
     manifest_entries = [
         "Gerrit-PluginName: gerrit-oauth-provider",
         "Gerrit-Module: com.googlesource.gerrit.plugins.oauth.Module",
@@ -16,29 +26,13 @@ gerrit_plugin(
         "Implementation-Title: Gerrit OAuth authentication provider",
         "Implementation-URL: https://github.com/davido/gerrit-oauth-provider",
     ],
+    plugin = "oauth",
     resources = glob(["src/main/resources/**/*"]),
-    deps = [
-        "@oauth_plugin_deps//:com_fasterxml_jackson_core_jackson_databind",
-        "@oauth_plugin_deps//:com_github_scribejava_scribejava_apis",
-        "@oauth_plugin_deps//:com_github_scribejava_scribejava_core",
-        "@oauth_plugin_deps//:com_sap_cloud_security_env",
-        "@oauth_plugin_deps//:com_sap_cloud_security_java_api",
-        "@oauth_plugin_deps//:com_sap_cloud_security_java_security",
-        "@oauth_plugin_deps//:com_sap_cloud_security_xsuaa_token_client",
-    ],
 )
 
 gerrit_plugin_tests(
-    name = "oauth_tests",
     srcs = glob(["src/test/java/**/*.java"]),
-    tags = ["oauth"],
-    deps = [
-        ":oauth__plugin",
-        "@oauth_plugin_deps//:com_github_scribejava_scribejava_apis",
-        "@oauth_plugin_deps//:com_github_scribejava_scribejava_core",
-        "@oauth_plugin_deps//:com_sap_cloud_security_java_api",
-        "@oauth_plugin_deps//:com_sap_cloud_security_java_security",
-    ],
+    create_dependency_tests = True,
+    ext_deps = EXT_DEPS,
+    plugin = "oauth",
 )
-
-gerrit_plugin_dependency_tests(plugin = "oauth")
