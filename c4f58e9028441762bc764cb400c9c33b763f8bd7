@@ -16,6 +16,24 @@
       "message": "Usually test deps are a superset of the plugin deps and not the opposite like in this plugin. Does that indicate a low test coverage?",
       "revId": "c4f58e9028441762bc764cb400c9c33b763f8bd7",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b8c2e6f9_3830f8d3",
+        "filename": "BUILD",
+        "patchSetId": 5
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2026-04-24T10:20:37Z",
+      "side": 1,
+      "message": "Good point. In this case the extra plugin dependencies are mostly SAP IAS runtime dependencies. The tests currently cover only part of that area, and there is pending work to improve SAP IAS test coverage in change 552762.\n\nWhat is also a bit hidden here, is the fact, that the test deps are already a superset.\n\n```bash\n$ bazel query --output\u003dbuild plugins/oauth:oauth_tests\n[...]\n\"//plugins:plugin-lib\",\n\"//java/com/google/gerrit/acceptance:lib\"\n[...]\n```\n\nand `acceptance-framework` already exporting many test dependencies, like `mockito`, see in gerrit core: `java/com/google/gerrit/acceptance/BUILD`:\n\n```python\nexported_deps \u003d [\n    \":function\",\n    \"//lib:jgit-junit\",\n    \"//lib:jimfs\",\n    \"//lib:servlet-api\",\n    \"//lib/httpcomponents:fluent-hc\",\n    \"//lib/httpcomponents:httpclient\",\n    \"//lib/httpcomponents:httpcore\",\n    \"//lib/mockito\",\n    \"//lib/truth\",\n    \"//lib/truth:truth-java8-extension\",\n    \"//lib/greenmail\",\n    \"//lib:guava-testlib\",\n```\n\nThat said, I don’t think this BUILD-file change itself reduces coverage: it mostly switches from explicit Bazel labels to `ext_deps`, and the test dependencies remain the subset actually needed by the existing tests. Additional SAP IAS-related tests may need more dependencies once that coverage is added.",
+      "parentUuid": "d3cee87f_42e0af59",
+      "revId": "c4f58e9028441762bc764cb400c9c33b763f8bd7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
