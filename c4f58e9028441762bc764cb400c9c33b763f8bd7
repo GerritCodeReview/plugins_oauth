@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d3cee87f_42e0af59",
+        "filename": "BUILD",
+        "patchSetId": 5
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1003873
+      },
+      "writtenOn": "2026-04-24T09:27:50Z",
+      "side": 1,
+      "message": "Usually test deps are a superset of the plugin deps and not the opposite like in this plugin. Does that indicate a low test coverage?",
+      "revId": "c4f58e9028441762bc764cb400c9c33b763f8bd7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
