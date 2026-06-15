@@ -46,7 +46,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
-import javax.servlet.http.HttpServletResponse;
+import org.apache.http.HttpStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -94,7 +94,7 @@ public class GoogleOAuthService implements OAuthServiceProvider {
 
     JsonElement userJson = null;
     try (Response response = service.execute(request)) {
-      if (response.getCode() != HttpServletResponse.SC_OK) {
+      if (response.getCode() != HttpStatus.SC_OK) {
         throw new IOException(
             String.format(
                 "Status %s (%s) for request %s",

@@ -38,7 +38,7 @@ import com.googlesource.gerrit.plugins.oauth.InitOAuth;
 import com.googlesource.gerrit.plugins.oauth.OAuth20ServiceFactory;
 import com.googlesource.gerrit.plugins.oauth.OAuthPluginConfigFactory;
 import java.io.IOException;
-import javax.servlet.http.HttpServletResponse;
+import org.apache.http.HttpStatus;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -118,7 +118,7 @@ public class DiscoveryOAuthServiceTest {
 
   private void mockUserInfoResponse(String body) throws Exception {
     Response mockHttpResponse = mock(Response.class);
-    when(mockHttpResponse.getCode()).thenReturn(HttpServletResponse.SC_OK);
+    when(mockHttpResponse.getCode()).thenReturn(HttpStatus.SC_OK);
     when(mockHttpResponse.getBody()).thenReturn(body);
     when(mockScribeOAuthService.execute(any(OAuthRequest.class))).thenReturn(mockHttpResponse);
   }

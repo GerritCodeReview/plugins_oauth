@@ -39,7 +39,7 @@ import com.googlesource.gerrit.plugins.oauth.OAuthPluginConfigFactory;
 import com.googlesource.gerrit.plugins.oauth.OAuthServiceProviderConfig;
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
-import javax.servlet.http.HttpServletResponse;
+import org.apache.http.HttpStatus;
 import org.slf4j.Logger;
 
 @Singleton
@@ -70,7 +70,7 @@ public class LemonLDAPOAuthService implements OAuthServiceProvider {
     service.signRequest(t, request);
 
     try (Response response = service.execute(request)) {
-      if (response.getCode() != HttpServletResponse.SC_OK) {
+      if (response.getCode() != HttpStatus.SC_OK) {
         throw new IOException(
             String.format(
                 "Status %s (%s) for request %s",

@@ -41,7 +41,7 @@ import com.googlesource.gerrit.plugins.oauth.OAuthServiceProviderExternalIdSchem
 import java.io.IOException;
 import java.net.URI;
 import java.util.concurrent.ExecutionException;
-import javax.servlet.http.HttpServletResponse;
+import org.apache.http.HttpStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -84,7 +84,7 @@ public class AuthentikOAuthService implements OAuthServiceProvider {
     service.signRequest(t, request);
 
     try (Response response = service.execute(request)) {
-      if (response.getCode() != HttpServletResponse.SC_OK) {
+      if (response.getCode() != HttpStatus.SC_OK) {
         throw new IOException(
             String.format(
                 "Status %s (%s) for request %s",

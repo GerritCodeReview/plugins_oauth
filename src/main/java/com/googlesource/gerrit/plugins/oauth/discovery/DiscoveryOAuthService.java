@@ -51,7 +51,7 @@ import java.net.URI;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.ExecutionException;
-import javax.servlet.http.HttpServletResponse;
+import org.apache.http.HttpStatus;
 import org.slf4j.Logger;
 
 @Singleton
@@ -182,7 +182,7 @@ public class DiscoveryOAuthService implements OAuthServiceProvider {
                 : CharStreams.toString(new InputStreamReader(in, StandardCharsets.UTF_8));
       }
 
-      if (responseCode != HttpServletResponse.SC_OK) {
+      if (responseCode != HttpStatus.SC_OK) {
         log.error(
             "Failed to fetch OIDC discovery from {}. Status: {}. Response: {}",
             discoveryUrl,
@@ -210,7 +210,7 @@ public class DiscoveryOAuthService implements OAuthServiceProvider {
 
     JsonElement userJson = null;
     try (Response response = service.execute(request)) {
-      if (response.getCode() != HttpServletResponse.SC_OK) {
+      if (response.getCode() != HttpStatus.SC_OK) {
         throw new IOException(
             String.format(
                 "Status %s (%s) for request %s",

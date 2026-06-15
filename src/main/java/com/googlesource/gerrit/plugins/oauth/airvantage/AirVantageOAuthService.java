@@ -16,7 +16,7 @@ package com.googlesource.gerrit.plugins.oauth.airvantage;
 
 import static com.google.gerrit.json.OutputFormat.JSON;
 import static com.googlesource.gerrit.plugins.oauth.JsonUtil.isNull;
-import static javax.servlet.http.HttpServletResponse.SC_OK;
+import static org.apache.http.HttpStatus.SC_OK;
 import static org.slf4j.LoggerFactory.getLogger;
 
 import com.github.scribejava.core.model.OAuth2AccessToken;

@@ -29,7 +29,7 @@ import com.googlesource.gerrit.plugins.oauth.InitOAuth;
 import com.googlesource.gerrit.plugins.oauth.OAuth20ServiceFactory;
 import com.googlesource.gerrit.plugins.oauth.OAuthPluginConfigFactory;
 import java.lang.reflect.Field;
-import javax.servlet.http.HttpServletResponse;
+import org.apache.http.HttpStatus;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -124,7 +124,7 @@ public class CognitoOAuthServiceTest {
             name == null ? "null" : "\"" + name + "\"");
 
     Response mockHttpResponse = mock(Response.class);
-    when(mockHttpResponse.getCode()).thenReturn(HttpServletResponse.SC_OK);
+    when(mockHttpResponse.getCode()).thenReturn(HttpStatus.SC_OK);
     // Simulate successful HTTP 200 OK
     when(mockHttpResponse.getBody()).thenReturn(cognitoJsonResponse);
 
