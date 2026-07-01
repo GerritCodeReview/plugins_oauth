@@ -24,6 +24,7 @@ import com.github.scribejava.core.model.Response;
 import com.github.scribejava.core.model.Verb;
 import com.github.scribejava.core.oauth.OAuth20Service;
 import com.google.common.base.CharMatcher;
+import com.google.gerrit.common.Nullable;
 import com.google.gerrit.extensions.auth.oauth.OAuthServiceProvider;
 import com.google.gerrit.extensions.auth.oauth.OAuthToken;
 import com.google.gerrit.extensions.auth.oauth.OAuthUserInfo;
@@ -83,6 +84,10 @@ public class GitHubOAuthService implements OAuthServiceProvider {
     return getApiUrl() + "user";
   }
 
+  private String getEmailsUrl() {
+    return getApiUrl() + "user/emails";
+  }
+
   @Override
   public OAuthUserInfo getUserInfo(OAuthToken token) throws IOException {
     OAuthRequest request = new OAuthRequest(Verb.GET, getProtectedResourceUrl());
@@ -107,13 +112,13 @@ public class GitHubOAuthService implements OAuthServiceProvider {
         if (isNull(id)) {
           throw new IOException("Response doesn't contain id field");
         }
-        JsonElement email = jsonObject.get("email");
+        String email = asString(jsonObject.get("email"));
         JsonElement name = jsonObject.get("name");
         JsonElement login = jsonObject.get("login");
         return new OAuthUserInfo(
             extIdScheme + ":" + id.getAsString(),
             asString(login),
-            asString(email),
+            email != null ? email : fetchPrimaryEmail(token),
             asString(name),
             fixLegacyUserId ? id.getAsString() : null);
       }
@@ -122,6 +127,37 @@ public class GitHubOAuthService implements OAuthServiceProvider {
     }
 
     throw new IOException(String.format("Invalid JSON '%s': not a JSON Object", userJson));
+  }
+
+  @Nullable
+  private String fetchPrimaryEmail(OAuthToken token) throws IOException {
+    OAuthRequest request = new OAuthRequest(Verb.GET, getEmailsUrl());
+    OAuth2AccessToken t = new OAuth2AccessToken(token.getToken(), token.getRaw());
+    service.signRequest(t, request);
+
+    try (Response response = service.execute(request)) {
+      if (response.getCode() != HttpServletResponse.SC_OK) {
+        log.warn("Failed to fetch /user/emails: {} ({})", response.getCode(), response.getBody());
+        return null;
+      }
+      JsonElement emailsJson = JSON.newGson().fromJson(response.getBody(), JsonElement.class);
+      if (emailsJson == null || !emailsJson.isJsonArray()) {
+        return null;
+      }
+      for (JsonElement entry : emailsJson.getAsJsonArray()) {
+        if (!entry.isJsonObject()) {
+          continue;
+        }
+        JsonObject obj = entry.getAsJsonObject();
+        JsonElement primary = obj.get("primary");
+        if (primary != null && !primary.isJsonNull() && primary.getAsBoolean()) {
+          return asString(obj.get("email"));
+        }
+      }
+    } catch (ExecutionException | InterruptedException e) {
+      log.warn("Error fetching /user/emails", e);
+    }
+    return null;
   }
 
   @Override
