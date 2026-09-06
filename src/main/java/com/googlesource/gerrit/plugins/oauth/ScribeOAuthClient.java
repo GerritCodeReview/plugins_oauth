@@ -19,6 +19,7 @@ import com.github.scribejava.core.model.OAuthRequest;
 import com.github.scribejava.core.model.Response;
 import com.github.scribejava.core.model.Verb;
 import com.github.scribejava.core.oauth.AccessTokenRequestParams;
+import com.github.scribejava.core.oauth.AuthorizationUrlBuilder;
 import com.github.scribejava.core.oauth.OAuth20Service;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
@@ -41,24 +42,35 @@ import javax.servlet.http.HttpServletResponse;
 class ScribeOAuthClient implements OAuthClient {
   private final OAuth20Service service;
   private final boolean tolerateMissingTokenType;
+  private final boolean enablePkce;
 
   ScribeOAuthClient(OAuth20Service service) {
-    this(service, false);
+    this(service, false, false);
   }
 
   /**
    * @param tolerateMissingTokenType when {@code true}, a missing {@code token_type} is stored as
    *     the empty string instead of failing. Providers such as CAS may omit it; the default keeps
    *     the value ScribeJava returns.
+   * @param enablePkce when {@code true}, the authorization redirect initializes PKCE and carries the
+   *     generated code verifier in {@link OAuthAuthorizationInfo}, to be replayed on the token
+   *     exchange. The verifier is generated per call and never retained, keeping concurrent logins
+   *     independent.
    */
-  ScribeOAuthClient(OAuth20Service service, boolean tolerateMissingTokenType) {
+  ScribeOAuthClient(OAuth20Service service, boolean tolerateMissingTokenType, boolean enablePkce) {
     this.service = service;
     this.tolerateMissingTokenType = tolerateMissingTokenType;
+    this.enablePkce = enablePkce;
   }
 
   @Override
   public OAuthAuthorizationInfo getAuthorizationInfo() {
-    return new OAuthAuthorizationInfo(service.getAuthorizationUrl(), null);
+    if (!enablePkce) {
+      return new OAuthAuthorizationInfo(service.getAuthorizationUrl(), null);
+    }
+    AuthorizationUrlBuilder builder = service.createAuthorizationUrlBuilder();
+    builder.initPKCE();
+    return new OAuthAuthorizationInfo(builder.build(), builder.getPkce().getCodeVerifier());
   }
 
   @Override
