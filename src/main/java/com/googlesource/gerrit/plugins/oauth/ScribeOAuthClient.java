@@ -20,6 +20,7 @@ import com.github.scribejava.core.model.Response;
 import com.github.scribejava.core.model.Verb;
 import com.github.scribejava.core.oauth.AccessTokenRequestParams;
 import com.github.scribejava.core.oauth.OAuth20Service;
+import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
 import com.google.gerrit.common.Nullable;
 import com.google.gerrit.extensions.auth.oauth.OAuthAuthorizationInfo;
@@ -39,9 +40,20 @@ import javax.servlet.http.HttpServletResponse;
  */
 class ScribeOAuthClient implements OAuthClient {
   private final OAuth20Service service;
+  private final boolean tolerateMissingTokenType;
 
   ScribeOAuthClient(OAuth20Service service) {
+    this(service, false);
+  }
+
+  /**
+   * @param tolerateMissingTokenType when {@code true}, a missing {@code token_type} is stored as
+   *     the empty string instead of failing. Providers such as CAS may omit it; the default keeps
+   *     the value ScribeJava returns.
+   */
+  ScribeOAuthClient(OAuth20Service service, boolean tolerateMissingTokenType) {
     this.service = service;
+    this.tolerateMissingTokenType = tolerateMissingTokenType;
   }
 
   @Override
@@ -62,8 +74,11 @@ class ScribeOAuthClient implements OAuthClient {
                 AccessTokenRequestParams.create(verifier.getValue())
                     .pkceCodeVerifier(codeVerifier));
       }
-      return new OAuthToken(
-          accessToken.getAccessToken(), accessToken.getTokenType(), accessToken.getRawResponse());
+      String tokenType = accessToken.getTokenType();
+      if (tolerateMissingTokenType) {
+        tokenType = Strings.nullToEmpty(tokenType);
+      }
+      return new OAuthToken(accessToken.getAccessToken(), tokenType, accessToken.getRawResponse());
     } catch (InterruptedException | ExecutionException e) {
       throw new IOException("Cannot retrieve access token", e);
     }

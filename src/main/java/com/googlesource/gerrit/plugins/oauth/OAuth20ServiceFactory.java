@@ -59,4 +59,16 @@ public class OAuth20ServiceFactory {
   public OAuthClient createClient(String providerName, DefaultApi20 api, @Nullable String scope) {
     return new ScribeOAuthClient(create(providerName, api, scope));
   }
+
+  /**
+   * Creates a client that tolerates a missing {@code token_type} in the token response, storing it
+   * as the empty string. Only providers that require it (e.g. CAS) should opt in.
+   */
+  public OAuthClient createClient(
+      String providerName,
+      DefaultApi20 api,
+      @Nullable String scope,
+      boolean tolerateMissingTokenType) {
+    return new ScribeOAuthClient(create(providerName, api, scope), tolerateMissingTokenType);
+  }
 }
