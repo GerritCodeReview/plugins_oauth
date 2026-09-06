@@ -57,7 +57,7 @@ public class OAuth20ServiceFactory {
   }
 
   public OAuthClient createClient(String providerName, DefaultApi20 api, @Nullable String scope) {
-    return new ScribeOAuthClient(create(providerName, api, scope));
+    return createClient(providerName, api, scope, false, false);
   }
 
   /**
@@ -69,6 +69,21 @@ public class OAuth20ServiceFactory {
       DefaultApi20 api,
       @Nullable String scope,
       boolean tolerateMissingTokenType) {
-    return new ScribeOAuthClient(create(providerName, api, scope), tolerateMissingTokenType);
+    return createClient(providerName, api, scope, tolerateMissingTokenType, false);
+  }
+
+  /**
+   * Creates a client, optionally tolerating a missing {@code token_type} and/or enabling PKCE on the
+   * authorization redirect. Only providers that require these behaviours (e.g. CAS, discovery)
+   * should opt in; the defaults match {@link #createClient(String, DefaultApi20, String)}.
+   */
+  public OAuthClient createClient(
+      String providerName,
+      DefaultApi20 api,
+      @Nullable String scope,
+      boolean tolerateMissingTokenType,
+      boolean enablePkce) {
+    return new ScribeOAuthClient(
+        create(providerName, api, scope), tolerateMissingTokenType, enablePkce);
   }
 }
