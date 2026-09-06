@@ -16,20 +16,19 @@ package com.googlesource.gerrit.plugins.oauth.sap;
 
 import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.github.scribejava.core.oauth.AccessTokenRequestParams;
-import com.github.scribejava.core.oauth.AuthorizationUrlBuilder;
-import com.github.scribejava.core.oauth.OAuth20Service;
-import com.github.scribejava.core.pkce.PKCE;
+import com.github.scribejava.core.builder.api.DefaultApi20;
 import com.google.gerrit.extensions.auth.oauth.OAuthAuthorizationInfo;
+import com.google.gerrit.extensions.auth.oauth.OAuthToken;
 import com.google.gerrit.extensions.auth.oauth.OAuthVerifier;
 import com.google.gerrit.server.config.PluginConfig;
 import com.googlesource.gerrit.plugins.oauth.InitOAuth;
 import com.googlesource.gerrit.plugins.oauth.OAuth20ServiceFactory;
+import com.googlesource.gerrit.plugins.oauth.OAuthClient;
 import com.googlesource.gerrit.plugins.oauth.OAuthPluginConfigFactory;
 import com.sap.cloud.security.token.Token;
 import com.sap.cloud.security.token.validation.CombiningValidator;
@@ -45,71 +44,74 @@ public class SAPIasOAuthServiceTest {
 
   @Mock private OAuthPluginConfigFactory mockConfigFactory;
   @Mock private PluginConfig mockPluginConfig;
-  @Mock private OAuth20ServiceFactory mockServiceFactory;
-  @Mock private OAuth20Service mockScribeOAuthService;
+  @Mock private OAuth20ServiceFactory mockClientFactory;
+  @Mock private OAuthClient mockClient;
   @Mock private CombiningValidator<Token> mockTokenValidator;
-  @Mock private AuthorizationUrlBuilder mockUrlBuilder;
 
   private static final String TEST_SAP_ROOT_URL = "https://accounts.sap.com";
+  private static final String DEFAULT_SERVICE_NAME = "SAP IAS";
 
   @Before
   public void setUp() {
     when(mockConfigFactory.create(SAPIasOAuthService.PROVIDER_NAME)).thenReturn(mockPluginConfig);
     when(mockPluginConfig.getString(InitOAuth.ROOT_URL)).thenReturn(TEST_SAP_ROOT_URL);
+    when(mockPluginConfig.getString(InitOAuth.SERVICE_NAME, DEFAULT_SERVICE_NAME))
+        .thenReturn(DEFAULT_SERVICE_NAME);
+    when(mockClientFactory.createClient(
+            anyString(), any(DefaultApi20.class), anyString(), anyBoolean(), anyBoolean()))
+        .thenReturn(mockClient);
+  }
 
-    when(mockServiceFactory.create(
-            anyString(),
-            any(com.github.scribejava.core.builder.api.DefaultApi20.class),
-            anyString()))
-        .thenReturn(mockScribeOAuthService);
+  private SAPIasOAuthService newService() {
+    return new SAPIasOAuthService(mockConfigFactory, mockClientFactory, mockTokenValidator);
   }
 
   @Test
-  public void getAuthorizationInfo_withPkce_shouldReturnVerifierFromLocalBuilder() {
+  public void getAuthorizationInfo_withPkce_shouldDelegateAndEnablePkce() {
     when(mockPluginConfig.getBoolean(InitOAuth.ENABLE_PKCE, false)).thenReturn(true);
 
-    AuthorizationUrlBuilder mockUrlBuilder = mock(AuthorizationUrlBuilder.class);
-    when(mockScribeOAuthService.createAuthorizationUrlBuilder()).thenReturn(mockUrlBuilder);
+    OAuthAuthorizationInfo expected =
+        new OAuthAuthorizationInfo(
+            "https://sap.com/auth?code_challenge=xyz", "sap-secret-verifier");
+    when(mockClient.getAuthorizationInfo()).thenReturn(expected);
 
-    PKCE pkce = new PKCE();
-    pkce.setCodeVerifier("sap-secret-verifier");
-
-    when(mockUrlBuilder.getPkce()).thenReturn(pkce);
-    when(mockUrlBuilder.build()).thenReturn("https://sap.com/auth?code_challenge=xyz");
-
-    SAPIasOAuthService service =
-        new SAPIasOAuthService(mockConfigFactory, mockServiceFactory, mockTokenValidator);
+    SAPIasOAuthService service = newService();
     OAuthAuthorizationInfo info = service.getAuthorizationInfo();
 
     assertThat(info.getPkceVerifier()).isEqualTo("sap-secret-verifier");
+
+    ArgumentCaptor<Boolean> pkceCaptor = ArgumentCaptor.forClass(Boolean.class);
+    verify(mockClientFactory)
+        .createClient(
+            anyString(), any(DefaultApi20.class), anyString(), anyBoolean(), pkceCaptor.capture());
+    assertThat(pkceCaptor.getValue()).isTrue();
   }
 
   @Test
-  public void getAccessToken_withPkce_shouldUsePassedVerifierIgnoringInternalState()
-      throws Exception {
-    when(mockPluginConfig.getBoolean(InitOAuth.ENABLE_PKCE, false)).thenReturn(true);
-    SAPIasOAuthService service =
-        new SAPIasOAuthService(mockConfigFactory, mockServiceFactory, mockTokenValidator);
+  public void getAccessToken_withPkce_shouldDelegateVerifierToClient() throws Exception {
+    SAPIasOAuthService service = newService();
 
     OAuthVerifier verifier = new OAuthVerifier("auth-code");
     String verifierFromSession = "session-stored-verifier";
+    OAuthToken expected = new OAuthToken("token", "Bearer", "dummy-raw");
+    when(mockClient.exchangeCode(verifier, verifierFromSession)).thenReturn(expected);
 
-    com.github.scribejava.core.model.OAuth2AccessToken mockToken =
-        mock(com.github.scribejava.core.model.OAuth2AccessToken.class);
+    OAuthToken result = service.getAccessToken(verifier, verifierFromSession);
 
-    when(mockToken.getAccessToken()).thenReturn("token");
-    when(mockToken.getTokenType()).thenReturn("Bearer");
-    when(mockToken.getRawResponse()).thenReturn("dummy-raw");
+    assertThat(result).isSameInstanceAs(expected);
+    verify(mockClient).exchangeCode(verifier, verifierFromSession);
+  }
 
-    when(mockScribeOAuthService.getAccessToken(any(AccessTokenRequestParams.class)))
-        .thenReturn(mockToken);
+  @Test
+  public void getAccessToken_passwordGrant_shouldDelegateToClient() throws Exception {
+    SAPIasOAuthService service = newService();
 
-    service.getAccessToken(verifier, verifierFromSession);
+    OAuthToken expected = new OAuthToken("token", "Bearer", "raw");
+    when(mockClient.passwordGrant("jane@example.com", "secret")).thenReturn(expected);
 
-    ArgumentCaptor<AccessTokenRequestParams> captor =
-        ArgumentCaptor.forClass(AccessTokenRequestParams.class);
-    verify(mockScribeOAuthService).getAccessToken(captor.capture());
+    OAuthToken result = service.getAccessToken("jane@example.com", "secret");
 
-    assertThat(captor.getValue().getPkceCodeVerifier()).isEqualTo(verifierFromSession);
+    assertThat(result).isSameInstanceAs(expected);
+    verify(mockClient).passwordGrant("jane@example.com", "secret");
   }
 }

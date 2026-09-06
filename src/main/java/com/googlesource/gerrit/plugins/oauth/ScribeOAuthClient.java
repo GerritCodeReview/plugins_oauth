@@ -52,8 +52,8 @@ class ScribeOAuthClient implements OAuthClient {
    * @param tolerateMissingTokenType when {@code true}, a missing {@code token_type} is stored as
    *     the empty string instead of failing. Providers such as CAS may omit it; the default keeps
    *     the value ScribeJava returns.
-   * @param enablePkce when {@code true}, the authorization redirect initializes PKCE and carries the
-   *     generated code verifier in {@link OAuthAuthorizationInfo}, to be replayed on the token
+   * @param enablePkce when {@code true}, the authorization redirect initializes PKCE and carries
+   *     the generated code verifier in {@link OAuthAuthorizationInfo}, to be replayed on the token
    *     exchange. The verifier is generated per call and never retained, keeping concurrent logins
    *     independent.
    */
@@ -86,6 +86,20 @@ class ScribeOAuthClient implements OAuthClient {
                 AccessTokenRequestParams.create(verifier.getValue())
                     .pkceCodeVerifier(codeVerifier));
       }
+      String tokenType = accessToken.getTokenType();
+      if (tolerateMissingTokenType) {
+        tokenType = Strings.nullToEmpty(tokenType);
+      }
+      return new OAuthToken(accessToken.getAccessToken(), tokenType, accessToken.getRawResponse());
+    } catch (InterruptedException | ExecutionException e) {
+      throw new IOException("Cannot retrieve access token", e);
+    }
+  }
+
+  @Override
+  public OAuthToken passwordGrant(String username, String password) throws IOException {
+    try {
+      OAuth2AccessToken accessToken = service.getAccessTokenPasswordGrant(username, password);
       String tokenType = accessToken.getTokenType();
       if (tolerateMissingTokenType) {
         tokenType = Strings.nullToEmpty(tokenType);
