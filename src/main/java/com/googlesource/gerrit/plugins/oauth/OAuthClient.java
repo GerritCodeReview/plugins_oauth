@@ -1,0 +1,53 @@
+// Copyright (C) 2026 The Android Open Source Project
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+// http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+package com.googlesource.gerrit.plugins.oauth;
+
+import com.google.gerrit.common.Nullable;
+import com.google.gerrit.extensions.auth.oauth.OAuthAuthorizationInfo;
+import com.google.gerrit.extensions.auth.oauth.OAuthToken;
+import com.google.gerrit.extensions.auth.oauth.OAuthVerifier;
+import java.io.IOException;
+import java.net.URI;
+
+/**
+ * Executes OAuth protocol operations for one configured provider.
+ *
+ * <p>Implementations MUST NOT retain per-authorization state. Concurrent authorization flows must
+ * be fully independent: any {@code state}, {@code code_verifier} or {@code nonce} belongs to a
+ * single login attempt and must be carried in {@link OAuthAuthorizationInfo} or passed as a
+ * parameter, never stored on the instance.
+ */
+public interface OAuthClient {
+  /**
+   * @return the URL to redirect the user to, plus any per-login PKCE verifier.
+   */
+  OAuthAuthorizationInfo getAuthorizationInfo();
+
+  /**
+   * Exchanges an authorization code for an access token.
+   *
+   * @param verifier the authorization code returned by the provider
+   * @param codeVerifier the PKCE verifier generated during authorization, or {@code null}
+   * @return the access token
+   */
+  OAuthToken exchangeCode(OAuthVerifier verifier, @Nullable String codeVerifier) throws IOException;
+
+  /**
+   * Fetches a protected resource with the given token.
+   *
+   * @return the response body; throws if the provider did not return success.
+   */
+  String get(URI resource, OAuthToken token) throws IOException;
+}
