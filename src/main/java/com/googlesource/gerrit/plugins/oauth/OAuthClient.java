@@ -46,6 +46,13 @@ public interface OAuthClient {
   OAuthToken exchangeCode(OAuthVerifier verifier, @Nullable String codeVerifier) throws IOException;
 
   /**
+   * Exchanges resource-owner credentials for an access token (OAuth 2.0 password grant).
+   *
+   * @return the access token
+   */
+  OAuthToken passwordGrant(String username, String password) throws IOException;
+
+  /**
    * Fetches a protected resource with the given token.
    *
    * @return the response body; throws if the provider did not return success.
@@ -59,6 +66,8 @@ public interface OAuthClient {
    */
   String get(URI resource, OAuthToken token, Map<String, String> headers) throws IOException;
 
-  /** @return the OAuth version of the service, e.g. {@code "2.0"}. */
+  /**
+   * @return the OAuth version of the service, e.g. {@code "2.0"}.
+   */
   String getVersion();
 }
