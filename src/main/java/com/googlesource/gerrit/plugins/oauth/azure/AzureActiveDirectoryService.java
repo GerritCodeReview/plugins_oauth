@@ -19,39 +19,28 @@ import static com.googlesource.gerrit.plugins.oauth.JsonUtil.asString;
 import static com.googlesource.gerrit.plugins.oauth.JsonUtil.isNull;
 import static com.googlesource.gerrit.plugins.oauth.JsonUtil.jwtPayloadJson;
 
-import com.github.scribejava.apis.MicrosoftAzureActiveDirectory20Api;
-import com.github.scribejava.core.exceptions.OAuthException;
-import com.github.scribejava.core.model.OAuth2AccessToken;
-import com.github.scribejava.core.model.OAuthRequest;
-import com.github.scribejava.core.model.Response;
-import com.github.scribejava.core.model.Verb;
-import com.github.scribejava.core.oauth.OAuth20Service;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
-import com.google.gerrit.extensions.auth.oauth.OAuthServiceProvider;
 import com.google.gerrit.extensions.auth.oauth.OAuthToken;
 import com.google.gerrit.extensions.auth.oauth.OAuthUserInfo;
-import com.google.gerrit.extensions.auth.oauth.OAuthVerifier;
 import com.google.gerrit.server.config.PluginConfig;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.googlesource.gerrit.plugins.oauth.AbstractOAuthService;
 import com.googlesource.gerrit.plugins.oauth.InitOAuth;
 import com.googlesource.gerrit.plugins.oauth.OAuth20ServiceFactory;
 import com.googlesource.gerrit.plugins.oauth.OAuthPluginConfigFactory;
 import com.googlesource.gerrit.plugins.oauth.OAuthServiceProviderConfig;
 import com.googlesource.gerrit.plugins.oauth.OAuthServiceProviderExternalIdScheme;
 import java.io.IOException;
-import java.util.concurrent.ExecutionException;
-import javax.servlet.http.HttpServletResponse;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.net.URI;
 
 @Singleton
 @OAuthServiceProviderConfig(name = AzureActiveDirectoryService.PROVIDER_NAME)
-public class AzureActiveDirectoryService implements OAuthServiceProvider {
-  private static final Logger log = LoggerFactory.getLogger(AzureActiveDirectoryService.class);
+public class AzureActiveDirectoryService extends AbstractOAuthService {
   // Canonical provider name (Azure AD)
   public static final String PROVIDER_NAME = "azure";
   // Deprecated provider name kept for backward compatibility
@@ -62,7 +51,6 @@ public class AzureActiveDirectoryService implements OAuthServiceProvider {
   public static final String DEFAULT_TENANT = "organizations";
   private static final ImmutableSet<String> TENANTS_WITHOUT_VALIDATION =
       ImmutableSet.<String>builder().add(DEFAULT_TENANT).add("common").add("consumers").build();
-  private final OAuth20Service service;
   private final Gson gson;
   private final boolean useEmailAsUsername;
   private final String tenant;
@@ -75,7 +63,8 @@ public class AzureActiveDirectoryService implements OAuthServiceProvider {
 
   @Inject
   AzureActiveDirectoryService(
-      OAuthPluginConfigFactory cfgFactory, OAuth20ServiceFactory oauth20ServiceFactory) {
+      OAuthPluginConfigFactory cfgFactory, OAuth20ServiceFactory clientFactory) {
+    super("Office365 OAuth2");
     PluginConfig cfg = cfgFactory.create(PROVIDER_NAME);
     this.extIdScheme = OAuthServiceProviderExternalIdScheme.create(PROVIDER_NAME);
     this.extIdDeprecatedScheme =
@@ -83,9 +72,9 @@ public class AzureActiveDirectoryService implements OAuthServiceProvider {
     this.useEmailAsUsername = cfg.getBoolean(InitOAuth.USE_EMAIL_AS_USERNAME, false);
     this.tenant = cfg.getString(InitOAuth.TENANT, DEFAULT_TENANT);
     this.clientId = cfg.getString(InitOAuth.CLIENT_ID);
-    this.service =
-        oauth20ServiceFactory.create(
-            PROVIDER_NAME, MicrosoftAzureActiveDirectory20Api.custom(tenant), SCOPE);
+    this.client =
+        clientFactory.createClient(
+            PROVIDER_NAME, new AzureApi(tenant), SCOPE);
     this.gson = JSON.newGson();
     if (log.isDebugEnabled()) {
       log.debug("OAuth2: scope={}", SCOPE);
@@ -141,78 +130,36 @@ public class AzureActiveDirectoryService implements OAuthServiceProvider {
       return null;
     }
 
-    OAuthRequest request = new OAuthRequest(Verb.GET, PROTECTED_RESOURCE_URL);
-    OAuth2AccessToken t = new OAuth2AccessToken(token.getToken(), token.getRaw());
-    service.signRequest(t, request);
-    request.addHeader("Accept", "*/*");
-
-    JsonElement userJson = null;
-    try (Response response = service.execute(request)) {
-      if (response.getCode() != HttpServletResponse.SC_OK) {
-        throw new IOException(
-            String.format(
-                "Status %s (%s) for request %s",
-                response.getCode(), response.getBody(), request.getUrl()));
+    String body =
+        client.get(
+            URI.create(PROTECTED_RESOURCE_URL), token, ImmutableMap.of("Accept", "*/*"));
+    if (log.isDebugEnabled()) {
+      log.debug("User info response: {}", body);
+    }
+    JsonElement userJson = JSON.newGson().fromJson(body, JsonElement.class);
+    if (userJson.isJsonObject()) {
+      JsonObject jsonObject = userJson.getAsJsonObject();
+      JsonElement id = jsonObject.get("id");
+      if (isNull(id)) {
+        throw new IOException("Response doesn't contain id field");
       }
-      userJson = JSON.newGson().fromJson(response.getBody(), JsonElement.class);
-      if (log.isDebugEnabled()) {
-        log.debug("User info response: {}", response.getBody());
-      }
-      if (userJson.isJsonObject()) {
-        JsonObject jsonObject = userJson.getAsJsonObject();
-        JsonElement id = jsonObject.get("id");
-        if (isNull(id)) {
-          throw new IOException("Response doesn't contain id field");
-        }
-        JsonElement email = jsonObject.get("mail");
-        JsonElement name = jsonObject.get("displayName");
-        String login = null;
+      JsonElement email = jsonObject.get("mail");
+      JsonElement name = jsonObject.get("displayName");
+      String login = null;
 
-        if (useEmailAsUsername && !email.isJsonNull()) {
-          login = email.getAsString().split("@")[0];
-        }
-
-        return new OAuthUserInfo(
-            extIdScheme + ":" + id.getAsString(),
-            login,
-            asString(email),
-            asString(name),
-            linkOffice365Id ? extIdDeprecatedScheme + ":" + id.getAsString() : null);
+      if (useEmailAsUsername && !email.isJsonNull()) {
+        login = email.getAsString().split("@")[0];
       }
-    } catch (ExecutionException | InterruptedException e) {
-      throw new RuntimeException("Cannot retrieve user info resource", e);
+
+      return new OAuthUserInfo(
+          extIdScheme + ":" + id.getAsString(),
+          login,
+          asString(email),
+          asString(name),
+          linkOffice365Id ? extIdDeprecatedScheme + ":" + id.getAsString() : null);
     }
 
     throw new IOException(String.format("Invalid JSON '%s': not a JSON Object", userJson));
-  }
-
-  @Override
-  public OAuthToken getAccessToken(OAuthVerifier rv) {
-    try {
-      OAuth2AccessToken accessToken = service.getAccessToken(rv.getValue());
-      return new OAuthToken(
-          accessToken.getAccessToken(), accessToken.getTokenType(), accessToken.getRawResponse());
-    } catch (InterruptedException | ExecutionException | IOException e) {
-      String msg = "Cannot retrieve access token";
-      log.error(msg, e);
-      throw new RuntimeException(msg, e);
-    }
-  }
-
-  @Override
-  public String getAuthorizationUrl() {
-    String url = service.getAuthorizationUrl();
-    return url;
-  }
-
-  @Override
-  public String getVersion() {
-    return service.getVersion();
-  }
-
-  @Override
-  public String getName() {
-    return "Office365 OAuth2";
   }
 
   /** Get the {@link JsonObject} of a given token. */
@@ -220,7 +167,7 @@ public class AzureActiveDirectoryService implements OAuthServiceProvider {
     try {
       return gson.fromJson(jwtPayloadJson(tokenBase64), JsonObject.class);
     } catch (IOException e) {
-      throw new OAuthException("Invalid token payload encoding", e);
+      throw new IllegalStateException("Invalid token payload encoding", e);
     }
   }
 }

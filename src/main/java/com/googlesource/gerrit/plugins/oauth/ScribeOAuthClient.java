@@ -20,12 +20,14 @@ import com.github.scribejava.core.model.Response;
 import com.github.scribejava.core.model.Verb;
 import com.github.scribejava.core.oauth.AccessTokenRequestParams;
 import com.github.scribejava.core.oauth.OAuth20Service;
+import com.google.common.collect.ImmutableMap;
 import com.google.gerrit.common.Nullable;
 import com.google.gerrit.extensions.auth.oauth.OAuthAuthorizationInfo;
 import com.google.gerrit.extensions.auth.oauth.OAuthToken;
 import com.google.gerrit.extensions.auth.oauth.OAuthVerifier;
 import java.io.IOException;
 import java.net.URI;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import javax.servlet.http.HttpServletResponse;
 
@@ -68,8 +70,15 @@ class ScribeOAuthClient implements OAuthClient {
 
   @Override
   public String get(URI resource, OAuthToken token) throws IOException {
+    return get(resource, token, ImmutableMap.of());
+  }
+
+  @Override
+  public String get(URI resource, OAuthToken token, Map<String, String> headers)
+      throws IOException {
     OAuthRequest request = new OAuthRequest(Verb.GET, resource.toString());
     service.signRequest(new OAuth2AccessToken(token.getToken(), token.getRaw()), request);
+    headers.forEach(request::addHeader);
     try (Response response = service.execute(request)) {
       if (response.getCode() != HttpServletResponse.SC_OK) {
         throw new IOException(

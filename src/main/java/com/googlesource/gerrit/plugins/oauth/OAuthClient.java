@@ -20,6 +20,7 @@ import com.google.gerrit.extensions.auth.oauth.OAuthToken;
 import com.google.gerrit.extensions.auth.oauth.OAuthVerifier;
 import java.io.IOException;
 import java.net.URI;
+import java.util.Map;
 
 /**
  * Executes OAuth protocol operations for one configured provider.
@@ -48,6 +49,13 @@ public interface OAuthClient {
    * @return the response body; throws if the provider did not return success.
    */
   String get(URI resource, OAuthToken token) throws IOException;
+
+  /**
+   * Fetches a protected resource with the given token and extra request headers.
+   *
+   * @return the response body; throws if the provider did not return success.
+   */
+  String get(URI resource, OAuthToken token, Map<String, String> headers) throws IOException;
 
   /** @return the OAuth version of the service, e.g. {@code "2.0"}. */
   String getVersion();

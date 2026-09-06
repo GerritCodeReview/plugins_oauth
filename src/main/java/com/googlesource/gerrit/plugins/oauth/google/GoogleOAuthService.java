@@ -19,54 +19,43 @@ import static com.googlesource.gerrit.plugins.oauth.JsonUtil.asString;
 import static com.googlesource.gerrit.plugins.oauth.JsonUtil.isNull;
 import static com.googlesource.gerrit.plugins.oauth.JsonUtil.jwtPayloadJson;
 
-import com.github.scribejava.core.model.OAuth2AccessToken;
-import com.github.scribejava.core.model.OAuthRequest;
-import com.github.scribejava.core.model.Response;
-import com.github.scribejava.core.model.Verb;
-import com.github.scribejava.core.oauth.OAuth20Service;
 import com.google.common.base.Strings;
-import com.google.gerrit.extensions.auth.oauth.OAuthServiceProvider;
+import com.google.gerrit.extensions.auth.oauth.OAuthAuthorizationInfo;
 import com.google.gerrit.extensions.auth.oauth.OAuthToken;
 import com.google.gerrit.extensions.auth.oauth.OAuthUserInfo;
-import com.google.gerrit.extensions.auth.oauth.OAuthVerifier;
 import com.google.gerrit.server.config.PluginConfig;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.googlesource.gerrit.plugins.oauth.AbstractOAuthService;
 import com.googlesource.gerrit.plugins.oauth.InitOAuth;
 import com.googlesource.gerrit.plugins.oauth.OAuth20ServiceFactory;
 import com.googlesource.gerrit.plugins.oauth.OAuthPluginConfigFactory;
 import com.googlesource.gerrit.plugins.oauth.OAuthServiceProviderConfig;
 import com.googlesource.gerrit.plugins.oauth.OAuthServiceProviderExternalIdScheme;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
+import java.net.URI;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
-import javax.servlet.http.HttpServletResponse;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @Singleton
 @OAuthServiceProviderConfig(name = GoogleOAuthService.PROVIDER_NAME)
-public class GoogleOAuthService implements OAuthServiceProvider {
-  private static final Logger log = LoggerFactory.getLogger(GoogleOAuthService.class);
+public class GoogleOAuthService extends AbstractOAuthService {
   public static final String PROVIDER_NAME = "google";
   private static final String PROTECTED_RESOURCE_URL =
       "https://www.googleapis.com/oauth2/v2/userinfo";
   private static final String SCOPE = "email profile";
-  private final OAuth20Service service;
   private final List<String> domains;
   private final boolean useEmailAsUsername;
   private final boolean fixLegacyUserId;
   private final String extIdScheme;
 
   @Inject
-  GoogleOAuthService(
-      OAuthPluginConfigFactory cfgFactory, OAuth20ServiceFactory oauth20ServiceFactory) {
+  GoogleOAuthService(OAuthPluginConfigFactory cfgFactory, OAuth20ServiceFactory clientFactory) {
+    super("Google OAuth2");
     PluginConfig cfg = cfgFactory.create(PROVIDER_NAME);
     if (cfg.getBoolean(InitOAuth.LINK_TO_EXISTING_OPENID_ACCOUNT, false)) {
       log.warn(
@@ -76,7 +65,7 @@ public class GoogleOAuthService implements OAuthServiceProvider {
     fixLegacyUserId = cfg.getBoolean(InitOAuth.FIX_LEGACY_USER_ID, false);
     this.domains = Arrays.asList(cfg.getStringList(InitOAuth.DOMAIN));
     this.useEmailAsUsername = cfg.getBoolean(InitOAuth.USE_EMAIL_AS_USERNAME, false);
-    this.service = oauth20ServiceFactory.create(PROVIDER_NAME, new Google2Api(), SCOPE);
+    this.client = clientFactory.createClient(PROVIDER_NAME, new Google2Api(), SCOPE);
 
     if (log.isDebugEnabled()) {
       log.debug("OAuth2: scope={}", SCOPE);
@@ -88,60 +77,46 @@ public class GoogleOAuthService implements OAuthServiceProvider {
 
   @Override
   public OAuthUserInfo getUserInfo(OAuthToken token) throws IOException {
-    OAuthRequest request = new OAuthRequest(Verb.GET, PROTECTED_RESOURCE_URL);
-    OAuth2AccessToken t = new OAuth2AccessToken(token.getToken(), token.getRaw());
-    service.signRequest(t, request);
-
-    JsonElement userJson = null;
-    try (Response response = service.execute(request)) {
-      if (response.getCode() != HttpServletResponse.SC_OK) {
-        throw new IOException(
-            String.format(
-                "Status %s (%s) for request %s",
-                response.getCode(), response.getBody(), request.getUrl()));
+    String body = client.get(URI.create(PROTECTED_RESOURCE_URL), token);
+    if (log.isDebugEnabled()) {
+      log.debug("User info response: {}", body);
+    }
+    JsonElement userJson = JSON.newGson().fromJson(body, JsonElement.class);
+    if (userJson.isJsonObject()) {
+      JsonObject jsonObject = userJson.getAsJsonObject();
+      JsonElement id = jsonObject.get("id");
+      if (isNull(id)) {
+        throw new IOException("Response doesn't contain id field");
       }
-      userJson = JSON.newGson().fromJson(response.getBody(), JsonElement.class);
-      if (log.isDebugEnabled()) {
-        log.debug("User info response: {}", response.getBody());
-      }
-      if (userJson.isJsonObject()) {
-        JsonObject jsonObject = userJson.getAsJsonObject();
-        JsonElement id = jsonObject.get("id");
-        if (isNull(id)) {
-          throw new IOException("Response doesn't contain id field");
-        }
-        JsonElement email = jsonObject.get("email");
-        JsonElement name = jsonObject.get("name");
-        String login = null;
+      JsonElement email = jsonObject.get("email");
+      JsonElement name = jsonObject.get("name");
+      String login = null;
 
-        if (domains.size() > 0) {
-          boolean domainMatched = false;
-          JsonObject jwtToken = retrieveJWTToken(token);
-          String hdClaim = retrieveHostedDomain(jwtToken);
-          for (String domain : domains) {
-            if (domain.equalsIgnoreCase(hdClaim)) {
-              domainMatched = true;
-              break;
-            }
-          }
-          if (!domainMatched) {
-            // TODO(davido): improve error reporting in OAuth extension point
-            log.error("Error: hosted domain validation failed: {}", Strings.nullToEmpty(hdClaim));
-            return null;
+      if (!domains.isEmpty()) {
+        boolean domainMatched = false;
+        JsonObject jwtToken = retrieveJWTToken(token);
+        String hdClaim = retrieveHostedDomain(jwtToken);
+        for (String domain : domains) {
+          if (domain.equalsIgnoreCase(hdClaim)) {
+            domainMatched = true;
+            break;
           }
         }
-        if (useEmailAsUsername && !email.isJsonNull()) {
-          login = email.getAsString().split("@")[0];
+        if (!domainMatched) {
+          // TODO(davido): improve error reporting in OAuth extension point
+          log.error("Error: hosted domain validation failed: {}", Strings.nullToEmpty(hdClaim));
+          return null;
         }
-        return new OAuthUserInfo(
-            extIdScheme + ":" + id.getAsString(),
-            login,
-            asString(email),
-            asString(name),
-            fixLegacyUserId ? id.getAsString() : null /*claimedIdentity*/);
       }
-    } catch (ExecutionException | InterruptedException e) {
-      throw new RuntimeException("Cannot retrieve user info resource", e);
+      if (useEmailAsUsername && !email.isJsonNull()) {
+        login = email.getAsString().split("@")[0];
+      }
+      return new OAuthUserInfo(
+          extIdScheme + ":" + id.getAsString(),
+          login,
+          asString(email),
+          asString(name),
+          fixLegacyUserId ? id.getAsString() : null);
     }
 
     throw new IOException(String.format("Invalid JSON '%s': not a JSON Object", userJson));
@@ -165,7 +140,7 @@ public class GoogleOAuthService implements OAuthServiceProvider {
     return null;
   }
 
-  private static String retrieveHostedDomain(JsonObject jwtToken) {
+  private String retrieveHostedDomain(JsonObject jwtToken) {
     if (jwtToken == null) {
       log.debug("OAuth2: JWT token is null");
       return null;
@@ -181,44 +156,18 @@ public class GoogleOAuthService implements OAuthServiceProvider {
   }
 
   @Override
-  public OAuthToken getAccessToken(OAuthVerifier rv) {
-    try {
-      OAuth2AccessToken accessToken = service.getAccessToken(rv.getValue());
-      return new OAuthToken(
-          accessToken.getAccessToken(), accessToken.getTokenType(), accessToken.getRawResponse());
-    } catch (InterruptedException | ExecutionException | IOException e) {
-      String msg = "Cannot retrieve access token";
-      log.error(msg, e);
-      throw new RuntimeException(msg, e);
-    }
-  }
-
-  @Override
-  public String getAuthorizationUrl() {
-    StringBuilder urlBuilder = new StringBuilder(service.getAuthorizationUrl());
-    try {
-      if (domains.size() == 1) {
-        urlBuilder.append("&hd=");
-        urlBuilder.append(URLEncoder.encode(domains.get(0), StandardCharsets.UTF_8.name()));
-      } else if (domains.size() > 1) {
-        urlBuilder.append("&hd=*");
-      }
-    } catch (UnsupportedEncodingException e) {
-      throw new IllegalArgumentException(e);
+  public OAuthAuthorizationInfo getAuthorizationInfo() {
+    OAuthAuthorizationInfo info = client.getAuthorizationInfo();
+    StringBuilder urlBuilder = new StringBuilder(info.getAuthorizationUrl());
+    if (domains.size() == 1) {
+      urlBuilder.append("&hd=");
+      urlBuilder.append(URLEncoder.encode(domains.get(0), StandardCharsets.UTF_8));
+    } else if (domains.size() > 1) {
+      urlBuilder.append("&hd=*");
     }
     if (log.isDebugEnabled()) {
       log.debug("OAuth2: authorization URL={}", urlBuilder);
     }
-    return urlBuilder.toString();
-  }
-
-  @Override
-  public String getVersion() {
-    return service.getVersion();
-  }
-
-  @Override
-  public String getName() {
-    return "Google OAuth2";
+    return new OAuthAuthorizationInfo(urlBuilder.toString(), info.getPkceVerifier());
   }
 }
