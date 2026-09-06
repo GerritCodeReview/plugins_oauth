@@ -19,12 +19,7 @@ import static com.googlesource.gerrit.plugins.oauth.JsonUtil.asString;
 import static com.googlesource.gerrit.plugins.oauth.JsonUtil.isNull;
 
 import com.google.common.base.CharMatcher;
-import com.google.gerrit.common.Nullable;
-import com.google.gerrit.extensions.auth.oauth.OAuthAuthorizationInfo;
-import com.google.gerrit.extensions.auth.oauth.OAuthServiceProvider;
-import com.google.gerrit.extensions.auth.oauth.OAuthToken;
 import com.google.gerrit.extensions.auth.oauth.OAuthUserInfo;
-import com.google.gerrit.extensions.auth.oauth.OAuthVerifier;
 import com.google.gerrit.server.config.PluginConfig;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -32,40 +27,33 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.oauth.InitOAuth;
 import com.googlesource.gerrit.plugins.oauth.OAuth20ServiceFactory;
-import com.googlesource.gerrit.plugins.oauth.OAuthClient;
 import com.googlesource.gerrit.plugins.oauth.OAuthPluginConfigFactory;
 import com.googlesource.gerrit.plugins.oauth.OAuthServiceProviderConfig;
 import com.googlesource.gerrit.plugins.oauth.OAuthServiceProviderExternalIdScheme;
+import com.googlesource.gerrit.plugins.oauth.StandardResourceOAuthService;
 import java.io.IOException;
-import java.net.URI;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @Singleton
 @OAuthServiceProviderConfig(name = GitHubOAuthService.PROVIDER_NAME)
-public class GitHubOAuthService implements OAuthServiceProvider {
-  private static final Logger log = LoggerFactory.getLogger(GitHubOAuthService.class);
+public class GitHubOAuthService extends StandardResourceOAuthService {
   public static final String PROVIDER_NAME = "github";
   private static final String GITHUB_API_ENDPOINT_URL = "https://api.github.com/";
   private static final String GHE_API_ENDPOINT_URL = "%sapi/v3/";
   static final String GITHUB_ROOT_URL = "https://github.com/";
-  private final String rootUrl;
-
   static final String SCOPE = "user:email";
+  private final String rootUrl;
   private final boolean fixLegacyUserId;
-  private final OAuthClient client;
   private final String extIdScheme;
 
   @Inject
   GitHubOAuthService(OAuthPluginConfigFactory cfgFactory, OAuth20ServiceFactory clientFactory) {
+    super("GitHub OAuth2");
     PluginConfig cfg = cfgFactory.create(PROVIDER_NAME);
     fixLegacyUserId = cfg.getBoolean(InitOAuth.FIX_LEGACY_USER_ID, false);
     rootUrl =
         CharMatcher.is('/').trimTrailingFrom(cfg.getString(InitOAuth.ROOT_URL, GITHUB_ROOT_URL))
             + "/";
-
     client = clientFactory.createClient(PROVIDER_NAME, new GitHub2Api(rootUrl), SCOPE);
-
     extIdScheme = OAuthServiceProviderExternalIdScheme.create(PROVIDER_NAME);
   }
 
@@ -75,17 +63,14 @@ public class GitHubOAuthService implements OAuthServiceProvider {
         : String.format(GHE_API_ENDPOINT_URL, rootUrl);
   }
 
-  private String getProtectedResourceUrl() {
+  @Override
+  protected String resourceUrl() {
     return getApiUrl() + "user";
   }
 
   @Override
-  public OAuthUserInfo getUserInfo(OAuthToken token) throws IOException {
-    String body = client.get(URI.create(getProtectedResourceUrl()), token);
+  protected OAuthUserInfo parseUserInfo(String body) throws IOException {
     JsonElement userJson = JSON.newGson().fromJson(body, JsonElement.class);
-    if (log.isDebugEnabled()) {
-      log.debug("User info response: {}", body);
-    }
     if (userJson.isJsonObject()) {
       JsonObject jsonObject = userJson.getAsJsonObject();
       JsonElement id = jsonObject.get("id");
@@ -104,32 +89,5 @@ public class GitHubOAuthService implements OAuthServiceProvider {
     }
 
     throw new IOException(String.format("Invalid JSON '%s': not a JSON Object", userJson));
-  }
-
-  @Override
-  public OAuthToken getAccessToken(OAuthVerifier verifier, @Nullable String codeVerifier) {
-    try {
-      return client.exchangeCode(verifier, codeVerifier);
-    } catch (IOException e) {
-      String msg = "Cannot retrieve access token";
-      log.error(msg, e);
-      throw new RuntimeException(msg, e);
-    }
-  }
-
-  @Override
-  public OAuthAuthorizationInfo getAuthorizationInfo() {
-    return client.getAuthorizationInfo();
-  }
-
-  @Override
-  public String getVersion() {
-    // OAuth 2.0; matches the value ScribeJava's OAuth20Service#getVersion() returned.
-    return "2.0";
-  }
-
-  @Override
-  public String getName() {
-    return "GitHub OAuth2";
   }
 }

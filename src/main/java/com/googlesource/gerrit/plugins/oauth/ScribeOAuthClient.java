@@ -80,7 +80,14 @@ class ScribeOAuthClient implements OAuthClient {
       }
       return response.getBody();
     } catch (InterruptedException | ExecutionException e) {
-      throw new IOException("Cannot retrieve protected resource", e);
+      // Matches the providers' previous behaviour: this path threw an unchecked
+      // exception, not an IOException.
+      throw new RuntimeException("Cannot retrieve protected resource", e);
     }
+  }
+
+  @Override
+  public String getVersion() {
+    return service.getVersion();
   }
 }

@@ -16,18 +16,8 @@ package com.googlesource.gerrit.plugins.oauth.bitbucket;
 
 import static com.google.gerrit.json.OutputFormat.JSON;
 import static com.googlesource.gerrit.plugins.oauth.JsonUtil.isNull;
-import static javax.servlet.http.HttpServletResponse.SC_OK;
-import static org.slf4j.LoggerFactory.getLogger;
 
-import com.github.scribejava.core.model.OAuth2AccessToken;
-import com.github.scribejava.core.model.OAuthRequest;
-import com.github.scribejava.core.model.Response;
-import com.github.scribejava.core.model.Verb;
-import com.github.scribejava.core.oauth.OAuth20Service;
-import com.google.gerrit.extensions.auth.oauth.OAuthServiceProvider;
-import com.google.gerrit.extensions.auth.oauth.OAuthToken;
 import com.google.gerrit.extensions.auth.oauth.OAuthUserInfo;
-import com.google.gerrit.extensions.auth.oauth.OAuthVerifier;
 import com.google.gerrit.server.config.PluginConfig;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -38,97 +28,52 @@ import com.googlesource.gerrit.plugins.oauth.OAuth20ServiceFactory;
 import com.googlesource.gerrit.plugins.oauth.OAuthPluginConfigFactory;
 import com.googlesource.gerrit.plugins.oauth.OAuthServiceProviderConfig;
 import com.googlesource.gerrit.plugins.oauth.OAuthServiceProviderExternalIdScheme;
+import com.googlesource.gerrit.plugins.oauth.StandardResourceOAuthService;
 import java.io.IOException;
-import java.util.concurrent.ExecutionException;
-import org.slf4j.Logger;
 
 @Singleton
 @OAuthServiceProviderConfig(name = BitbucketOAuthService.PROVIDER_NAME)
-public class BitbucketOAuthService implements OAuthServiceProvider {
-  private static final Logger log = getLogger(BitbucketOAuthService.class);
+public class BitbucketOAuthService extends StandardResourceOAuthService {
   public static final String PROVIDER_NAME = "bitbucket";
   private static final String PROTECTED_RESOURCE_URL = "https://bitbucket.org/api/1.0/user/";
   private final boolean fixLegacyUserId;
-  private final OAuth20Service service;
   private final String extIdScheme;
 
   @Inject
-  BitbucketOAuthService(
-      OAuthPluginConfigFactory cfgFactory, OAuth20ServiceFactory oauth20ServiceFactory) {
+  BitbucketOAuthService(OAuthPluginConfigFactory cfgFactory, OAuth20ServiceFactory clientFactory) {
+    super("Bitbucket OAuth2");
     PluginConfig cfg = cfgFactory.create(PROVIDER_NAME);
     fixLegacyUserId = cfg.getBoolean(InitOAuth.FIX_LEGACY_USER_ID, false);
-    service = oauth20ServiceFactory.create(PROVIDER_NAME, new BitbucketApi());
+    client = clientFactory.createClient(PROVIDER_NAME, new BitbucketApi());
     extIdScheme = OAuthServiceProviderExternalIdScheme.create(PROVIDER_NAME);
   }
 
   @Override
-  public OAuthUserInfo getUserInfo(OAuthToken token) throws IOException {
-    OAuthRequest request = new OAuthRequest(Verb.GET, PROTECTED_RESOURCE_URL);
-    OAuth2AccessToken t = new OAuth2AccessToken(token.getToken(), token.getRaw());
-    service.signRequest(t, request);
+  protected String resourceUrl() {
+    return PROTECTED_RESOURCE_URL;
+  }
 
-    JsonElement userJson = null;
-    try (Response response = service.execute(request)) {
+  @Override
+  protected OAuthUserInfo parseUserInfo(String body) throws IOException {
+    JsonElement userJson = JSON.newGson().fromJson(body, JsonElement.class);
+    if (userJson.isJsonObject()) {
+      JsonObject jsonObject = userJson.getAsJsonObject();
+      JsonObject userObject = jsonObject.getAsJsonObject("user");
+      if (isNull(userObject)) {
+        throw new IOException("Response doesn't contain 'user' field");
+      }
+      JsonElement usernameElement = userObject.get("username");
+      String username = usernameElement.getAsString();
 
-      if (response.getCode() != SC_OK) {
-        throw new IOException(
-            String.format(
-                "Status %s (%s) for request %s",
-                response.getCode(), response.getBody(), request.getUrl()));
-      }
-      userJson = JSON.newGson().fromJson(response.getBody(), JsonElement.class);
-      if (log.isDebugEnabled()) {
-        log.debug("User info response: {}", response.getBody());
-      }
-      if (userJson.isJsonObject()) {
-        JsonObject jsonObject = userJson.getAsJsonObject();
-        JsonObject userObject = jsonObject.getAsJsonObject("user");
-        if (isNull(userObject)) {
-          throw new IOException("Response doesn't contain 'user' field");
-        }
-        JsonElement usernameElement = userObject.get("username");
-        String username = usernameElement.getAsString();
-
-        JsonElement displayName = jsonObject.get("display_name");
-        return new OAuthUserInfo(
-            extIdScheme + ":" + username,
-            username,
-            null,
-            displayName == null || displayName.isJsonNull() ? null : displayName.getAsString(),
-            fixLegacyUserId ? username : null);
-      }
-    } catch (ExecutionException | InterruptedException e) {
-      throw new RuntimeException("Cannot retrieve user info resource", e);
+      JsonElement displayName = jsonObject.get("display_name");
+      return new OAuthUserInfo(
+          extIdScheme + ":" + username,
+          username,
+          null,
+          displayName == null || displayName.isJsonNull() ? null : displayName.getAsString(),
+          fixLegacyUserId ? username : null);
     }
 
     throw new IOException(String.format("Invalid JSON '%s': not a JSON Object", userJson));
-  }
-
-  @Override
-  public OAuthToken getAccessToken(OAuthVerifier rv) {
-    try {
-      OAuth2AccessToken accessToken = service.getAccessToken(rv.getValue());
-      return new OAuthToken(
-          accessToken.getAccessToken(), accessToken.getTokenType(), accessToken.getRawResponse());
-    } catch (InterruptedException | ExecutionException | IOException e) {
-      String msg = "Cannot retrieve access token";
-      log.error(msg, e);
-      throw new RuntimeException(msg, e);
-    }
-  }
-
-  @Override
-  public String getAuthorizationUrl() {
-    return service.getAuthorizationUrl();
-  }
-
-  @Override
-  public String getVersion() {
-    return service.getVersion();
-  }
-
-  @Override
-  public String getName() {
-    return "Bitbucket OAuth2";
   }
 }
