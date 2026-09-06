@@ -14,16 +14,9 @@
 
 package com.googlesource.gerrit.plugins.oauth.keycloak;
 
-import static com.google.gerrit.json.OutputFormat.JSON;
 import static com.googlesource.gerrit.plugins.oauth.JsonUtil.isNull;
-import static com.googlesource.gerrit.plugins.oauth.JsonUtil.jwtPayloadJson;
 
-import com.github.scribejava.core.model.OAuth2AccessToken;
-import com.github.scribejava.core.oauth.OAuth20Service;
-import com.google.gerrit.extensions.auth.oauth.OAuthServiceProvider;
-import com.google.gerrit.extensions.auth.oauth.OAuthToken;
 import com.google.gerrit.extensions.auth.oauth.OAuthUserInfo;
-import com.google.gerrit.extensions.auth.oauth.OAuthVerifier;
 import com.google.gerrit.server.config.PluginConfig;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -35,56 +28,33 @@ import com.googlesource.gerrit.plugins.oauth.OAuth20ServiceFactory;
 import com.googlesource.gerrit.plugins.oauth.OAuthPluginConfigFactory;
 import com.googlesource.gerrit.plugins.oauth.OAuthServiceProviderConfig;
 import com.googlesource.gerrit.plugins.oauth.OAuthServiceProviderExternalIdScheme;
+import com.googlesource.gerrit.plugins.oauth.StandardIdTokenOAuthService;
 import java.io.IOException;
 import java.net.URI;
-import java.util.concurrent.ExecutionException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @Singleton
 @OAuthServiceProviderConfig(name = KeycloakOAuthService.PROVIDER_NAME)
-public class KeycloakOAuthService implements OAuthServiceProvider {
-
-  private static final Logger log = LoggerFactory.getLogger(KeycloakOAuthService.class);
+public class KeycloakOAuthService extends StandardIdTokenOAuthService {
   public static final String PROVIDER_NAME = "keycloak";
-
-  private final OAuth20Service service;
-  private final String serviceName;
   private final boolean usePreferredUsername;
   private final String extIdScheme;
 
   @Inject
-  KeycloakOAuthService(
-      OAuthPluginConfigFactory cfgFactory, OAuth20ServiceFactory oauth20ServiceFactory) {
+  KeycloakOAuthService(OAuthPluginConfigFactory cfgFactory, OAuth20ServiceFactory clientFactory) {
+    super(cfgFactory.create(PROVIDER_NAME).getString(InitOAuth.SERVICE_NAME, "Keycloak OAuth2"));
     PluginConfig cfg = cfgFactory.create(PROVIDER_NAME);
-
     String rootUrl = cfg.getString(InitOAuth.ROOT_URL);
     if (!URI.create(rootUrl).isAbsolute()) {
       throw new ProvisionException("Root URL must be absolute URL");
     }
     String realm = cfg.getString(InitOAuth.REALM);
-    serviceName = cfg.getString(InitOAuth.SERVICE_NAME, "Keycloak OAuth2");
     usePreferredUsername = cfg.getBoolean(InitOAuth.USE_PREFERRED_USERNAME, true);
-
-    service =
-        oauth20ServiceFactory.create(PROVIDER_NAME, new KeycloakApi(rootUrl, realm), "openid");
-
+    client = clientFactory.createClient(PROVIDER_NAME, new KeycloakApi(rootUrl, realm), "openid");
     extIdScheme = OAuthServiceProviderExternalIdScheme.create(PROVIDER_NAME);
   }
 
   @Override
-  public OAuthUserInfo getUserInfo(OAuthToken token) throws IOException {
-    JsonElement tokenJson = JSON.newGson().fromJson(token.getRaw(), JsonElement.class);
-    JsonObject tokenObject = tokenJson.getAsJsonObject();
-    JsonElement id_token = tokenObject.get("id_token");
-    String jwt = jwtPayloadJson(id_token.getAsString());
-
-    JsonElement claimJson = JSON.newGson().fromJson(jwt, JsonElement.class);
-
-    JsonObject claimObject = claimJson.getAsJsonObject();
-    if (log.isDebugEnabled()) {
-      log.debug("Claim object: {}", claimObject);
-    }
+  protected OAuthUserInfo parseClaims(JsonObject claimObject) throws IOException {
     JsonElement usernameElement = claimObject.get("preferred_username");
     JsonElement emailElement = claimObject.get("email");
     JsonElement nameElement = claimObject.get("name");
@@ -106,39 +76,6 @@ public class KeycloakOAuthService implements OAuthServiceProvider {
     String email = emailElement.getAsString();
     String name = nameElement.getAsString();
 
-    return new OAuthUserInfo(
-        externalId /*externalId*/,
-        username /*username*/,
-        email /*email*/,
-        name /*displayName*/,
-        null /*claimedIdentity*/);
-  }
-
-  @Override
-  public OAuthToken getAccessToken(OAuthVerifier rv) {
-    try {
-      OAuth2AccessToken accessToken = service.getAccessToken(rv.getValue());
-      return new OAuthToken(
-          accessToken.getAccessToken(), accessToken.getTokenType(), accessToken.getRawResponse());
-    } catch (InterruptedException | ExecutionException | IOException e) {
-      String msg = "Cannot retrieve access token";
-      log.error(msg, e);
-      throw new RuntimeException(msg, e);
-    }
-  }
-
-  @Override
-  public String getAuthorizationUrl() {
-    return service.getAuthorizationUrl();
-  }
-
-  @Override
-  public String getVersion() {
-    return service.getVersion();
-  }
-
-  @Override
-  public String getName() {
-    return serviceName;
+    return new OAuthUserInfo(externalId, username, email, name, null);
   }
 }
