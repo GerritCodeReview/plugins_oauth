@@ -16,20 +16,17 @@ package com.googlesource.gerrit.plugins.oauth.cognito;
 
 import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
-import com.github.scribejava.core.model.OAuthRequest;
-import com.github.scribejava.core.model.Response;
-import com.github.scribejava.core.oauth.OAuth20Service;
 import com.google.gerrit.extensions.auth.oauth.OAuthToken;
 import com.google.gerrit.extensions.auth.oauth.OAuthUserInfo;
 import com.google.gerrit.server.config.PluginConfig;
 import com.googlesource.gerrit.plugins.oauth.InitOAuth;
 import com.googlesource.gerrit.plugins.oauth.OAuth20ServiceFactory;
+import com.googlesource.gerrit.plugins.oauth.OAuthClient;
 import com.googlesource.gerrit.plugins.oauth.OAuthPluginConfigFactory;
-import java.lang.reflect.Field;
-import javax.servlet.http.HttpServletResponse;
+import java.net.URI;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -43,15 +40,13 @@ public class CognitoOAuthServiceTest {
   @Mock private OAuthPluginConfigFactory mockConfigFactory;
   @Mock private PluginConfig mockPluginConfig;
 
-  // This is the ScribeJava service we want to mock
-  @Mock private OAuth20Service mockScribeOAuthService;
+  // The internal client boundary we want to stub
+  @Mock private OAuth20ServiceFactory mockClientFactory;
+  @Mock private OAuthClient mockClient;
 
   // Constants for configuration values
-  private static final String TEST_CANONICAL_WEB_URL = "http://gerrit.example.com";
   private static final String TEST_COGNITO_ROOT_URL =
       "https://cognito-idp.us-east-1.amazonaws.com/USER_POOL_ID";
-  private static final String TEST_CLIENT_ID = "test-client-id-123";
-  private static final String TEST_CLIENT_SECRET = "test-client-secret-abc";
   private static final String DEFAULT_SERVICE_NAME = "Cognito";
 
   // User details from Cognito
@@ -71,49 +66,39 @@ public class CognitoOAuthServiceTest {
     // Configure the mockPluginConfig with necessary values for CognitoOAuthService
     // constructor
     when(mockPluginConfig.getString(InitOAuth.ROOT_URL)).thenReturn(TEST_COGNITO_ROOT_URL);
-    when(mockPluginConfig.getString(InitOAuth.CLIENT_ID)).thenReturn(TEST_CLIENT_ID);
-    when(mockPluginConfig.getString(InitOAuth.CLIENT_SECRET)).thenReturn(TEST_CLIENT_SECRET);
     when(mockPluginConfig.getString(InitOAuth.SERVICE_NAME, DEFAULT_SERVICE_NAME))
         .thenReturn(DEFAULT_SERVICE_NAME);
+
+    // Stub the client factory so the service talks to our mock client instead of
+    // the network.
+    when(mockClientFactory.createClient(eq(CognitoOAuthService.PROVIDER_NAME), any(), any()))
+        .thenReturn(mockClient);
   }
 
   /**
-   * Helper method to create an instance of CognitoOAuthService with a mocked internal
-   * OAuth20Service. This allows testing the logic of CognitoOAuthService in isolation.
+   * Helper method to create an instance of CognitoOAuthService with a stubbed client. This allows
+   * testing the logic of CognitoOAuthService in isolation.
    *
    * @param linkExistingGerritAccounts The value for the 'link-to-existing-gerrit-account' config.
-   * @return An instance of CognitoOAuthService with the ScribeJava service mocked.
-   * @throws Exception If reflection fails.
+   * @return An instance of CognitoOAuthService with the client stubbed.
    */
-  private CognitoOAuthService createServiceAndInjectMock(boolean linkExistingGerritAccounts)
-      throws Exception {
+  private CognitoOAuthService createService(boolean linkExistingGerritAccounts) {
     // Configure the specific 'link-to-existing-gerrit-account' for this instance
     when(mockPluginConfig.getBoolean(InitOAuth.LINK_TO_EXISTING_GERRIT_ACCOUNT, false))
         .thenReturn(linkExistingGerritAccounts);
-
-    OAuth20ServiceFactory serviceFactory =
-        new OAuth20ServiceFactory(mockConfigFactory, TEST_CANONICAL_WEB_URL);
-    CognitoOAuthService serviceInstance =
-        new CognitoOAuthService(mockConfigFactory, serviceFactory);
-
-    // Replace the internal OAuth20Service with our mock using reflection.
-    Field serviceField = CognitoOAuthService.class.getDeclaredField("service");
-    serviceField.setAccessible(true); // Allow modification of the private final field
-    serviceField.set(serviceInstance, mockScribeOAuthService); // Inject our mock
-    return serviceInstance;
+    return new CognitoOAuthService(mockConfigFactory, mockClientFactory);
   }
 
   /**
-   * Helper method to mock the HTTP response from Cognito's user info endpoint.
+   * Helper method to stub the user info body returned by Cognito's user info endpoint.
    *
    * @param userId The 'sub' (subject) ID from Cognito.
    * @param username The 'preferred_username' from Cognito. Can be null.
    * @param email The 'email' from Cognito. Can be null.
    * @param name The 'name' from Cognito. Can be null.
-   * @throws Exception If mocking fails.
    */
-  private void mockCognitoUserInfoResponse(
-      String userId, String username, String email, String name) throws Exception {
+  private void mockUserInfoResponse(String userId, String username, String email, String name)
+      throws Exception {
     // Construct the JSON response string. Handles nulls correctly for JSON.
     String cognitoJsonResponse =
         String.format(
@@ -123,13 +108,7 @@ public class CognitoOAuthServiceTest {
             email == null ? "null" : "\"" + email + "\"",
             name == null ? "null" : "\"" + name + "\"");
 
-    Response mockHttpResponse = mock(Response.class);
-    when(mockHttpResponse.getCode()).thenReturn(HttpServletResponse.SC_OK);
-    // Simulate successful HTTP 200 OK
-    when(mockHttpResponse.getBody()).thenReturn(cognitoJsonResponse);
-
-    // Configure the mockScribeOAuthService to return this mockHttpResponse
-    when(mockScribeOAuthService.execute(any(OAuthRequest.class))).thenReturn(mockHttpResponse);
+    when(mockClient.get(any(URI.class), any(OAuthToken.class))).thenReturn(cognitoJsonResponse);
   }
 
   /**
@@ -139,9 +118,8 @@ public class CognitoOAuthServiceTest {
   @Test
   public void getUserInfo_linkTrue_validUsername_shouldSetClaimedIdentity() throws Exception {
     // --- ARRANGE ---
-    CognitoOAuthService service = createServiceAndInjectMock(true);
-    // linkExistingGerrit = true
-    mockCognitoUserInfoResponse(COGNITO_USER_ID, COGNITO_USERNAME, COGNITO_EMAIL, COGNITO_NAME);
+    CognitoOAuthService service = createService(true); // linkExistingGerrit = true
+    mockUserInfoResponse(COGNITO_USER_ID, COGNITO_USERNAME, COGNITO_EMAIL, COGNITO_NAME);
     OAuthToken inputToken =
         new OAuthToken("dummyAccessToken", "dummySecretForTest", "dummyRawResponse");
 
@@ -167,9 +145,8 @@ public class CognitoOAuthServiceTest {
   @Test
   public void getUserInfo_linkFalse_validUsername_shouldSetClaimedIdentityNull() throws Exception {
     // --- ARRANGE ---
-    CognitoOAuthService service = createServiceAndInjectMock(false);
-    // linkExistingGerrit = false
-    mockCognitoUserInfoResponse(COGNITO_USER_ID, COGNITO_USERNAME, COGNITO_EMAIL, COGNITO_NAME);
+    CognitoOAuthService service = createService(false); // linkExistingGerrit = false
+    mockUserInfoResponse(COGNITO_USER_ID, COGNITO_USERNAME, COGNITO_EMAIL, COGNITO_NAME);
     OAuthToken inputToken =
         new OAuthToken("dummyAccessToken", "dummySecretForTest", "dummyRawResponse");
 
