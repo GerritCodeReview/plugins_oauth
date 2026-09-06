@@ -18,12 +18,9 @@ import static com.google.gerrit.json.OutputFormat.JSON;
 import static com.googlesource.gerrit.plugins.oauth.JsonUtil.asString;
 import static com.googlesource.gerrit.plugins.oauth.JsonUtil.isNull;
 
-import com.github.scribejava.core.model.OAuth2AccessToken;
-import com.github.scribejava.core.model.OAuthRequest;
-import com.github.scribejava.core.model.Response;
-import com.github.scribejava.core.model.Verb;
-import com.github.scribejava.core.oauth.OAuth20Service;
 import com.google.common.base.CharMatcher;
+import com.google.gerrit.common.Nullable;
+import com.google.gerrit.extensions.auth.oauth.OAuthAuthorizationInfo;
 import com.google.gerrit.extensions.auth.oauth.OAuthServiceProvider;
 import com.google.gerrit.extensions.auth.oauth.OAuthToken;
 import com.google.gerrit.extensions.auth.oauth.OAuthUserInfo;
@@ -35,12 +32,12 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.oauth.InitOAuth;
 import com.googlesource.gerrit.plugins.oauth.OAuth20ServiceFactory;
+import com.googlesource.gerrit.plugins.oauth.OAuthClient;
 import com.googlesource.gerrit.plugins.oauth.OAuthPluginConfigFactory;
 import com.googlesource.gerrit.plugins.oauth.OAuthServiceProviderConfig;
 import com.googlesource.gerrit.plugins.oauth.OAuthServiceProviderExternalIdScheme;
 import java.io.IOException;
-import java.util.concurrent.ExecutionException;
-import javax.servlet.http.HttpServletResponse;
+import java.net.URI;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -56,19 +53,18 @@ public class GitHubOAuthService implements OAuthServiceProvider {
 
   static final String SCOPE = "user:email";
   private final boolean fixLegacyUserId;
-  private final OAuth20Service service;
+  private final OAuthClient client;
   private final String extIdScheme;
 
   @Inject
-  GitHubOAuthService(
-      OAuthPluginConfigFactory cfgFactory, OAuth20ServiceFactory oauth20ServiceFactory) {
+  GitHubOAuthService(OAuthPluginConfigFactory cfgFactory, OAuth20ServiceFactory clientFactory) {
     PluginConfig cfg = cfgFactory.create(PROVIDER_NAME);
     fixLegacyUserId = cfg.getBoolean(InitOAuth.FIX_LEGACY_USER_ID, false);
     rootUrl =
         CharMatcher.is('/').trimTrailingFrom(cfg.getString(InitOAuth.ROOT_URL, GITHUB_ROOT_URL))
             + "/";
 
-    service = oauth20ServiceFactory.create(PROVIDER_NAME, new GitHub2Api(rootUrl), SCOPE);
+    client = clientFactory.createClient(PROVIDER_NAME, new GitHub2Api(rootUrl), SCOPE);
 
     extIdScheme = OAuthServiceProviderExternalIdScheme.create(PROVIDER_NAME);
   }
@@ -85,52 +81,36 @@ public class GitHubOAuthService implements OAuthServiceProvider {
 
   @Override
   public OAuthUserInfo getUserInfo(OAuthToken token) throws IOException {
-    OAuthRequest request = new OAuthRequest(Verb.GET, getProtectedResourceUrl());
-    OAuth2AccessToken t = new OAuth2AccessToken(token.getToken(), token.getRaw());
-    service.signRequest(t, request);
-
-    JsonElement userJson = null;
-    try (Response response = service.execute(request)) {
-      if (response.getCode() != HttpServletResponse.SC_OK) {
-        throw new IOException(
-            String.format(
-                "Status %s (%s) for request %s",
-                response.getCode(), response.getBody(), request.getUrl()));
+    String body = client.get(URI.create(getProtectedResourceUrl()), token);
+    JsonElement userJson = JSON.newGson().fromJson(body, JsonElement.class);
+    if (log.isDebugEnabled()) {
+      log.debug("User info response: {}", body);
+    }
+    if (userJson.isJsonObject()) {
+      JsonObject jsonObject = userJson.getAsJsonObject();
+      JsonElement id = jsonObject.get("id");
+      if (isNull(id)) {
+        throw new IOException("Response doesn't contain id field");
       }
-      userJson = JSON.newGson().fromJson(response.getBody(), JsonElement.class);
-      if (log.isDebugEnabled()) {
-        log.debug("User info response: {}", response.getBody());
-      }
-      if (userJson.isJsonObject()) {
-        JsonObject jsonObject = userJson.getAsJsonObject();
-        JsonElement id = jsonObject.get("id");
-        if (isNull(id)) {
-          throw new IOException("Response doesn't contain id field");
-        }
-        JsonElement email = jsonObject.get("email");
-        JsonElement name = jsonObject.get("name");
-        JsonElement login = jsonObject.get("login");
-        return new OAuthUserInfo(
-            extIdScheme + ":" + id.getAsString(),
-            asString(login),
-            asString(email),
-            asString(name),
-            fixLegacyUserId ? id.getAsString() : null);
-      }
-    } catch (ExecutionException | InterruptedException e) {
-      throw new RuntimeException("Cannot retrieve user info resource", e);
+      JsonElement email = jsonObject.get("email");
+      JsonElement name = jsonObject.get("name");
+      JsonElement login = jsonObject.get("login");
+      return new OAuthUserInfo(
+          extIdScheme + ":" + id.getAsString(),
+          asString(login),
+          asString(email),
+          asString(name),
+          fixLegacyUserId ? id.getAsString() : null);
     }
 
     throw new IOException(String.format("Invalid JSON '%s': not a JSON Object", userJson));
   }
 
   @Override
-  public OAuthToken getAccessToken(OAuthVerifier rv) {
+  public OAuthToken getAccessToken(OAuthVerifier verifier, @Nullable String codeVerifier) {
     try {
-      OAuth2AccessToken accessToken = service.getAccessToken(rv.getValue());
-      return new OAuthToken(
-          accessToken.getAccessToken(), accessToken.getTokenType(), accessToken.getRawResponse());
-    } catch (InterruptedException | ExecutionException | IOException e) {
+      return client.exchangeCode(verifier, codeVerifier);
+    } catch (IOException e) {
       String msg = "Cannot retrieve access token";
       log.error(msg, e);
       throw new RuntimeException(msg, e);
@@ -138,13 +118,14 @@ public class GitHubOAuthService implements OAuthServiceProvider {
   }
 
   @Override
-  public String getAuthorizationUrl() {
-    return service.getAuthorizationUrl();
+  public OAuthAuthorizationInfo getAuthorizationInfo() {
+    return client.getAuthorizationInfo();
   }
 
   @Override
   public String getVersion() {
-    return service.getVersion();
+    // OAuth 2.0; matches the value ScribeJava's OAuth20Service#getVersion() returned.
+    return "2.0";
   }
 
   @Override

@@ -51,4 +51,12 @@ public class OAuth20ServiceFactory {
 
     return builder.build(api);
   }
+
+  public OAuthClient createClient(String providerName, DefaultApi20 api) {
+    return createClient(providerName, api, null);
+  }
+
+  public OAuthClient createClient(String providerName, DefaultApi20 api, @Nullable String scope) {
+    return new ScribeOAuthClient(create(providerName, api, scope));
+  }
 }
