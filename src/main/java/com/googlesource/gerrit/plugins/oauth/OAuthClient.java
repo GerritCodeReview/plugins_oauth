@@ -48,4 +48,7 @@ public interface OAuthClient {
    * @return the response body; throws if the provider did not return success.
    */
   String get(URI resource, OAuthToken token) throws IOException;
+
+  /** @return the OAuth version of the service, e.g. {@code "2.0"}. */
+  String getVersion();
 }
