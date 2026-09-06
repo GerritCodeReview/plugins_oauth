@@ -14,23 +14,14 @@
 
 package com.googlesource.gerrit.plugins.oauth.sap;
 
-import static org.slf4j.LoggerFactory.getLogger;
-
-import com.github.scribejava.core.model.OAuth2AccessToken;
-import com.github.scribejava.core.oauth.AccessTokenRequestParams;
-import com.github.scribejava.core.oauth.AuthorizationUrlBuilder;
-import com.github.scribejava.core.oauth.OAuth20Service;
 import com.google.common.base.Strings;
-import com.google.gerrit.common.Nullable;
-import com.google.gerrit.extensions.auth.oauth.OAuthAuthorizationInfo;
-import com.google.gerrit.extensions.auth.oauth.OAuthServiceProvider;
 import com.google.gerrit.extensions.auth.oauth.OAuthToken;
 import com.google.gerrit.extensions.auth.oauth.OAuthUserInfo;
-import com.google.gerrit.extensions.auth.oauth.OAuthVerifier;
 import com.google.gerrit.server.config.PluginConfig;
 import com.google.inject.Inject;
 import com.google.inject.ProvisionException;
 import com.google.inject.Singleton;
+import com.googlesource.gerrit.plugins.oauth.AbstractOAuthService;
 import com.googlesource.gerrit.plugins.oauth.InitOAuth;
 import com.googlesource.gerrit.plugins.oauth.OAuth20ServiceFactory;
 import com.googlesource.gerrit.plugins.oauth.OAuthPluginConfigFactory;
@@ -43,51 +34,43 @@ import com.sap.cloud.security.token.validation.CombiningValidator;
 import com.sap.cloud.security.token.validation.ValidationResult;
 import java.io.IOException;
 import java.net.URI;
-import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import org.slf4j.Logger;
 
 @Singleton
 @OAuthServiceProviderConfig(name = SAPIasOAuthService.PROVIDER_NAME)
-public class SAPIasOAuthService implements OAuthServiceProvider {
-  private static final Logger log = getLogger(SAPIasOAuthService.class);
+public class SAPIasOAuthService extends AbstractOAuthService {
   static final String PROVIDER_NAME = "sapias";
-  private final OAuth20Service service;
-  private final String serviceName;
-  private final String rootUrl;
   private final boolean linkExistingGerrit;
-  private final boolean enablePKCE;
   private final String extIdScheme;
   private final CombiningValidator<Token> tokenValidator;
 
   @Inject
   SAPIasOAuthService(
       OAuthPluginConfigFactory cfgFactory,
-      OAuth20ServiceFactory oauth20ServiceFactory,
+      OAuth20ServiceFactory clientFactory,
       CombiningValidator<Token> tokenValidator) {
+    super(cfgFactory.create(PROVIDER_NAME).getString(InitOAuth.SERVICE_NAME, "SAP IAS"));
     PluginConfig cfg = cfgFactory.create(PROVIDER_NAME);
-    rootUrl = cfg.getString(InitOAuth.ROOT_URL);
+    String rootUrl = cfg.getString(InitOAuth.ROOT_URL);
     if (!URI.create(rootUrl).isAbsolute()) {
       throw new ProvisionException("Root URL must be absolute URL");
     }
-    serviceName = cfg.getString(InitOAuth.SERVICE_NAME, "SAP IAS");
     linkExistingGerrit = cfg.getBoolean(InitOAuth.LINK_TO_EXISTING_GERRIT_ACCOUNT, false);
-    enablePKCE = cfg.getBoolean(InitOAuth.ENABLE_PKCE, false);
-    service =
-        oauth20ServiceFactory.create(PROVIDER_NAME, new SAPIasApi(rootUrl), "openid profile email");
-
+    boolean enablePKCE = cfg.getBoolean(InitOAuth.ENABLE_PKCE, false);
+    client =
+        clientFactory.createClient(
+            PROVIDER_NAME,
+            new SAPIasApi(rootUrl),
+            "openid profile email",
+            true,
+            enablePKCE);
     extIdScheme = OAuthServiceProviderExternalIdScheme.create(PROVIDER_NAME);
     this.tokenValidator = tokenValidator;
   }
 
   @Override
   public OAuthUserInfo getUserInfo(OAuthToken token) throws IOException {
-    OAuth2AccessToken t = new OAuth2AccessToken(token.getToken(), token.getRaw());
-    return getUserInfo(t);
-  }
-
-  public OAuthUserInfo getUserInfo(OAuth2AccessToken token) throws IOException {
     SapIdToken sapToken = new SapIdToken(getIdToken(token));
     ValidationResult res = tokenValidator.validate(sapToken);
     if (!res.isValid()) {
@@ -96,7 +79,7 @@ public class SAPIasOAuthService implements OAuthServiceProvider {
     }
 
     String username = sapToken.getClaimAsString("sub");
-    String externalId = this.extIdScheme + ":" + username;
+    String externalId = extIdScheme + ":" + username;
     String email = sapToken.getClaimAsString("email");
     String firstName = sapToken.getClaimAsString("first_name");
     String lastName = sapToken.getClaimAsString("last_name");
@@ -109,60 +92,22 @@ public class SAPIasOAuthService implements OAuthServiceProvider {
     return new OAuthUserInfo(externalId, username, email, displayName, claimedIdentity);
   }
 
-  @Override
-  public OAuthToken getAccessToken(OAuthVerifier rv, @Nullable String codeVerifier) {
+  /** Exchanges resource-owner credentials for a token (resource-owner password flow). */
+  public OAuthToken getAccessToken(String username, String password) {
     try {
-      AccessTokenRequestParams reqParams = AccessTokenRequestParams.create(rv.getValue());
-      if (enablePKCE && codeVerifier != null) {
-        reqParams.pkceCodeVerifier(codeVerifier);
-      }
-      OAuth2AccessToken accessToken = service.getAccessToken(reqParams);
-      return new OAuthToken(
-          accessToken.getAccessToken(), accessToken.getTokenType(), accessToken.getRawResponse());
-    } catch (InterruptedException | ExecutionException | IOException e) {
+      return client.passwordGrant(username, password);
+    } catch (IOException e) {
       String msg = "Cannot retrieve access token";
       log.error(msg, e);
       throw new RuntimeException(msg, e);
     }
   }
 
-  @Override
-  public OAuthAuthorizationInfo getAuthorizationInfo() {
-    AuthorizationUrlBuilder builder = service.createAuthorizationUrlBuilder();
-    String pkceVerifier = null;
-    if (enablePKCE) {
-      builder.initPKCE();
-      pkceVerifier = builder.getPkce().getCodeVerifier();
-    }
-    return new OAuthAuthorizationInfo(builder.build(), pkceVerifier);
-  }
-
-  public OAuth2AccessToken getAccessToken(String externalUsername, String password) {
+  private static String getIdToken(OAuthToken token) {
     try {
-      return service.getAccessTokenPasswordGrant(externalUsername, password);
-    } catch (IOException | InterruptedException | ExecutionException e) {
-      String msg = "Cannot retrieve access token";
-      log.error(msg, e);
-      throw new RuntimeException(msg, e);
-    }
-  }
-
-  @Override
-  public String getVersion() {
-    return service.getVersion();
-  }
-
-  @Override
-  public String getName() {
-    return serviceName;
-  }
-
-  private String getIdToken(OAuth2AccessToken token) {
-    try {
-      String raw = token.getRawResponse();
-      return new DefaultJsonObject(raw).getAsString("id_token");
+      return new DefaultJsonObject(token.getRaw()).getAsString("id_token");
     } catch (IllegalStateException e) {
-      return token.getAccessToken();
+      return token.getToken();
     }
   }
 }

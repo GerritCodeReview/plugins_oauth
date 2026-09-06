@@ -97,6 +97,21 @@ class ScribeOAuthClient implements OAuthClient {
   }
 
   @Override
+  public OAuthToken passwordGrant(String username, String password) throws IOException {
+    try {
+      OAuth2AccessToken accessToken = service.getAccessTokenPasswordGrant(username, password);
+      String tokenType = accessToken.getTokenType();
+      if (tolerateMissingTokenType) {
+        tokenType = Strings.nullToEmpty(tokenType);
+      }
+      return new OAuthToken(
+          accessToken.getAccessToken(), tokenType, accessToken.getRawResponse());
+    } catch (InterruptedException | ExecutionException e) {
+      throw new IOException("Cannot retrieve access token", e);
+    }
+  }
+
+  @Override
   public String get(URI resource, OAuthToken token) throws IOException {
     return get(resource, token, ImmutableMap.of());
   }

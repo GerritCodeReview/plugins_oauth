@@ -111,6 +111,29 @@ public class ScribeOAuthClientTest {
   }
 
   @Test
+  public void passwordGrant_mapsAccessToken() throws Exception {
+    when(service.getAccessTokenPasswordGrant("user", "pass"))
+        .thenReturn(accessToken("at", "Bearer", "raw"));
+
+    OAuthToken token = new ScribeOAuthClient(service).passwordGrant("user", "pass");
+
+    assertThat(token.getToken()).isEqualTo("at");
+    assertThat(token.getSecret()).isEqualTo("Bearer");
+    assertThat(token.getRaw()).isEqualTo("raw");
+  }
+
+  @Test
+  public void passwordGrant_tolerateMissingTokenType_storesEmptyString() throws Exception {
+    when(service.getAccessTokenPasswordGrant("user", "pass"))
+        .thenReturn(accessToken("at", null, "raw"));
+
+    OAuthToken token =
+        new ScribeOAuthClient(service, true, false).passwordGrant("user", "pass");
+
+    assertThat(token.getSecret()).isEmpty();
+  }
+
+  @Test
   public void get_returnsBodyOnSuccess() throws Exception {
     Response response = mock(Response.class);
     when(response.getCode()).thenReturn(HttpServletResponse.SC_OK);
