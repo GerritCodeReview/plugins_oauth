@@ -22,24 +22,42 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import com.googlesource.gerrit.plugins.oauth.OAuth20ServiceFactory;
+import com.googlesource.gerrit.plugins.oauth.base.HttpOAuthClientFactory;
 import com.googlesource.gerrit.plugins.oauth.base.OAuthServiceProviderConfig;
 import com.googlesource.gerrit.plugins.oauth.base.OAuthServiceProviderExternalIdScheme;
 import com.googlesource.gerrit.plugins.oauth.base.StandardResourceOAuthService;
+import com.googlesource.gerrit.plugins.oauth.client.BearerPlacement;
+import com.googlesource.gerrit.plugins.oauth.client.ClientAuthStyle;
+import com.googlesource.gerrit.plugins.oauth.client.OAuthProviderEndpoints;
+import com.googlesource.gerrit.plugins.oauth.client.TokenResponseFormat;
 import java.io.IOException;
 
 @Singleton
 @OAuthServiceProviderConfig(name = AirVantageOAuthService.PROVIDER_NAME)
 public class AirVantageOAuthService extends StandardResourceOAuthService {
   public static final String PROVIDER_NAME = "airvantage";
+  private static final String AUTHORIZATION_URL = "https://eu.airvantage.net/api/oauth/authorize";
+  private static final String ACCESS_TOKEN_URL = "https://eu.airvantage.net/api/oauth/token";
   private static final String PROTECTED_RESOURCE_URL =
       "https://eu.airvantage.net/api/v1/users/current";
   private final String extIdScheme;
 
   @Inject
-  AirVantageOAuthService(OAuth20ServiceFactory clientFactory) {
+  AirVantageOAuthService(HttpOAuthClientFactory clientFactory) {
     super("AirVantage OAuth2");
-    client = clientFactory.createClient(PROVIDER_NAME, new AirVantageApi());
+    // Native descriptor: default HTTP Basic client auth, JSON token response, no scope, and the
+    // bearer as an access_token query parameter.
+    OAuthProviderEndpoints endpoints =
+        new OAuthProviderEndpoints(
+            AUTHORIZATION_URL,
+            ACCESS_TOKEN_URL,
+            /* scope= */ null,
+            ClientAuthStyle.BASIC,
+            BearerPlacement.URI_QUERY_ACCESS_TOKEN,
+            TokenResponseFormat.JSON,
+            /* tolerateMissingTokenType= */ false,
+            /* enablePkce= */ false);
+    client = clientFactory.create(PROVIDER_NAME, endpoints);
     extIdScheme = OAuthServiceProviderExternalIdScheme.create(PROVIDER_NAME);
   }
 
