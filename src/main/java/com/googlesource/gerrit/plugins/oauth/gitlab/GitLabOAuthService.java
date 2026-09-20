@@ -15,43 +15,61 @@
 package com.googlesource.gerrit.plugins.oauth.gitlab;
 
 import static com.google.gerrit.json.OutputFormat.JSON;
-import static com.googlesource.gerrit.plugins.oauth.utils.JsonUtil.asString;
-import static com.googlesource.gerrit.plugins.oauth.utils.JsonUtil.isNull;
 
 import com.google.gerrit.extensions.auth.oauth.OAuthUserInfo;
 import com.google.gerrit.server.config.PluginConfig;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import com.google.inject.Inject;
 import com.google.inject.ProvisionException;
 import com.google.inject.Singleton;
-import com.googlesource.gerrit.plugins.oauth.InitOAuth;
-import com.googlesource.gerrit.plugins.oauth.OAuth20ServiceFactory;
+import com.googlesource.gerrit.plugins.oauth.base.HttpOAuthClientFactory;
+import com.googlesource.gerrit.plugins.oauth.base.OAuthConfigKeys;
 import com.googlesource.gerrit.plugins.oauth.base.OAuthPluginConfigFactory;
 import com.googlesource.gerrit.plugins.oauth.base.OAuthServiceProviderConfig;
 import com.googlesource.gerrit.plugins.oauth.base.OAuthServiceProviderExternalIdScheme;
 import com.googlesource.gerrit.plugins.oauth.base.StandardResourceOAuthService;
+import com.googlesource.gerrit.plugins.oauth.client.BearerPlacement;
+import com.googlesource.gerrit.plugins.oauth.client.ClientAuthStyle;
+import com.googlesource.gerrit.plugins.oauth.client.OAuthProviderEndpoints;
+import com.googlesource.gerrit.plugins.oauth.client.TokenResponseFormat;
+import com.googlesource.gerrit.plugins.oauth.utils.OAuthUrls;
 import java.io.IOException;
 import java.net.URI;
 
 @Singleton
 @OAuthServiceProviderConfig(name = GitLabOAuthService.PROVIDER_NAME)
 public class GitLabOAuthService extends StandardResourceOAuthService {
-  private static final String PROTECTED_RESOURCE_URL = "%s/api/v3/user";
+  private static final String PROTECTED_RESOURCE_URL = "%s/api/v4/user";
   public static final String PROVIDER_NAME = "gitlab";
   private final String rootUrl;
-  private final String extIdScheme;
+  private final GitLabUserInfoMapper userInfoMapper;
 
   @Inject
-  GitLabOAuthService(OAuthPluginConfigFactory cfgFactory, OAuth20ServiceFactory clientFactory) {
+  GitLabOAuthService(OAuthPluginConfigFactory cfgFactory, HttpOAuthClientFactory clientFactory) {
     super("GitLab OAuth2");
     PluginConfig cfg = cfgFactory.create(PROVIDER_NAME);
-    rootUrl = cfg.getString(InitOAuth.ROOT_URL);
+    rootUrl = OAuthUrls.trimTrailingSlashes(cfg.getString(OAuthConfigKeys.ROOT_URL));
     if (!URI.create(rootUrl).isAbsolute()) {
       throw new ProvisionException("Root URL must be absolute URL");
     }
-    client = clientFactory.createClient(PROVIDER_NAME, new GitLabApi(rootUrl));
-    extIdScheme = OAuthServiceProviderExternalIdScheme.create(PROVIDER_NAME);
+    boolean enablePkce = cfg.getBoolean(OAuthConfigKeys.ENABLE_PKCE, false);
+    // Native client. GitLab: request-body client auth, JSON token response, no scope, and an
+    // Authorization-header bearer on the /api/v4/user resource GET. GitLabApi still supplies the
+    // authorize/token URLs. The Git-over-HTTP token/info validator is unaffected.
+    GitLabApi api = new GitLabApi(rootUrl);
+    OAuthProviderEndpoints endpoints =
+        new OAuthProviderEndpoints(
+            api.getAuthorizationBaseUrl(),
+            api.getAccessTokenEndpoint(),
+            /* scope= */ null,
+            ClientAuthStyle.REQUEST_BODY,
+            BearerPlacement.AUTHORIZATION_HEADER,
+            TokenResponseFormat.JSON,
+            /* tolerateMissingTokenType= */ false,
+            enablePkce);
+    client = clientFactory.create(PROVIDER_NAME, endpoints);
+    userInfoMapper =
+        new GitLabUserInfoMapper(OAuthServiceProviderExternalIdScheme.create(PROVIDER_NAME));
   }
 
   @Override
@@ -62,19 +80,6 @@ public class GitLabOAuthService extends StandardResourceOAuthService {
   @Override
   protected OAuthUserInfo parseUserInfo(String body) throws IOException {
     JsonElement userJson = JSON.newGson().fromJson(body, JsonElement.class);
-    JsonObject jsonObject = userJson.getAsJsonObject();
-    if (isNull(jsonObject)) {
-      throw new IOException("Response doesn't contain 'user' field" + jsonObject);
-    }
-    JsonElement id = jsonObject.get("id");
-    JsonElement username = jsonObject.get("username");
-    JsonElement email = jsonObject.get("email");
-    JsonElement name = jsonObject.get("name");
-    return new OAuthUserInfo(
-        extIdScheme + ":" + id.getAsString(),
-        asString(username),
-        asString(email),
-        asString(name),
-        null);
+    return userInfoMapper.map(userJson.getAsJsonObject());
   }
 }
