@@ -25,12 +25,17 @@ import com.google.gson.JsonObject;
 import com.google.inject.Inject;
 import com.google.inject.ProvisionException;
 import com.google.inject.Singleton;
-import com.googlesource.gerrit.plugins.oauth.InitOAuth;
-import com.googlesource.gerrit.plugins.oauth.OAuth20ServiceFactory;
+import com.googlesource.gerrit.plugins.oauth.base.HttpOAuthClientFactory;
+import com.googlesource.gerrit.plugins.oauth.base.OAuthConfigKeys;
 import com.googlesource.gerrit.plugins.oauth.base.OAuthPluginConfigFactory;
 import com.googlesource.gerrit.plugins.oauth.base.OAuthServiceProviderConfig;
 import com.googlesource.gerrit.plugins.oauth.base.OAuthServiceProviderExternalIdScheme;
 import com.googlesource.gerrit.plugins.oauth.base.StandardResourceOAuthService;
+import com.googlesource.gerrit.plugins.oauth.client.BearerPlacement;
+import com.googlesource.gerrit.plugins.oauth.client.ClientAuthStyle;
+import com.googlesource.gerrit.plugins.oauth.client.OAuthProviderEndpoints;
+import com.googlesource.gerrit.plugins.oauth.client.TokenResponseFormat;
+import com.googlesource.gerrit.plugins.oauth.utils.OAuthUrls;
 import java.io.IOException;
 import java.net.URI;
 
@@ -44,14 +49,26 @@ public class PhabricatorOAuthService extends StandardResourceOAuthService {
 
   @Inject
   PhabricatorOAuthService(
-      OAuthPluginConfigFactory cfgFactory, OAuth20ServiceFactory clientFactory) {
+      OAuthPluginConfigFactory cfgFactory, HttpOAuthClientFactory clientFactory) {
     super("Phabricator OAuth2");
     PluginConfig cfg = cfgFactory.create(PROVIDER_NAME);
-    rootUrl = cfg.getString(InitOAuth.ROOT_URL);
+    rootUrl = OAuthUrls.trimTrailingSlashes(cfg.getString(OAuthConfigKeys.ROOT_URL));
     if (!URI.create(rootUrl).isAbsolute()) {
       throw new ProvisionException("Root URL must be absolute URL");
     }
-    client = clientFactory.createClient(PROVIDER_NAME, new PhabricatorApi(rootUrl));
+    // Native descriptor: default HTTP Basic client auth, JSON token response, no scope, and the
+    // bearer as an access_token query parameter.
+    OAuthProviderEndpoints endpoints =
+        new OAuthProviderEndpoints(
+            String.format("%s/oauthserver/auth/", rootUrl),
+            String.format("%s/oauthserver/token/", rootUrl),
+            /* scope= */ null,
+            ClientAuthStyle.BASIC,
+            BearerPlacement.URI_QUERY_ACCESS_TOKEN,
+            TokenResponseFormat.JSON,
+            /* tolerateMissingTokenType= */ false,
+            /* enablePkce= */ false);
+    client = clientFactory.create(PROVIDER_NAME, endpoints);
     extIdScheme = OAuthServiceProviderExternalIdScheme.create(PROVIDER_NAME);
   }
 
