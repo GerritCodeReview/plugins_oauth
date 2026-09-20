@@ -13,15 +13,16 @@
 // limitations under the License.
 
 package com.googlesource.gerrit.plugins.oauth;
-import com.googlesource.gerrit.plugins.oauth.base.OAuthServiceProviderExternalIdScheme;
-import com.googlesource.gerrit.plugins.oauth.base.OAuthServiceProviderConfig;
-import com.googlesource.gerrit.plugins.oauth.base.OAuthPluginConfigFactory;
 
 import com.google.gerrit.extensions.annotations.Exports;
 import com.google.gerrit.extensions.auth.oauth.OAuthServiceProvider;
 import com.google.gerrit.server.config.PluginConfig;
 import com.google.inject.AbstractModule;
 import com.google.inject.Inject;
+import com.googlesource.gerrit.plugins.oauth.base.OAuthConfigKeys;
+import com.googlesource.gerrit.plugins.oauth.base.OAuthPluginConfigFactory;
+import com.googlesource.gerrit.plugins.oauth.base.OAuthServiceProviderConfig;
+import com.googlesource.gerrit.plugins.oauth.base.OAuthServiceProviderExternalIdScheme;
 
 public class OAuthServiceModule extends AbstractModule {
   private final OAuthPluginConfigFactory cfgFactory;
@@ -42,7 +43,7 @@ public class OAuthServiceModule extends AbstractModule {
   @Override
   public void configure() {
     PluginConfig cfg = cfgFactory.create(serviceProviderName);
-    if (cfg.getString(InitOAuth.CLIENT_ID) != null) {
+    if (cfg.getString(OAuthConfigKeys.CLIENT_ID) != null) {
       bindOAuthServiceProvider();
       configureAdditionalServiceComponents();
     }

@@ -13,7 +13,6 @@
 // limitations under the License.
 
 package com.googlesource.gerrit.plugins.oauth;
-import com.googlesource.gerrit.plugins.oauth.base.OAuthPluginConfigFactory;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Inject;
@@ -21,6 +20,7 @@ import com.googlesource.gerrit.plugins.oauth.airvantage.AirVantageOAuthService;
 import com.googlesource.gerrit.plugins.oauth.auth0.Auth0OAuthService;
 import com.googlesource.gerrit.plugins.oauth.authentik.AuthentikOAuthService;
 import com.googlesource.gerrit.plugins.oauth.azure.AzureActiveDirectoryService;
+import com.googlesource.gerrit.plugins.oauth.base.OAuthPluginConfigFactory;
 import com.googlesource.gerrit.plugins.oauth.bitbucket.BitbucketOAuthService;
 import com.googlesource.gerrit.plugins.oauth.cas.CasOAuthService;
 import com.googlesource.gerrit.plugins.oauth.cognito.CognitoOAuthService;

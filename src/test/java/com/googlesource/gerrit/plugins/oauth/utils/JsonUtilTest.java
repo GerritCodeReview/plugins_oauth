@@ -12,8 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.googlesource.gerrit.plugins.oauth;
-import com.googlesource.gerrit.plugins.oauth.utils.JsonUtil;
+package com.googlesource.gerrit.plugins.oauth.utils;
 
 import static com.google.common.truth.Truth.assertThat;
 
