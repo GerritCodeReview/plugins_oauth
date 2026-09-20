@@ -15,7 +15,7 @@
 package com.googlesource.gerrit.plugins.oauth.sap;
 
 import static com.google.gerrit.server.account.externalids.ExternalId.SCHEME_USERNAME;
-import static com.googlesource.gerrit.plugins.oauth.JsonUtil.jwtPayloadJson;
+import static com.googlesource.gerrit.plugins.oauth.utils.JsonUtil.jwtPayloadJson;
 
 import com.google.gerrit.entities.Account;
 import com.google.gerrit.extensions.auth.oauth.OAuthLoginProvider;
@@ -31,9 +31,9 @@ import com.google.gson.JsonParser;
 import com.google.gson.JsonPrimitive;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import com.googlesource.gerrit.plugins.oauth.OAuthPluginConfigFactory;
-import com.googlesource.gerrit.plugins.oauth.OAuthServiceProviderConfig;
-import com.googlesource.gerrit.plugins.oauth.OAuthServiceProviderExternalIdScheme;
+import com.googlesource.gerrit.plugins.oauth.base.OAuthPluginConfigFactory;
+import com.googlesource.gerrit.plugins.oauth.base.OAuthServiceProviderConfig;
+import com.googlesource.gerrit.plugins.oauth.base.OAuthServiceProviderExternalIdScheme;
 import java.io.IOException;
 import java.util.Optional;
 

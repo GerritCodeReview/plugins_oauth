@@ -22,6 +22,9 @@ import com.google.gerrit.common.Nullable;
 import com.google.gerrit.server.config.CanonicalWebUrl;
 import com.google.gerrit.server.config.PluginConfig;
 import com.google.inject.Inject;
+import com.googlesource.gerrit.plugins.oauth.base.OAuthConfigKeys;
+import com.googlesource.gerrit.plugins.oauth.base.OAuthPluginConfigFactory;
+import com.googlesource.gerrit.plugins.oauth.client.OAuthClient;
 
 public class OAuth20ServiceFactory {
   private final OAuthPluginConfigFactory cfgFactory;
@@ -41,8 +44,8 @@ public class OAuth20ServiceFactory {
   public OAuth20Service create(String providerName, DefaultApi20 api, @Nullable String scope) {
     PluginConfig cfg = cfgFactory.create(providerName);
     ServiceBuilder builder =
-        new ServiceBuilder(cfg.getString(InitOAuth.CLIENT_ID))
-            .apiSecret(cfg.getString(InitOAuth.CLIENT_SECRET))
+        new ServiceBuilder(cfg.getString(OAuthConfigKeys.CLIENT_ID))
+            .apiSecret(cfg.getString(OAuthConfigKeys.CLIENT_SECRET))
             .callback(canonicalWebUrl + "oauth");
 
     if (!Strings.isNullOrEmpty(scope)) {
@@ -73,8 +76,8 @@ public class OAuth20ServiceFactory {
   }
 
   /**
-   * Creates a client, optionally tolerating a missing {@code token_type} and/or enabling PKCE on the
-   * authorization redirect. Only providers that require these behaviours (e.g. CAS, discovery)
+   * Creates a client, optionally tolerating a missing {@code token_type} and/or enabling PKCE on
+   * the authorization redirect. Only providers that require these behaviours (e.g. CAS, discovery)
    * should opt in; the defaults match {@link #createClient(String, DefaultApi20, String)}.
    */
   public OAuthClient createClient(

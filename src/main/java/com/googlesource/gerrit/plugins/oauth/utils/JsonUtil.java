@@ -12,11 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.googlesource.gerrit.plugins.oauth;
+package com.googlesource.gerrit.plugins.oauth.utils;
 
 import com.google.common.base.Preconditions;
 import com.google.gerrit.common.Nullable;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
@@ -30,6 +31,26 @@ public class JsonUtil {
   @Nullable
   public static String asString(JsonElement e) {
     return isNull(e) ? null : e.getAsString();
+  }
+
+  /** Returns the first of {@code keys} present as a JSON primitive, or {@code null}. */
+  @Nullable
+  public static JsonElement firstPresent(JsonObject o, String... keys) {
+    for (String key : keys) {
+      JsonElement e = o.get(key);
+      if (e != null && e.isJsonPrimitive()) {
+        return e;
+      }
+    }
+    return null;
+  }
+
+  /**
+   * Returns the string value of the first of {@code keys} present as a primitive, or {@code null}.
+   */
+  @Nullable
+  public static String firstString(JsonObject o, String... keys) {
+    return asString(firstPresent(o, keys));
   }
 
   /** Returns the decoded JSON payload (2nd segment) of a JWT (base64url encoded). */

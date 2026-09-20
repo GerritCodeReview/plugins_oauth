@@ -12,10 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.googlesource.gerrit.plugins.oauth;
+package com.googlesource.gerrit.plugins.oauth.base;
 
+import com.google.gerrit.common.Nullable;
 import com.google.gerrit.extensions.auth.oauth.OAuthToken;
 import com.google.gerrit.extensions.auth.oauth.OAuthUserInfo;
+import com.googlesource.gerrit.plugins.oauth.client.OAuthClient;
 import java.io.IOException;
 import java.net.URI;
 
@@ -42,11 +44,37 @@ public abstract class StandardResourceOAuthService extends AbstractOAuthService 
   /** Maps the resource response body to Gerrit's user information. */
   protected abstract OAuthUserInfo parseUserInfo(String body) throws IOException;
 
+  /**
+   * Verifies the token before fetching the resource, returning the verified subject to bind against
+   * {@link #resourceSubject}, or {@code null} for no verification (the default). Throwing rejects
+   * the login.
+   */
+  @Nullable
+  protected String verifyToken(OAuthToken token) throws IOException {
+    return null;
+  }
+
+  /**
+   * Extracts the subject from the resource body to cross-check against {@link #verifyToken}. Only
+   * consulted when {@code verifyToken} returned a non-null subject; the default returns {@code
+   * null}.
+   */
+  @Nullable
+  protected String resourceSubject(String body) throws IOException {
+    return null;
+  }
+
   @Override
   public final OAuthUserInfo getUserInfo(OAuthToken token) throws IOException {
+    String verifiedSubject = verifyToken(token);
     String body = client.get(URI.create(resourceUrl()), token);
     if (log.isDebugEnabled()) {
       log.debug("User info response: {}", body);
+    }
+    // OIDC Core 5.3.2: a verified token subject must match the userinfo subject.
+    if (verifiedSubject != null && !verifiedSubject.equals(resourceSubject(body))) {
+      throw new IOException(
+          "Subject mismatch: the verified token subject does not match the userinfo subject");
     }
     return parseUserInfo(body);
   }

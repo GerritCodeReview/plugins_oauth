@@ -27,6 +27,7 @@ import com.google.gerrit.common.Nullable;
 import com.google.gerrit.extensions.auth.oauth.OAuthAuthorizationInfo;
 import com.google.gerrit.extensions.auth.oauth.OAuthToken;
 import com.google.gerrit.extensions.auth.oauth.OAuthVerifier;
+import com.googlesource.gerrit.plugins.oauth.client.OAuthClient;
 import java.io.IOException;
 import java.net.URI;
 import java.util.Map;

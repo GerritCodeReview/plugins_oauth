@@ -12,15 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.googlesource.gerrit.plugins.oauth;
+package com.googlesource.gerrit.plugins.oauth.base;
 
 import static com.google.gerrit.json.OutputFormat.JSON;
-import static com.googlesource.gerrit.plugins.oauth.JsonUtil.jwtPayloadJson;
+import static com.googlesource.gerrit.plugins.oauth.utils.JsonUtil.jwtPayloadJson;
 
 import com.google.gerrit.extensions.auth.oauth.OAuthToken;
 import com.google.gerrit.extensions.auth.oauth.OAuthUserInfo;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.googlesource.gerrit.plugins.oauth.client.OAuthClient;
 import java.io.IOException;
 
 /**
@@ -41,14 +42,22 @@ public abstract class StandardIdTokenOAuthService extends AbstractOAuthService {
   /** Maps the decoded {@code id_token} claims to Gerrit's user information. */
   protected abstract OAuthUserInfo parseClaims(JsonObject claims) throws IOException;
 
+  /**
+   * Decodes the {@code id_token} claims. The default base64-decodes the payload without verifying
+   * the signature; providers can override to verify against the IdP's JWKS.
+   */
+  protected JsonObject decodeIdToken(String idToken) throws IOException {
+    String jwt = jwtPayloadJson(idToken);
+    JsonElement claimJson = JSON.newGson().fromJson(jwt, JsonElement.class);
+    return claimJson.getAsJsonObject();
+  }
+
   @Override
   public final OAuthUserInfo getUserInfo(OAuthToken token) throws IOException {
     JsonElement tokenJson = JSON.newGson().fromJson(token.getRaw(), JsonElement.class);
     JsonObject tokenObject = tokenJson.getAsJsonObject();
     JsonElement idToken = tokenObject.get("id_token");
-    String jwt = jwtPayloadJson(idToken.getAsString());
-    JsonElement claimJson = JSON.newGson().fromJson(jwt, JsonElement.class);
-    JsonObject claimObject = claimJson.getAsJsonObject();
+    JsonObject claimObject = decodeIdToken(idToken.getAsString());
     if (log.isDebugEnabled()) {
       log.debug("Claim object: {}", claimObject);
     }

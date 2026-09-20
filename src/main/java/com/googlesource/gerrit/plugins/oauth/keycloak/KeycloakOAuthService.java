@@ -14,7 +14,7 @@
 
 package com.googlesource.gerrit.plugins.oauth.keycloak;
 
-import static com.googlesource.gerrit.plugins.oauth.JsonUtil.isNull;
+import static com.googlesource.gerrit.plugins.oauth.utils.JsonUtil.isNull;
 
 import com.google.gerrit.extensions.auth.oauth.OAuthUserInfo;
 import com.google.gerrit.server.config.PluginConfig;
@@ -25,10 +25,10 @@ import com.google.inject.ProvisionException;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.oauth.InitOAuth;
 import com.googlesource.gerrit.plugins.oauth.OAuth20ServiceFactory;
-import com.googlesource.gerrit.plugins.oauth.OAuthPluginConfigFactory;
-import com.googlesource.gerrit.plugins.oauth.OAuthServiceProviderConfig;
-import com.googlesource.gerrit.plugins.oauth.OAuthServiceProviderExternalIdScheme;
-import com.googlesource.gerrit.plugins.oauth.StandardIdTokenOAuthService;
+import com.googlesource.gerrit.plugins.oauth.base.OAuthPluginConfigFactory;
+import com.googlesource.gerrit.plugins.oauth.base.OAuthServiceProviderConfig;
+import com.googlesource.gerrit.plugins.oauth.base.OAuthServiceProviderExternalIdScheme;
+import com.googlesource.gerrit.plugins.oauth.base.StandardIdTokenOAuthService;
 import java.io.IOException;
 import java.net.URI;
 

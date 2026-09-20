@@ -13,6 +13,7 @@
 // limitations under the License.
 
 package com.googlesource.gerrit.plugins.oauth;
+import com.googlesource.gerrit.plugins.oauth.base.OAuthPluginConfigFactory;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Inject;

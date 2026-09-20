@@ -12,12 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.googlesource.gerrit.plugins.oauth;
+package com.googlesource.gerrit.plugins.oauth.base;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-
-@Retention(RetentionPolicy.RUNTIME)
-public @interface OAuthServiceProviderConfig {
-  String name();
+public class OAuthServiceProviderExternalIdScheme {
+  public static String create(String serviceProviderName) {
+    return serviceProviderName + "-oauth";
+  }
 }

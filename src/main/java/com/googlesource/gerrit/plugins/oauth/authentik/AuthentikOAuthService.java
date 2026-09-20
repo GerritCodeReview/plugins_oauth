@@ -15,8 +15,8 @@
 package com.googlesource.gerrit.plugins.oauth.authentik;
 
 import static com.google.gerrit.json.OutputFormat.JSON;
-import static com.googlesource.gerrit.plugins.oauth.JsonUtil.asString;
-import static com.googlesource.gerrit.plugins.oauth.JsonUtil.isNull;
+import static com.googlesource.gerrit.plugins.oauth.utils.JsonUtil.asString;
+import static com.googlesource.gerrit.plugins.oauth.utils.JsonUtil.isNull;
 
 import com.google.gerrit.extensions.auth.oauth.OAuthUserInfo;
 import com.google.gerrit.server.config.PluginConfig;
@@ -27,10 +27,10 @@ import com.google.inject.ProvisionException;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.oauth.InitOAuth;
 import com.googlesource.gerrit.plugins.oauth.OAuth20ServiceFactory;
-import com.googlesource.gerrit.plugins.oauth.OAuthPluginConfigFactory;
-import com.googlesource.gerrit.plugins.oauth.OAuthServiceProviderConfig;
-import com.googlesource.gerrit.plugins.oauth.OAuthServiceProviderExternalIdScheme;
-import com.googlesource.gerrit.plugins.oauth.StandardResourceOAuthService;
+import com.googlesource.gerrit.plugins.oauth.base.OAuthPluginConfigFactory;
+import com.googlesource.gerrit.plugins.oauth.base.OAuthServiceProviderConfig;
+import com.googlesource.gerrit.plugins.oauth.base.OAuthServiceProviderExternalIdScheme;
+import com.googlesource.gerrit.plugins.oauth.base.StandardResourceOAuthService;
 import java.io.IOException;
 import java.net.URI;
 

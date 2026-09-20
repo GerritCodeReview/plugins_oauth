@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.googlesource.gerrit.plugins.oauth;
+package com.googlesource.gerrit.plugins.oauth.base;
 
 import com.google.gerrit.extensions.annotations.PluginName;
 import com.google.gerrit.server.config.PluginConfig;
@@ -31,7 +31,7 @@ public class OAuthPluginConfigFactory {
     this.pluginName = pluginName;
   }
 
-  static String getConfigSuffix(String providerName) {
+  public static String getConfigSuffix(String providerName) {
     return String.format("-%s-oauth", providerName);
   }
 

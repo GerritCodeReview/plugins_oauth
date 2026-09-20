@@ -22,7 +22,7 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.oauth.InitOAuth;
-import com.googlesource.gerrit.plugins.oauth.OAuthPluginConfigFactory;
+import com.googlesource.gerrit.plugins.oauth.base.OAuthPluginConfigFactory;
 import com.sap.cloud.security.client.DefaultHttpClientFactory;
 import com.sap.cloud.security.config.ClientCredentials;
 import com.sap.cloud.security.config.OAuth2ServiceConfiguration;

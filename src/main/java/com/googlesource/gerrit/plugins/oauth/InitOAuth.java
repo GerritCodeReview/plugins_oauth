@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 package com.googlesource.gerrit.plugins.oauth;
+import com.googlesource.gerrit.plugins.oauth.base.OAuthServiceProviderConfig;
 
 import static java.util.Objects.requireNonNull;
 

@@ -23,7 +23,7 @@ import com.google.gerrit.extensions.auth.oauth.OAuthServiceProvider;
 import com.google.gerrit.server.config.PluginConfig;
 import com.googlesource.gerrit.plugins.oauth.InitOAuth;
 import com.googlesource.gerrit.plugins.oauth.OAuth20ServiceFactory;
-import com.googlesource.gerrit.plugins.oauth.OAuthPluginConfigFactory;
+import com.googlesource.gerrit.plugins.oauth.base.OAuthPluginConfigFactory;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import org.eclipse.jgit.lib.Config;
