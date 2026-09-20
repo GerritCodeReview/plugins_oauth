@@ -25,12 +25,13 @@ import com.google.gson.JsonObject;
 import com.google.inject.Inject;
 import com.google.inject.ProvisionException;
 import com.google.inject.Singleton;
-import com.googlesource.gerrit.plugins.oauth.InitOAuth;
 import com.googlesource.gerrit.plugins.oauth.OAuth20ServiceFactory;
+import com.googlesource.gerrit.plugins.oauth.base.OAuthConfigKeys;
 import com.googlesource.gerrit.plugins.oauth.base.OAuthPluginConfigFactory;
 import com.googlesource.gerrit.plugins.oauth.base.OAuthServiceProviderConfig;
 import com.googlesource.gerrit.plugins.oauth.base.OAuthServiceProviderExternalIdScheme;
 import com.googlesource.gerrit.plugins.oauth.base.StandardResourceOAuthService;
+import com.googlesource.gerrit.plugins.oauth.utils.OAuthUrls;
 import java.io.IOException;
 import java.net.URI;
 
@@ -44,15 +45,20 @@ public class Auth0OAuthService extends StandardResourceOAuthService {
 
   @Inject
   Auth0OAuthService(OAuthPluginConfigFactory cfgFactory, OAuth20ServiceFactory clientFactory) {
-    super(cfgFactory.create(PROVIDER_NAME).getString(InitOAuth.SERVICE_NAME, "Auth0"));
+    super(cfgFactory.create(PROVIDER_NAME).getString(OAuthConfigKeys.SERVICE_NAME, "Auth0"));
     PluginConfig cfg = cfgFactory.create(PROVIDER_NAME);
-    rootUrl = cfg.getString(InitOAuth.ROOT_URL);
+    rootUrl = OAuthUrls.trimTrailingSlashes(cfg.getString(OAuthConfigKeys.ROOT_URL));
     if (!URI.create(rootUrl).isAbsolute()) {
       throw new ProvisionException("Root URL must be absolute URL");
     }
+    boolean enablePkce = cfg.getBoolean(OAuthConfigKeys.ENABLE_PKCE, false);
     client =
-        clientFactory.createClient(PROVIDER_NAME, new Auth0Api(rootUrl), "openid profile email");
+        clientFactory.createClient(
+            PROVIDER_NAME, new Auth0Api(rootUrl), "openid profile email", false, enablePkce);
     extIdScheme = OAuthServiceProviderExternalIdScheme.create(PROVIDER_NAME);
+    log.warn(
+        "The Auth0 OAuth provider is soft-deprecated; prefer the generic Discovery provider."
+            + " See config-discovery.md for the migration recipe. The wrapper still works.");
   }
 
   @Override
