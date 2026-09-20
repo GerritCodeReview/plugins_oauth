@@ -15,27 +15,50 @@
 package com.googlesource.gerrit.plugins.oauth.discovery;
 
 import static com.google.common.truth.Truth.assertThat;
+import static org.junit.Assert.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.github.scribejava.core.builder.api.DefaultApi20;
 import com.google.gerrit.extensions.auth.oauth.OAuthAuthorizationInfo;
 import com.google.gerrit.extensions.auth.oauth.OAuthToken;
 import com.google.gerrit.extensions.auth.oauth.OAuthUserInfo;
 import com.google.gerrit.extensions.auth.oauth.OAuthVerifier;
 import com.google.gerrit.server.config.PluginConfig;
+import com.google.gson.JsonObject;
 import com.google.inject.ProvisionException;
-import com.googlesource.gerrit.plugins.oauth.InitOAuth;
-import com.googlesource.gerrit.plugins.oauth.OAuth20ServiceFactory;
-import com.googlesource.gerrit.plugins.oauth.client.OAuthClient;
+import com.googlesource.gerrit.plugins.oauth.base.HttpOAuthClientFactory;
+import com.googlesource.gerrit.plugins.oauth.base.OAuthConfigKeys;
 import com.googlesource.gerrit.plugins.oauth.base.OAuthPluginConfigFactory;
+import com.googlesource.gerrit.plugins.oauth.client.BearerPlacement;
+import com.googlesource.gerrit.plugins.oauth.client.ClientAuthStyle;
+import com.googlesource.gerrit.plugins.oauth.client.OAuthClient;
+import com.googlesource.gerrit.plugins.oauth.client.OAuthProviderEndpoints;
+import com.googlesource.gerrit.plugins.oauth.client.TokenResponseFormat;
+import com.googlesource.gerrit.plugins.oauth.jwt.OidcJwtValidator;
+import com.nimbusds.jose.JOSEObjectType;
+import com.nimbusds.jose.JWSAlgorithm;
+import com.nimbusds.jose.JWSHeader;
+import com.nimbusds.jose.JWSSigner;
+import com.nimbusds.jose.crypto.RSASSASigner;
+import com.nimbusds.jose.jwk.JWKSet;
+import com.nimbusds.jose.jwk.RSAKey;
+import com.nimbusds.jose.jwk.gen.RSAKeyGenerator;
+import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
+import com.nimbusds.jose.jwk.source.JWKSource;
+import com.nimbusds.jose.proc.SecurityContext;
+import com.nimbusds.jwt.JWTClaimsSet;
+import com.nimbusds.jwt.SignedJWT;
 import java.io.IOException;
 import java.net.URI;
+import java.time.Instant;
+import java.util.Date;
+import java.util.List;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
@@ -47,7 +70,7 @@ public class DiscoveryOAuthServiceTest {
   @Mock private OAuthPluginConfigFactory mockConfigFactory;
   @Mock private PluginConfig mockPluginConfig;
   @Mock private OAuthClient mockClient;
-  @Mock private OAuth20ServiceFactory mockServiceFactory;
+  @Mock private HttpOAuthClientFactory mockServiceFactory;
 
   private static final String TEST_DISCOVERY_ROOT_URL = "https://id.example.com/realms/gerrit";
   private static final String TEST_ISSUER = "https://id.example.com/realms/gerrit";
@@ -59,15 +82,24 @@ public class DiscoveryOAuthServiceTest {
       "https://id.example.com/realms/gerrit/protocol/openid-connect/userinfo";
 
   private static final String DISCOVERY_PROVIDER_PREFIX_FOR_TEST = "discovery-oauth:";
+  private static final String CLIENT_ID = "gerrit-client";
+
+  private static RSAKey rsaKey;
+  private static JWKSource<SecurityContext> jwks;
+
+  @BeforeClass
+  public static void generateKey() throws Exception {
+    rsaKey = new RSAKeyGenerator(2048).keyID("primary").generate();
+    jwks = new ImmutableJWKSet<>(new JWKSet(List.of(rsaKey.toPublicJWK())));
+  }
 
   @Before
   public void setUp() {
     when(mockConfigFactory.create(DiscoveryOAuthService.PROVIDER_NAME))
         .thenReturn(mockPluginConfig);
-    when(mockPluginConfig.getString(InitOAuth.ROOT_URL)).thenReturn(TEST_DISCOVERY_ROOT_URL);
+    when(mockPluginConfig.getString(OAuthConfigKeys.ROOT_URL)).thenReturn(TEST_DISCOVERY_ROOT_URL);
 
-    when(mockServiceFactory.createClient(
-            anyString(), any(DefaultApi20.class), anyString(), anyBoolean(), anyBoolean()))
+    when(mockServiceFactory.create(anyString(), any(OAuthProviderEndpoints.class)))
         .thenReturn(mockClient);
   }
 
@@ -117,9 +149,256 @@ public class DiscoveryOAuthServiceTest {
     when(mockClient.get(any(URI.class), any(OAuthToken.class))).thenReturn(body);
   }
 
+  private DiscoveryOAuthService createServiceWithValidator(OidcJwtValidator validator) {
+    return new DiscoveryOAuthService(mockConfigFactory, mockServiceFactory, validator) {
+      @Override
+      DiscoveryOpenIdConnect fetchDiscoveryDocument(String discoveryUrl) {
+        return validDiscoveryDocument();
+      }
+    };
+  }
+
+  @Test
+  public void getUserInfo_validIdToken_validatesThenMapsUserInfo() throws Exception {
+    DiscoveryOAuthService service = createServiceWithValidator(testValidator());
+    mockUserInfoResponse(
+        "{\"sub\":\"12345\",\"preferred_username\":\"jane.doe\","
+            + "\"email\":\"jane.doe@example.com\",\"name\":\"Jane Doe\"}");
+
+    OAuthUserInfo userInfo = service.getUserInfo(idTokenResponse(sign(claims().build())));
+
+    assertThat(userInfo.getExternalId()).isEqualTo(DISCOVERY_PROVIDER_PREFIX_FOR_TEST + "12345");
+    assertThat(userInfo.getUserName()).isEqualTo("jane.doe");
+  }
+
+  @Test
+  public void getUserInfo_configuredExternalIdScheme_usesIt() throws Exception {
+    // Migration knob: keep a deprecated wrapper's scheme (e.g. auth0-oauth) so accounts stay
+    // linked.
+    when(mockPluginConfig.getString(OAuthConfigKeys.EXTERNAL_ID_SCHEME)).thenReturn("auth0-oauth");
+    DiscoveryOAuthService service = createServiceWithValidator(testValidator());
+    mockUserInfoResponse("{\"sub\":\"12345\",\"email\":\"jane.doe@example.com\"}");
+
+    OAuthUserInfo userInfo = service.getUserInfo(idTokenResponse(sign(claims().build())));
+
+    assertThat(userInfo.getExternalId()).isEqualTo("auth0-oauth:12345");
+  }
+
+  @Test
+  public void getUserInfo_blankExternalIdScheme_usesDefault() throws Exception {
+    when(mockPluginConfig.getString(OAuthConfigKeys.EXTERNAL_ID_SCHEME)).thenReturn("   ");
+    DiscoveryOAuthService service = createServiceWithValidator(testValidator());
+    mockUserInfoResponse("{\"sub\":\"12345\",\"email\":\"jane.doe@example.com\"}");
+
+    OAuthUserInfo userInfo = service.getUserInfo(idTokenResponse(sign(claims().build())));
+
+    assertThat(userInfo.getExternalId()).isEqualTo(DISCOVERY_PROVIDER_PREFIX_FOR_TEST + "12345");
+  }
+
+  @Test
+  public void getUserInfo_linkToExistingGerrit_setsClaimedIdentity() throws Exception {
+    // link-to-existing-gerrit-accounts makes the browser flow emit gerrit:<username> as claimed
+    // identity, matching the Authentik/Cognito wrappers.
+    when(mockPluginConfig.getBoolean(OAuthConfigKeys.LINK_TO_EXISTING_GERRIT_ACCOUNT, false))
+        .thenReturn(true);
+    DiscoveryOAuthService service = createServiceWithValidator(testValidator());
+    mockUserInfoResponse("{\"sub\":\"12345\",\"preferred_username\":\"jane.doe\"}");
+
+    OAuthUserInfo userInfo = service.getUserInfo(idTokenResponse(sign(claims().build())));
+
+    assertThat(userInfo.getClaimedIdentity()).isEqualTo("gerrit:jane.doe");
+  }
+
+  @Test
+  public void getUserInfo_linkToExisting_missingUsername_failsClosed() throws Exception {
+    // link enabled but no username -> fail closed, so linking is never silently skipped.
+    when(mockPluginConfig.getBoolean(OAuthConfigKeys.LINK_TO_EXISTING_GERRIT_ACCOUNT, false))
+        .thenReturn(true);
+    DiscoveryOAuthService service = createServiceWithValidator(testValidator());
+    mockUserInfoResponse("{\"sub\":\"12345\",\"email\":\"jane@example.com\"}");
+
+    assertThrows(
+        IOException.class, () -> service.getUserInfo(idTokenResponse(sign(claims().build()))));
+  }
+
+  @Test
+  public void getUserInfo_linkToExisting_blankUsername_failsClosed() throws Exception {
+    when(mockPluginConfig.getBoolean(OAuthConfigKeys.LINK_TO_EXISTING_GERRIT_ACCOUNT, false))
+        .thenReturn(true);
+    DiscoveryOAuthService service = createServiceWithValidator(testValidator());
+    mockUserInfoResponse("{\"sub\":\"12345\",\"preferred_username\":\"   \"}");
+
+    assertThrows(
+        IOException.class, () -> service.getUserInfo(idTokenResponse(sign(claims().build()))));
+  }
+
+  @Test
+  public void getUserInfo_default_noClaimedIdentity() throws Exception {
+    DiscoveryOAuthService service = createServiceWithValidator(testValidator());
+    mockUserInfoResponse("{\"sub\":\"12345\",\"preferred_username\":\"jane.doe\"}");
+
+    OAuthUserInfo userInfo = service.getUserInfo(idTokenResponse(sign(claims().build())));
+
+    assertThat(userInfo.getClaimedIdentity()).isNull();
+  }
+
+  @Test
+  public void constructor_dexOauthScheme_rejected_needsClaimKnob() {
+    // Dex maps its external id from email, not sub, so scheme preservation alone would still relink
+    // accounts (dex-oauth:<sub> != the existing dex-oauth:<email>). Excluded until a claim knob.
+    when(mockPluginConfig.getString(OAuthConfigKeys.EXTERNAL_ID_SCHEME)).thenReturn("dex-oauth");
+
+    assertThrows(
+        ProvisionException.class, () -> createServiceWithDiscoveryDoc(validDiscoveryDocument()));
+  }
+
+  @Test
+  public void constructor_buildsDiscoveryDescriptor() {
+    when(mockPluginConfig.getBoolean(OAuthConfigKeys.ENABLE_PKCE, false)).thenReturn(true);
+
+    createServiceWithDiscoveryDoc(validDiscoveryDocument());
+
+    OAuthProviderEndpoints ep = capturedEndpoints();
+    assertThat(ep.authorizationEndpoint()).isEqualTo(TEST_AUTHORIZATION_ENDPOINT);
+    assertThat(ep.tokenEndpoint()).isEqualTo(TEST_TOKEN_ENDPOINT);
+    assertThat(ep.scope()).isEqualTo("openid profile email");
+    assertThat(ep.clientAuthStyle()).isEqualTo(ClientAuthStyle.BASIC);
+    assertThat(ep.bearerPlacement()).isEqualTo(BearerPlacement.AUTHORIZATION_HEADER);
+    assertThat(ep.tokenResponseFormat()).isEqualTo(TokenResponseFormat.JSON);
+    assertThat(ep.tolerateMissingTokenType()).isFalse();
+    assertThat(ep.enablePkce()).isTrue();
+  }
+
+  @Test
+  public void constructor_defaultClientAuth_usesBasic() {
+    createServiceWithDiscoveryDoc(validDiscoveryDocument());
+
+    assertThat(capturedEndpoints().clientAuthStyle()).isEqualTo(ClientAuthStyle.BASIC);
+  }
+
+  @Test
+  public void constructor_requestBodyClientAuth_usesRequestBody() {
+    // Migration knob: a wrapper whose IdP only accepts request-body client auth (e.g. LemonLDAP)
+    // can move onto Discovery without changing the IdP.
+    when(mockPluginConfig.getString(OAuthConfigKeys.CLIENT_AUTH_METHOD)).thenReturn("request-body");
+
+    createServiceWithDiscoveryDoc(validDiscoveryDocument());
+
+    assertThat(capturedEndpoints().clientAuthStyle()).isEqualTo(ClientAuthStyle.REQUEST_BODY);
+  }
+
+  @Test
+  public void constructor_invalidClientAuth_throwsProvisionException() {
+    when(mockPluginConfig.getString(OAuthConfigKeys.CLIENT_AUTH_METHOD)).thenReturn("mtls");
+
+    assertThrows(
+        ProvisionException.class, () -> createServiceWithDiscoveryDoc(validDiscoveryDocument()));
+  }
+
+  private OAuthProviderEndpoints capturedEndpoints() {
+    ArgumentCaptor<OAuthProviderEndpoints> captor =
+        ArgumentCaptor.forClass(OAuthProviderEndpoints.class);
+    verify(mockServiceFactory).create(anyString(), captor.capture());
+    return captor.getValue();
+  }
+
+  @Test
+  public void constructor_disallowedExternalIdScheme_throwsProvisionException() {
+    // Clean syntax but not in the allowlist -> rejected, since the scheme determines account
+    // identity (a syntax-only check would have accepted this).
+    when(mockPluginConfig.getString(OAuthConfigKeys.EXTERNAL_ID_SCHEME)).thenReturn("okta-oauth");
+
+    assertThrows(
+        ProvisionException.class, () -> createServiceWithDiscoveryDoc(validDiscoveryDocument()));
+  }
+
+  @Test
+  public void getUserInfo_invalidIdToken_rejectsBeforeFetchingUserInfo() throws Exception {
+    DiscoveryOAuthService service = createServiceWithValidator(testValidator());
+    // Wrong issuer -> the id_token check fails, so the userinfo endpoint is never called.
+    OAuthToken token = idTokenResponse(sign(claims().issuer("https://attacker.example/").build()));
+
+    assertThrows(IOException.class, () -> service.getUserInfo(token));
+    verify(mockClient, never()).get(any(URI.class), any(OAuthToken.class));
+  }
+
+  @Test
+  public void getUserInfo_userinfoSubjectMismatch_rejected() throws Exception {
+    DiscoveryOAuthService service = createServiceWithValidator(testValidator());
+    // Valid id_token (sub=12345) but the userinfo endpoint returns a different subject.
+    mockUserInfoResponse(
+        "{\"sub\":\"99999\",\"preferred_username\":\"admin\",\"email\":\"a@example.com\","
+            + "\"name\":\"Admin\"}");
+
+    assertThrows(
+        IOException.class, () -> service.getUserInfo(idTokenResponse(sign(claims().build()))));
+  }
+
+  @Test
+  public void getUserInfo_idTokenWithoutSubject_rejected() throws Exception {
+    DiscoveryOAuthService service = createServiceWithValidator(testValidator());
+    // Validly signed id_token with no sub claim must be rejected, not treated as an unbound
+    // subject.
+    JWTClaimsSet noSub =
+        new JWTClaimsSet.Builder()
+            .issuer(TEST_ISSUER)
+            .audience(CLIENT_ID)
+            .issueTime(Date.from(Instant.now()))
+            .expirationTime(Date.from(Instant.now().plusSeconds(300)))
+            .build();
+
+    assertThrows(IOException.class, () -> service.getUserInfo(idTokenResponse(sign(noSub))));
+    verify(mockClient, never()).get(any(URI.class), any(OAuthToken.class));
+  }
+
+  @Test
+  public void getUserInfo_missingIdToken_throwsIOException() throws Exception {
+    DiscoveryOAuthService service = createServiceWithValidator(testValidator());
+    OAuthToken token = new OAuthToken("access", "Bearer", "{}");
+
+    assertThrows(IOException.class, () -> service.getUserInfo(token));
+    verify(mockClient, never()).get(any(URI.class), any(OAuthToken.class));
+  }
+
+  private static OidcJwtValidator testValidator() {
+    return OidcJwtValidator.builder()
+        .issuer(TEST_ISSUER)
+        .audience(CLIENT_ID)
+        .jwkSource(jwks)
+        .build();
+  }
+
+  private static JWTClaimsSet.Builder claims() {
+    return new JWTClaimsSet.Builder()
+        .subject("12345")
+        .issuer(TEST_ISSUER)
+        .audience(CLIENT_ID)
+        .issueTime(Date.from(Instant.now()))
+        .expirationTime(Date.from(Instant.now().plusSeconds(300)));
+  }
+
+  private static String sign(JWTClaimsSet claimSet) throws Exception {
+    JWSSigner signer = new RSASSASigner(rsaKey);
+    SignedJWT signed =
+        new SignedJWT(
+            new JWSHeader.Builder(JWSAlgorithm.RS256)
+                .type(JOSEObjectType.JWT)
+                .keyID(rsaKey.getKeyID())
+                .build(),
+            claimSet);
+    signed.sign(signer);
+    return signed.serialize();
+  }
+
+  private static OAuthToken idTokenResponse(String jwt) {
+    JsonObject raw = new JsonObject();
+    raw.addProperty("id_token", jwt);
+    return new OAuthToken("access", "Bearer", raw.toString());
+  }
+
   @Test
   public void getAuthorizationInfo_withPkceEnabled_shouldDelegateAndEnablePkce() {
-    when(mockPluginConfig.getBoolean(InitOAuth.ENABLE_PKCE, false)).thenReturn(true);
+    when(mockPluginConfig.getBoolean(OAuthConfigKeys.ENABLE_PKCE, false)).thenReturn(true);
 
     OAuthAuthorizationInfo expected =
         new OAuthAuthorizationInfo(
@@ -133,11 +412,7 @@ public class DiscoveryOAuthServiceTest {
     assertThat(info.getPkceVerifier()).isEqualTo("secret-verifier-123");
 
     // The provider must have created a PKCE-enabled client.
-    ArgumentCaptor<Boolean> pkceCaptor = ArgumentCaptor.forClass(Boolean.class);
-    verify(mockServiceFactory)
-        .createClient(
-            anyString(), any(DefaultApi20.class), anyString(), anyBoolean(), pkceCaptor.capture());
-    assertThat(pkceCaptor.getValue()).isTrue();
+    assertThat(capturedEndpoints().enablePkce()).isTrue();
   }
 
   @Test
@@ -237,7 +512,7 @@ public class DiscoveryOAuthServiceTest {
 
   @Test
   public void constructor_missingRootUrl_shouldThrowProvisionException() {
-    when(mockPluginConfig.getString(InitOAuth.ROOT_URL)).thenReturn(null);
+    when(mockPluginConfig.getString(OAuthConfigKeys.ROOT_URL)).thenReturn(null);
 
     ProvisionException e = assertConstructorProvisionException();
 
@@ -246,7 +521,7 @@ public class DiscoveryOAuthServiceTest {
 
   @Test
   public void constructor_relativeRootUrl_shouldThrowProvisionException() {
-    when(mockPluginConfig.getString(InitOAuth.ROOT_URL)).thenReturn("/relative/path");
+    when(mockPluginConfig.getString(OAuthConfigKeys.ROOT_URL)).thenReturn("/relative/path");
 
     ProvisionException e = assertConstructorProvisionException();
 
@@ -255,7 +530,8 @@ public class DiscoveryOAuthServiceTest {
 
   @Test
   public void constructor_unsupportedRootUrlScheme_shouldThrowProvisionException() {
-    when(mockPluginConfig.getString(InitOAuth.ROOT_URL)).thenReturn("ftp://id.example.com/realm");
+    when(mockPluginConfig.getString(OAuthConfigKeys.ROOT_URL))
+        .thenReturn("ftp://id.example.com/realm");
 
     ProvisionException e = assertConstructorProvisionException();
 
