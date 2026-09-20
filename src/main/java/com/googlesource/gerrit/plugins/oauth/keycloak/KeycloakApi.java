@@ -14,13 +14,8 @@
 
 package com.googlesource.gerrit.plugins.oauth.keycloak;
 
-import com.github.scribejava.core.builder.api.DefaultApi20;
-import com.github.scribejava.core.oauth2.bearersignature.BearerSignature;
-import com.github.scribejava.core.oauth2.bearersignature.BearerSignatureURIQueryParameter;
-import com.github.scribejava.core.oauth2.clientauthentication.ClientAuthentication;
-import com.github.scribejava.core.oauth2.clientauthentication.RequestBodyAuthenticationScheme;
-
-public class KeycloakApi extends DefaultApi20 {
+/** Keycloak realm OAuth endpoint URLs, plus the issuer and JWKS used for id_token validation. */
+public class KeycloakApi {
 
   private static final String AUTHORIZE_URL = "%s/realms/%s/protocol/openid-connect/auth";
 
@@ -32,23 +27,21 @@ public class KeycloakApi extends DefaultApi20 {
     this.realm = realm;
   }
 
-  @Override
   public String getAuthorizationBaseUrl() {
     return String.format(AUTHORIZE_URL, rootUrl, realm);
   }
 
-  @Override
   public String getAccessTokenEndpoint() {
     return String.format("%s/realms/%s/protocol/openid-connect/token", rootUrl, realm);
   }
 
-  @Override
-  public BearerSignature getBearerSignature() {
-    return BearerSignatureURIQueryParameter.instance();
+  /** Realm issuer URL — the {@code iss} claim in Keycloak's JWTs. */
+  public String getIssuer() {
+    return String.format("%s/realms/%s", rootUrl, realm);
   }
 
-  @Override
-  public ClientAuthentication getClientAuthentication() {
-    return RequestBodyAuthenticationScheme.instance();
+  /** Realm JWKS endpoint — public keys for verifying Keycloak's JWT signatures. */
+  public String getJwksEndpoint() {
+    return String.format("%s/realms/%s/protocol/openid-connect/certs", rootUrl, realm);
   }
 }

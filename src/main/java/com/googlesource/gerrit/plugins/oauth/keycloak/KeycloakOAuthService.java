@@ -14,21 +14,28 @@
 
 package com.googlesource.gerrit.plugins.oauth.keycloak;
 
-import static com.googlesource.gerrit.plugins.oauth.utils.JsonUtil.isNull;
+import static java.util.Objects.requireNonNull;
 
+import com.google.common.annotations.VisibleForTesting;
+import com.google.gerrit.common.Nullable;
 import com.google.gerrit.extensions.auth.oauth.OAuthUserInfo;
 import com.google.gerrit.server.config.PluginConfig;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.inject.Inject;
 import com.google.inject.ProvisionException;
 import com.google.inject.Singleton;
-import com.googlesource.gerrit.plugins.oauth.InitOAuth;
-import com.googlesource.gerrit.plugins.oauth.OAuth20ServiceFactory;
+import com.googlesource.gerrit.plugins.oauth.base.HttpOAuthClientFactory;
+import com.googlesource.gerrit.plugins.oauth.base.OAuthConfigKeys;
 import com.googlesource.gerrit.plugins.oauth.base.OAuthPluginConfigFactory;
 import com.googlesource.gerrit.plugins.oauth.base.OAuthServiceProviderConfig;
 import com.googlesource.gerrit.plugins.oauth.base.OAuthServiceProviderExternalIdScheme;
 import com.googlesource.gerrit.plugins.oauth.base.StandardIdTokenOAuthService;
+import com.googlesource.gerrit.plugins.oauth.client.BearerPlacement;
+import com.googlesource.gerrit.plugins.oauth.client.ClientAuthStyle;
+import com.googlesource.gerrit.plugins.oauth.client.OAuthProviderEndpoints;
+import com.googlesource.gerrit.plugins.oauth.client.TokenResponseFormat;
+import com.googlesource.gerrit.plugins.oauth.jwt.OidcJwtValidator;
+import com.googlesource.gerrit.plugins.oauth.utils.OAuthUrls;
 import java.io.IOException;
 import java.net.URI;
 
@@ -36,46 +43,72 @@ import java.net.URI;
 @OAuthServiceProviderConfig(name = KeycloakOAuthService.PROVIDER_NAME)
 public class KeycloakOAuthService extends StandardIdTokenOAuthService {
   public static final String PROVIDER_NAME = "keycloak";
-  private final boolean usePreferredUsername;
-  private final String extIdScheme;
+  private final OidcJwtValidator validator;
+  private final KeycloakUserInfoMapper userInfoMapper;
 
   @Inject
-  KeycloakOAuthService(OAuthPluginConfigFactory cfgFactory, OAuth20ServiceFactory clientFactory) {
-    super(cfgFactory.create(PROVIDER_NAME).getString(InitOAuth.SERVICE_NAME, "Keycloak OAuth2"));
+  KeycloakOAuthService(OAuthPluginConfigFactory cfgFactory, HttpOAuthClientFactory clientFactory) {
+    this(cfgFactory, clientFactory, /* providedValidator= */ null);
+  }
+
+  @VisibleForTesting
+  KeycloakOAuthService(
+      OAuthPluginConfigFactory cfgFactory,
+      HttpOAuthClientFactory clientFactory,
+      @Nullable OidcJwtValidator providedValidator) {
+    super(
+        cfgFactory
+            .create(PROVIDER_NAME)
+            .getString(OAuthConfigKeys.SERVICE_NAME, "Keycloak OAuth2"));
     PluginConfig cfg = cfgFactory.create(PROVIDER_NAME);
-    String rootUrl = cfg.getString(InitOAuth.ROOT_URL);
+    String rootUrl = OAuthUrls.trimTrailingSlashes(cfg.getString(OAuthConfigKeys.ROOT_URL));
     if (!URI.create(rootUrl).isAbsolute()) {
       throw new ProvisionException("Root URL must be absolute URL");
     }
-    String realm = cfg.getString(InitOAuth.REALM);
-    usePreferredUsername = cfg.getBoolean(InitOAuth.USE_PREFERRED_USERNAME, true);
-    client = clientFactory.createClient(PROVIDER_NAME, new KeycloakApi(rootUrl, realm), "openid");
-    extIdScheme = OAuthServiceProviderExternalIdScheme.create(PROVIDER_NAME);
+    String realm = cfg.getString(OAuthConfigKeys.REALM);
+    boolean usePreferredUsername = cfg.getBoolean(OAuthConfigKeys.USE_PREFERRED_USERNAME, true);
+    boolean enablePKCE = cfg.getBoolean(OAuthConfigKeys.ENABLE_PKCE, false);
+    String clientId =
+        requireNonNull(cfg.getString(OAuthConfigKeys.CLIENT_ID), "client-id is required");
+    KeycloakApi api = new KeycloakApi(rootUrl, realm);
+    // Native client. Keycloak: request-body client auth, JSON token response, realm-derived
+    // authorize/token URLs, openid scope. It is an id_token provider (no resource GET), so bearer
+    // placement is unused; kept as query-param to mirror KeycloakApi, which still supplies the
+    // issuer/JWKS URLs for the id_token validator.
+    OAuthProviderEndpoints endpoints =
+        new OAuthProviderEndpoints(
+            api.getAuthorizationBaseUrl(),
+            api.getAccessTokenEndpoint(),
+            "openid",
+            ClientAuthStyle.REQUEST_BODY,
+            BearerPlacement.URI_QUERY_ACCESS_TOKEN,
+            TokenResponseFormat.JSON,
+            /* tolerateMissingTokenType= */ false,
+            enablePKCE);
+    client = clientFactory.create(PROVIDER_NAME, endpoints);
+    if (providedValidator != null) {
+      this.validator = providedValidator;
+    } else {
+      this.validator =
+          OidcJwtValidator.builder()
+              .jwksUri(api.getJwksEndpoint())
+              .issuer(api.getIssuer())
+              .audience(clientId)
+              .build();
+    }
+    userInfoMapper =
+        new KeycloakUserInfoMapper(
+            usePreferredUsername, OAuthServiceProviderExternalIdScheme.create(PROVIDER_NAME));
+  }
+
+  /** Verifies the {@code id_token} signature against the realm's JWKS before reading its claims. */
+  @Override
+  protected JsonObject decodeIdToken(String idToken) throws IOException {
+    return validator.validate(idToken).payload();
   }
 
   @Override
   protected OAuthUserInfo parseClaims(JsonObject claimObject) throws IOException {
-    JsonElement usernameElement = claimObject.get("preferred_username");
-    JsonElement emailElement = claimObject.get("email");
-    JsonElement nameElement = claimObject.get("name");
-    if (isNull(usernameElement)) {
-      throw new IOException("Response doesn't contain preferred_username field");
-    }
-    if (isNull(emailElement)) {
-      throw new IOException("Response doesn't contain email field");
-    }
-    if (isNull(nameElement)) {
-      throw new IOException("Response doesn't contain name field");
-    }
-    String usernameAsString = usernameElement.getAsString();
-    String username = null;
-    if (usePreferredUsername) {
-      username = usernameAsString;
-    }
-    String externalId = extIdScheme + ":" + usernameAsString;
-    String email = emailElement.getAsString();
-    String name = nameElement.getAsString();
-
-    return new OAuthUserInfo(externalId, username, email, name, null);
+    return userInfoMapper.map(claimObject);
   }
 }
