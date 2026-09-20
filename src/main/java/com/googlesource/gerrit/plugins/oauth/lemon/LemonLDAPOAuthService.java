@@ -24,11 +24,13 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import com.googlesource.gerrit.plugins.oauth.InitOAuth;
 import com.googlesource.gerrit.plugins.oauth.OAuth20ServiceFactory;
+import com.googlesource.gerrit.plugins.oauth.base.OAuthConfigKeys;
 import com.googlesource.gerrit.plugins.oauth.base.OAuthPluginConfigFactory;
 import com.googlesource.gerrit.plugins.oauth.base.OAuthServiceProviderConfig;
+import com.googlesource.gerrit.plugins.oauth.base.OAuthServiceProviderExternalIdScheme;
 import com.googlesource.gerrit.plugins.oauth.base.StandardResourceOAuthService;
+import com.googlesource.gerrit.plugins.oauth.utils.OAuthUrls;
 import java.io.IOException;
 
 @Singleton
@@ -36,17 +38,26 @@ import java.io.IOException;
 public class LemonLDAPOAuthService extends StandardResourceOAuthService {
   public static final String PROVIDER_NAME = "lemonldap";
   private static final String PROTECTED_RESOURCE_URL = "%s/oauth2/userinfo";
-  private static final String LEMONLDAP_PROVIDER_PREFIX = "llng-oauth:";
   private final String rootUrl;
+  private final String extIdScheme;
 
   @Inject
   LemonLDAPOAuthService(OAuthPluginConfigFactory cfgFactory, OAuth20ServiceFactory clientFactory) {
     super("LemonLDAP::NG OAuth2 provider");
     PluginConfig cfg = cfgFactory.create(PROVIDER_NAME);
-    rootUrl = cfg.getString(InitOAuth.ROOT_URL);
+    rootUrl = OAuthUrls.trimTrailingSlashes(cfg.getString(OAuthConfigKeys.ROOT_URL));
+    // The historical external-id scheme is llng-oauth, not lemonldap-oauth. Derive it from the
+    // "llng" stem via the shared helper (matching the other providers) rather than a hardcoded
+    // prefix, but keep "llng" so existing accounts stay linked. Note PROVIDER_NAME stays
+    // "lemonldap" because it also names the config section (gerrit-oauth-provider-lemonldap-oauth).
+    extIdScheme = OAuthServiceProviderExternalIdScheme.create("llng");
     client =
         clientFactory.createClient(
             PROVIDER_NAME, new LemonLDAPApi(rootUrl), "openid profile email");
+    log.warn(
+        "The LemonLDAP OAuth provider is soft-deprecated; prefer the generic Discovery provider"
+            + " with client-auth-method = request-body. See config-discovery.md for the migration"
+            + " recipe. The wrapper still works.");
   }
 
   @Override
@@ -66,7 +77,7 @@ public class LemonLDAPOAuthService extends StandardResourceOAuthService {
     JsonElement email = jsonObject.get("email");
     JsonElement name = jsonObject.get("name");
     return new OAuthUserInfo(
-        LEMONLDAP_PROVIDER_PREFIX + id.getAsString(),
+        extIdScheme + ":" + id.getAsString(),
         asString(username),
         asString(email),
         asString(name),
