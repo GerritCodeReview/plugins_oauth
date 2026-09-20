@@ -22,11 +22,16 @@ import com.google.inject.Inject;
 import com.google.inject.ProvisionException;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.oauth.base.AbstractOAuthService;
-import com.googlesource.gerrit.plugins.oauth.InitOAuth;
-import com.googlesource.gerrit.plugins.oauth.OAuth20ServiceFactory;
+import com.googlesource.gerrit.plugins.oauth.base.HttpOAuthClientFactory;
+import com.googlesource.gerrit.plugins.oauth.base.OAuthConfigKeys;
 import com.googlesource.gerrit.plugins.oauth.base.OAuthPluginConfigFactory;
 import com.googlesource.gerrit.plugins.oauth.base.OAuthServiceProviderConfig;
 import com.googlesource.gerrit.plugins.oauth.base.OAuthServiceProviderExternalIdScheme;
+import com.googlesource.gerrit.plugins.oauth.client.BearerPlacement;
+import com.googlesource.gerrit.plugins.oauth.client.ClientAuthStyle;
+import com.googlesource.gerrit.plugins.oauth.client.OAuthProviderEndpoints;
+import com.googlesource.gerrit.plugins.oauth.client.TokenResponseFormat;
+import com.googlesource.gerrit.plugins.oauth.utils.OAuthUrls;
 import com.sap.cloud.security.json.DefaultJsonObject;
 import com.sap.cloud.security.token.SapIdToken;
 import com.sap.cloud.security.token.Token;
@@ -48,19 +53,31 @@ public class SAPIasOAuthService extends AbstractOAuthService {
   @Inject
   SAPIasOAuthService(
       OAuthPluginConfigFactory cfgFactory,
-      OAuth20ServiceFactory clientFactory,
+      HttpOAuthClientFactory clientFactory,
       CombiningValidator<Token> tokenValidator) {
-    super(cfgFactory.create(PROVIDER_NAME).getString(InitOAuth.SERVICE_NAME, "SAP IAS"));
+    super(cfgFactory.create(PROVIDER_NAME).getString(OAuthConfigKeys.SERVICE_NAME, "SAP IAS"));
     PluginConfig cfg = cfgFactory.create(PROVIDER_NAME);
-    String rootUrl = cfg.getString(InitOAuth.ROOT_URL);
+    String rootUrl = OAuthUrls.trimTrailingSlashes(cfg.getString(OAuthConfigKeys.ROOT_URL));
     if (!URI.create(rootUrl).isAbsolute()) {
       throw new ProvisionException("Root URL must be absolute URL");
     }
-    linkExistingGerrit = cfg.getBoolean(InitOAuth.LINK_TO_EXISTING_GERRIT_ACCOUNT, false);
-    boolean enablePKCE = cfg.getBoolean(InitOAuth.ENABLE_PKCE, false);
-    client =
-        clientFactory.createClient(
-            PROVIDER_NAME, new SAPIasApi(rootUrl), "openid profile email", true, enablePKCE);
+    linkExistingGerrit = cfg.getBoolean(OAuthConfigKeys.LINK_TO_EXISTING_GERRIT_ACCOUNT, false);
+    boolean enablePKCE = cfg.getBoolean(OAuthConfigKeys.ENABLE_PKCE, false);
+    // Native descriptor: default HTTP Basic client auth, JSON token response, header bearer, scope
+    // "openid profile email". SAP IAS may omit token_type, so tolerate it. Both the browser
+    // code-exchange flow and the resource-owner password grant (getAccessToken below) run on this
+    // client; the id_token is validated by the SAP CombiningValidator in getUserInfo.
+    OAuthProviderEndpoints endpoints =
+        new OAuthProviderEndpoints(
+            String.format("%s/oauth2/authorize", rootUrl),
+            String.format("%s/oauth2/token", rootUrl),
+            "openid profile email",
+            ClientAuthStyle.BASIC,
+            BearerPlacement.AUTHORIZATION_HEADER,
+            TokenResponseFormat.JSON,
+            /* tolerateMissingTokenType= */ true,
+            enablePKCE);
+    client = clientFactory.create(PROVIDER_NAME, endpoints);
     extIdScheme = OAuthServiceProviderExternalIdScheme.create(PROVIDER_NAME);
     this.tokenValidator = tokenValidator;
   }

@@ -16,20 +16,23 @@ package com.googlesource.gerrit.plugins.oauth.sap;
 
 import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.github.scribejava.core.builder.api.DefaultApi20;
 import com.google.gerrit.extensions.auth.oauth.OAuthAuthorizationInfo;
 import com.google.gerrit.extensions.auth.oauth.OAuthToken;
 import com.google.gerrit.extensions.auth.oauth.OAuthVerifier;
 import com.google.gerrit.server.config.PluginConfig;
-import com.googlesource.gerrit.plugins.oauth.InitOAuth;
-import com.googlesource.gerrit.plugins.oauth.OAuth20ServiceFactory;
-import com.googlesource.gerrit.plugins.oauth.client.OAuthClient;
+import com.googlesource.gerrit.plugins.oauth.base.HttpOAuthClientFactory;
+import com.googlesource.gerrit.plugins.oauth.base.OAuthConfigKeys;
 import com.googlesource.gerrit.plugins.oauth.base.OAuthPluginConfigFactory;
+import com.googlesource.gerrit.plugins.oauth.client.BearerPlacement;
+import com.googlesource.gerrit.plugins.oauth.client.ClientAuthStyle;
+import com.googlesource.gerrit.plugins.oauth.client.OAuthClient;
+import com.googlesource.gerrit.plugins.oauth.client.OAuthProviderEndpoints;
+import com.googlesource.gerrit.plugins.oauth.client.TokenResponseFormat;
 import com.sap.cloud.security.token.Token;
 import com.sap.cloud.security.token.validation.CombiningValidator;
 import org.junit.Before;
@@ -44,7 +47,7 @@ public class SAPIasOAuthServiceTest {
 
   @Mock private OAuthPluginConfigFactory mockConfigFactory;
   @Mock private PluginConfig mockPluginConfig;
-  @Mock private OAuth20ServiceFactory mockClientFactory;
+  @Mock private HttpOAuthClientFactory mockClientFactory;
   @Mock private OAuthClient mockClient;
   @Mock private CombiningValidator<Token> mockTokenValidator;
 
@@ -54,11 +57,10 @@ public class SAPIasOAuthServiceTest {
   @Before
   public void setUp() {
     when(mockConfigFactory.create(SAPIasOAuthService.PROVIDER_NAME)).thenReturn(mockPluginConfig);
-    when(mockPluginConfig.getString(InitOAuth.ROOT_URL)).thenReturn(TEST_SAP_ROOT_URL);
-    when(mockPluginConfig.getString(InitOAuth.SERVICE_NAME, DEFAULT_SERVICE_NAME))
+    when(mockPluginConfig.getString(OAuthConfigKeys.ROOT_URL)).thenReturn(TEST_SAP_ROOT_URL);
+    when(mockPluginConfig.getString(OAuthConfigKeys.SERVICE_NAME, DEFAULT_SERVICE_NAME))
         .thenReturn(DEFAULT_SERVICE_NAME);
-    when(mockClientFactory.createClient(
-            anyString(), any(DefaultApi20.class), anyString(), anyBoolean(), anyBoolean()))
+    when(mockClientFactory.create(anyString(), any(OAuthProviderEndpoints.class)))
         .thenReturn(mockClient);
   }
 
@@ -66,9 +68,33 @@ public class SAPIasOAuthServiceTest {
     return new SAPIasOAuthService(mockConfigFactory, mockClientFactory, mockTokenValidator);
   }
 
+  private OAuthProviderEndpoints capturedEndpoints() {
+    ArgumentCaptor<OAuthProviderEndpoints> captor =
+        ArgumentCaptor.forClass(OAuthProviderEndpoints.class);
+    verify(mockClientFactory).create(eq(SAPIasOAuthService.PROVIDER_NAME), captor.capture());
+    return captor.getValue();
+  }
+
   @Test
-  public void getAuthorizationInfo_withPkce_shouldDelegateAndEnablePkce() {
-    when(mockPluginConfig.getBoolean(InitOAuth.ENABLE_PKCE, false)).thenReturn(true);
+  public void constructor_buildsSapDescriptor() {
+    when(mockPluginConfig.getBoolean(OAuthConfigKeys.ENABLE_PKCE, false)).thenReturn(true);
+
+    newService();
+
+    OAuthProviderEndpoints ep = capturedEndpoints();
+    assertThat(ep.authorizationEndpoint()).isEqualTo(TEST_SAP_ROOT_URL + "/oauth2/authorize");
+    assertThat(ep.tokenEndpoint()).isEqualTo(TEST_SAP_ROOT_URL + "/oauth2/token");
+    assertThat(ep.scope()).isEqualTo("openid profile email");
+    assertThat(ep.clientAuthStyle()).isEqualTo(ClientAuthStyle.BASIC);
+    assertThat(ep.bearerPlacement()).isEqualTo(BearerPlacement.AUTHORIZATION_HEADER);
+    assertThat(ep.tokenResponseFormat()).isEqualTo(TokenResponseFormat.JSON);
+    assertThat(ep.tolerateMissingTokenType()).isTrue();
+    assertThat(ep.enablePkce()).isTrue();
+  }
+
+  @Test
+  public void getAuthorizationInfo_withPkce_shouldDelegateToClient() {
+    when(mockPluginConfig.getBoolean(OAuthConfigKeys.ENABLE_PKCE, false)).thenReturn(true);
 
     OAuthAuthorizationInfo expected =
         new OAuthAuthorizationInfo(
@@ -79,12 +105,7 @@ public class SAPIasOAuthServiceTest {
     OAuthAuthorizationInfo info = service.getAuthorizationInfo();
 
     assertThat(info.getPkceVerifier()).isEqualTo("sap-secret-verifier");
-
-    ArgumentCaptor<Boolean> pkceCaptor = ArgumentCaptor.forClass(Boolean.class);
-    verify(mockClientFactory)
-        .createClient(
-            anyString(), any(DefaultApi20.class), anyString(), anyBoolean(), pkceCaptor.capture());
-    assertThat(pkceCaptor.getValue()).isTrue();
+    assertThat(capturedEndpoints().enablePkce()).isTrue();
   }
 
   @Test
