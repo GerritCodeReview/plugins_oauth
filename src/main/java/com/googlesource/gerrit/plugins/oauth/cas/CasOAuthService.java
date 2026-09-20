@@ -25,12 +25,17 @@ import com.google.gson.JsonObject;
 import com.google.inject.Inject;
 import com.google.inject.ProvisionException;
 import com.google.inject.Singleton;
-import com.googlesource.gerrit.plugins.oauth.InitOAuth;
-import com.googlesource.gerrit.plugins.oauth.OAuth20ServiceFactory;
+import com.googlesource.gerrit.plugins.oauth.base.HttpOAuthClientFactory;
+import com.googlesource.gerrit.plugins.oauth.base.OAuthConfigKeys;
 import com.googlesource.gerrit.plugins.oauth.base.OAuthPluginConfigFactory;
 import com.googlesource.gerrit.plugins.oauth.base.OAuthServiceProviderConfig;
 import com.googlesource.gerrit.plugins.oauth.base.OAuthServiceProviderExternalIdScheme;
 import com.googlesource.gerrit.plugins.oauth.base.StandardResourceOAuthService;
+import com.googlesource.gerrit.plugins.oauth.client.BearerPlacement;
+import com.googlesource.gerrit.plugins.oauth.client.ClientAuthStyle;
+import com.googlesource.gerrit.plugins.oauth.client.OAuthProviderEndpoints;
+import com.googlesource.gerrit.plugins.oauth.client.TokenResponseFormat;
+import com.googlesource.gerrit.plugins.oauth.utils.OAuthUrls;
 import java.io.IOException;
 import java.net.URI;
 
@@ -46,20 +51,31 @@ public class CasOAuthService extends StandardResourceOAuthService {
   private final String extIdScheme;
 
   @Inject
-  CasOAuthService(OAuthPluginConfigFactory cfgFactory, OAuth20ServiceFactory clientFactory) {
+  CasOAuthService(OAuthPluginConfigFactory cfgFactory, HttpOAuthClientFactory clientFactory) {
     super("Generic CAS OAuth2");
     PluginConfig cfg = cfgFactory.create(PROVIDER_NAME);
-    rootUrl = cfg.getString(InitOAuth.ROOT_URL);
+    rootUrl = OAuthUrls.trimTrailingSlashes(cfg.getString(OAuthConfigKeys.ROOT_URL));
     if (!URI.create(rootUrl).isAbsolute()) {
       throw new ProvisionException("Root URL must be absolute URL");
     }
-    fixLegacyUserId = cfg.getBoolean(InitOAuth.FIX_LEGACY_USER_ID, false);
+    fixLegacyUserId = cfg.getBoolean(OAuthConfigKeys.FIX_LEGACY_USER_ID, false);
     boolean useJsonExtractor = cfg.getBoolean(USE_JSON_EXTRACTOR, false);
-    // CAS may omit token_type in the token response; tolerate it so the empty
-    // string is stored instead of failing.
-    client =
-        clientFactory.createClient(
-            PROVIDER_NAME, new CasApi(rootUrl, useJsonExtractor), null, true);
+    // Native descriptor: default HTTP Basic client auth, bearer as an access_token query parameter,
+    // no
+    // scope. The token response is form-encoded
+    // by default (CAS's classic extractor) or JSON when use-json-extractor is set. CAS may omit
+    // token_type, so tolerate it (the empty string is stored instead of failing).
+    OAuthProviderEndpoints endpoints =
+        new OAuthProviderEndpoints(
+            String.format("%s/oauth2.0/authorize", rootUrl),
+            String.format("%s/oauth2.0/accessToken", rootUrl),
+            /* scope= */ null,
+            ClientAuthStyle.BASIC,
+            BearerPlacement.URI_QUERY_ACCESS_TOKEN,
+            useJsonExtractor ? TokenResponseFormat.JSON : TokenResponseFormat.FORM_URL_ENCODED,
+            /* tolerateMissingTokenType= */ true,
+            /* enablePkce= */ false);
+    client = clientFactory.create(PROVIDER_NAME, endpoints);
     extIdScheme = OAuthServiceProviderExternalIdScheme.create(PROVIDER_NAME);
   }
 
