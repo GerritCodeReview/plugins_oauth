@@ -23,10 +23,14 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import com.googlesource.gerrit.plugins.oauth.OAuth20ServiceFactory;
+import com.googlesource.gerrit.plugins.oauth.base.HttpOAuthClientFactory;
 import com.googlesource.gerrit.plugins.oauth.base.OAuthServiceProviderConfig;
 import com.googlesource.gerrit.plugins.oauth.base.OAuthServiceProviderExternalIdScheme;
 import com.googlesource.gerrit.plugins.oauth.base.StandardResourceOAuthService;
+import com.googlesource.gerrit.plugins.oauth.client.BearerPlacement;
+import com.googlesource.gerrit.plugins.oauth.client.ClientAuthStyle;
+import com.googlesource.gerrit.plugins.oauth.client.OAuthProviderEndpoints;
+import com.googlesource.gerrit.plugins.oauth.client.TokenResponseFormat;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -34,6 +38,8 @@ import java.nio.charset.StandardCharsets;
 @Singleton
 @OAuthServiceProviderConfig(name = FacebookOAuthService.PROVIDER_NAME)
 public class FacebookOAuthService extends StandardResourceOAuthService {
+  private static final String AUTHORIZATION_URL = "https://www.facebook.com/dialog/oauth";
+  private static final String ACCESS_TOKEN_URL = "https://graph.facebook.com/oauth/access_token";
   private static final String PROTECTED_RESOURCE_URL = "https://graph.facebook.com/me";
   public static final String PROVIDER_NAME = "facebook";
   private static final String SCOPE = "email";
@@ -42,9 +48,20 @@ public class FacebookOAuthService extends StandardResourceOAuthService {
   private final String extIdScheme;
 
   @Inject
-  FacebookOAuthService(OAuth20ServiceFactory clientFactory) {
+  FacebookOAuthService(HttpOAuthClientFactory clientFactory) {
     super("Facebook OAuth2");
-    client = clientFactory.createClient(PROVIDER_NAME, new Facebook2Api(), SCOPE);
+    // Native descriptor: request-body client auth, JSON token response, header bearer, scope email.
+    OAuthProviderEndpoints endpoints =
+        new OAuthProviderEndpoints(
+            AUTHORIZATION_URL,
+            ACCESS_TOKEN_URL,
+            SCOPE,
+            ClientAuthStyle.REQUEST_BODY,
+            BearerPlacement.AUTHORIZATION_HEADER,
+            TokenResponseFormat.JSON,
+            /* tolerateMissingTokenType= */ false,
+            /* enablePkce= */ false);
+    client = clientFactory.create(PROVIDER_NAME, endpoints);
     extIdScheme = OAuthServiceProviderExternalIdScheme.create(PROVIDER_NAME);
   }
 
