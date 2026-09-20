@@ -23,28 +23,46 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import com.googlesource.gerrit.plugins.oauth.InitOAuth;
-import com.googlesource.gerrit.plugins.oauth.OAuth20ServiceFactory;
+import com.googlesource.gerrit.plugins.oauth.base.HttpOAuthClientFactory;
+import com.googlesource.gerrit.plugins.oauth.base.OAuthConfigKeys;
 import com.googlesource.gerrit.plugins.oauth.base.OAuthPluginConfigFactory;
 import com.googlesource.gerrit.plugins.oauth.base.OAuthServiceProviderConfig;
 import com.googlesource.gerrit.plugins.oauth.base.OAuthServiceProviderExternalIdScheme;
 import com.googlesource.gerrit.plugins.oauth.base.StandardResourceOAuthService;
+import com.googlesource.gerrit.plugins.oauth.client.BearerPlacement;
+import com.googlesource.gerrit.plugins.oauth.client.ClientAuthStyle;
+import com.googlesource.gerrit.plugins.oauth.client.OAuthProviderEndpoints;
+import com.googlesource.gerrit.plugins.oauth.client.TokenResponseFormat;
 import java.io.IOException;
 
 @Singleton
 @OAuthServiceProviderConfig(name = BitbucketOAuthService.PROVIDER_NAME)
 public class BitbucketOAuthService extends StandardResourceOAuthService {
   public static final String PROVIDER_NAME = "bitbucket";
+  private static final String AUTHORIZATION_URL = "https://bitbucket.org/site/oauth2/authorize";
+  private static final String ACCESS_TOKEN_URL = "https://bitbucket.org/site/oauth2/access_token";
   private static final String PROTECTED_RESOURCE_URL = "https://bitbucket.org/api/1.0/user/";
   private final boolean fixLegacyUserId;
   private final String extIdScheme;
 
   @Inject
-  BitbucketOAuthService(OAuthPluginConfigFactory cfgFactory, OAuth20ServiceFactory clientFactory) {
+  BitbucketOAuthService(OAuthPluginConfigFactory cfgFactory, HttpOAuthClientFactory clientFactory) {
     super("Bitbucket OAuth2");
     PluginConfig cfg = cfgFactory.create(PROVIDER_NAME);
-    fixLegacyUserId = cfg.getBoolean(InitOAuth.FIX_LEGACY_USER_ID, false);
-    client = clientFactory.createClient(PROVIDER_NAME, new BitbucketApi());
+    fixLegacyUserId = cfg.getBoolean(OAuthConfigKeys.FIX_LEGACY_USER_ID, false);
+    // Native descriptor: default HTTP Basic client auth, JSON token response, no scope, and the
+    // bearer as an access_token query parameter.
+    OAuthProviderEndpoints endpoints =
+        new OAuthProviderEndpoints(
+            AUTHORIZATION_URL,
+            ACCESS_TOKEN_URL,
+            /* scope= */ null,
+            ClientAuthStyle.BASIC,
+            BearerPlacement.URI_QUERY_ACCESS_TOKEN,
+            TokenResponseFormat.JSON,
+            /* tolerateMissingTokenType= */ false,
+            /* enablePkce= */ false);
+    client = clientFactory.create(PROVIDER_NAME, endpoints);
     extIdScheme = OAuthServiceProviderExternalIdScheme.create(PROVIDER_NAME);
   }
 
