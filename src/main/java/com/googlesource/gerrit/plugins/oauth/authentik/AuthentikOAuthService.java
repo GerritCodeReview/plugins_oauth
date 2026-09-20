@@ -25,12 +25,13 @@ import com.google.gson.JsonObject;
 import com.google.inject.Inject;
 import com.google.inject.ProvisionException;
 import com.google.inject.Singleton;
-import com.googlesource.gerrit.plugins.oauth.InitOAuth;
 import com.googlesource.gerrit.plugins.oauth.OAuth20ServiceFactory;
+import com.googlesource.gerrit.plugins.oauth.base.OAuthConfigKeys;
 import com.googlesource.gerrit.plugins.oauth.base.OAuthPluginConfigFactory;
 import com.googlesource.gerrit.plugins.oauth.base.OAuthServiceProviderConfig;
 import com.googlesource.gerrit.plugins.oauth.base.OAuthServiceProviderExternalIdScheme;
 import com.googlesource.gerrit.plugins.oauth.base.StandardResourceOAuthService;
+import com.googlesource.gerrit.plugins.oauth.utils.OAuthUrls;
 import java.io.IOException;
 import java.net.URI;
 
@@ -45,17 +46,21 @@ public class AuthentikOAuthService extends StandardResourceOAuthService {
 
   @Inject
   AuthentikOAuthService(OAuthPluginConfigFactory cfgFactory, OAuth20ServiceFactory clientFactory) {
-    super(cfgFactory.create(PROVIDER_NAME).getString(InitOAuth.SERVICE_NAME, "Authentik"));
+    super(cfgFactory.create(PROVIDER_NAME).getString(OAuthConfigKeys.SERVICE_NAME, "Authentik"));
     PluginConfig cfg = cfgFactory.create(PROVIDER_NAME);
-    rootUrl = cfg.getString(InitOAuth.ROOT_URL);
+    rootUrl = OAuthUrls.trimTrailingSlashes(cfg.getString(OAuthConfigKeys.ROOT_URL));
     if (!URI.create(rootUrl).isAbsolute()) {
       throw new ProvisionException("Root URL must be absolute URL");
     }
-    linkExistingGerrit = cfg.getBoolean(InitOAuth.LINK_TO_EXISTING_GERRIT_ACCOUNT, false);
+    linkExistingGerrit = cfg.getBoolean(OAuthConfigKeys.LINK_TO_EXISTING_GERRIT_ACCOUNT, false);
+    boolean enablePkce = cfg.getBoolean(OAuthConfigKeys.ENABLE_PKCE, false);
     client =
         clientFactory.createClient(
-            PROVIDER_NAME, new AuthentikApi(rootUrl), "openid profile email");
+            PROVIDER_NAME, new AuthentikApi(rootUrl), "openid profile email", false, enablePkce);
     extIdScheme = OAuthServiceProviderExternalIdScheme.create(PROVIDER_NAME);
+    log.warn(
+        "The Authentik OAuth provider is soft-deprecated; prefer the generic Discovery provider."
+            + " See config-discovery.md for the migration recipe. The wrapper still works.");
   }
 
   @Override
