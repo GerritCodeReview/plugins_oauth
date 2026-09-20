@@ -7,6 +7,7 @@ load(
 EXT_DEPS = [
     "com.github.scribejava:scribejava-apis",
     "com.github.scribejava:scribejava-core",
+    "com.nimbusds:nimbus-jose-jwt",
     "com.sap.cloud.security.java:api",
     "com.sap.cloud.security.java:security",
 ]

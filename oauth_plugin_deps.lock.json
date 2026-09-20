@@ -4,6 +4,7 @@
     "com.fasterxml.jackson.core:jackson-databind": 1149371740,
     "com.github.ben-manes.caffeine:caffeine": -1640976164,
     "com.github.scribejava:scribejava-apis": 1954939894,
+    "com.nimbusds:nimbus-jose-jwt": -1260914239,
     "com.sap.cloud.security:java-security": 794433498,
     "commons-io:commons-io": 150368282,
     "org.slf4j:slf4j-api": 2145585153,
@@ -22,6 +23,8 @@
     "com.github.scribejava:scribejava-core:jar:sources": 242143042,
     "com.github.scribejava:scribejava-java8": 427226495,
     "com.github.scribejava:scribejava-java8:jar:sources": 1604009525,
+    "com.nimbusds:nimbus-jose-jwt": -2130272744,
+    "com.nimbusds:nimbus-jose-jwt:jar:sources": -1483712041,
     "com.sap.cloud.environment.servicebinding.api:java-access-api": 2007607395,
     "com.sap.cloud.environment.servicebinding.api:java-access-api:jar:sources": -1233227292,
     "com.sap.cloud.environment.servicebinding.api:java-consumption-api": -1817974863,
@@ -85,6 +88,13 @@
         "sources": "acb7c5008b85efae739eb1502e8ee8b0e8ba06afc1053e820e0a27fff7618746"
       },
       "version": "8.3.3"
+    },
+    "com.nimbusds:nimbus-jose-jwt": {
+      "shasums": {
+        "jar": "33152ea83ec50d22706fdaf3b07acbcd716f9a68edcabdd7c4d02843cbdcdcf6",
+        "sources": "cead38bc98c18a3f4b6da7157f503e74d8701b9d547d2a722e5fc40c1bdc7c32"
+      },
+      "version": "10.9.1"
     },
     "com.sap.cloud.environment.servicebinding.api:java-access-api": {
       "shasums": {
@@ -219,8 +229,6 @@
       "com.fasterxml.jackson.core.filter",
       "com.fasterxml.jackson.core.format",
       "com.fasterxml.jackson.core.internal.shaded.fdp.v2_21_1",
-      "com.fasterxml.jackson.core.internal.shaded.fdp.v2_21_1.bte",
-      "com.fasterxml.jackson.core.internal.shaded.fdp.v2_21_1.chr",
       "com.fasterxml.jackson.core.io",
       "com.fasterxml.jackson.core.io.schubfach",
       "com.fasterxml.jackson.core.json",
@@ -294,6 +302,39 @@
     "com.github.scribejava:scribejava-java8": [
       "com.github.scribejava.java8.base64"
     ],
+    "com.nimbusds:nimbus-jose-jwt": [
+      "com.nimbusds.jose",
+      "com.nimbusds.jose.crypto",
+      "com.nimbusds.jose.crypto.bc",
+      "com.nimbusds.jose.crypto.factories",
+      "com.nimbusds.jose.crypto.impl",
+      "com.nimbusds.jose.crypto.opts",
+      "com.nimbusds.jose.crypto.utils",
+      "com.nimbusds.jose.jca",
+      "com.nimbusds.jose.jwk",
+      "com.nimbusds.jose.jwk.gen",
+      "com.nimbusds.jose.jwk.source",
+      "com.nimbusds.jose.mint",
+      "com.nimbusds.jose.proc",
+      "com.nimbusds.jose.produce",
+      "com.nimbusds.jose.shaded.gson",
+      "com.nimbusds.jose.shaded.gson.annotations",
+      "com.nimbusds.jose.shaded.gson.internal",
+      "com.nimbusds.jose.shaded.gson.internal.bind",
+      "com.nimbusds.jose.shaded.gson.internal.bind.util",
+      "com.nimbusds.jose.shaded.gson.internal.reflect",
+      "com.nimbusds.jose.shaded.gson.internal.sql",
+      "com.nimbusds.jose.shaded.gson.reflect",
+      "com.nimbusds.jose.shaded.gson.stream",
+      "com.nimbusds.jose.shaded.jcip",
+      "com.nimbusds.jose.util",
+      "com.nimbusds.jose.util.cache",
+      "com.nimbusds.jose.util.events",
+      "com.nimbusds.jose.util.health",
+      "com.nimbusds.jwt",
+      "com.nimbusds.jwt.proc",
+      "com.nimbusds.jwt.util"
+    ],
     "com.sap.cloud.environment.servicebinding.api:java-access-api": [
       "com.sap.cloud.environment.servicebinding.api",
       "com.sap.cloud.environment.servicebinding.api.exception"
@@ -361,6 +402,8 @@
       "com.github.scribejava:scribejava-core:jar:sources",
       "com.github.scribejava:scribejava-java8",
       "com.github.scribejava:scribejava-java8:jar:sources",
+      "com.nimbusds:nimbus-jose-jwt",
+      "com.nimbusds:nimbus-jose-jwt:jar:sources",
       "com.sap.cloud.environment.servicebinding.api:java-access-api",
       "com.sap.cloud.environment.servicebinding.api:java-access-api:jar:sources",
       "com.sap.cloud.environment.servicebinding.api:java-consumption-api",
