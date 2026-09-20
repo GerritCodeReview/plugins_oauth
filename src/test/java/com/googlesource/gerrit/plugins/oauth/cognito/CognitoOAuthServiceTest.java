@@ -16,16 +16,17 @@ package com.googlesource.gerrit.plugins.oauth.cognito;
 
 import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
 import com.google.gerrit.extensions.auth.oauth.OAuthToken;
 import com.google.gerrit.extensions.auth.oauth.OAuthUserInfo;
 import com.google.gerrit.server.config.PluginConfig;
-import com.googlesource.gerrit.plugins.oauth.InitOAuth;
 import com.googlesource.gerrit.plugins.oauth.OAuth20ServiceFactory;
-import com.googlesource.gerrit.plugins.oauth.client.OAuthClient;
+import com.googlesource.gerrit.plugins.oauth.base.OAuthConfigKeys;
 import com.googlesource.gerrit.plugins.oauth.base.OAuthPluginConfigFactory;
+import com.googlesource.gerrit.plugins.oauth.client.OAuthClient;
 import java.net.URI;
 import org.junit.Before;
 import org.junit.Test;
@@ -65,13 +66,14 @@ public class CognitoOAuthServiceTest {
 
     // Configure the mockPluginConfig with necessary values for CognitoOAuthService
     // constructor
-    when(mockPluginConfig.getString(InitOAuth.ROOT_URL)).thenReturn(TEST_COGNITO_ROOT_URL);
-    when(mockPluginConfig.getString(InitOAuth.SERVICE_NAME, DEFAULT_SERVICE_NAME))
+    when(mockPluginConfig.getString(OAuthConfigKeys.ROOT_URL)).thenReturn(TEST_COGNITO_ROOT_URL);
+    when(mockPluginConfig.getString(OAuthConfigKeys.SERVICE_NAME, DEFAULT_SERVICE_NAME))
         .thenReturn(DEFAULT_SERVICE_NAME);
 
     // Stub the client factory so the service talks to our mock client instead of
     // the network.
-    when(mockClientFactory.createClient(eq(CognitoOAuthService.PROVIDER_NAME), any(), any()))
+    when(mockClientFactory.createClient(
+            eq(CognitoOAuthService.PROVIDER_NAME), any(), any(), anyBoolean(), anyBoolean()))
         .thenReturn(mockClient);
   }
 
@@ -84,7 +86,7 @@ public class CognitoOAuthServiceTest {
    */
   private CognitoOAuthService createService(boolean linkExistingGerritAccounts) {
     // Configure the specific 'link-to-existing-gerrit-account' for this instance
-    when(mockPluginConfig.getBoolean(InitOAuth.LINK_TO_EXISTING_GERRIT_ACCOUNT, false))
+    when(mockPluginConfig.getBoolean(OAuthConfigKeys.LINK_TO_EXISTING_GERRIT_ACCOUNT, false))
         .thenReturn(linkExistingGerritAccounts);
     return new CognitoOAuthService(mockConfigFactory, mockClientFactory);
   }
