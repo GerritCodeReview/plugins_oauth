@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5d308f89_772d9da7",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 5193991
+      },
+      "writtenOn": "2026-09-27T10:44:25Z",
+      "side": 1,
+      "message": "All remuved\n```suggestion\nAdd per-provider libraries and standalone oauth-google, oauth-github,\n```",
+      "revId": "c31a4db28e62b378e80dc0a5d3e97a7c6f7999c2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ef2e3ad0_14cb1260",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 5193991
+      },
+      "writtenOn": "2026-09-27T10:44:25Z",
+      "side": 1,
+      "message": "All remuved .\n```suggestion\nAdd per-provider libraries and standalone oauth-google, oauth-github,\n```",
+      "revId": "c31a4db28e62b378e80dc0a5d3e97a7c6f7999c2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
