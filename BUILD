@@ -9,8 +9,13 @@ load("@rules_java//java:defs.bzl", "java_binary")
 
 EXT_DEPS = [
     "com.nimbusds:nimbus-jose-jwt",
+]
+
+SAP_EXT_DEPS = [
     "com.sap.cloud.security.java:api",
     "com.sap.cloud.security.java:security",
+    "com.sap.cloud.security:env",
+    "com.sap.cloud.security.xsuaa:token-client",
 ]
 
 PLUGIN = "oauth"
@@ -67,6 +72,8 @@ GOOGLE_SRCS = "src/main/java/com/googlesource/gerrit/plugins/oauth/google/**/*.j
 
 KEYCLOAK_SRCS = "src/main/java/com/googlesource/gerrit/plugins/oauth/keycloak/**/*.java"
 
+SAP_SRCS = "src/main/java/com/googlesource/gerrit/plugins/oauth/sap/**/*.java"
+
 # Providers bundled only in the all-inclusive oauth plugin (no standalone artifact).
 PROVIDERS_SRCS = [
     "src/main/java/com/googlesource/gerrit/plugins/oauth/airvantage/**/*.java",
@@ -77,7 +84,6 @@ PROVIDERS_SRCS = [
     "src/main/java/com/googlesource/gerrit/plugins/oauth/facebook/**/*.java",
     "src/main/java/com/googlesource/gerrit/plugins/oauth/gitlab/**/*.java",
     "src/main/java/com/googlesource/gerrit/plugins/oauth/phabricator/**/*.java",
-    "src/main/java/com/googlesource/gerrit/plugins/oauth/sap/**/*.java",
 ]
 
 gerrit_plugin_library(
@@ -117,14 +123,19 @@ gerrit_plugin_library(
 )
 
 gerrit_plugin_library(
+    name = "sap",
+    srcs = glob(
+        [SAP_SRCS],
+        exclude = ["**/*PluginModule.java"],
+    ),
+    ext_deps = SAP_EXT_DEPS,
+    plugin = PLUGIN,
+    deps = CORE_LIBS,
+)
+
+gerrit_plugin_library(
     name = "providers",
     srcs = glob(PROVIDERS_SRCS),
-    ext_deps = [
-        "com.sap.cloud.security.java:api",
-        "com.sap.cloud.security.java:security",
-        "com.sap.cloud.security:env",
-        "com.sap.cloud.security.xsuaa:token-client",
-    ],
     plugin = PLUGIN,
     deps = CORE_LIBS,
 )
@@ -140,13 +151,11 @@ gerrit_plugin(
             GOOGLE_SRCS,
             JWT_SRCS,
             KEYCLOAK_SRCS,
+            SAP_SRCS,
             UTILS_SRCS,
         ] + PROVIDERS_SRCS,
     ),
-    ext_deps = [
-        "com.sap.cloud.security:env",
-        "com.sap.cloud.security.xsuaa:token-client",
-    ] + EXT_DEPS,
+    ext_deps = EXT_DEPS,
     manifest_entries = [
         "Gerrit-PluginName: gerrit-oauth-provider",
         "Gerrit-Module: com.googlesource.gerrit.plugins.oauth.Module",
@@ -167,24 +176,25 @@ gerrit_plugin(
 
 [
     gerrit_plugin(
-        name = "oauth-" + provider,
-        srcs = ["src/main/java/com/googlesource/gerrit/plugins/oauth/%s/%s.java" % (provider, module)],
+        name = "oauth-" + artifact,
+        srcs = ["src/main/java/com/googlesource/gerrit/plugins/oauth/%s/%s.java" % (pkg, module)],
         dir_name = PLUGIN,
         manifest_entries = [
             "Gerrit-PluginName: gerrit-oauth-provider",
-            "Gerrit-Module: com.googlesource.gerrit.plugins.oauth.%s.%s" % (provider, module),
-            "Gerrit-InitStep: com.googlesource.gerrit.plugins.oauth.%s.%s" % (provider, init),
-            "Implementation-Title: Gerrit OAuth authentication provider for %s" % provider,
+            "Gerrit-Module: com.googlesource.gerrit.plugins.oauth.%s.%s" % (pkg, module),
+            "Gerrit-InitStep: com.googlesource.gerrit.plugins.oauth.%s.%s" % (pkg, init),
+            "Implementation-Title: Gerrit OAuth authentication provider for %s" % artifact,
             "Implementation-URL: https://github.com/davido/gerrit-oauth-provider",
         ],
         resources = glob(["src/main/resources/**/*"]),
-        deps = CORE_LIBS + [":" + provider],
+        deps = CORE_LIBS + [":" + pkg],
     )
-    for provider, module, init in [
-        ("discovery", "DiscoveryPluginModule", "DiscoveryInitStep"),
-        ("github", "GitHubPluginModule", "GitHubInitStep"),
-        ("google", "GooglePluginModule", "GoogleInitStep"),
-        ("keycloak", "KeycloakPluginModule", "KeycloakInitStep"),
+    for artifact, pkg, module, init in [
+        ("discovery", "discovery", "DiscoveryPluginModule", "DiscoveryInitStep"),
+        ("github", "github", "GitHubPluginModule", "GitHubInitStep"),
+        ("google", "google", "GooglePluginModule", "GoogleInitStep"),
+        ("keycloak", "keycloak", "KeycloakPluginModule", "KeycloakInitStep"),
+        ("sapias", "sap", "SAPIasPluginModule", "SAPIasInitStep"),
     ]
 ]
 
@@ -201,16 +211,13 @@ PROVIDERS_TEST_SRCS = [
     "src/test/java/com/googlesource/gerrit/plugins/oauth/google/**/*.java",
     "src/test/java/com/googlesource/gerrit/plugins/oauth/keycloak/**/*.java",
     "src/test/java/com/googlesource/gerrit/plugins/oauth/phabricator/**/*.java",
-    "src/test/java/com/googlesource/gerrit/plugins/oauth/sap/**/*.java",
 ]
+
+SAP_TEST_SRCS = "src/test/java/com/googlesource/gerrit/plugins/oauth/sap/**/*.java"
 
 gerrit_plugin_ext_test_deps(
     name = "providers_test_deps",
-    ext_deps = [
-        "com.nimbusds:nimbus-jose-jwt",
-        "com.sap.cloud.security.java:api",
-        "com.sap.cloud.security.java:security",
-    ],
+    ext_deps = ["com.nimbusds:nimbus-jose-jwt"],
     plugin = PLUGIN,
 )
 
@@ -228,10 +235,18 @@ gerrit_plugin_tests(
 )
 
 gerrit_plugin_tests(
+    name = "sap_tests",
+    srcs = glob([SAP_TEST_SRCS]),
+    ext_deps = SAP_EXT_DEPS,
+    plugin = PLUGIN,
+    deps = CORE_LIBS + [":sap"],
+)
+
+gerrit_plugin_tests(
     name = "oauth_plugin_tests",
     srcs = glob(
         ["src/test/java/**/*.java"],
-        exclude = PROVIDERS_TEST_SRCS,
+        exclude = PROVIDERS_TEST_SRCS + [SAP_TEST_SRCS],
     ),
     ext_deps = EXT_DEPS,
     plugin = PLUGIN,
