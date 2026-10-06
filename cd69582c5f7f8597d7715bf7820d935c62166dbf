@@ -1,12 +1,9 @@
 {
   "checks": {
     "zuul-check:plugins_oauth": {
-      "state": "RUNNING",
-      "message": "Jobs have started running",
-      "url": "https://ci.gerritcodereview.com/t/gerrit/status/change/638969,1",
-      "started": "2026-10-06T15:24:19Z",
+      "state": "NOT_STARTED",
       "created": "2026-10-06T15:24:19Z",
-      "updated": "2026-10-06T15:25:00Z"
+      "updated": "2026-10-06T15:25:01Z"
     }
   }
 }
