@@ -72,6 +72,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f02ebd4c_c3e54269",
+        "filename": "BUILD",
+        "patchSetId": 2
+      },
+      "lineNbr": 197,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2026-10-06T08:12:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d13fdd6a_ec96fde4",
+      "range": {
+        "startLine": 197,
+        "startChar": 8,
+        "endLine": 197,
+        "endChar": 25
+      },
+      "revId": "74bd50f58573c81725e8b0057acc76dac579e7ce",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7c438645_7ae16d7e",
@@ -85,6 +109,24 @@
       "writtenOn": "2026-10-06T07:51:23Z",
       "side": 1,
       "message": "What about PKCE support? This was available before, but is neither set by the base class or this one.",
+      "revId": "74bd50f58573c81725e8b0057acc76dac579e7ce",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7ed83ada_0baab466",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/oauth/sap/SAPIasInitStep.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2026-10-06T08:12:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7c438645_7ae16d7e",
       "revId": "74bd50f58573c81725e8b0057acc76dac579e7ce",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
