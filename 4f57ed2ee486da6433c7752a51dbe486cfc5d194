@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1210f65a_71488da7",
+        "filename": "BUILD",
+        "patchSetId": 4
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2026-10-06T08:17:06Z",
+      "side": 1,
+      "message": "Call this consistently SAPIAS.",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 12
+      },
+      "revId": "4f57ed2ee486da6433c7752a51dbe486cfc5d194",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
