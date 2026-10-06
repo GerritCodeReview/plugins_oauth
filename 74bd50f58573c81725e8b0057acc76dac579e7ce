@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "07c6806c_ca6456a4",
+        "filename": "BUILD",
+        "patchSetId": 2
+      },
+      "lineNbr": 197,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2026-10-06T07:30:53Z",
+      "side": 1,
+      "message": "I would like to simplify this and avoid the split between artifact and package name.\n\nI see two options:\n\n1. we rename sap package to sapias\n2. we rename the target from oauth-sapias.jar to oauth-sap.jar?\n\nOpinion?",
+      "range": {
+        "startLine": 197,
+        "startChar": 8,
+        "endLine": 197,
+        "endChar": 25
+      },
+      "revId": "74bd50f58573c81725e8b0057acc76dac579e7ce",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
