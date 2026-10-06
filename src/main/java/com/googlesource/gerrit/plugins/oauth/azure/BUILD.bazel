@@ -1,0 +1,32 @@
+load("@com_googlesource_gerrit_bazlets//:gerrit_plugin.bzl", "gerrit_plugin")
+load("@rules_java//java:defs.bzl", "java_library")
+load("//tools/bzl:plugin.bzl", "PLUGIN_DEPS_NEVERLINK")
+
+package(default_visibility = ["//plugins/oauth:visibility"])
+
+java_library(
+    name = "azure",
+    srcs = glob(
+        ["*.java"],
+        exclude = ["*PluginModule.java"],
+    ),
+    deps = PLUGIN_DEPS_NEVERLINK + ["//plugins/oauth:core"],
+)
+
+gerrit_plugin(
+    name = "oauth-azure",
+    srcs = ["AzurePluginModule.java"],
+    dir_name = "oauth",
+    manifest_entries = [
+        "Gerrit-PluginName: gerrit-oauth-provider",
+        "Gerrit-Module: com.googlesource.gerrit.plugins.oauth.azure.AzurePluginModule",
+        "Gerrit-InitStep: com.googlesource.gerrit.plugins.oauth.azure.AzureInitStep",
+        "Implementation-Title: Gerrit OAuth authentication provider for azure",
+        "Implementation-URL: https://github.com/davido/gerrit-oauth-provider",
+    ],
+    resources = ["//plugins/oauth:oauth_resources"],
+    deps = [
+        ":azure",
+        "//plugins/oauth:core",
+    ],
+)

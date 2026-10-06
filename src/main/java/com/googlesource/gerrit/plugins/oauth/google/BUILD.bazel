@@ -1,0 +1,32 @@
+load("@com_googlesource_gerrit_bazlets//:gerrit_plugin.bzl", "gerrit_plugin")
+load("@rules_java//java:defs.bzl", "java_library")
+load("//tools/bzl:plugin.bzl", "PLUGIN_DEPS_NEVERLINK")
+
+package(default_visibility = ["//plugins/oauth:visibility"])
+
+java_library(
+    name = "google",
+    srcs = glob(
+        ["*.java"],
+        exclude = ["*PluginModule.java"],
+    ),
+    deps = PLUGIN_DEPS_NEVERLINK + ["//plugins/oauth:core"],
+)
+
+gerrit_plugin(
+    name = "oauth-google",
+    srcs = ["GooglePluginModule.java"],
+    dir_name = "oauth",
+    manifest_entries = [
+        "Gerrit-PluginName: gerrit-oauth-provider",
+        "Gerrit-Module: com.googlesource.gerrit.plugins.oauth.google.GooglePluginModule",
+        "Gerrit-InitStep: com.googlesource.gerrit.plugins.oauth.google.GoogleInitStep",
+        "Implementation-Title: Gerrit OAuth authentication provider for google",
+        "Implementation-URL: https://github.com/davido/gerrit-oauth-provider",
+    ],
+    resources = ["//plugins/oauth:oauth_resources"],
+    deps = [
+        ":google",
+        "//plugins/oauth:core",
+    ],
+)

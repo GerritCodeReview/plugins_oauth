@@ -1,0 +1,13 @@
+load("@rules_java//java:defs.bzl", "java_library")
+load("//tools/bzl:plugin.bzl", "PLUGIN_DEPS_NEVERLINK")
+
+package(default_visibility = ["//plugins/oauth:visibility"])
+
+java_library(
+    name = "base",
+    srcs = glob(["*.java"]),
+    deps = PLUGIN_DEPS_NEVERLINK + [
+        "//plugins/oauth/src/main/java/com/googlesource/gerrit/plugins/oauth/client",
+        "//plugins/oauth/src/main/java/com/googlesource/gerrit/plugins/oauth/utils",
+    ],
+)

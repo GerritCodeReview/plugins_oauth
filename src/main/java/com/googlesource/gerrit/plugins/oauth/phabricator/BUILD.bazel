@@ -1,0 +1,32 @@
+load("@com_googlesource_gerrit_bazlets//:gerrit_plugin.bzl", "gerrit_plugin")
+load("@rules_java//java:defs.bzl", "java_library")
+load("//tools/bzl:plugin.bzl", "PLUGIN_DEPS_NEVERLINK")
+
+package(default_visibility = ["//plugins/oauth:visibility"])
+
+java_library(
+    name = "phabricator",
+    srcs = glob(
+        ["*.java"],
+        exclude = ["*PluginModule.java"],
+    ),
+    deps = PLUGIN_DEPS_NEVERLINK + ["//plugins/oauth:core"],
+)
+
+gerrit_plugin(
+    name = "oauth-phabricator",
+    srcs = ["PhabricatorPluginModule.java"],
+    dir_name = "oauth",
+    manifest_entries = [
+        "Gerrit-PluginName: gerrit-oauth-provider",
+        "Gerrit-Module: com.googlesource.gerrit.plugins.oauth.phabricator.PhabricatorPluginModule",
+        "Gerrit-InitStep: com.googlesource.gerrit.plugins.oauth.phabricator.PhabricatorInitStep",
+        "Implementation-Title: Gerrit OAuth authentication provider for phabricator",
+        "Implementation-URL: https://github.com/davido/gerrit-oauth-provider",
+    ],
+    resources = ["//plugins/oauth:oauth_resources"],
+    deps = [
+        ":phabricator",
+        "//plugins/oauth:core",
+    ],
+)
