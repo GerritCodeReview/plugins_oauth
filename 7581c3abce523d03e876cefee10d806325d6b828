@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f0cd23a0_2745e10e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2026-10-10T13:48:42Z",
+      "side": 1,
+      "message": "Superseded on master: Dex id_tokens are already JWKS-verified via the plugin\u0027s Nimbus-based OidcJwtValidator (DexOAuthService extends StandardIdTokenOAuthService), so this isn\u0027t needed and it pulls in com.auth0:java-jwt/jwks-rsa plus edits BUILD/external_plugin_deps.bzl, which no longer exist after the per-package/bzlmod refactor.",
+      "revId": "7581c3abce523d03e876cefee10d806325d6b828",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
