@@ -24,6 +24,7 @@ import com.google.gerrit.extensions.auth.oauth.OAuthAuthorizationInfo;
 import com.google.gerrit.extensions.auth.oauth.OAuthRevokedException;
 import com.google.gerrit.extensions.auth.oauth.OAuthToken;
 import com.google.gerrit.extensions.auth.oauth.OAuthVerifier;
+import com.google.gerrit.util.crypto.SecureRandomUtil;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -33,7 +34,6 @@ import java.net.URI;
 import java.net.URLEncoder;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.LinkedHashMap;
@@ -61,7 +61,6 @@ public class HttpOAuthClient implements OAuthClient {
   private final String callback;
   @Nullable private final String providerId;
   private final Gson gson;
-  private final SecureRandom secureRandom;
 
   public HttpOAuthClient(
       OAuthProviderEndpoints endpoints, String clientId, String clientSecret, String callback) {
@@ -87,7 +86,6 @@ public class HttpOAuthClient implements OAuthClient {
     this.callback = requireNonNull(callback, "callback");
     this.providerId = providerId;
     this.gson = JSON.newGson();
-    this.secureRandom = new SecureRandom();
   }
 
   @Override
@@ -343,9 +341,7 @@ public class HttpOAuthClient implements OAuthClient {
   }
 
   private String newCodeVerifier() {
-    byte[] bytes = new byte[32];
-    secureRandom.nextBytes(bytes);
-    return Base64.getUrlEncoder().withoutPadding().encodeToString(bytes);
+    return SecureRandomUtil.newRandomString32();
   }
 
   private static String s256Challenge(String codeVerifier) {
