@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "37c101b7_380b3ece",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 9
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2026-10-10T13:59:50Z",
+      "side": 1,
+      "message": "Groups are not handled yet. Could you please rebase on master, and retain only group handling?",
+      "revId": "7b2438196225d0da999b64a394cedaee36f46720",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "92beb1cc_5189e108",
