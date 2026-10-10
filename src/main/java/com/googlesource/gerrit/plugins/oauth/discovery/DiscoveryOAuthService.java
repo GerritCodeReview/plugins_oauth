@@ -40,9 +40,9 @@ import com.googlesource.gerrit.plugins.oauth.client.TokenResponseFormat;
 import com.googlesource.gerrit.plugins.oauth.jwt.OidcJwtValidator;
 import com.googlesource.gerrit.plugins.oauth.utils.OAuthUrls;
 import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.net.URI;
 import java.util.Map;
-import javax.servlet.http.HttpServletResponse;
 
 @Singleton
 @OAuthServiceProviderConfig(name = DiscoveryOAuthService.PROVIDER_NAME)
@@ -241,7 +241,7 @@ public class DiscoveryOAuthService extends StandardResourceOAuthService {
     try {
       OAuthHttpTransport.Response response =
           OAuthHttpTransport.request("GET", discoveryUrl, Map.of(), null);
-      if (response.code != HttpServletResponse.SC_OK) {
+      if (response.code != HttpURLConnection.HTTP_OK) {
         log.error(
             "Failed to fetch OIDC discovery from {}. Status: {}. Response: {}",
             discoveryUrl,

@@ -33,11 +33,11 @@ import com.googlesource.gerrit.plugins.oauth.base.OAuthTokenValidationCache;
 import com.googlesource.gerrit.plugins.oauth.base.OAuthTokenValidator;
 import com.googlesource.gerrit.plugins.oauth.client.OAuthHttpTransport;
 import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.Optional;
-import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -102,7 +102,7 @@ class GoogleTokenInfoValidator implements OAuthTokenValidator {
             + "?access_token="
             + URLEncoder.encode(bearerToken, StandardCharsets.UTF_8);
     OAuthHttpTransport.Response response = OAuthHttpTransport.request("GET", url, Map.of(), null);
-    if (response.code != HttpServletResponse.SC_OK) {
+    if (response.code != HttpURLConnection.HTTP_OK) {
       // Google returns 400 with {"error":"invalid_token", ...} for invalid tokens.
       throw new IOException("Google tokeninfo rejected token: HTTP " + response.code);
     }

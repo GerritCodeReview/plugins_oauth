@@ -34,9 +34,9 @@ import com.googlesource.gerrit.plugins.oauth.base.OAuthTokenValidationCache;
 import com.googlesource.gerrit.plugins.oauth.base.OAuthTokenValidator;
 import com.googlesource.gerrit.plugins.oauth.client.OAuthHttpTransport;
 import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.util.Map;
 import java.util.Optional;
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * Validates an Azure (Entra ID) {@code access_token} presented on the Git-over-HTTP path.
@@ -163,7 +163,7 @@ class AzureTokenValidator implements OAuthTokenValidator {
             GRAPH_ME_URL,
             Map.of("Authorization", "Bearer " + bearerToken, "Accept", "*/*"),
             null);
-    if (response.code != HttpServletResponse.SC_OK) {
+    if (response.code != HttpURLConnection.HTTP_OK) {
       throw new IOException("Microsoft Graph rejected token: HTTP " + response.code);
     }
     JsonObject parsed;

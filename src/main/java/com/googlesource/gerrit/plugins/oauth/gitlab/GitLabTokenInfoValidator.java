@@ -34,11 +34,11 @@ import com.googlesource.gerrit.plugins.oauth.base.OAuthTokenValidator;
 import com.googlesource.gerrit.plugins.oauth.client.OAuthHttpTransport;
 import com.googlesource.gerrit.plugins.oauth.utils.OAuthUrls;
 import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * Validates an opaque GitLab {@code access_token} for Git-over-HTTP. Confirms the token was issued
@@ -123,10 +123,10 @@ class GitLabTokenInfoValidator implements OAuthTokenValidator {
     OAuthHttpTransport.Response response =
         OAuthHttpTransport.request(
             "GET", url, Map.of("Authorization", "Bearer " + bearerToken), null);
-    if (response.code == HttpServletResponse.SC_UNAUTHORIZED) {
+    if (response.code == HttpURLConnection.HTTP_UNAUTHORIZED) {
       throw new IOException("GitLab rejected the token (HTTP 401) at " + what);
     }
-    if (response.code != HttpServletResponse.SC_OK) {
+    if (response.code != HttpURLConnection.HTTP_OK) {
       throw new IOException("GitLab " + what + " request failed: HTTP " + response.code);
     }
     JsonObject parsed;

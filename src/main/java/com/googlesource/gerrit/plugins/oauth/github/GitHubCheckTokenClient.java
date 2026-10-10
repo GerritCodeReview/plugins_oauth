@@ -30,13 +30,13 @@ import com.googlesource.gerrit.plugins.oauth.base.OAuthServiceProviderExternalId
 import com.googlesource.gerrit.plugins.oauth.client.OAuthHttpTransport;
 import com.googlesource.gerrit.plugins.oauth.utils.OAuthUrls;
 import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.time.format.DateTimeParseException;
 import java.util.Base64;
 import java.util.Map;
 import java.util.Optional;
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * Introspects a GitHub {@code access_token} at the check-token endpoint ({@code POST
@@ -106,13 +106,13 @@ class GitHubCheckTokenClient {
                 "Accept", "application/vnd.github+json",
                 "Content-Type", "application/json"),
             payload.toString());
-    if (response.code == HttpServletResponse.SC_NOT_FOUND) {
+    if (response.code == HttpURLConnection.HTTP_NOT_FOUND) {
       throw new IOException("Token does not belong to this Gerrit's GitHub OAuth app");
     }
-    if (response.code == HttpServletResponse.SC_UNAUTHORIZED) {
+    if (response.code == HttpURLConnection.HTTP_UNAUTHORIZED) {
       throw new IOException("GitHub rejected client credentials (HTTP 401)");
     }
-    if (response.code != HttpServletResponse.SC_OK) {
+    if (response.code != HttpURLConnection.HTTP_OK) {
       throw new IOException("GitHub token validation failed: HTTP " + response.code);
     }
     JsonObject parsed;
