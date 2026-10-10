@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b998e8cb_0044ffe0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2026-10-10T13:50:46Z",
+      "side": 1,
+      "message": "Superseded on master: there is no per-request JwkProvider — OidcJwtValidator builds a single Nimbus JWKSource with built-in caching/rate-limiting/retry (JwksCache), so the 429 storm this addresses can\u0027t occur.",
+      "revId": "b47230748496c6192290ef61fd24667f073b99a8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
